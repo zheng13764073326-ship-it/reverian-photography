@@ -1,0 +1,14 @@
+{
+  "notice": "Unsplash placeholder photographs. Not original work by the website owner. All stories, dates and locations are demonstration content.",
+  "images": {
+    "coast": "https://images.unsplash.com/photo-1518837695005-2083093ee35b",
+    "town": "https://images.unsplash.com/photo-1516483638261-f4dbaf036963",
+    "lake": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1",
+    "forest": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e",
+    "city": "https://images.unsplash.com/photo-1519501025264-65ba15a82390",
+    "paris": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34",
+    "mountain": "https://images.unsplash.com/photo-1493246507139-91e8fad9978e",
+    "field": "https://images.unsplash.com/photo-1500534623283-312aade485b7",
+    "valley": "https://images.unsplash.com/photo-1470770841072-f978cf4d019e"
+  }
+}
