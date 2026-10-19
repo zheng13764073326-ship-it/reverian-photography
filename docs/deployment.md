@@ -1,6 +1,6 @@
 # Sanity 与 Cloudflare 接入计划
 
-当前用户尚无两个平台账号，按用户要求先完成本地版本。本文件是准备好的接入方案，不表示已经创建云项目。
+本文件记录最初的接入方案。现已完成 Cloudflare 演示网站与 Sanity 后台部署；最新服务信息及尚待接通的部分见 [已部署服务](live-services.md)。
 
 ## Cloudflare Pages
 
