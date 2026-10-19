@@ -1,0 +1,14 @@
+---
+import type {Photo,Cover} from '../lib/types';
+import {imageUrl,imageSet} from '../lib/images';
+interface Props {photo:Photo;cover?:Pick<Cover,'focusX'|'focusY'>;ratio?:number;eager?:boolean;sizes?:string;lightbox?:boolean;caption?:boolean;group?:string}
+const {photo,cover,ratio,eager=false,sizes='(max-width: 600px) calc(100vw - 40px), (max-width: 1000px) 46vw, 560px',lightbox=true,caption=true,group='photos'}=Astro.props;
+const style=`background: #e6e1d7 url('${photo.image.lqip||''}') center/cover;${ratio?`aspect-ratio:${ratio};`:''}`;
+const innerStyle=cover?`object-position:${cover.focusX*100}% ${cover.focusY*100}%;`:undefined;
+---
+<figure class:list={['photograph',{'cover-photo':!!ratio}]}>
+ {lightbox ? <a class="image-frame" style={style} href={imageUrl(photo,2400)} data-lightbox data-group={group} data-title={photo.title} data-alt={photo.alt} data-caption={[photo.caption,photo.location?.city,photo.takenAt].filter(Boolean).join(' · ')} aria-label={`放大查看：${photo.title}`}>
+  <img src={imageUrl(photo,1200,cover,ratio)} srcset={imageSet(photo,cover,ratio)} sizes={sizes} width={photo.image.width} height={photo.image.height} alt={photo.alt} loading={eager?'eager':'lazy'} fetchpriority={eager?'high':'auto'} decoding="async" style={innerStyle}/>
+ </a> : <span class="image-frame" style={style}><img src={imageUrl(photo,1200,cover,ratio)} srcset={imageSet(photo,cover,ratio)} sizes={sizes} width={photo.image.width} height={photo.image.height} alt={photo.alt} loading={eager?'eager':'lazy'} decoding="async" style={innerStyle}/></span>}
+ {caption && <figcaption><span>{photo.title}</span><span>{photo.takenAt?.slice(0,4)}</span></figcaption>}
+</figure>

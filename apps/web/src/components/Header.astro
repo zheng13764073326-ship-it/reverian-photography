@@ -1,0 +1,49 @@
+---
+const path=Astro.url.pathname;
+---
+<header class="site-header" id="site-header">
+ <a class="brand" href="/" aria-label="Reverian 首页"><strong>PHOTOGRAPHY</strong><small>CURATED SEQUENCE</small></a>
+ <button class="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="打开导航"><span></span><span></span><span></span></button>
+ <nav id="main-nav" aria-label="主导航">
+  <a href="/" aria-current={path==='/'?'page':undefined}>首页</a>
+  <details class="portfolio-nav"><summary>作品集 <span aria-hidden="true">⌄</span></summary><div class="portfolio-panel">
+   <a href="/works/">精选作品</a><a href="/albums/">旅行影集</a><a href="/street/">街巷观察</a><a href="/journal/">影像札记</a>
+  </div></details>
+  <a href="/about/" aria-current={path==='/about/'?'page':undefined}>关于我</a>
+ </nav>
+</header>
+<script>
+const header=document.querySelector<HTMLElement>('.site-header')!;
+const toggle=header.querySelector<HTMLButtonElement>('.menu-toggle')!;
+const nav=header.querySelector<HTMLElement>('nav')!;
+const main=document.querySelector<HTMLElement>('main')!;
+const details=header.querySelector<HTMLDetailsElement>('details')!;
+const media=matchMedia('(max-width: 800px)');
+let previousOverflow='';
+function setMenu(open:boolean){
+ const wasOpen=toggle.getAttribute('aria-expanded')==='true';
+ toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'关闭导航':'打开导航');header.classList.toggle('menu-open',open);
+ main.inert=open;
+ if(open&&!wasOpen){previousOverflow=document.body.style.overflow;document.body.style.overflow='hidden';}
+ if(!open&&wasOpen)document.body.style.overflow=previousOverflow;
+ nav.inert=media.matches&&!open;
+}
+toggle.addEventListener('click',()=>setMenu(toggle.getAttribute('aria-expanded')!=='true'));
+media.addEventListener('change',()=>{setMenu(false);details.open=false;});
+nav.inert=media.matches;
+document.addEventListener('click',event=>{if(!header.contains(event.target as Node))details.open=false;});
+document.addEventListener('keydown',event=>{
+ if(event.key==='Escape'){const opened=toggle.getAttribute('aria-expanded')==='true';setMenu(false);details.open=false;if(opened)toggle.focus();}
+ if(event.key==='Tab'&&toggle.getAttribute('aria-expanded')==='true'){
+  const focusable=[...header.querySelectorAll<HTMLElement>('a,button,summary')].filter(el=>el.getClientRects().length);
+  const first=focusable[0],last=focusable.at(-1)!;
+  if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+  else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+ }
+});
+const hero=document.querySelector('.home-cover');
+if(hero)new IntersectionObserver(([entry])=>header.classList.toggle('over-cover',entry.isIntersecting),{rootMargin:'-80px 0px 0px 0px',threshold:0}).observe(hero);
+// Preserve the shared prototype links when moving to real page URLs.
+const legacy:Record<string,string>={'#/home':'/','#/selected':'/works/','#/collections':'/albums/','#/street':'/street/','#/film':'/journal/','#/about':'/about/'};
+if(location.hash in legacy)location.replace(legacy[location.hash]);
+</script>

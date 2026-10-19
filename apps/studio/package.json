@@ -1,0 +1,21 @@
+{
+  "name": "@reverian/studio",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "sanity dev --host 127.0.0.1",
+    "build": "sanity build",
+    "check": "tsc --noEmit",
+    "schema:check": "sanity schema extract --path ../../artifacts/schema.json"
+  },
+  "dependencies": {
+    "sanity": "6.19.0",
+    "react": "^19.2.2",
+    "react-dom": "^19.2.2",
+    "styled-components": "^6.1.15"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "@types/react": "^19.2.0"
+  }
+}

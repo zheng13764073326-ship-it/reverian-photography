@@ -1,0 +1,26 @@
+---
+import type {Settings} from '../lib/types';
+import {demoPhotos} from '../data/demo';
+import {imageUrl,imageSet} from '../lib/images';
+import assets from '../data/assets.json';
+interface Props {settings:Settings}
+const {settings}=Astro.props;
+const desk=settings.homePresentation==='desk';
+const desktop=settings.homeCover,mobile=settings.mobileCover;
+const spots=[
+ {id:'stilllight',hit:'400,294 831,198 911,486 449,588'},
+ {id:'gardenchair',hit:'861,41 1177,75 1143,432 945,411 861,160'},
+ {id:'afternoon',hit:'1233,200 1540,301 1415,637 1077,533'},
+];
+---
+<section class="home-cover" aria-label="Reverian 摄影封面">
+ {desk ? <>
+  <img class="hero-photo" src={`/images/responsive/home-desk-${assets['home-desk'].width}.webp`} srcset={assets['home-desk'].widths.map(w=>`/images/responsive/home-desk-${w}.webp ${w}w`).join(', ')} sizes="(max-aspect-ratio: 16/9) 178svh, 100vw" width={assets['home-desk'].width} height={assets['home-desk'].height} alt="暖光中的摄影桌面，照片盒与桌面上摆放着三张照片" fetchpriority="high"/>
+  <svg class="photo-hotspots" viewBox="0 0 1672 941" preserveAspectRatio="xMidYMid slice" aria-label="点击照片放大">{spots.map(s=>{const p=demoPhotos.find(p=>p.id===s.id)!;return <a href={imageUrl(p,2400)} data-lightbox data-group="cover" data-title={p.title} data-alt={p.alt} data-caption="封面场景中的示例照片" aria-label={`放大查看：${p.title}`}><polygon points={s.hit}/></a>;})}</svg>
+ </> : desktop ? <picture>
+  {mobile && <source media="(max-width: 600px)" srcset={imageSet(mobile.photo,mobile,9/16)} sizes="100vw"/>}
+  <img class="hero-photo" src={imageUrl(desktop.photo,1920)} srcset={imageSet(desktop.photo)} sizes="100vw" width={desktop.photo.image.width} height={desktop.photo.image.height} style={`--focus-desktop:${desktop.focusX*100}% ${desktop.focusY*100}%;--focus-mobile:${(mobile||desktop).focusX*100}% ${(mobile||desktop).focusY*100}%`} alt={desktop.photo.alt} fetchpriority="high"/>
+ </picture> : <div class="empty-cover">Reverian Photography</div>}
+ <div class="home-identity"><h1>{settings.photographer}</h1><p>{settings.genres}</p><p class="motto">{settings.motto}</p></div>
+ <a href="#selected" class="home-scroll">向下浏览 <span aria-hidden="true">↓</span></a>
+</section>

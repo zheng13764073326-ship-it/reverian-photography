@@ -1,0 +1,11 @@
+---
+import {toHTML,escapeHTML} from '@portabletext/to-html';
+import type {RichText} from '../lib/types';
+interface Props {value?:RichText}
+const {value=[]}=Astro.props;
+const html=toHTML(value,{components:{marks:{link:({children,value})=>{
+ const href=String(value?.href||'');
+ return /^(https?:\/\/|mailto:)/i.test(href)?`<a href="${escapeHTML(href)}" rel="noopener noreferrer">${children}</a>`:children;
+}}}});
+---
+<div class="prose" set:html={html}/>

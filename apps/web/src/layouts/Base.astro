@@ -1,0 +1,28 @@
+---
+import Header from '../components/Header.astro';
+import Lightbox from '../components/Lightbox.astro';
+import {getContent} from '../lib/content';
+import {imageUrl} from '../lib/images';
+import '@fontsource/cormorant-garamond/400.css';
+import '@fontsource/cormorant-garamond/500.css';
+import '../styles/global.css';
+interface Props {title?:string;description?:string;home?:boolean}
+const {settings,mode}=await getContent();
+const {title,description=settings.seo.description,home=false}=Astro.props;
+const fullTitle=title?`${title} — ${settings.title}`:settings.title;
+const canonical=new URL(Astro.url.pathname,Astro.site);
+const shareImage=settings.seo.shareImage?imageUrl(settings.seo.shareImage.photo,1200):undefined;
+---
+<!doctype html><html lang="zh-CN"><head>
+ <meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+ <title>{fullTitle}</title><meta name="description" content={description}/><meta name="theme-color" content="#F4F1E9"/>
+ <link rel="canonical" href={canonical}/><meta property="og:title" content={fullTitle}/><meta property="og:description" content={description}/><meta property="og:type" content="website"/><meta property="og:url" content={canonical}/>
+ {shareImage && <meta property="og:image" content={new URL(shareImage,Astro.site)}/>}
+ {mode==='demo' && <meta name="robots" content="noindex, nofollow"/>}
+ <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+ </head><body class:list={[{'is-home':home}]}>
+ <a class="skip-link" href="#main">跳到正文</a><Header/>
+ <main id="main" tabindex="-1"><slot/></main>
+ <footer class="site-footer container"><span>© {new Date().getFullYear()} REVERIAN · PHOTOGRAPHY</span><span>{mode==='demo'?'演示版 · 照片、地点与文字为占位内容':'按下快门，因为热爱'}</span><a href="/about/">关于我 ↗</a></footer>
+ <Lightbox/>
+ </body></html>

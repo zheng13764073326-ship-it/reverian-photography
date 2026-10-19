@@ -1,0 +1,9 @@
+---
+import Base from '../../layouts/Base.astro';
+import Photo from '../../components/Photo.astro';
+import RichText from '../../components/RichText.astro';
+import {getContent} from '../../lib/content';
+export async function getStaticPaths(){const {journals}=await getContent();return journals.map(journal=>({params:{slug:journal.slug},props:{journal}}));}
+const {journal}=Astro.props;
+---
+<Base title={journal.title} description={journal.excerpt}><article class="container page journal-detail"><a class="back-link" href="/journal/">← 影像札记</a><header class="album-title"><p class="eyebrow">{journal.date}</p><h1>{journal.title}</h1><p>{journal.excerpt}</p></header><RichText value={journal.body}/><div class="spreads">{journal.photos.map(photo=><Photo photo={photo} group="journal-detail"/>)}</div></article></Base>

@@ -1,0 +1,6 @@
+---
+interface Props {title:string;english:string;href?:string;label?:string;page?:boolean}
+const {title,english,href,label='查看全部',page=false}=Astro.props;
+const Tag=page?'h1':'h2';
+---
+<header class="section-heading"><div><p class="eyebrow">{english}</p><Tag>{title}</Tag></div>{href && <a href={href}>{label} ↗</a>}</header>

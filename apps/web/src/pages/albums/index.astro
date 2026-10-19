@@ -1,0 +1,8 @@
+---
+import Base from '../../layouts/Base.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import AlbumCard from '../../components/AlbumCard.astro';
+import {getContent} from '../../lib/content';
+const {albums}=await getContent();
+---
+<Base title="旅行影集"><div class="container page"><SectionHeading title="旅行影集" english="TRAVEL STORIES" page/><div class="album-grid">{albums.map(album=><AlbumCard album={album}/>)}</div>{!albums.length&&<p>旅行影集正在整理中。</p>}</div></Base>

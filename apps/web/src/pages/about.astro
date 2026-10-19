@@ -1,0 +1,11 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Photo from '../components/Photo.astro';
+import RichText from '../components/RichText.astro';
+import {getContent} from '../lib/content';
+const {settings,mode}=await getContent();
+---
+<Base title="关于我"><div class="container page"><SectionHeading title="关于我" english="ABOUT REVERIAN" page/><section class="about-layout">
+ {settings.portrait&&<Photo photo={settings.portrait.photo} caption={false} lightbox={false}/>}<div><h2>{settings.photographer}</h2><p>{settings.introduction}</p><RichText value={settings.about}/><div class="social-links">{settings.socialLinks.map(l=><a href={l.url} rel="noopener noreferrer">{l.label} ↗</a>)}</div></div>
+ </section>{mode==='demo'&&<p class="demo-note">当前使用原型中的 Unsplash 占位照片和生成式封面场景。地点、日期与故事为演示内容，不代表 Reverian 的实际作品或经历。<a href="/images/sources.json">查看图片来源</a></p>}</div></Base>

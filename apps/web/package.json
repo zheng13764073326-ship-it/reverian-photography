@@ -1,0 +1,24 @@
+{
+  "name": "@reverian/web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "astro": "7.4.0",
+    "@sanity/client": "8.9.0",
+    "@sanity/image-url": "2.1.1",
+    "@portabletext/to-html": "6.0.0",
+    "@portabletext/types": "4.0.2",
+    "@fontsource/cormorant-garamond": "^5.2.8"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "typescript": "^5.9.3",
+    "vite": "8.3.4"
+  }
+}

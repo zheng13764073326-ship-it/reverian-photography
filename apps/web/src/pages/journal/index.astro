@@ -1,0 +1,11 @@
+---
+import Base from '../../layouts/Base.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import Photo from '../../components/Photo.astro';
+import {getContent} from '../../lib/content';
+const {journals,photos}=await getContent();
+---
+<Base title="影像札记"><div class="container page"><SectionHeading title="影像札记" english="NOTES ON PHOTOGRAPHY" page/>
+ <div class="journal-list">{journals.map(j=><article class="journal-preview"><a href={`/journal/${j.slug}/`}>{j.photos[0]&&<Photo photo={j.photos[0]} lightbox={false} caption={false}/>}</a><div><p class="eyebrow">{j.date}</p><h2><a href={`/journal/${j.slug}/`}>{j.title}</a></h2><p>{j.excerpt}</p><a class="text-link" href={`/journal/${j.slug}/`}>阅读札记 ↗</a></div></article>)}</div>
+ <section class="section"><SectionHeading title="片段" english="VISUAL FRAGMENTS"/><div class="photo-grid">{photos.filter(p=>p.sections.includes('journal')).slice(0,12).map(p=><Photo photo={p} group="journal"/>)}</div></section>
+ </div></Base>

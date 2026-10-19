@@ -1,0 +1,10 @@
+---
+import Photo from './Photo.astro';
+import type {Album} from '../lib/types';
+interface Props {album:Album}
+const {album}=Astro.props;
+---
+<article class="album-card"><a href={`/albums/${album.slug}/`}>
+ <Photo photo={album.cover.photo} cover={album.cover} ratio={4/5} lightbox={false} caption={false} sizes="(max-width: 600px) 44vw, (max-width: 1000px) 44vw, 380px"/>
+ <div class="album-meta"><h3>{album.title}</h3><span>{album.date.slice(0,4)}</span></div><p class="album-location">{album.country} / {album.city}</p><p class="album-excerpt">{album.excerpt}</p>
+</a></article>

@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+import HomeCover from '../components/HomeCover.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Photo from '../components/Photo.astro';
+import AlbumCard from '../components/AlbumCard.astro';
+import {getContent} from '../lib/content';
+const content=await getContent();
+---
+<Base home><HomeCover settings={content.settings}/>
+ <section class="container section" id="selected"><SectionHeading title="精选作品" english="SELECTED PHOTOGRAPHS" href="/works/"/><div class="selected-grid">{content.featured.slice(0,6).map(p=><Photo photo={p} group="selected"/>)}</div></section>
+ <section class="container section" id="albums"><SectionHeading title="旅行影集" english="TRAVEL STORIES" href="/albums/"/><div class="album-grid">{content.albums.slice(0,6).map(album=><AlbumCard album={album}/>)}</div></section>
+ <section class="container section" id="street"><SectionHeading title="街巷观察" english="STREET OBSERVATIONS" href="/street/"/><div class="photo-grid">{content.photos.filter(p=>p.sections.includes('street')).slice(0,3).map(p=><Photo photo={p} group="street"/>)}</div></section>
+ <section class="container section" id="journal"><SectionHeading title="影像札记" english="NOTES ON PHOTOGRAPHY" href="/journal/"/><div class="journal-list">{content.journals.slice(0,2).map(j=><a href={`/journal/${j.slug}/`} class="journal-row"><time>{j.date}</time><h3>{j.title}</h3><p>{j.excerpt}</p><span aria-hidden="true">↗</span></a>)}</div></section>
+ <section class="container section intro"><p class="eyebrow">ABOUT THE PHOTOGRAPHER</p><h2>{content.settings.photographer}</h2><p>{content.settings.introduction}</p><a class="text-link" href="/about/">关于我 ↗</a></section>
+</Base>

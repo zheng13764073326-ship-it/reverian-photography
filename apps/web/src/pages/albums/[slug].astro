@@ -1,0 +1,15 @@
+---
+import Base from '../../layouts/Base.astro';
+import Photo from '../../components/Photo.astro';
+import RichText from '../../components/RichText.astro';
+import {getContent} from '../../lib/content';
+export async function getStaticPaths(){const {albums}=await getContent();return albums.map((album,i)=>({params:{slug:album.slug},props:{album,previous:albums[i-1],next:albums[i+1]}}));}
+const {album,previous,next}=Astro.props;
+---
+<Base title={album.title} description={album.excerpt}><article class="container page album-detail">
+ <a class="back-link" href="/albums/">← 旅行影集</a>
+ <header class="album-title"><p class="eyebrow">{album.country} / {album.date.slice(0,7).replace('-','.')}</p><h1>{album.title}</h1><p>{album.excerpt}</p></header>
+ <div class="preface"><RichText value={album.preface}/></div>
+ <div class="spreads">{album.spreads.map(spread=><section class:list={['spread',`spread-${spread.layout}`]}>{spread.photos.map(p=><Photo photo={p} group="album" sizes={spread.layout==='full'?'(max-width: 1240px) calc(100vw - 40px), 1200px':undefined}/>)}{spread.layout==='text'&&<RichText value={spread.text}/>}</section>)}</div>
+ <nav class="album-pagination" aria-label="相邻影集">{previous?<a href={`/albums/${previous.slug}/`}>← {previous.title}</a>:<span/>}{next?<a href={`/albums/${next.slug}/`}>{next.title} →</a>:<a href="/albums/">全部影集 →</a>}</nav>
+ </article></Base>
