@@ -2,6 +2,7 @@ import { readdir, readFile, stat } from "node:fs/promises";
 import { resolve, join } from "node:path";
 import assert from "node:assert/strict";
 const root = resolve(import.meta.dirname, "../apps/web/dist");
+const production = process.argv.includes("--production");
 async function walk(dir) {
   const files = [];
   for (const entry of await readdir(dir, { withFileTypes: true })) {
@@ -29,7 +30,16 @@ for (const file of htmlFiles) {
     links++;
   }
   assert.match(html, /<html lang="zh-CN"/);
-  assert.match(html, /name="robots" content="noindex, nofollow"/);
+  if (production) {
+    assert.doesNotMatch(html, /演示版 · 照片、地点与文字为占位内容/);
+    assert.doesNotMatch(html, /name="robots" content="noindex, nofollow"/);
+    assert.match(
+      html,
+      /rel="canonical" href="https:\/\/reverian-photography\.pages\.dev\//,
+    );
+  } else {
+    assert.match(html, /name="robots" content="noindex, nofollow"/);
+  }
   for (const m of html.matchAll(/<img\b[^>]*>/g)) {
     if (m[0].includes('id="viewer-image"')) continue;
     assert.match(m[0], /alt="[^"]+"/, `${file}: missing alt`);
@@ -42,5 +52,5 @@ for (const file of htmlFiles) {
   );
 }
 console.log(
-  `PASS ${htmlFiles.length} pages, ${links} local asset/navigation references; image dimensions, alt text, demo noindex.`,
+  `PASS ${htmlFiles.length} pages, ${links} local asset/navigation references; image dimensions, alt text, ${production ? "production content and canonical URLs" : "demo noindex"}.`,
 );

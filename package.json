@@ -13,7 +13,8 @@
   "scripts": {
     "dev": "npm run dev -w @reverian/web",
     "studio": "npm run dev -w @reverian/studio",
-    "build": "npm run build -w @reverian/web",
+    "build": "node scripts/build-site.mjs",
+    "build:production": "node scripts/build-site.mjs --production",
     "preview": "npm run preview -w @reverian/web",
     "check": "npm run check -w @reverian/web && npm run check -w @reverian/studio",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
