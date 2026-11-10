@@ -1,0 +1,80 @@
+---
+interface Props { name: string }
+const { name } = Astro.props;
+// Six overlapping leaves around a hexagonal aperture, drawn as vectors.
+const point = (radius: number, degrees: number) => {
+  const angle = degrees * Math.PI / 180;
+  return `${(50 + radius * Math.cos(angle)).toFixed(3)},${(50 + radius * Math.sin(angle)).toFixed(3)}`;
+};
+const leaves = Array.from({ length: 6 }, (_, i) => {
+  const angle = i * 60;
+  return [point(18, angle), point(18, angle + 60), point(61, angle + 100), point(61, angle + 40)].join(' ');
+});
+---
+<div id="aperture-intro" aria-hidden="true">
+  <div class="aperture-curtain"></div>
+  <div class="aperture-stage">
+    <svg class="aperture-leaves" viewBox="-14 -14 128 128" focusable="false">
+      <g>{leaves.map(points => <polygon points={points}/>)}</g>
+    </svg>
+  </div>
+  <div class="aperture-signature"><p>{name}</p><span>PHOTOGRAPHY</span></div>
+</div>
+<script is:inline>
+  (() => {
+    const intro = document.getElementById('aperture-intro');
+    if (!intro) return;
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const key = 'reverian:aperture-seen:v1';
+    let seen = false;
+    try { seen = sessionStorage.getItem(key) === '1'; } catch {}
+    const navigation = performance.getEntriesByType('navigation')[0];
+    if (seen || motion.matches || location.hash || navigation?.type === 'back_forward') {
+      intro.remove();
+      return;
+    }
+    try { sessionStorage.setItem(key, '1'); } catch {}
+    let timer;
+    const finish = () => {
+      clearTimeout(timer);
+      intro.remove();
+      window.removeEventListener('keydown', finish);
+      window.removeEventListener('wheel', finish);
+      window.removeEventListener('touchstart', finish);
+      window.removeEventListener('pointerdown', finish);
+      window.removeEventListener('pagehide', finish);
+      motion.removeEventListener('change', finish);
+    };
+    intro.classList.add('is-playing');
+    timer = window.setTimeout(finish, 2200);
+    window.addEventListener('keydown', finish, { once: true });
+    window.addEventListener('wheel', finish, { once: true, passive: true });
+    window.addEventListener('touchstart', finish, { once: true, passive: true });
+    window.addEventListener('pointerdown', finish, { once: true, passive: true });
+    window.addEventListener('pagehide', finish, { once: true });
+    motion.addEventListener('change', finish, { once: true });
+  })();
+</script>
+<style>
+  #aperture-intro { display: none; position: fixed; inset: 0; z-index: 200; overflow: hidden; pointer-events: none; }
+  #aperture-intro.is-playing { display: block; animation: intro-safety 2.3s step-end forwards; }
+  .aperture-curtain { position: absolute; inset: 0; background: #f4f1e9; animation: curtain 2.1s cubic-bezier(.87,0,.13,1) both; }
+  .aperture-stage { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .aperture-leaves { width: 110vmax; height: 110vmax; max-width: none; flex-shrink: 0; overflow: visible; transform-origin: center; animation: aperture 2.1s cubic-bezier(.87,0,.13,1) both; will-change: transform, opacity; }
+  .aperture-leaves g { fill: #f4f1e9; stroke: #907b69; stroke-width: 1.2; stroke-linejoin: round; }
+  .aperture-leaves polygon { vector-effect: non-scaling-stroke; }
+  .aperture-signature { position: absolute; inset-inline: 24px; bottom: 15%; text-align: center; color: #262722; animation: signature 2.1s ease-out both; }
+  .aperture-signature p { margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(32px, 4vw, 50px); font-weight: 400; letter-spacing: .08em; }
+  .aperture-signature span { display: block; margin-top: 10px; padding-left: .38em; font-size: 10px; letter-spacing: .38em; color: #907b69; }
+  @keyframes curtain { 0%, 48% { opacity: 1; } 79%, 100% { opacity: 0; } }
+  @keyframes aperture {
+    0% { transform: scale(.38) rotate(-8deg); opacity: 1; }
+    20% { transform: scale(.3) rotate(0deg); opacity: 1; }
+    62% { transform: scale(1.7) rotate(14deg); opacity: 1; }
+    82% { opacity: 1; }
+    100% { transform: scale(10) rotate(30deg); opacity: 0; }
+  }
+  @keyframes signature { 0%, 12% { opacity: 0; transform: translateY(10px); } 32%, 64% { opacity: 1; transform: translateY(0); } 90%, 100% { opacity: 0; transform: translateY(-6px); } }
+  @keyframes intro-safety { to { visibility: hidden; } }
+  @media (prefers-reduced-motion: reduce) { #aperture-intro.is-playing { display: none; } }
+</style>
