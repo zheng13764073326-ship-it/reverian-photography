@@ -7,12 +7,12 @@ import {imageUrl} from '../lib/images';
 import '@fontsource/cormorant-garamond/400.css';
 import '@fontsource/cormorant-garamond/500.css';
 import '../styles/global.css';
-interface Props {title?:string;description?:string;home?:boolean}
+interface Props {title?:string;description?:string;home?:boolean;shareImage?:string}
 const {settings,mode}=await getContent();
 const {title,description=settings.seo.description,home=false}=Astro.props;
 const fullTitle=title?`${title} — ${settings.title}`:settings.title;
 const canonical=new URL(Astro.url.pathname,Astro.site);
-const shareImage=settings.seo.shareImage?imageUrl(settings.seo.shareImage.photo,1200):undefined;
+const shareImage=Astro.props.shareImage || (settings.seo.shareImage?imageUrl(settings.seo.shareImage.photo,1200):undefined);
 ---
 <!doctype html><html lang="zh-CN"><head>
  <meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
