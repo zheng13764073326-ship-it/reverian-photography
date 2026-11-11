@@ -23,19 +23,19 @@ const splitTitle=titleParts.length===2 && titleParts[0]===album.city;
    </div>
   </header>
   <div class="album-cover">
-   <Photo photo={album.cover.photo} group="album" caption={false} eager sizes="(max-width: 600px) calc(100vw - 40px), (max-width: 1280px) calc(100vw - 80px), 1200px"/>
+   <Photo photo={album.cover.photo} group="album" caption={false} showInfo={false} eager sizes="(max-width: 600px) calc(100vw - 40px), (max-width: 1280px) calc(100vw - 80px), 1200px"/>
    <div class="album-cover-note"><span>摄影 / Reverian</span><a href="#album-sequence">展开这段旅程 ↓</a><span>点击照片，放大观看</span></div>
   </div>
   <section class="album-preface" aria-label="影集序言">
-   <div><p class="eyebrow">A NOTE BEFORE THE JOURNEY</p><p class="album-excerpt-lead">{album.excerpt}</p></div>
+   <p class="eyebrow">A NOTE BEFORE THE JOURNEY</p>
    <RichText value={album.preface}/>
   </section>
   <div class="spreads" id="album-sequence">
-   {spreads.map((spread,i)=><section class:list={['spread',`spread-${spread.layout}`,{'spread-reverse':spread.layout==='text'&&i>0,'spread-single':spread.photos.length===1&&spread.layout==='pair'}]}>
-    {spread.photos.map(p=><Photo photo={p} group="album" sizes={spread.layout==='full'?'(max-width: 600px) calc(100vw - 40px), (max-width: 1280px) calc(100vw - 80px), 1200px':undefined}/>)}
-    {spread.layout==='text'&&<RichText value={spread.text}/>}</section>)}
+   {spreads.map((spread,i)=><section class:list={['spread',`spread-${spread.layout}`,{'spread-reverse':spread.layout==='text'&&i>0,'spread-quiet':spread.layout==='text'&&!spread.text.length,'spread-portrait':spread.photos.length===1&&spread.photos[0].image.height>spread.photos[0].image.width,'spread-single':spread.photos.length===1&&spread.layout==='pair'}]}>
+    {spread.photos.map(p=><Photo photo={p} group="album" caption={false} showInfo={false} sizes={spread.layout==='full'?'(max-width: 600px) calc(100vw - 40px), (max-width: 1280px) calc(100vw - 80px), 1200px':undefined}/>)}
+    {spread.layout==='text'&&spread.text.length>0&&<RichText value={spread.text}/>}</section>)}
   </div>
-  <div class="album-colophon"><span class="eyebrow">END OF THIS JOURNEY</span><p>{album.city}，留在照片里。</p><span>{photoCount} 张作品 / REVERIAN</span></div>
+  <div class="album-colophon"><p class="eyebrow">END OF THIS JOURNEY</p><span>{photoCount} 张作品 / REVERIAN</span></div>
   <nav class="album-next" aria-label="继续浏览影集">
    {related?<a class="next-story" href={`/albums/${related.slug}/`}>
     <Photo photo={related.cover.photo} cover={related.cover} ratio={3/2} lightbox={false} caption={false} sizes="(max-width: 600px) calc(100vw - 40px), 360px"/>
@@ -56,7 +56,7 @@ const splitTitle=titleParts.length===2 && titleParts[0]===album.city;
  .album-edition{text-align:right;letter-spacing:.1em;flex-shrink:0}
  .album-edition p{margin:4px 0}.album-edition span{padding:0 8px}
  .album-cover-note{display:flex;justify-content:space-between;gap:16px;padding:16px 0;border-bottom:1px solid var(--line);letter-spacing:.08em}
- .album-preface{display:grid;grid-template-columns:.85fr 1.15fr;gap:100px;max-width:1000px;margin:92px auto 110px;align-items:start}
+ .album-preface{max-width:720px;margin:80px auto 100px}
  .album-excerpt-lead{font-family:var(--serif);font-size:26px;line-height:1.85;max-width:320px;margin:0}
  .album-preface :global(.prose){font-size:14px;color:var(--muted)}
  .album-detail :global(.spreads){gap:100px}
@@ -66,8 +66,12 @@ const splitTitle=titleParts.length===2 && titleParts[0]===album.city;
  .album-detail :global(.spread-reverse .photograph){grid-column:2;grid-row:1;justify-self:end}
  .album-detail :global(.spread-reverse .prose){grid-column:1;grid-row:1}
  .album-detail :global(.spread-single){grid-template-columns:1fr;max-width:800px;margin-inline:auto}
+ .album-detail :global(.spread-quiet){display:flex;justify-content:flex-start}
+ .album-detail :global(.spread-quiet.spread-reverse){justify-content:flex-end}
+ .album-detail :global(.spread-quiet .photograph){width:64%;max-width:760px}
+ .album-detail :global(.spread-quiet.spread-portrait .photograph){max-width:510px}
  .album-colophon{text-align:center;margin:96px auto 80px}
- .album-colophon p{font-family:var(--serif);font-size:28px;letter-spacing:.1em;margin:20px 0}
+ .album-colophon p{margin:20px 0}
  .album-next{border-top:1px solid var(--line);padding-top:36px}
  .next-story{display:grid;grid-template-columns:360px 1fr;gap:60px;align-items:center}
  .next-story h2{font-size:32px;margin-bottom:12px}.next-story p:not(.eyebrow){color:var(--muted);font-size:13px}.next-story span{font-size:13px}
@@ -80,6 +84,7 @@ const splitTitle=titleParts.length===2 && titleParts[0]===album.city;
   .album-preface{grid-template-columns:1fr;gap:24px;margin:48px 0 60px}.album-excerpt-lead{font-size:23px;max-width:none}.album-preface :global(.prose){font-size:14px}
   .album-detail :global(.spreads){gap:56px}.album-detail :global(.spread){gap:24px}.album-detail :global(.spread-text .prose){padding:12px 6px 0}.album-detail :global(.spread-text h2){font-size:27px;margin-bottom:20px}
   .album-detail :global(.spread-text .photograph){max-width:none}.album-detail :global(.spread-text .photograph img){max-height:none}
-  .album-colophon{margin:64px auto 48px}.album-colophon p{font-size:24px}.next-story{grid-template-columns:1fr;gap:24px}.next-story h2{font-size:28px}.return-stories>span:last-child{font-size:22px}.return-stories .eyebrow{font-size:9px}
+  .album-detail :global(.spread-quiet .photograph){width:100%;max-width:none}
+  .album-colophon{margin:64px auto 48px}.next-story{grid-template-columns:1fr;gap:24px}.next-story h2{font-size:28px}.return-stories>span:last-child{font-size:22px}.return-stories .eyebrow{font-size:9px}
  }
 </style>
