@@ -2,6 +2,14 @@
   "name": "reverian-photography",
   "pages_build_output_dir": "./apps/web/dist",
   "compatibility_date": "2026-10-19",
+  "vars": {
+    "QUIZ_OWNER_ID": "pKa101sKJ",
+    "CONTENT_MODE": "sanity",
+    "SANITY_PROJECT_ID": "j0zkvef5",
+    "SANITY_DATASET": "production",
+    "SITE_URL": "https://reverian-photography.pages.dev",
+    "NODE_VERSION": "24"
+  },
   "d1_databases": [
     {
       "binding": "QUIZ_DB",
