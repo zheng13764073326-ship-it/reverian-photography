@@ -47,7 +47,8 @@ const splitTitle=titleParts.length===2 && titleParts[0]===album.city;
 <style>
  .album-detail{padding-top:calc(var(--header) + 28px)}
  .album-topline,.album-edition,.album-cover-note,.album-colophon>span{font-size:11px;color:var(--muted)}
- .album-topline{display:flex;justify-content:space-between;align-items:center;letter-spacing:.12em;margin-bottom:36px}
+ .album-topline{display:flex;justify-content:space-between;align-items:center;gap:20px;font-size:16px;letter-spacing:.08em;margin-bottom:28px}
+ .album-topline a{padding-block:8px}
  .album-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:34px}
  .album-heading h1{margin:0;font-size:clamp(36px,4.2vw,62px);letter-spacing:.04em}
  .album-city{display:block;font-size:clamp(54px,6vw,86px);line-height:1.1;letter-spacing:.16em}
@@ -73,7 +74,7 @@ const splitTitle=titleParts.length===2 && titleParts[0]===album.city;
  .return-stories{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:18px 0}.return-stories>span:last-child{font-family:var(--serif);font-size:26px}
  @media(max-width:800px){.album-preface{gap:36px;margin-block:64px}.next-story{grid-template-columns:1fr 1fr;gap:30px}.album-detail :global(.spread-text .prose){padding-inline:12px}}
  @media(max-width:600px){
-  .album-detail{padding-top:calc(var(--header) + 24px)}.album-topline{font-size:9px;letter-spacing:.04em;margin-bottom:30px}.album-topline>span{font-size:8px}
+  .album-detail{padding-top:calc(var(--header) + 24px)}.album-topline{font-size:14px;letter-spacing:0;margin-bottom:22px;gap:12px}.album-topline>span{font-size:11px;letter-spacing:.02em;text-align:right}
   .album-heading{display:block;margin-bottom:26px}.album-subtitle{font-size:22px;letter-spacing:.08em;margin-top:12px}.album-edition{text-align:left;display:flex;flex-wrap:wrap;gap:6px 20px;font-size:10px;margin-top:24px}
   .album-cover-note{font-size:9px;gap:8px;letter-spacing:0;flex-wrap:wrap}.album-cover-note>span:last-child{display:none}
   .album-preface{grid-template-columns:1fr;gap:24px;margin:48px 0 60px}.album-excerpt-lead{font-size:23px;max-width:none}.album-preface :global(.prose){font-size:14px}
