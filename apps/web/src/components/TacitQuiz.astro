@@ -10,8 +10,7 @@ import {tacitQuestions} from '../lib/tacit';
     <p class="name-kicker">默契度测试</p>
     <h2>先告诉我你的名字</h2>
     <label class="name-label" for="quiz-name">名字或昵称</label>
-    <input id="quiz-name" name="nickname" autocomplete="nickname" maxlength="32" required placeholder="你的名字" aria-describedby="quiz-name-note"/>
-    <p id="quiz-name-note">昵称即可，答题记录仅站长可见。</p>
+    <input id="quiz-name" name="nickname" autocomplete="nickname" maxlength="32" required placeholder="你的名字"/>
     <button type="submit" class="quiz-action">开始答题</button>
   </form>
   <div class="quiz-frame" data-frame hidden>
@@ -267,7 +266,7 @@ import {tacitQuestions} from '../lib/tacit';
 <style>
  .tacit{--focus-color:#237489;--miss-color:#9a601f;--quiz-mono:ui-monospace,Consolas,monospace;margin:44px 0;scroll-margin-top:calc(var(--header) + 24px)}
  .tacit-intro{display:flex;justify-content:center}.quiz-entry{display:flex;align-items:center;gap:20px;max-width:100%;padding:18px 30px;border:1px solid #aabebc;border-radius:999px;line-height:1.6}.quiz-entry strong{font-size:17px;font-weight:500;color:var(--focus-color)}.quiz-entry>span{font-size:14px;color:var(--muted)}.quiz-entry>span:last-child{font-size:23px;color:var(--focus-color)}.quiz-entry:hover{background:#e8ece4;border-color:var(--focus-color)}
- .tacit h2,.tacit h3{font-family:var(--serif-zh)}.tacit h2{font-size:clamp(25px,3vw,34px);margin-bottom:28px}.quiz-name-card{max-width:640px;margin:auto;border:1px solid #c8d1cd;border-radius:4px;padding:36px}.name-kicker{font:12px var(--quiz-mono);letter-spacing:.3em;color:var(--focus-color);margin-bottom:20px}.name-label{display:block;font-size:12px;color:var(--muted);margin-bottom:8px}.quiz-name-card input{width:100%;background:transparent;border:0;border-bottom:1px solid var(--focus-color);font:18px var(--sans);color:var(--ink);padding:10px 2px;outline-offset:5px}.quiz-name-card input:focus-visible{outline:2px solid var(--focus-color)}#quiz-name-note,.save-note{font-size:12px;color:var(--muted);margin:16px 0 24px}.quiz-name-card .quiz-action{width:100%;background:var(--focus-color);border-color:var(--focus-color);color:var(--paper)}
+ .tacit h2,.tacit h3{font-family:var(--serif-zh)}.tacit h2{font-size:clamp(25px,3vw,34px);margin-bottom:28px}.quiz-name-card{max-width:640px;margin:auto;border:1px solid #c8d1cd;border-radius:4px;padding:36px}.name-kicker{font:12px var(--quiz-mono);letter-spacing:.3em;color:var(--focus-color);margin-bottom:20px}.name-label{display:block;font-size:12px;color:var(--muted);margin-bottom:8px}.quiz-name-card input{width:100%;background:transparent;border:0;border-bottom:1px solid var(--focus-color);font:18px var(--sans);color:var(--ink);padding:10px 2px;outline-offset:5px}.quiz-name-card input:focus-visible{outline:2px solid var(--focus-color)}.save-note{font-size:12px;color:var(--muted);margin:16px 0 24px}.quiz-name-card .quiz-action{margin-top:24px;width:100%;background:var(--focus-color);border-color:var(--focus-color);color:var(--paper)}
  .quiz-action{min-height:46px;display:inline-flex;align-items:center;justify-content:center;gap:24px;border:1px solid #adbabc;border-radius:3px;padding:10px 24px;font-size:14px;letter-spacing:.12em}.quiz-action:hover{background:#e4e9e5;border-color:var(--focus-color)}.quiz-action:disabled{opacity:.4;cursor:default}
  .quiz-frame{position:relative;max-width:760px;min-height:450px;margin:0 auto;padding:28px 30px 24px;border:1px solid #c8d1cd;border-radius:4px;scroll-margin-top:calc(var(--header) + 24px)}
  .corner{position:absolute;width:16px;height:16px;border-color:var(--focus-color);border-style:solid;border-width:0;pointer-events:none;opacity:.9}
