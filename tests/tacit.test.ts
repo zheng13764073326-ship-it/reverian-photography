@@ -18,8 +18,8 @@ test('scores count one point per question and missing answers as incorrect',() =
 });
 
 test('result copy switches at 40 and 80, including every boundary',() => {
-  for (const score of [0,30]) assert.equal(tacitResult(score).title,'初识旅人');
-  for (const score of [40,70]) assert.equal(tacitResult(score).title,'同频快门');
-  for (const score of [80,100]) assert.equal(tacitResult(score).title,'最佳同行者');
+  for (const score of [0,30]) assert.equal(tacitResult(score).title,'初识 / 搜焦');
+  for (const score of [40,70]) assert.equal(tacitResult(score).title,'同频 / 测光');
+  for (const score of [80,100]) assert.equal(tacitResult(score).title,'默契 / 合焦');
   assert.ok(!tacitResult(80).message.includes('满分'));
 });

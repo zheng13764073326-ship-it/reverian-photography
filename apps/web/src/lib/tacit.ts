@@ -21,9 +21,9 @@ export const tacitQuestions: TacitQuestion[] = [
 ];
 
 export function tacitResult(score: number): {title: string; message: string} {
-  if (score >= 80) return {title:'最佳同行者',message:'默契十足！连我下一站想去哪、日落时选拍照还是干饭都一清二楚，下次旅行必须有你。'};
-  if (score >= 40) return {title:'同频快门',message:'已经捉住了大半的默契！无论是看球、听歌还是拍照，我们随时能聊到一块去。'};
-  return {title:'初识旅人',message:'看来我们才刚刚对上焦。不妨多逛逛我的影集，下次一起出门走走。'};
+  if (score >= 80) return {title:'默契 / 合焦',message:'每一张都精准合焦。那些没明说的习惯和偏好，原来你早就替我留好景深了。'};
+  if (score >= 40) return {title:'同频 / 测光',message:'测光已经很准了。在很多画面和节奏上，我们不需要刻意对齐就能同频。'};
+  return {title:'初识 / 搜焦',message:'前几张还在反复搜焦——不过答完这十题，你手里拿到的就是我的对焦手册了。'};
 }
 
 export function isInFocus(question: TacitQuestion, picks: number[]): boolean {
