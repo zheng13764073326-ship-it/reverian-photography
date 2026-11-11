@@ -1,11 +1,19 @@
 ---
 import type {Settings} from '../lib/types';
-interface Props {links: Settings['socialLinks']}
-const {links}=Astro.props;
+interface Props {links: Settings['socialLinks'];compact?:boolean;id?:string}
+const {links,compact=false,id='social-title'}=Astro.props;
 ---
-{links.length>0&&<section class="social-section" aria-labelledby="social-title"><h2 id="social-title">社媒</h2><div class="social-buttons">{links.map(link=><a href={link.url} target="_blank" rel="noopener noreferrer" aria-label={`${link.label}（新窗口打开）`}>
+{links.length>0&&<section class:list={['social-section',{'social-compact':compact}]} aria-labelledby={id}>{compact?<h3 id={id}>社媒</h3>:<h2 id={id}>社媒</h2>}<div class="social-buttons">{links.map(link=><a href={link.url} target="_blank" rel="noopener noreferrer" aria-label={`${link.label}（新窗口打开）`}>
  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">{link.label.toLowerCase().includes('instagram')?<><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".9" fill="currentColor" stroke="none"/></>:<><path d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1Z"/><path d="M12 5v15"/></>}</svg><span>{link.label}</span>
  </a>)}</div></section>}
 <style>
  .social-section{text-align:center;margin:64px 0 56px}.social-section h2{font:30px var(--serif-zh);letter-spacing:.2em;color:var(--accent);margin-bottom:28px}.social-buttons{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}.social-buttons a{display:flex;align-items:center;gap:12px;border:1px solid #c0b39e;border-radius:999px;padding:12px 26px;min-height:48px;color:#80684c;font-size:16px;letter-spacing:.08em}.social-buttons a:hover{background:#ebe5d8;border-color:#80684c}.social-buttons svg{flex-shrink:0}@media(max-width:600px){.social-section{margin:44px 0}.social-section h2{font-size:27px}.social-buttons{gap:12px}.social-buttons a{padding:11px 20px;font-size:14px}}
+</style>
+<style>
+ .social-compact{text-align:left;margin:22px 0 0;padding-top:18px;border-top:1px solid var(--line)}
+ .social-compact h3{font:12px var(--serif-zh);letter-spacing:.18em;color:var(--accent);margin:0 0 10px}
+ .social-compact .social-buttons{justify-content:flex-start;gap:8px}
+ .social-compact .social-buttons a{padding:7px 14px;min-height:40px;font-size:12px;gap:8px;letter-spacing:.04em}
+ .social-compact .social-buttons svg{width:16px;height:16px}
+ @media(max-width:600px){.social-compact{margin:18px 0 0;padding-top:16px}.social-compact .social-buttons a{min-height:44px}}
 </style>

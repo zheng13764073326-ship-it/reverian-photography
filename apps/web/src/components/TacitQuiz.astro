@@ -261,6 +261,11 @@ import {tacitQuestions} from '../lib/tacit';
       if (index === tacitQuestions.length) showResult(); else renderQuestion();
     }
     next.addEventListener('click',advance);
+    // A portrait link on the homepage opens the nickname step directly.
+    if (new URLSearchParams(window.location.search).get('quiz')==='start') {
+      if (document.readyState==='complete') showName();
+      else window.addEventListener('load',()=>requestAnimationFrame(showName),{once:true});
+    }
     window.addEventListener('pagehide',clearAdvance);
   }
 </script>
