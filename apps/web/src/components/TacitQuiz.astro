@@ -38,7 +38,7 @@ import {tacitQuestions} from '../lib/tacit';
 </section>
 
 <script>
-  import {tacitQuestions, isInFocus, tacitScore, QUIZ_VERSION} from '../lib/tacit';
+  import {tacitQuestions, isInFocus, tacitScore, tacitResult, QUIZ_VERSION} from '../lib/tacit';
   const root = document.querySelector<HTMLElement>('#tacit');
   if (root) {
     const get = <T extends HTMLElement = HTMLElement>(selector: string) => root.querySelector<T>(selector)!;
@@ -160,7 +160,9 @@ import {tacitQuestions} from '../lib/tacit';
       get('[data-counter]').textContent = '10 / 10 · 完成';
       const score = tacitScore(tacitQuestions,answers);
       get('[data-score]').textContent = String(score / 10);
-      get('[data-result-message]').textContent = score === 100 ? '全部合焦。看来你真的很了解我。' : score >= 70 ? '不少答案都猜中了，我们还挺有默契。' : score >= 40 ? '有些猜中了，有些刚刚认识。谢谢你愿意了解我。' : '没关系，就当是我们认识的开始。';
+      const resultCopy = tacitResult(score);
+      get('[data-result-title]').textContent = resultCopy.title;
+      get('[data-result-message]').textContent = resultCopy.message;
       const review = get('[data-review]');
       review.replaceChildren();
       tacitQuestions.forEach((question,i) => {

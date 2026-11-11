@@ -1,13 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {tacitQuestions,isInFocus,tacitScore} from '../apps/web/src/lib/tacit.ts';
+import {tacitQuestions,isInFocus,tacitScore,tacitResult} from '../apps/web/src/lib/tacit.ts';
 
-test('multi-select requires exactly both correct players, in either order',() => {
+test('player pair is a single answer and old multi-select submissions cannot score',() => {
   const question = tacitQuestions[5];
-  assert.equal(isInFocus(question,[3,1]),true);
-  for (const picks of [[1],[3],[1,2],[1,3,4],[1,1],[]]) assert.equal(isInFocus(question,picks),false);
+  assert.equal(isInFocus(question,[2]),true);
+  for (const picks of [[0],[1],[3],[1,3],[2,2],[]]) assert.equal(isInFocus(question,picks),false);
 });
-test('scores include missing answers as incorrect and never award partial multi-select points',() => {
+test('scores count one point per question and missing answers as incorrect',() => {
   assert.equal(tacitScore(tacitQuestions,tacitQuestions.map(q=>[...q.answers])),100);
   assert.equal(tacitScore(tacitQuestions,[]),0);
   const picks = tacitQuestions.map(q=>[...q.answers]);
@@ -15,4 +15,11 @@ test('scores include missing answers as incorrect and never award partial multi-
   assert.equal(tacitScore(tacitQuestions,picks),90);
   picks[0] = [0];
   assert.equal(tacitScore(tacitQuestions,picks),80);
+});
+
+test('result copy switches at 40 and 80, including every boundary',() => {
+  for (const score of [0,30]) assert.equal(tacitResult(score).title,'初识旅人');
+  for (const score of [40,70]) assert.equal(tacitResult(score).title,'同频快门');
+  for (const score of [80,100]) assert.equal(tacitResult(score).title,'最佳同行者');
+  assert.ok(!tacitResult(80).message.includes('满分'));
 });
