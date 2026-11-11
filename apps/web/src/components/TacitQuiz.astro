@@ -1,0 +1,205 @@
+---
+import {tacitQuestions} from '../lib/tacit';
+---
+<section id="tacit" class="tacit" aria-labelledby="tacit-title">
+  <div class="tacit-intro">
+    <p class="eyebrow">A LITTLE MORE ABOUT ME</p>
+    <h2 id="tacit-title">测测我们的默契</h2>
+    <p>从照片聊到日常，看看你能猜中多少。</p>
+    <p class="tacit-rules">10 道题 · 每题 10 分 · 多选题需全部选对</p>
+    <button type="button" class="quiz-action" data-start hidden>开始对焦 <span aria-hidden="true">↗</span></button>
+    <noscript><p>请开启浏览器的 JavaScript 来参与测试。</p></noscript>
+  </div>
+  <div class="quiz-frame" data-frame hidden>
+    <i class="corner tl" aria-hidden="true"></i><i class="corner tr" aria-hidden="true"></i><i class="corner bl" aria-hidden="true"></i><i class="corner br" aria-hidden="true"></i>
+    <div class="frame-meta"><span data-counter>Q 01 / 10</span><span class="focus-mark" aria-hidden="true">⌖</span><span data-focus>合焦 0 / 10</span></div>
+    <progress max={tacitQuestions.length} value="0" aria-label="已完成题数" data-progress></progress>
+    <div data-question-screen>
+      <h3 tabindex="-1" data-question></h3>
+      <p class="choice-hint" id="tacit-choice-hint" data-hint></p>
+      <div class="quiz-options" role="group" aria-labelledby="tacit-question" aria-describedby="tacit-choice-hint" data-options></div>
+      <div class="feedback" aria-live="polite" aria-atomic="true" data-feedback></div>
+      <div class="quiz-controls"><button type="button" class="quiz-action" data-confirm disabled>确认选择</button><button type="button" class="quiz-action" data-next hidden>下一题 →</button></div>
+    </div>
+    <div class="quiz-result" data-result hidden>
+      <p class="eyebrow">IN FOCUS</p>
+      <h3 tabindex="-1" data-result-title>这一次，我们的默契是</h3>
+      <p class="score"><span data-score>0</span><span class="score-unit"> / 100</span></p>
+      <p data-result-message></p>
+      <div class="result-actions"><button type="button" class="quiz-action" data-restart>再试一次 ↗</button><a class="review-link" href="#tacit-review">看看答案 ↓</a></div>
+      <div id="tacit-review" class="quiz-review"><h4>逐题回看</h4><ol data-review></ol></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import {tacitQuestions, isInFocus, tacitScore} from '../lib/tacit';
+  const root = document.querySelector<HTMLElement>('#tacit');
+  if (root) {
+    const get = <T extends HTMLElement = HTMLElement>(selector: string) => root.querySelector<T>(selector)!;
+    const start = get<HTMLButtonElement>('[data-start]');
+    const frame = get('[data-frame]');
+    const title = get('[data-question]');
+    title.id = 'tacit-question';
+    const options = get('[data-options]');
+    const feedback = get('[data-feedback]');
+    const confirm = get<HTMLButtonElement>('[data-confirm]');
+    const next = get<HTMLButtonElement>('[data-next]');
+    const progress = get<HTMLProgressElement>('[data-progress]');
+    let index = 0;
+    let picks: number[] = [];
+    let answers: number[][] = [];
+    let revealed = false;
+    const focus = (element: HTMLElement) => {
+      element.focus({preventScroll:true});
+      frame.scrollIntoView({block:'start', behavior:'instant'});
+    };
+    const renderQuestion = () => {
+      revealed = false;
+      picks = [];
+      frame.removeAttribute('data-state');
+      const question = tacitQuestions[index];
+      get('[data-counter]').textContent = `Q ${String(index + 1).padStart(2,'0')} / ${tacitQuestions.length}`;
+      title.textContent = question.question;
+      get('[data-hint]').textContent = question.answers.length > 1 ? `多选 · 请选择 ${question.answers.length} 项，全部选对得 10 分` : '单选 · 选择一个答案';
+      options.replaceChildren();
+      question.options.forEach((label, i) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'quiz-option';
+        button.setAttribute('aria-pressed','false');
+        const letter = document.createElement('span');
+        letter.className = 'option-letter';
+        letter.textContent = String.fromCharCode(65+i);
+        letter.setAttribute('aria-hidden','true');
+        const text = document.createElement('span');
+        text.textContent = label;
+        const mark = document.createElement('span');
+        mark.className = 'option-mark';
+        button.append(letter,text,mark);
+        button.addEventListener('click', () => {
+          if (revealed) return;
+          if (question.answers.length === 1) {
+            picks = [i];
+          } else if (picks.includes(i)) {
+            picks = picks.filter(p => p !== i);
+          } else if (picks.length < question.answers.length) {
+            picks.push(i);
+          } else {
+            feedback.textContent = `已选 ${question.answers.length} 项，先取消一项即可更换。`;
+            return;
+          }
+          [...options.children].forEach((option,j) => option.setAttribute('aria-pressed',String(picks.includes(j))));
+          confirm.disabled = picks.length !== question.answers.length;
+          feedback.textContent = '';
+          if (question.answers.length === 1) reveal();
+        });
+        options.append(button);
+      });
+      feedback.textContent = '';
+      confirm.hidden = question.answers.length === 1;
+      confirm.disabled = true;
+      next.hidden = true;
+      next.textContent = index === tacitQuestions.length - 1 ? '查看得分 →' : '下一题 →';
+      focus(title);
+    };
+    const reveal = () => {
+      const question = tacitQuestions[index];
+      if (revealed || picks.length !== question.answers.length) return;
+      revealed = true;
+      answers[index] = [...picks];
+      const correct = isInFocus(question,picks);
+      frame.dataset.state = correct ? 'focused' : 'missed';
+      const word = document.createElement('strong');
+      word.textContent = correct ? '合焦' : '失焦';
+      const explanation = document.createElement('p');
+      explanation.textContent = question.explanation;
+      feedback.replaceChildren(word,explanation);
+      [...options.children].forEach((option,i) => {
+        const button = option as HTMLButtonElement;
+        button.disabled = true;
+        button.classList.toggle('is-answer',question.answers.includes(i));
+        button.classList.toggle('is-miss',picks.includes(i) && !question.answers.includes(i));
+        const mark = button.querySelector('.option-mark')!;
+        mark.textContent = question.answers.includes(i) ? '✓' : picks.includes(i) ? '×' : '';
+        button.setAttribute('aria-label',`${question.options[i]}${question.answers.includes(i)?'，正确答案':''}${picks.includes(i)?'，你的选择':''}`);
+      });
+      progress.value = index + 1;
+      get('[data-focus]').textContent = `合焦 ${answers.filter((answer,i) => isInFocus(tacitQuestions[i],answer)).length} / ${tacitQuestions.length}`;
+      confirm.hidden = true;
+      next.hidden = false;
+      next.focus({preventScroll:true});
+    };
+    const showResult = () => {
+      get('[data-question-screen]').hidden = true;
+      get('[data-result]').hidden = false;
+      frame.removeAttribute('data-state');
+      get('[data-counter]').textContent = '10 / 10 · 完成';
+      const score = tacitScore(tacitQuestions,answers);
+      get('[data-score]').textContent = String(score);
+      get('[data-result-message]').textContent = score === 100 ? '全部合焦。看来你真的很了解我。' : score >= 70 ? '不少答案都猜中了，我们还挺有默契。' : score >= 40 ? '有些猜中了，有些刚刚认识。谢谢你愿意了解我。' : '没关系，就当是我们认识的开始。';
+      const review = get('[data-review]');
+      review.replaceChildren();
+      tacitQuestions.forEach((question,i) => {
+        const item = document.createElement('li');
+        const correct = isInFocus(question,answers[i]);
+        const heading = document.createElement('h5');
+        heading.textContent = `${String(i+1).padStart(2,'0')} · ${question.question}`;
+        const state = document.createElement('span');
+        state.className = correct ? 'review-focus' : 'review-miss';
+        state.textContent = correct ? '合焦 · 10 分' : '失焦 · 0 分';
+        const selection = document.createElement('p');
+        selection.textContent = `你的选择：${answers[i].map(p => question.options[p]).join('、')}`;
+        const explanation = document.createElement('p');
+        explanation.textContent = `答案解析：${question.explanation}`;
+        item.append(heading,state,selection,explanation);
+        review.append(item);
+      });
+      focus(get('[data-result-title]'));
+    };
+    const begin = () => {
+      index = 0;
+      answers = [];
+      progress.value = 0;
+      get('[data-focus]').textContent = '合焦 0 / 10';
+      get('[data-result]').hidden = true;
+      get('[data-question-screen]').hidden = false;
+      start.hidden = true;
+      frame.hidden = false;
+      renderQuestion();
+    };
+    start.hidden = false;
+    start.addEventListener('click',begin);
+    get('[data-restart]').addEventListener('click',begin);
+    confirm.addEventListener('click',reveal);
+    next.addEventListener('click',() => {
+      if (!revealed) return;
+      index++;
+      if (index === tacitQuestions.length) showResult(); else renderQuestion();
+    });
+  }
+</script>
+
+<style>
+ .tacit{margin:76px 0 24px;padding-top:42px;border-top:1px solid var(--line);scroll-margin-top:calc(var(--header) + 24px)}
+ .tacit-intro{max-width:680px}.eyebrow{font-size:11px;letter-spacing:.18em;color:var(--muted);margin-bottom:18px}
+ .tacit h2,.tacit h3{font-family:var(--serif-zh)}.tacit h2{font-size:clamp(27px,3vw,36px);margin-bottom:18px}.tacit-intro>p:not(.eyebrow){color:var(--muted);margin-bottom:10px}.tacit-rules{font-size:12px}
+ .quiz-action{min-height:48px;display:inline-flex;align-items:center;gap:32px;border:1px solid var(--accent);padding:10px 22px;font-size:14px}.tacit-intro .quiz-action{margin-top:16px}.quiz-action:hover{background:#e9e3d7}.quiz-action:disabled{opacity:.45;cursor:default}
+ .quiz-frame{position:relative;max-width:880px;margin:36px auto 0;padding:28px 40px 40px;scroll-margin-top:calc(var(--header) + 18px);--focus-color:#496956;--miss-color:#92602e}
+ .corner{position:absolute;width:22px;height:22px;border-color:var(--accent);border-style:solid;border-width:0;pointer-events:none;transition:width .3s,height .3s,border-color .3s}
+ .tl{top:0;left:0;border-top-width:1px;border-left-width:1px}.tr{top:0;right:0;border-top-width:1px;border-right-width:1px}.bl{bottom:0;left:0;border-bottom-width:1px;border-left-width:1px}.br{bottom:0;right:0;border-bottom-width:1px;border-right-width:1px}
+ .frame-meta{display:flex;align-items:center;justify-content:space-between;font:12px var(--sans);letter-spacing:.08em;color:var(--muted);gap:12px}.focus-mark{font-size:28px;line-height:1}
+ progress{display:block;width:100%;height:2px;margin:20px 0 32px;border:0;appearance:none;background:var(--line);color:var(--accent)}progress::-webkit-progress-bar{background:var(--line)}progress::-webkit-progress-value{background:var(--accent)}progress::-moz-progress-bar{background:var(--accent)}
+ .tacit h3{font-size:clamp(23px,2.5vw,30px);line-height:1.6;margin-bottom:12px;outline:none}.choice-hint{font-size:12px;color:var(--muted);margin-bottom:24px}
+ .quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:12px}.quiz-options :global(.quiz-option){display:grid;grid-template-columns:20px 1fr 16px;align-items:center;gap:12px;min-height:70px;padding:16px;text-align:left;border:1px solid var(--line);font-size:14px;line-height:1.7;transition:border-color .2s,background .2s}
+ .quiz-options :global(.option-letter){font:14px var(--serif);color:var(--muted)}.quiz-options :global(.option-mark){font-size:16px}.quiz-options :global(.quiz-option:not(:disabled):hover),.quiz-options :global([aria-pressed=true]){border-color:var(--accent);background:#eae5da}
+ .quiz-options :global(.is-answer){border-color:var(--focus-color);background:#e5ebe1;color:#36543f}.quiz-options :global(.is-miss){border-color:var(--miss-color);background:#f0e5d6;color:#785028}.quiz-options :global(button:disabled){cursor:default}
+ .feedback{margin-top:24px;min-height:32px;font-size:14px}.feedback :global(strong){font-family:var(--serif-zh);font-size:24px;font-weight:400}.feedback :global(p){margin:8px 0 0;color:var(--muted)}
+ [data-state=focused] .corner{border-color:var(--focus-color);width:32px;height:32px}[data-state=missed] .corner{border-color:var(--miss-color)}[data-state=focused] .feedback{color:var(--focus-color)}[data-state=missed] .feedback{color:var(--miss-color)}
+ [data-state=focused] .focus-mark{color:var(--focus-color);animation:focus-lock .35s ease-out}[data-state=missed] .focus-mark{color:var(--miss-color);animation:focus-search .4s ease-out}
+ .quiz-controls{display:flex;justify-content:flex-end;margin-top:20px}.score{font-family:var(--serif-zh);font-size:72px;line-height:1.2;margin:20px 0}.score-unit{font:16px var(--sans);color:var(--muted)}.result-actions{display:flex;flex-wrap:wrap;gap:28px;align-items:center;margin:28px 0 44px}.review-link{font-size:14px;text-decoration:underline;text-underline-offset:6px}
+ .quiz-review{border-top:1px solid var(--line);padding-top:28px;scroll-margin-top:calc(var(--header) + 24px)}.quiz-review h4{font-family:var(--serif-zh);font-weight:400;font-size:22px;margin:0 0 20px}.quiz-review ol{list-style:none;padding:0;margin:0}.quiz-review :global(li){padding:24px 0;border-bottom:1px solid var(--line)}.quiz-review :global(h5){font:16px/1.7 var(--sans);margin:0 0 10px}.quiz-review :global(p){font-size:13px;color:var(--muted);margin:8px 0 0}.quiz-review :global(.review-focus){font-size:12px;color:var(--focus-color)}.quiz-review :global(.review-miss){font-size:12px;color:var(--miss-color)}
+ @keyframes focus-lock{from{transform:scale(1.4)}to{transform:scale(1)}}@keyframes focus-search{0%,100%{transform:translateX(0)}35%{transform:translateX(-3px)}70%{transform:translateX(3px)}}
+ @media(max-width:600px){.tacit{margin-top:48px;padding-top:30px}.quiz-frame{padding:22px 16px 28px;margin-top:28px}.quiz-options{grid-template-columns:1fr;gap:10px}.quiz-options :global(.quiz-option){min-height:58px;padding:12px}.frame-meta{font-size:11px;letter-spacing:0}progress{margin:18px 0 24px}.tacit h3{font-size:22px}.feedback{margin-top:20px}.score{font-size:60px}.quiz-controls .quiz-action{width:100%;justify-content:center}}
+ @media(prefers-reduced-motion:reduce){.corner,.quiz-options :global(.quiz-option){transition:none}.focus-mark{animation:none!important}}
+</style>
