@@ -4,8 +4,23 @@ import SectionHeading from '../components/SectionHeading.astro';
 import Photo from '../components/Photo.astro';
 import RichText from '../components/RichText.astro';
 import {getContent} from '../lib/content';
+import {imageUrl} from '../lib/images';
 const {settings,mode}=await getContent();
+const aboutHeading=settings.about.find(block=>block.style==='h2')?.children.map(span=>span.text).join('');
 ---
-<Base title="关于我"><div class="container page"><SectionHeading title="关于我" english="ABOUT REVERIAN" page/><section class="about-layout">
- {settings.portrait&&<Photo photo={settings.portrait.photo} caption={false} lightbox={false}/>}<div><h2>{settings.photographer}</h2><p>{settings.introduction}</p><RichText value={settings.about}/><div class="social-links">{settings.socialLinks.map(l=><a href={l.url} rel="noopener noreferrer">{l.label} ↗</a>)}</div></div>
+<Base title="关于我" description={aboutHeading||settings.introduction||settings.seo.description} shareImage={settings.portrait?imageUrl(settings.portrait.photo,1200):undefined}><div class="container page"><SectionHeading title="关于我" english="ABOUT REVERIAN" page/><section class:list={['about-layout',{'about-without-photo':!settings.portrait}]}>
+ {settings.portrait&&<div class="about-portrait"><Photo photo={settings.portrait.photo} caption={false} lightbox={false} eager sizes="(max-width: 600px) calc(100vw - 40px), (max-width: 800px) calc(100vw - 48px), 560px"/></div>}<div class="about-copy">{settings.about.length?<RichText value={settings.about}/>:<><h2>{settings.photographer}</h2><p>{settings.introduction}</p></>}{settings.socialLinks.length>0&&<div class="social-links">{settings.socialLinks.map(l=><a href={l.url} rel="noopener noreferrer">{l.label} ↗</a>)}</div>}</div>
  </section>{mode==='demo'&&<p class="demo-note">当前使用原型中的 Unsplash 占位照片和生成式封面场景。地点、日期与故事为演示内容，不代表 Reverian 的实际作品或经历。<a href="/images/sources.json">查看图片来源</a></p>}</div></Base>
+<style>
+ .about-layout{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(32px,5vw,72px);padding-top:12px}
+ .about-portrait{position:sticky;top:calc(var(--header) + 28px)}
+ .about-copy{min-width:0}
+ .about-copy :global(.prose){font-size:15px;line-height:2.05;color:var(--ink)}
+ .about-copy :global(.prose>p:first-child){font-family:var(--sans);font-size:11px;line-height:1.8;letter-spacing:.12em;color:var(--muted);margin:0 0 18px}
+ .about-copy :global(.prose h2){font-family:var(--serif-zh);font-size:clamp(23px,2.1vw,29px);line-height:1.6;margin:0 0 30px;letter-spacing:.02em;text-wrap:balance}
+ .about-copy :global(.prose p){margin-bottom:1.5em}
+ .about-copy :global(.prose p:last-child){margin-bottom:0}
+ .about-without-photo{grid-template-columns:1fr;max-width:720px;margin-inline:auto}
+ @media(max-width:800px){.about-layout{grid-template-columns:1fr;gap:32px}.about-portrait{position:static}.about-copy{max-width:650px}}
+ @media(max-width:600px){.about-layout{padding-top:0;gap:28px}.about-copy :global(.prose){font-size:15px}.about-copy :global(.prose>p:first-child){font-size:10px;letter-spacing:.09em}.about-copy :global(.prose h2){font-size:24px;margin-bottom:24px}}
+</style>
