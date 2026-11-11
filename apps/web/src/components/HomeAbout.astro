@@ -1,0 +1,55 @@
+---
+import Photo from './Photo.astro';
+import type {Settings} from '../lib/types';
+interface Props {settings:Settings}
+const {settings}=Astro.props;
+const headingIndex=settings.about.findIndex(block=>block.style==='h2');
+const heading=headingIndex>=0?settings.about[headingIndex].children.map(span=>span.text).join(''):'';
+const firstParagraph=settings.about.slice(headingIndex>=0?headingIndex+1:0).find(block=>(!block.style||block.style==='normal')&&block.children?.some(span=>span.text));
+const introduction=settings.introduction||firstParagraph?.children.map(span=>span.text).join('')||'';
+---
+<section id="about" class="container home-about" aria-labelledby="home-about-name">
+  <div class="about-rule"><p class="eyebrow">ABOUT THE PHOTOGRAPHER</p><span aria-hidden="true">关于我</span></div>
+  <div class:list={['about-spread',{'without-portrait':!settings.portrait}]}>
+    {settings.portrait&&<a href="/about/" class="portrait-link" aria-label="了解 Reverian">
+      <Photo photo={settings.portrait.photo} caption={false} lightbox={false} sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1280px) 50vw, 640px"/>
+    </a>}
+    <div class="about-note">
+      <h2 id="home-about-name">{settings.photographer}</h2>
+      {heading&&<p class="about-lead">{heading}</p>}
+      {introduction&&<p class="about-excerpt">{introduction}</p>}
+      <a class="text-link about-link" href="/about/">关于我<span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+</section>
+<style>
+  .home-about{padding-block:32px 64px}
+  .about-rule{display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid var(--line);padding-top:22px;margin-bottom:38px;color:var(--muted)}
+  .about-rule .eyebrow{margin:0;font-size:10px;letter-spacing:.22em}
+  .about-rule>span{font:12px var(--serif-zh);letter-spacing:.16em;white-space:nowrap}
+  .about-spread{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(32px,5vw,72px);align-items:center}
+  .portrait-link{display:block;min-width:0}
+  .portrait-link :global(figure){margin:0}
+  .portrait-link :global(img){width:100%;height:auto;display:block}
+  .portrait-link:focus-visible{outline:2px solid var(--accent);outline-offset:6px}
+  .about-note{min-width:0;padding-block:8px}
+  .about-note h2{font-family:var(--serif);font-size:clamp(48px,5.5vw,76px);font-weight:400;line-height:1.05;letter-spacing:-.025em;margin:0 0 24px}
+  .about-lead{font:clamp(20px,1.8vw,24px)/1.65 var(--serif-zh);letter-spacing:.015em;color:var(--ink);margin:0 0 18px;text-wrap:balance}
+  .about-excerpt{font:14px/2 var(--sans);color:var(--muted);margin:0;max-width:34em}
+  .about-link{display:inline-flex;align-items:center;gap:28px;margin-top:26px;font-size:14px;padding-block:8px}
+  .about-link span{transition:transform .2s}
+  .about-link:hover span{transform:translate(3px,-3px)}
+  .without-portrait{grid-template-columns:1fr;max-width:700px}
+  @media(max-width:760px){
+    .home-about{padding-block:24px 40px}
+    .about-rule{margin-bottom:24px;padding-top:18px}
+    .about-rule .eyebrow{font-size:9px;letter-spacing:.15em}
+    .about-spread{grid-template-columns:1fr;gap:26px}
+    .about-note{padding:0}
+    .about-note h2{font-size:54px;margin-bottom:18px}
+    .about-lead{font-size:21px;margin-bottom:14px}
+    .about-excerpt{font-size:14px;line-height:1.9}
+    .about-link{margin-top:18px}
+  }
+  @media(prefers-reduced-motion:reduce){.about-link span{transition:none}}
+</style>
