@@ -5,4 +5,4 @@ import AlbumCard from '../../components/AlbumCard.astro';
 import {getContent} from '../../lib/content';
 const {albums}=await getContent();
 ---
-<Base title="旅行影集"><div class="container page"><SectionHeading title="旅行影集" english="TRAVEL STORIES" page/><div class="album-grid">{albums.map(album=><AlbumCard album={album}/>)}</div>{!albums.length&&<p>旅行影集正在整理中。</p>}</div></Base>
+<Base title="光影存档"><div class="container page"><SectionHeading title="光影存档" english="PHOTO ARCHIVE" page/><div class="album-grid">{albums.map(album=><AlbumCard album={album}/>)}</div>{!albums.length&&<p>光影存档正在整理中。</p>}</div></Base>

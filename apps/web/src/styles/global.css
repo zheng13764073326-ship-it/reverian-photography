@@ -8,6 +8,7 @@
   --serif:
     "Cormorant Garamond", "Source Han Serif SC", "Noto Serif CJK SC",
     "Songti SC", "SimSun", serif;
+  --serif-zh: "Source Han Serif SC", "Noto Serif CJK SC", "Songti SC", "SimSun", serif;
   --sans:
     "Source Han Sans SC", "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei",
     sans-serif;
@@ -335,11 +336,11 @@ summary::-webkit-details-marker {
 .selected-grid {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
-  gap: 80px 70px;
+  gap: 40px 28px;
   align-items: start;
 }
 .selected-grid > .photograph:nth-child(even) {
-  margin-top: 100px;
+  margin-top: 40px;
 }
 .selected-grid > .photograph:nth-child(3) {
   width: 85%;
@@ -347,13 +348,13 @@ summary::-webkit-details-marker {
 .photo-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 48px 35px;
+  gap: 28px 20px;
   align-items: start;
 }
 .album-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 52px 32px;
+  gap: 32px 20px;
 }
 .album-meta {
   display: flex;
@@ -363,6 +364,8 @@ summary::-webkit-details-marker {
   margin-top: 18px;
 }
 .album-meta h3 {
+  font-family: var(--serif-zh);
+  font-variant-numeric: lining-nums;
   margin-bottom: 5px;
 }
 .album-meta span {
@@ -458,11 +461,11 @@ summary::-webkit-details-marker {
 .spreads {
   display: flex;
   flex-direction: column;
-  gap: 90px;
+  gap: 48px;
 }
 .spread {
   display: grid;
-  gap: 45px;
+  gap: 24px;
   align-items: start;
 }
 .spread-pair,
@@ -470,7 +473,7 @@ summary::-webkit-details-marker {
   grid-template-columns: 1fr 1fr;
 }
 .spread-pair > .photograph:nth-child(2) {
-  margin-top: 90px;
+  margin-top: 32px;
 }
 .spread-text {
   align-items: center;
@@ -628,7 +631,7 @@ summary::-webkit-details-marker {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .selected-grid {
-    gap: 48px 35px;
+    gap: 32px 24px;
   }
   .journal-preview {
     gap: 36px;
@@ -775,7 +778,7 @@ summary::-webkit-details-marker {
   .photo-grid {
     display: flex;
     flex-direction: column;
-    gap: 34px;
+    gap: 24px;
   }
   .selected-grid > .photograph:nth-child(n),
   .photo-grid > .photograph {
@@ -783,7 +786,7 @@ summary::-webkit-details-marker {
     margin: 0;
   }
   .album-grid {
-    gap: 30px 16px;
+    gap: 24px 12px;
   }
   .album-meta {
     gap: 5px;
@@ -855,12 +858,12 @@ summary::-webkit-details-marker {
     line-height: 2;
   }
   .spreads {
-    gap: 42px;
+    gap: 28px;
   }
   .spread {
     display: flex;
     flex-direction: column;
-    gap: 28px;
+    gap: 20px;
   }
   .spread > .photograph {
     width: 100%;

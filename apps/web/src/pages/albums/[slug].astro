@@ -16,7 +16,7 @@ const splitTitle=titleParts.length===2 && titleParts[0]===album.city;
 <Base title={album.title} description={album.excerpt} shareImage={imageUrl(album.cover.photo,1200)}>
  <article class="container page album-detail">
   <header class="album-opening">
-   <div class="album-topline"><a href="/albums/">← 旅行影集</a><span>REVERIAN / TRAVEL STORIES</span></div>
+   <div class="album-topline"><a href="/albums/">← 光影存档</a><span>REVERIAN / PHOTO ARCHIVE</span></div>
    <div class="album-heading">
     <h1>{splitTitle?<><span class="album-city">{titleParts[0]}</span><span class="album-subtitle">{titleParts[1]}</span></>:album.title}</h1>
     <div class="album-edition"><p>{album.country} / {album.city}</p><p>{album.date.slice(0,7).replace('-','.')} <span>·</span> {photoCount} 张作品</p></div>
@@ -40,7 +40,7 @@ const splitTitle=titleParts.length===2 && titleParts[0]===album.city;
    {related?<a class="next-story" href={`/albums/${related.slug}/`}>
     <Photo photo={related.cover.photo} cover={related.cover} ratio={3/2} lightbox={false} caption={false} sizes="(max-width: 600px) calc(100vw - 40px), 360px"/>
     <div><p class="eyebrow">{next?'NEXT JOURNEY':'ANOTHER JOURNEY'}</p><h2>{related.title}</h2><p>{related.excerpt}</p><span>继续翻阅 →</span></div>
-   </a>:<a class="return-stories" href="/albums/"><span class="eyebrow">TRAVEL STORIES</span><span>回到旅行影集 <span aria-hidden="true">↗</span></span></a>}
+   </a>:<a class="return-stories" href="/albums/"><span class="eyebrow">PHOTO ARCHIVE</span><span>回到光影存档 <span aria-hidden="true">↗</span></span></a>}
   </nav>
  </article>
 </Base>
@@ -52,14 +52,14 @@ const splitTitle=titleParts.length===2 && titleParts[0]===album.city;
  .album-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:34px}
  .album-heading h1{margin:0;font-size:clamp(36px,4.2vw,62px);letter-spacing:.04em}
  .album-city{display:block;font-size:clamp(54px,6vw,86px);line-height:1.1;letter-spacing:.16em}
- .album-subtitle{display:block;font-family:"Source Han Serif SC","Noto Serif CJK SC","Songti SC","SimSun",serif;font-variant-numeric:lining-nums;font-size:clamp(22px,2.1vw,30px);margin-top:14px;letter-spacing:.16em}
+ .album-subtitle{display:block;font-family:var(--serif-zh);font-variant-numeric:lining-nums;font-size:clamp(22px,2.1vw,30px);margin-top:14px;letter-spacing:.16em}
  .album-edition{text-align:right;letter-spacing:.1em;flex-shrink:0}
  .album-edition p{margin:4px 0}.album-edition span{padding:0 8px}
  .album-cover-note{display:flex;justify-content:space-between;gap:16px;padding:16px 0;border-bottom:1px solid var(--line);letter-spacing:.08em}
  .album-preface{max-width:720px;margin:80px auto 100px}
  .album-excerpt-lead{font-family:var(--serif);font-size:26px;line-height:1.85;max-width:320px;margin:0}
  .album-preface :global(.prose){font-size:14px;color:var(--muted)}
- .album-detail :global(.spreads){gap:100px}
+ .album-detail :global(.spreads){gap:48px}
  .album-detail :global(.spread-text .prose){padding:0 clamp(16px,4vw,64px);color:var(--muted);font-size:14px;line-height:2.2}
  .album-detail :global(.spread-text h2){font-size:32px;color:var(--ink);margin:0 0 30px}
  .album-detail :global(.spread-text .photograph){width:100%;max-width:510px}
@@ -74,7 +74,7 @@ const splitTitle=titleParts.length===2 && titleParts[0]===album.city;
  .album-colophon p{margin:20px 0}
  .album-next{border-top:1px solid var(--line);padding-top:36px}
  .next-story{display:grid;grid-template-columns:360px 1fr;gap:60px;align-items:center}
- .next-story h2{font-size:32px;margin-bottom:12px}.next-story p:not(.eyebrow){color:var(--muted);font-size:13px}.next-story span{font-size:13px}
+ .next-story h2{font-family:var(--serif-zh);font-variant-numeric:lining-nums;font-size:32px;margin-bottom:12px}.next-story p:not(.eyebrow){color:var(--muted);font-size:13px}.next-story span{font-size:13px}
  .return-stories{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:18px 0}.return-stories>span:last-child{font-family:var(--serif);font-size:26px}
  @media(max-width:800px){.album-preface{gap:36px;margin-block:64px}.next-story{grid-template-columns:1fr 1fr;gap:30px}.album-detail :global(.spread-text .prose){padding-inline:12px}}
  @media(max-width:600px){
@@ -82,7 +82,7 @@ const splitTitle=titleParts.length===2 && titleParts[0]===album.city;
   .album-heading{display:block;margin-bottom:26px}.album-subtitle{font-size:22px;letter-spacing:.08em;margin-top:12px}.album-edition{text-align:left;display:flex;flex-wrap:wrap;gap:6px 20px;font-size:10px;margin-top:24px}
   .album-cover-note{font-size:9px;gap:8px;letter-spacing:0;flex-wrap:wrap}.album-cover-note>span:last-child{display:none}
   .album-preface{grid-template-columns:1fr;gap:24px;margin:48px 0 60px}.album-excerpt-lead{font-size:23px;max-width:none}.album-preface :global(.prose){font-size:14px}
-  .album-detail :global(.spreads){gap:56px}.album-detail :global(.spread){gap:24px}.album-detail :global(.spread-text .prose){padding:12px 6px 0}.album-detail :global(.spread-text h2){font-size:27px;margin-bottom:20px}
+  .album-detail :global(.spreads){gap:28px}.album-detail :global(.spread){gap:20px}.album-detail :global(.spread-text .prose){padding:12px 6px 0}.album-detail :global(.spread-text h2){font-size:27px;margin-bottom:20px}
   .album-detail :global(.spread-text .photograph){max-width:none}.album-detail :global(.spread-text .photograph img){max-height:none}
   .album-detail :global(.spread-quiet .photograph){width:100%;max-width:none}
   .album-colophon{margin:64px auto 48px}.next-story{grid-template-columns:1fr;gap:24px}.next-story h2{font-size:28px}.return-stories>span:last-child{font-size:22px}.return-stories .eyebrow{font-size:9px}
