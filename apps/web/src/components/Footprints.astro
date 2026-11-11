@@ -1,0 +1,109 @@
+---
+import type {Album} from '../lib/types';
+import {albumFootprints,mapFrame} from '../lib/footprints';
+import {imageUrl} from '../lib/images';
+interface Props {albums:Album[]}
+const places=albumFootprints(Astro.props.albums);
+const albumCount=places.reduce((sum,place)=>sum+place.albums.length,0);
+---
+{places.length>0&&<section id="footprints" class="footprints" aria-labelledby="footprints-title">
+  <header class="footprints-heading">
+    <span class="eyebrow">PLACES & MEMORIES</span>
+    <h2 id="footprints-title">足迹</h2>
+    <p>走过的地方，留下的照片。</p>
+  </header>
+  <travel-footprints>
+    <div class="map-surface">
+      <div class="map-caption"><span>中国</span><span>点击地点，翻开影集</span></div>
+      <div class="map-canvas">
+        <img class="map-outline" src="/maps/china.svg" width={mapFrame.width} height={mapFrame.height} loading="lazy" alt={`中国旅行地图，已收录${places.map(place=>place.city).join('、')}影集`}/>
+        {places.map(place=><button type="button" class="map-point" style={`--point-x:${place.x/mapFrame.width*100}%;--point-y:${place.y/mapFrame.height*100}%`} data-place={place.id} aria-label={`${place.city}，查看 ${place.albums.length} 本影集预览`} aria-expanded="false" aria-controls={`place-${place.id}`}>
+          <span class="point-dot" aria-hidden="true"></span><span class="point-name">{place.city}</span>
+        </button>)}
+      </div>
+      <div class="map-previews">
+        {places.map(place=><div class="place-preview" id={`place-${place.id}`} data-preview={place.id} hidden>
+          <div class="preview-heading"><span>{place.city} · {place.country}</span><button class="preview-close" type="button" aria-label="关闭影集预览">×</button></div>
+          {place.albums.map(album=><a class="preview-album" href={`/albums/${album.slug}/`}>
+            <img src={imageUrl(album.cover.photo,480,album.cover,4/3)} width="480" height="360" loading="lazy" alt={album.cover.photo.alt}/>
+            <span class="preview-title">{album.title}</span>
+            <span class="preview-meta"><span>{album.date.slice(0,4)}</span><span>查看影集 ↗</span></span>
+          </a>)}
+        </div>)}
+      </div>
+    </div>
+    <footer class="map-footer">
+      <p><span class="legend-dot" aria-hidden="true"></span>{places.length} 座城市<span class="footer-separator">/</span>{albumCount} 本影集</p>
+      <div class="city-links" aria-label="按城市进入影集">{places.flatMap(place=>place.albums.map(album=><a href={`/albums/${album.slug}/`} aria-label={`查看${album.title}`}>{place.city}<span>{album.date.slice(0,4)}</span><span aria-hidden="true">↗</span></a>))}</div>
+    </footer>
+  </travel-footprints>
+</section>}
+<style>
+ .footprints{border-top:1px solid var(--line);padding:52px 0 12px;scroll-margin-top:calc(var(--header) + 24px)}
+ .footprints-heading{text-align:center;margin-bottom:26px}.eyebrow{font:10px var(--sans);letter-spacing:.24em;color:var(--muted)}
+ .footprints-heading h2{font:36px var(--serif-zh);letter-spacing:.2em;color:var(--accent);margin:12px 0 14px;padding-left:.2em}
+ .footprints-heading p{font:14px var(--serif-zh);letter-spacing:.08em;color:var(--muted);margin:0}
+ travel-footprints{display:block;max-width:1000px;margin:auto;--map-blue:#3c7e91}
+ .map-surface{position:relative;border:1px solid var(--line);border-radius:6px}
+ .map-caption{position:absolute;inset:22px 26px auto;display:flex;justify-content:space-between;gap:12px;font:11px var(--sans);color:var(--muted);letter-spacing:.08em;z-index:1;pointer-events:none}
+ .map-caption>span:first-child{color:var(--accent)}
+ .map-canvas{position:relative;width:100%;aspect-ratio:10/7}
+ .map-outline{display:block;width:100%;height:100%;object-fit:contain}
+ .map-point{position:absolute;left:var(--point-x);top:var(--point-y);transform:translate(-50%,-50%);width:44px;height:44px;padding:0;border:0;background:none;color:var(--map-blue);display:grid;place-items:center;border-radius:50%;z-index:2}
+ .point-dot{width:9px;height:9px;background:currentColor;border-radius:50%;box-shadow:0 0 0 5px #3c7e9112;transition:box-shadow .2s,transform .2s}
+ .point-name{position:absolute;left:35px;top:12px;white-space:nowrap;font:14px var(--serif-zh);letter-spacing:.08em;transition:transform .2s}
+ .map-point:hover .point-dot,.map-point[aria-expanded=true] .point-dot{box-shadow:0 0 0 9px #3c7e9118;transform:scale(1.15)}
+ .map-point:hover .point-name{transform:translateX(3px)}
+ .map-point:focus-visible{outline:2px solid var(--map-blue);outline-offset:2px}
+ .map-previews{position:absolute;bottom:24px;right:24px;width:240px;z-index:3}
+ .place-preview{border:1px solid #b5c7c9;background:var(--paper);padding:14px;animation:preview-in .18s ease-out;max-height:420px;overflow:auto}
+ .place-preview[hidden]{display:none}
+ .preview-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--muted);font:11px var(--sans);margin-bottom:8px}
+ .preview-close{font:22px var(--sans);border:0;background:none;color:var(--muted);padding:0;min-width:32px;min-height:32px;margin:-8px -6px -4px 0}
+ .preview-album{display:block;color:var(--ink)}.preview-album+.preview-album{margin-top:20px}
+ .preview-album img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}
+ .preview-title{display:block;font:17px/1.6 var(--serif-zh);margin-top:12px;text-wrap:balance}
+ .preview-meta{display:flex;justify-content:space-between;gap:12px;margin-top:8px;font:11px var(--sans);color:var(--map-blue)}
+ .preview-album:hover .preview-title{text-decoration:underline;text-underline-offset:4px}
+ .map-footer{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:16px 0;color:var(--muted);font:12px var(--sans)}
+ .map-footer p{display:flex;align-items:center;gap:9px;margin:0}.legend-dot{width:5px;height:5px;border-radius:50%;background:var(--map-blue)}.footer-separator{color:var(--quiet);margin:0 2px}
+ .city-links{display:flex;gap:16px;flex-wrap:wrap}.city-links a{display:flex;align-items:center;gap:12px;min-height:44px;color:var(--ink)}.city-links a span{font-size:11px;color:var(--muted)}.city-links a:hover{color:var(--map-blue)}
+ @keyframes preview-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+ @media(max-width:700px){.footprints{padding-top:36px}.footprints-heading{margin-bottom:22px}.footprints-heading h2{font-size:30px}.footprints-heading p{font-size:13px}.map-caption{inset:14px 14px auto;font-size:10px;letter-spacing:0}.map-canvas{margin-top:28px}.point-name{font-size:12px;left:32px;top:14px}.point-dot{width:7px;height:7px}.map-previews{position:static;width:auto;margin:0 14px}.place-preview{margin:0 0 14px;max-height:none;padding:12px}.preview-album{display:grid;grid-template-columns:100px minmax(0,1fr);column-gap:14px;align-items:center}.preview-album img{grid-row:1/3}.preview-title{font-size:16px;margin:0}.preview-meta{margin:6px 0 0;align-self:start}.preview-close{min-width:44px;min-height:44px}.map-footer{padding:10px 0;gap:12px;flex-wrap:wrap;font-size:11px}}
+ @media(prefers-reduced-motion:reduce){.place-preview{animation:none}.point-dot,.point-name{transition:none}}
+</style>
+<script>
+ class TravelFootprints extends HTMLElement {
+  connectedCallback(){
+   const points=[...this.querySelectorAll<HTMLButtonElement>('[data-place]')];
+   const previews=[...this.querySelectorAll<HTMLElement>('[data-preview]')];
+   let pinned:string|undefined;let timer:ReturnType<typeof setTimeout>;
+   const show=(id?:string)=>{
+    clearTimeout(timer);
+    for(const point of points)point.setAttribute('aria-expanded',String(point.dataset.place===id));
+    for(const preview of previews)preview.hidden=preview.dataset.preview!==id;
+   };
+   const dismiss=()=>{pinned=undefined;show();};
+   const leave=()=>{timer=setTimeout(()=>{if(!pinned&&!this.matches(':focus-within'))show();},220);};
+   for(const point of points){
+    point.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse'&&!pinned)show(point.dataset.place);});
+    point.addEventListener('pointerleave',leave);
+    point.addEventListener('focus',()=>show(point.dataset.place));
+    point.addEventListener('click',()=>{pinned=point.dataset.place;show(pinned);});
+   }
+   for(const preview of previews){
+    preview.addEventListener('pointerenter',()=>clearTimeout(timer));
+    preview.addEventListener('pointerleave',leave);
+    preview.querySelector('button')?.addEventListener('click',()=>{
+     points.find(point=>point.dataset.place===preview.dataset.preview)?.focus();dismiss();
+    });
+   }
+   this.addEventListener('keydown',event=>{if(event.key==='Escape'){
+    const active=points.find(point=>point.getAttribute('aria-expanded')==='true');active?.focus();dismiss();
+   }});
+   this.addEventListener('focusout',()=>{setTimeout(()=>{if(!pinned&&!this.matches(':focus-within'))show();},0);});
+   document.addEventListener('click',event=>{if(!this.contains(event.target as Node))dismiss();});
+  }
+ }
+ if(!customElements.get('travel-footprints'))customElements.define('travel-footprints',TravelFootprints);
+</script>
