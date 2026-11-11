@@ -1,3 +1,4 @@
+export const QUIZ_VERSION = 'reverian-2026-11-v1';
 export type TacitQuestion = {
   question: string;
   options: string[];

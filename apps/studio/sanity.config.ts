@@ -2,6 +2,7 @@ import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { schemaTypes } from "./schemaTypes";
 import { structure, singletonTypes as singletons } from "./structure";
+import { QuizRecords } from "./tools/QuizRecords";
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID;
 if (!projectId)
   throw new Error(
@@ -17,6 +18,7 @@ export default defineConfig({
       structure,
     }),
   ],
+  tools: [{name:'quiz-records',title:'答题记录',component:QuizRecords}],
   schema: {
     types: schemaTypes,
     templates: (templates) =>

@@ -16,7 +16,7 @@
     "build": "node scripts/build-site.mjs",
     "build:production": "node scripts/build-site.mjs --production",
     "preview": "npm run preview -w @reverian/web",
-    "check": "npm run check -w @reverian/web && npm run check -w @reverian/studio",
+    "check": "npm run check -w @reverian/web && npm run check -w @reverian/studio && tsc -p functions/tsconfig.json",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
     "assets": "node scripts/prepare-assets.mjs"
   },

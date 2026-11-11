@@ -1,5 +1,13 @@
 {
   "name": "reverian-photography",
   "pages_build_output_dir": "./apps/web/dist",
-  "compatibility_date": "2026-10-19"
+  "compatibility_date": "2026-10-19",
+  "d1_databases": [
+    {
+      "binding": "QUIZ_DB",
+      "database_name": "reverian-quiz",
+      "database_id": "f27b3f31-e62c-4e22-aee3-08d22e362076",
+      "migrations_dir": "migrations"
+    }
+  ]
 }
