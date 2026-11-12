@@ -599,6 +599,14 @@ summary::-webkit-details-marker {
   color: #bebbb1;
 }
 #viewer-info { min-width: 0; }
+/* Preserve intentional paragraphs while keeping long stories clear of the photo. */
+#viewer-info[data-paragraphs] {
+  white-space: pre-line;
+  max-height: min(40dvh, max(40px, calc(100dvh - 280px)), 360px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
 #viewer-count { flex-shrink: 0; white-space: nowrap; }
 #viewer-close {
   min-height: 44px;

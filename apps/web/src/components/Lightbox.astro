@@ -17,6 +17,12 @@ new ResizeObserver(()=>{
  dialog.style.setProperty('--viewer-footer-space',`${Math.ceil(footer.getBoundingClientRect().height+bottom+24)}px`);
 }).observe(footer);
 function showCaption(caption:string){
+ const paragraphs=/\r?\n\s*\r?\n/.test(caption);
+ info.toggleAttribute('data-paragraphs',paragraphs);
+ if(paragraphs)info.setAttribute('tabindex','0');else info.removeAttribute('tabindex');
+ // A closed dialog has no layout; reset after it becomes visible.
+ requestAnimationFrame(()=>{info.scrollTop=0;});
+
  // A leading bold heading is plain text plus one strong element; never inject HTML.
  const heading=caption.match(/^\*\*([^\r\n]+?)\*\*\r?\n/);
  if(!heading){info.textContent=caption;return;}
