@@ -16,7 +16,14 @@ new ResizeObserver(()=>{
  const bottom=parseFloat(getComputedStyle(footer).bottom)||0;
  dialog.style.setProperty('--viewer-footer-space',`${Math.ceil(footer.getBoundingClientRect().height+bottom+24)}px`);
 }).observe(footer);
-function update(){const a=links[index];image.src=a.getAttribute('href')!;image.alt=a.dataset.alt||a.dataset.title||'';title.textContent=a.dataset.title||'';info.textContent=a.dataset.caption||'';count.textContent=`${index+1} / ${links.length}`;}
+function showCaption(caption:string){
+ // A leading bold heading is plain text plus one strong element; never inject HTML.
+ const heading=caption.match(/^\*\*([^\r\n]+?)\*\*\r?\n/);
+ if(!heading){info.textContent=caption;return;}
+ const label=document.createElement('strong');label.textContent=heading[1];
+ info.replaceChildren(label,document.createElement('br'),document.createTextNode(caption.slice(heading[0].length)));
+}
+function update(){const a=links[index];image.src=a.getAttribute('href')!;image.alt=a.dataset.alt||a.dataset.title||'';title.textContent=a.dataset.title||'';showCaption(a.dataset.caption||'');count.textContent=`${index+1} / ${links.length}`;}
 function step(delta:number){index=(index+delta+links.length)%links.length;update();}
 document.addEventListener('click',event=>{
  const link=(event.target as Element).closest<HTMLAnchorElement>('a[data-lightbox]');
