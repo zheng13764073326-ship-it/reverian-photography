@@ -9,6 +9,13 @@ const image=document.querySelector<HTMLImageElement>('#viewer-image')!;
 const title=document.querySelector('#viewer-title')!,info=document.querySelector('#viewer-info')!,count=document.querySelector('#viewer-count')!;
 let links:HTMLAnchorElement[]=[],index=0,returnFocus:HTMLElement|null=null,overflow='';
 const close=document.querySelector<HTMLButtonElement>('#viewer-close')!;
+const footer=dialog.querySelector('footer')!;
+// Reserve the actual caption height so longer stories stay below the photograph.
+new ResizeObserver(()=>{
+ if(!dialog.open)return;
+ const bottom=parseFloat(getComputedStyle(footer).bottom)||0;
+ dialog.style.setProperty('--viewer-footer-space',`${Math.ceil(footer.getBoundingClientRect().height+bottom+24)}px`);
+}).observe(footer);
 function update(){const a=links[index];image.src=a.getAttribute('href')!;image.alt=a.dataset.alt||a.dataset.title||'';title.textContent=a.dataset.title||'';info.textContent=a.dataset.caption||'';count.textContent=`${index+1} / ${links.length}`;}
 function step(delta:number){index=(index+delta+links.length)%links.length;update();}
 document.addEventListener('click',event=>{

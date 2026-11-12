@@ -562,6 +562,7 @@ summary::-webkit-details-marker {
   background: #191915;
   color: #eee9df;
   padding: 80px 80px 110px;
+  padding-bottom: max(110px, var(--viewer-footer-space, 0px));
 }
 #lightbox[open] {
   display: flex;
@@ -597,6 +598,8 @@ summary::-webkit-details-marker {
   bottom: 28px;
   color: #bebbb1;
 }
+#viewer-info { min-width: 0; }
+#viewer-count { flex-shrink: 0; white-space: nowrap; }
 #viewer-close {
   min-height: 44px;
   padding: 10px 0 10px 20px;
@@ -902,6 +905,7 @@ summary::-webkit-details-marker {
   }
   #lightbox {
     padding: 85px 16px 140px;
+    padding-bottom: max(140px, var(--viewer-footer-space, 0px));
   }
   #lightbox header,
   #lightbox footer {
