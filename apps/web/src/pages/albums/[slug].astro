@@ -7,7 +7,16 @@ import {imageUrl} from '../../lib/images';
 export async function getStaticPaths(){const {albums}=await getContent();return albums.map((album,i)=>({params:{slug:album.slug},props:{album,previous:albums[i-1],next:albums[i+1]}}));}
 const {album,previous,next}=Astro.props;
 // The cover opens the viewing sequence; avoid showing it again in the body.
-const spreads=album.spreads.map(s=>({...s,photos:s.photos.filter(p=>p.id!==album.cover.photo.id)})).filter(s=>s.photos.length);
+const spreads=album.spreads.map(s=>({...s,photos:s.photos.filter(p=>p.id!==album.cover.photo.id)})).filter(s=>s.photos.length).flatMap(s=>{
+ // Only portraits share a row; landscape photographs get their own full-width spread.
+ if(s.layout==='pair'&&!s.photos.every(p=>p.image.height>p.image.width)){
+  return s.photos.map(p=>({...s,photos:[p],layout:p.image.height>p.image.width?'text' as const:'full' as const,text:[]}));
+ }
+ if(s.layout==='text'&&!s.text.length&&s.photos.length===1&&s.photos[0].image.width>=s.photos[0].image.height){
+  return [{...s,layout:'full' as const}];
+ }
+ return [s];
+});
 const photoCount=new Set([album.cover.photo.id,...spreads.flatMap(s=>s.photos.map(p=>p.id))]).size;
 const related=next || previous;
 const titleParts=album.title.split(/\s*·\s*/);
