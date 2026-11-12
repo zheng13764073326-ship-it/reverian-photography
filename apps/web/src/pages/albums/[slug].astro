@@ -24,7 +24,7 @@ const splitTitle=titleParts.length===2 && titleParts[0]===album.city;
   </header>
   <div class="album-cover">
    <Photo photo={album.cover.photo} group="album" caption={false} showInfo={false} eager sizes="(max-width: 600px) calc(100vw - 40px), (max-width: 1280px) calc(100vw - 80px), 1200px"/>
-   <div class="album-cover-note"><span>摄影 / Reverian</span><a href="#album-sequence">展开这段旅程 ↓</a><span>点击照片，放大观看</span></div>
+   <div class="album-cover-note"><span class="album-cover-credit"><span>摄影 / Reverian</span>{album.cover.photo.caption&&<span class="cover-location">{album.cover.photo.caption}</span>}</span><a href="#album-sequence">展开这段旅程 ↓</a><span>点击照片，放大观看</span></div>
   </div>
   <section class="album-preface" aria-label="影集序言">
    <p class="eyebrow">A NOTE BEFORE THE JOURNEY</p>
@@ -56,6 +56,7 @@ const splitTitle=titleParts.length===2 && titleParts[0]===album.city;
  .album-edition{text-align:right;letter-spacing:.1em;flex-shrink:0}
  .album-edition p{margin:4px 0}.album-edition span{padding:0 8px}
  .album-cover-note{display:flex;justify-content:space-between;gap:16px;padding:16px 0;border-bottom:1px solid var(--line);letter-spacing:.08em}
+ .album-cover-credit{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px 12px}.cover-location{border-left:1px solid var(--line);padding-left:12px}
  .album-preface{max-width:720px;margin:80px auto 100px}
  .album-excerpt-lead{font-family:var(--serif);font-size:26px;line-height:1.85;max-width:320px;margin:0}
  .album-preface :global(.prose){font-size:14px;color:var(--muted)}
