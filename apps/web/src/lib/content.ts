@@ -43,7 +43,7 @@ export const contentQuery = `{
    _id,title,alt,caption,takenAt,location,tags,sections,featured,isPublic,
    "image": {"assetRef":image.asset._ref,"url":image.asset->url,"width":image.asset->metadata.dimensions.width,"height":image.asset->metadata.dimensions.height,"lqip":image.asset->metadata.lqip}
  },
- "albums": *[_type == "album" && isPublic == true && defined(slug.current)] | order(order asc, date desc) {_id,slug,title,city,country,date,excerpt,cover,preface,spreads},
+ "albums": *[_type == "album" && isPublic == true && defined(slug.current)] | order(order asc, date desc) {_id,slug,title,subtitle,city,country,date,excerpt,cover,preface,spreads},
  "journals": *[_type == "journal" && isPublic == true && defined(slug.current)] | order(date desc) {_id,slug,title,date,excerpt,body,photos},
  "featured": *[_id == "featured"][0].photos,
  "settings": *[_id == "siteSettings"][0]{title,photographer,genres,motto,homePresentation,homeCover,mobileCover,introduction,about,portrait,socialLinks,seo}

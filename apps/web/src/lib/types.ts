@@ -36,6 +36,7 @@ export interface Album {
   id: string;
   slug: string;
   title: string;
+  subtitle?: string;
   city: string;
   country: string;
   date: string;

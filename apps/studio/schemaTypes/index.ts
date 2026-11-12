@@ -246,6 +246,7 @@ const album = defineType({
   type: "document",
   fields: [
     requiredText("title", "影集标题"),
+    defineField({name: "subtitle", title: "英文副标题", type: "string"}),
     slug,
     requiredText("city", "城市 / 目的地"),
     requiredText("country", "国家 / 地区"),

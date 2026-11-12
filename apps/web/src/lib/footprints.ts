@@ -10,7 +10,10 @@ export function projectChina(longitude:number, latitude:number) {
 
 // Only a city with a published, resolved album is displayed. Add coordinates
 // here as further destinations are ready; never infer visits from demo data.
-const destinations = [{id:'dalian',city:'大连',country:'中国',longitude:121.62,latitude:38.92}];
+const destinations = [
+  {id:'dalian',city:'大连',country:'中国',longitude:121.62,latitude:38.92},
+  {id:'suzhou',city:'苏州',country:'中国',longitude:120.58,latitude:31.30},
+];
 export function albumFootprints(albums:Album[]) {
   return destinations.flatMap(place=>{
     const matches=albums.filter(album=>album.city===place.city&&album.country===place.country);
