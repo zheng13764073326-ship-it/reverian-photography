@@ -12,6 +12,7 @@ const photoCount=new Set([album.cover.photo.id,...spreads.flatMap(s=>s.photos.ma
 const related=next || previous;
 const titleParts=album.title.split(/\s*·\s*/);
 const splitTitle=titleParts.length===2 && titleParts[0]===album.city;
+const isPortraitPair=(spread:typeof spreads[number])=>spread.layout==='pair'&&spread.photos.length===2&&spread.photos.every(p=>p.image.height>p.image.width);
 ---
 <Base title={album.title} description={album.excerpt} shareImage={imageUrl(album.cover.photo,1200)}>
  <article class="container page album-detail">
@@ -31,7 +32,7 @@ const splitTitle=titleParts.length===2 && titleParts[0]===album.city;
    <RichText value={album.preface}/>
   </section>
   <div class="spreads" id="album-sequence">
-   {spreads.map((spread,i)=><section class:list={['spread',`spread-${spread.layout}`,{'spread-reverse':spread.layout==='text'&&i>0,'spread-quiet':spread.layout==='text'&&!spread.text.length,'spread-portrait':spread.photos.length===1&&spread.photos[0].image.height>spread.photos[0].image.width,'spread-single':spread.photos.length===1&&spread.layout==='pair'}]}>
+   {spreads.map((spread,i)=><section class:list={['spread',`spread-${spread.layout}`,{'spread-portrait-pair':isPortraitPair(spread),'spread-reverse':spread.layout==='text'&&i>0,'spread-quiet':spread.layout==='text'&&!spread.text.length,'spread-portrait':spread.photos.length===1&&spread.photos[0].image.height>spread.photos[0].image.width,'spread-single':spread.photos.length===1&&spread.layout==='pair'}]}>
     {spread.photos.map(p=><Photo photo={p} group="album" caption={false} showInfo={false} lightboxCaption={p.caption} sizes={spread.layout==='full'?'(max-width: 600px) calc(100vw - 40px), (max-width: 1280px) calc(100vw - 80px), 1200px':undefined}/>)}
     {spread.layout==='text'&&spread.text.length>0&&<RichText value={spread.text}/>}</section>)}
   </div>
@@ -71,7 +72,9 @@ const splitTitle=titleParts.length===2 && titleParts[0]===album.city;
  .album-detail :global(.spread-quiet){display:flex;justify-content:flex-start}
  .album-detail :global(.spread-quiet.spread-reverse){justify-content:flex-end}
  .album-detail :global(.spread-quiet .photograph){width:64%;max-width:760px}
- .album-detail :global(.spread-quiet.spread-portrait .photograph){max-width:510px}
+ .album-detail :global(.spread-quiet.spread-portrait .photograph){max-width:360px}
+ .album-detail :global(.spread-portrait-pair){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;max-width:880px;margin-inline:auto}
+ .album-detail :global(.spread-portrait-pair>.photograph:nth-child(2)){margin-top:0}
  .album-colophon{text-align:center;margin:96px auto 80px}
  .album-colophon p{margin:20px 0}
  .album-next{border-top:1px solid var(--line);padding-top:36px}
@@ -87,6 +90,8 @@ const splitTitle=titleParts.length===2 && titleParts[0]===album.city;
   .album-detail :global(.spreads){gap:28px}.album-detail :global(.spread){gap:20px}.album-detail :global(.spread-text .prose){padding:12px 6px 0}.album-detail :global(.spread-text h2){font-size:27px;margin-bottom:20px}
   .album-detail :global(.spread-text .photograph){max-width:none}.album-detail :global(.spread-text .photograph img){max-height:none}
   .album-detail :global(.spread-quiet .photograph){width:100%;max-width:none}
+  .album-detail :global(.spread-quiet.spread-portrait .photograph){width:78%;max-width:320px}
+  .album-detail :global(.spread-portrait-pair){gap:12px}
   .album-colophon{margin:64px auto 48px}.next-story{grid-template-columns:1fr;gap:24px}.next-story h2{font-size:28px}.return-stories>span:last-child{font-size:22px}.return-stories .eyebrow{font-size:9px}
  }
 </style>
