@@ -950,3 +950,32 @@ summary::-webkit-details-marker {
 /* Keep descriptive alt text accessible without drawing it over failed photos. */
 img { color: transparent; font-size: 0; }
 img[data-image-state="failed"] { opacity: 0; }
+
+/* The home cover uses the signature and fine rule from the cover design. */
+.site-header.home-header .brand-signature {
+  font: italic 400 36px/1 "Cormorant Garamond", Georgia, serif;
+  letter-spacing: -.025em;
+}
+.site-header.home-header.over-cover:not(.menu-open)::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: clamp(20px, 3.5vw, 64px);
+  right: clamp(20px, 3.5vw, 64px);
+  height: 1px;
+  background: currentColor;
+  opacity: .75;
+}
+.site-header.home-header.over-cover { color: #f5f0df; }
+@media (min-width: 801px) {
+  .site-header.home-header { min-height: 84px; }
+  .site-header.home-header nav { gap: clamp(36px, 4.4vw, 74px); font-size: 20px; letter-spacing: .06em; }
+  .site-header.home-header .portfolio-nav summary > span { display: none; }
+}
+@media (max-width: 800px) {
+  .site-header.home-header .brand-signature { font-size: 26px; }
+  .site-header.home-header.menu-open { color: var(--ink); }
+}
+
+.is-home { --header: 84px; }
+@media (max-width: 800px) { .is-home { --header: 68px; } }

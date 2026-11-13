@@ -8,6 +8,7 @@ import ScrollReveal from '../components/ScrollReveal.astro';
 import {getContent} from '../lib/content';
 import {imageUrl} from '../lib/images';
 import '@fontsource/cormorant-garamond/400.css';
+import '@fontsource/cormorant-garamond/400-italic.css';
 import '@fontsource/cormorant-garamond/500.css';
 import '../styles/global.css';
 interface Props {title?:string;description?:string;home?:boolean;shareImage?:string}
@@ -26,7 +27,7 @@ const shareImage=Astro.props.shareImage || (settings.seo.shareImage?imageUrl(set
  <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
  </head><body class:list={[{'is-home':home}]}>
  {home && <ApertureIntro name={settings.photographer}/>}
- <a class="skip-link" href="#main">跳到正文</a><Header/>
+ <a class="skip-link" href="#main">跳到正文</a><Header home={home}/>
  <main id="main" tabindex="-1"><slot/></main>
  <footer class="site-footer container"><span>© {new Date().getFullYear()} REVERIAN · PHOTOGRAPHY</span><span>{mode==='demo'?'演示版 · 照片、地点与文字为占位内容':'按下快门，因为热爱'}</span><a href="/about/">关于我 ↗</a></footer>
  <Lightbox/><ImageLoading/><HoverFeedback/><ScrollReveal/>

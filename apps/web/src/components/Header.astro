@@ -1,8 +1,10 @@
 ---
+interface Props {home?:boolean}
+const {home=false}=Astro.props;
 const path=Astro.url.pathname;
 ---
-<header class="site-header" id="site-header">
- <a class="brand" href="/" aria-label="Reverian 首页"><strong>PHOTOGRAPHY</strong><small>CURATED SEQUENCE</small></a>
+<header class:list={['site-header',{'home-header':home,'over-cover':home}]} id="site-header">
+ <a class="brand" href="/" aria-label="Reverian 首页">{home?<span class="brand-signature">Reverian</span>:<><strong>PHOTOGRAPHY</strong><small>CURATED SEQUENCE</small></>}</a>
  <button class="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="打开导航"><span></span><span></span><span></span></button>
  <nav id="main-nav" aria-label="主导航">
   <a href="/" aria-current={path==='/'?'page':undefined}>首页</a>
