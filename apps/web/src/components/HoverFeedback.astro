@@ -12,7 +12,7 @@
   const link=target.closest('a,button,summary,[role="button"]');
   const photo=target.closest('a[data-lightbox]');
   const album=target.closest('.album-card a,.next-story');
-  label.textContent=photo?'放大':album?'查看':'';
+  label.textContent=photo?'':album?'查看':'';
   ring.dataset.kind=photo||album?'photo':link?'link':'idle';
   ring.style.transform=`translate3d(${x}px,${y}px,0) translate(-50%,-50%)`;
   ring.classList.add('is-visible');document.documentElement.classList.add('pointer-ready');visible=true;
