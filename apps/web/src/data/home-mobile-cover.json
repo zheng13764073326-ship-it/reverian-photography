@@ -1,22 +1,23 @@
 {
   "width": 941,
   "height": 1671,
-  "source": "User-provided portrait reference, UI removed with built-in image_gen; compressed original used as detail reference.",
+  "source": "Approved portrait composition from the previous built-in image_gen edit. Re-encoded from its original PNG without enlargement; no generated restoration or invented detail.",
   "images": [
     {
       "width": 400,
-      "src": "/images/covers/kinmen-portrait-v2-400.jpg",
-      "bytes": 80362
+      "src": "/images/covers/kinmen-portrait-v3-400.jpg",
+      "bytes": 171793
     },
     {
       "width": 800,
-      "src": "/images/covers/kinmen-portrait-v2-800.jpg",
-      "bytes": 276360
+      "src": "/images/covers/kinmen-portrait-v3-800.jpg",
+      "bytes": 554360
     },
     {
       "width": 941,
-      "src": "/images/covers/kinmen-portrait-v2-941.jpg",
-      "bytes": 356922
+      "src": "/images/covers/kinmen-portrait-v3-941.jpg",
+      "bytes": 1068630
     }
-  ]
+  ],
+  "lqip": "data:image/jpeg;base64,/9j/2wBDAA4KCw0LCQ4NDA0QDw4RFiQXFhQUFiwgIRokNC43NjMuMjI6QVNGOj1OPjIySGJJTlZYXV5dOEVmbWVabFNbXVn/2wBDAQ8QEBYTFioXFypZOzI7WVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVlZWVn/wAARCABHACgDASIAAhEBAxEB/8QAGgAAAgMBAQAAAAAAAAAAAAAAAAQDBQYCAf/EAC4QAAIBAwMCBQIGAwAAAAAAAAECAwAEERIhMQVREyJBYXFCwRQjkbHR4TKBof/EABcBAQEBAQAAAAAAAAAAAAAAAAIDAAH/xAAcEQEBAQEAAgMAAAAAAAAAAAABABECAxIhMUH/2gAMAwEAAhEDEQA/AMVDGWXZWbPGDvUkamOYp5c+jH0qRdEduX/MjkHDAHFeWc8MU+blBLDyQMjP6VE+WnW3TLK0u1aOadrV5NRMjgAEYwACT39qp7+KOKYpHcCdV28QfV71PPdm80prS2gC6QqjI2427+9Jsil1Qhjn6VxjPtVVMyxQsAuoAnjI70V2wUeVRzjnvRRlNvAHtlYOGOd1Pofmo5UUAaygONggzTdvGJbcKobUDyDsRXL9OlbyRrqcnIbUAW+M0CNXsTuW5zkE+teKzABjyO9Tx2shO0Yck6QT/jTDdLuY4ZJJY2VVAZ2bZQDwPk+lUy7IRrrcjfjcjgUVI6rGdSbL77nNFctWFqQyBIm0a+M1pegdMMvUS92C0cKbK+4J7YP2rLWllM0iqgCnIIY7D2/ar20v+oQRxs9xGEBGUbcMfbH80BOXW2W80QnTlEOk6hlRse9VXW7eP8CVSzkuSXL+R8HJOT81VT9RmayZ4rjztwdew370lBcX0ciym5Jym7aicmqPm4tjZW6ieN5onQoytjGc4NFN9ZtxFOJ/F1tJ5j8kf3RXOUTZE5F4sc4aJRJspwJPerCxh6gY1iW1AC8HKSfrkVcrBZ2u62hJHqTXEnVzFxGUUcYQY/epnCz+qwisYJbZBd2VuJMbqoyM0td2FkqYjtIiQMY8TAH/AGkD12f6SMHnMY/muU6vrBEix/6jA+9V9LaVH1i0WCZAI1hjfy7SaqKZ6xLFNY+IHGUmGyrjkbep7UVzc/KfTjOtEXjLJbPp7mb7UjOhjIBhxkZzrzRRTGaS2XcEDOB6ULcFV0iOIn3XeiilC8V/Gsr2HwkU6BICO6n+6KKKCXb/2Q=="
 }

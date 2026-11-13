@@ -1,7 +1,7 @@
 ---
 import type {Settings} from '../lib/types';
 import {demoPhotos} from '../data/demo';
-import {imageUrl,imageSet} from '../lib/images';
+import {imageUrl} from '../lib/images';
 import assets from '../data/assets.json';
 import portraitAsset from '../data/home-mobile-cover.json';
 interface Props {settings:Settings}
@@ -16,15 +16,19 @@ const spots=[
 const mobileSources=mobile?[400,800,1200].map(w=>`${imageUrl(mobile.photo,w,mobile,9/16)} ${w}w`).join(', '):undefined;
 const fullRoadMobile=desktop?.photo.id==='kinmen-2026-14'&&mobile?.photo.id==='kinmen-2026-14';
 const portraitSources=portraitAsset.images.map(image=>`${image.src} ${image.width}w`).join(', ');
+const desktopSources=desktop?[...new Set([800,1200,1920,2560,3200,4096].map(w=>Math.min(w,desktop.photo.image.width)))].map(w=>`${imageUrl(desktop.photo,w)} ${w}w`).join(', '):undefined;
+const portraitImage=(width:number)=>portraitAsset.images.find(image=>image.width>=width)||portraitAsset.images[portraitAsset.images.length-1];
+const canopy=(baseWidth:number)=>`image-set(${[1,2,3].map(dpr=>`url('${portraitImage(baseWidth*dpr).src}') ${dpr}x`).join(', ')})`;
+const mobileStyle=fullRoadMobile?`--mobile-aspect:${portraitAsset.width}/${portraitAsset.height};--mobile-placeholder:url('${portraitAsset.lqip}');--mobile-canopy:${canopy(400)};--mobile-canopy-wide:${canopy(800)}`:undefined;
 ---
-<section class:list={['home-cover',{'editorial-cover':!desk}]} aria-label="Reverian 摄影封面" data-full-road={fullRoadMobile||undefined} style={fullRoadMobile?`--mobile-canopy:url('${portraitAsset.images[0].src}')`:undefined}>
+<section class:list={['home-cover',{'editorial-cover':!desk}]} aria-label="Reverian 摄影封面" data-full-road={fullRoadMobile||undefined} style={mobileStyle}>
  {desk ? <>
   <img class="hero-photo" src={`/images/responsive/home-desk-${assets['home-desk'].width}.webp`} srcset={assets['home-desk'].widths.map(w=>`/images/responsive/home-desk-${w}.webp ${w}w`).join(', ')} sizes="(max-aspect-ratio: 16/9) 178svh, 100vw" width={assets['home-desk'].width} height={assets['home-desk'].height} alt="暖光中的摄影桌面，照片盒与桌面上摆放着三张照片" fetchpriority="high"/>
   <svg class="photo-hotspots" viewBox="0 0 1672 941" preserveAspectRatio="xMidYMid slice" aria-label="点击照片放大">{spots.map(s=>{const p=demoPhotos.find(p=>p.id===s.id)!;return <a href={imageUrl(p,2400)} data-lightbox data-group="cover" data-title={p.title} data-alt={p.alt} data-caption="封面场景中的示例照片" aria-label={`放大查看：${p.title}`}><polygon points={s.hit}/></a>;})}</svg>
  </> : desktop ? <>
-  <picture>
-   {mobile && <source media="(max-width: 800px) and (orientation: portrait)" srcset={fullRoadMobile?portraitSources:mobileSources} sizes="100vw" data-fallback-src={fullRoadMobile?portraitAsset.images[0].src:imageUrl(mobile.photo,400,mobile,9/16)}/>}
-   <img class="hero-photo" src={imageUrl(desktop.photo,1920)} srcset={imageSet(desktop.photo)} sizes="100vw" data-fallback-src={imageUrl(desktop.photo,800)} width={desktop.photo.image.width} height={desktop.photo.image.height} style={`--focus-desktop:${desktop.focusX*100}% ${desktop.focusY*100}%;--focus-mobile:${mobile!.focusX*100}% ${mobile!.focusY*100}%`} alt={desktop.photo.alt} fetchpriority="high"/>
+  <picture class="cover-picture">
+   {mobile && <source media="(max-width: 800px) and (orientation: portrait)" srcset={fullRoadMobile?portraitSources:mobileSources} sizes="100vw" width={fullRoadMobile?portraitAsset.width:900} height={fullRoadMobile?portraitAsset.height:1600} data-fallback-src={fullRoadMobile?portraitAsset.images[0].src:imageUrl(mobile.photo,400,mobile,9/16)}/>}
+   <img class="hero-photo" src={imageUrl(desktop.photo,1920)} srcset={desktopSources} sizes="100vw" data-fallback-src={imageUrl(desktop.photo,800)} width={desktop.photo.image.width} height={desktop.photo.image.height} style={`--focus-desktop:${desktop.focusX*100}% ${desktop.focusY*100}%;--focus-mobile:${mobile!.focusX*100}% ${mobile!.focusY*100}%`} alt={desktop.photo.alt} fetchpriority="high"/>
   </picture>
   <div class="cover-shade" aria-hidden="true"></div>
  </> : <div class="empty-cover">Reverian Photography</div>}
@@ -35,19 +39,17 @@ const portraitSources=portraitAsset.images.map(image=>`${image.src} ${image.widt
   <div class="home-identity">
    <p class="cover-eyebrow">PHOTOGRAPHY PORTFOLIO</p>
    <h1>{settings.photographer}</h1>
-   <span class="cover-rule" aria-hidden="true"></span>
   </div>
   <a href="#selected" class="home-scroll" aria-label="向下浏览精选作品"><i aria-hidden="true"></i></a>
  </>}
 </section>
 <style>
  .editorial-cover{height:100svh;min-height:500px;background:#19251e;color:#f5f0df;isolation:isolate}
- .editorial-cover .hero-photo{z-index:-2}
+ .editorial-cover .cover-picture{position:absolute;inset:0;z-index:-2}
  .cover-shade{position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(9,22,14,.42) 0%,rgba(12,24,16,.12) 52%,rgba(9,18,12,.04) 70%,rgba(8,16,11,.45) 100%),radial-gradient(ellipse 42% 43% at 50% 21%,rgba(17,27,22,.52),transparent 100%)}
- .editorial-cover .home-identity{inset:16.5% 20px auto;text-align:center;text-shadow:none}
+ .editorial-cover .home-identity{inset:19% 20px auto;text-align:center;text-shadow:none}
  .editorial-cover .cover-eyebrow{font:500 clamp(11px,1.05vw,18px)/1.4 'Cormorant Garamond',Georgia,serif;letter-spacing:.42em;margin:0 0 12px;padding-left:.42em;white-space:nowrap}
  .editorial-cover .home-identity h1{font:italic 400 clamp(100px,10.8vw,182px)/.85 'Cormorant Garamond',Georgia,serif;letter-spacing:-.045em;margin:0;white-space:nowrap}
- .cover-rule{display:block;width:34px;height:1px;background:currentColor;margin:14px auto 0;opacity:.9}
  .editorial-cover .home-scroll{inset:auto auto 3.8% 50%;transform:translateX(-50%);width:52px;height:52px;display:grid;place-items:center}
  .editorial-cover .home-scroll i{display:block;width:16px;height:16px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:rotate(45deg);animation:cover-arrow-pulse 2.4s ease-in-out infinite}
  .editorial-cover .home-scroll:is(:hover,:focus-visible) i{animation:none;opacity:1}
@@ -57,23 +59,27 @@ const portraitSources=portraitAsset.images.map(image=>`${image.src} ${image.widt
   .editorial-cover .hero-photo{object-position:var(--focus-mobile,center)}
   /* Preserve the full width of the portrait: never crop the road edges.
      On taller phones only the upper canopy fills the additional space. */
-  .editorial-cover[data-full-road]{background-image:var(--mobile-canopy);background-size:100% auto;background-position:center -20vw;background-repeat:no-repeat}
-  .editorial-cover[data-full-road] .hero-photo{inset:auto 0 0;width:100%;height:auto;object-fit:contain;object-position:bottom;mask-image:linear-gradient(to bottom,transparent,black 10%)}
+  .editorial-cover[data-full-road]{background-image:var(--mobile-canopy),var(--mobile-placeholder);background-size:100% auto;background-position:center -20vw;background-repeat:no-repeat}
+  /* Reserve the portrait frame before decoding, including retries that remove source.
+     The placeholder shares this frame so the road never appears at another height. */
+  .editorial-cover[data-full-road] .cover-picture{inset:auto 0 0;width:100%;height:auto;aspect-ratio:var(--mobile-aspect);background:var(--mobile-placeholder) center/100% 100% no-repeat;mask-image:linear-gradient(to bottom,transparent,black 10%)}
+  .editorial-cover[data-full-road] .hero-photo{inset:0;width:100%;height:100%;object-fit:contain;object-position:bottom}
   .editorial-cover[data-full-road] .cover-shade{background:linear-gradient(180deg,rgba(6,17,10,.16),rgba(6,17,10,.22) 30%,transparent 53%,rgba(5,13,8,.12) 100%)}
   .cover-shade{background:linear-gradient(180deg,rgba(8,20,13,.4),rgba(10,23,15,.52) 26%,rgba(10,23,15,.28) 43%,transparent 62%,rgba(7,16,11,.36) 100%)}
-  .editorial-cover .home-identity{inset:19.5% 12px auto}
+  .editorial-cover .home-identity{inset:22% 12px auto}
   .editorial-cover .cover-eyebrow{font-size:clamp(10px,2.75vw,18px);letter-spacing:.3em;padding-left:.3em;margin-bottom:16px}
   .editorial-cover .home-identity h1{font-size:clamp(84px,27.5vw,195px);letter-spacing:-.045em;line-height:.95}
-  .cover-rule{width:24px;margin-top:14px}
   .editorial-cover .home-scroll{bottom:5.7%}
   .editorial-cover .home-scroll i{width:15px;height:15px}
  }
+ @media(min-width:401px) and (max-width:800px) and (orientation:portrait){
+  .editorial-cover[data-full-road]{background-image:var(--mobile-canopy-wide),var(--mobile-placeholder)}
+ }
  @media(max-height:520px) and (orientation:landscape){
   .editorial-cover{min-height:360px}
-  .editorial-cover .home-identity{top:26%}
+  .editorial-cover .home-identity{top:29%}
   .editorial-cover .home-identity h1{font-size:clamp(80px,10vw,120px)}
   .editorial-cover .cover-eyebrow{font-size:10px;margin-bottom:7px}
-  .cover-rule{margin-top:12px}
   .editorial-cover .home-scroll{bottom:3%;height:44px}
  }
 </style>
