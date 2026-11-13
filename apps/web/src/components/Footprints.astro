@@ -81,6 +81,19 @@ const albumCount=places.reduce((sum,place)=>sum+place.albums.length,0);
     for(const point of points)point.setAttribute('aria-expanded',String(point.dataset.place===id));
     for(const preview of previews)preview.hidden=preview.dataset.preview!==id;
    };
+   // Nearby cities can share a 44px hit area on narrow screens.
+   // Resolve pointer clicks by the closest visible dot, preserving real positions.
+   this.querySelector('.map-canvas')?.addEventListener('click',event=>{
+    const click=event as MouseEvent;
+    if(click.detail===0 || !(click.target as Element).closest('.map-point'))return;
+    const nearest=points.map(point=>{
+     const r=point.getBoundingClientRect();
+     return {point,distance:Math.hypot(click.clientX-r.left-r.width/2,click.clientY-r.top-r.height/2)};
+    }).sort((a,b)=>a.distance-b.distance)[0]?.point;
+    if(!nearest)return;
+    event.preventDefault();event.stopPropagation();
+    pinned=nearest.dataset.place;nearest.focus({preventScroll:true});show(pinned);
+   },true);
    const dismiss=()=>{pinned=undefined;show();};
    const leave=()=>{timer=setTimeout(()=>{if(!pinned&&!this.matches(':focus-within'))show();},220);};
    for(const point of points){
