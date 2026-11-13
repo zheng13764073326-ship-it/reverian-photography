@@ -4,6 +4,7 @@
  <footer><span id="viewer-info"></span><span id="viewer-count" aria-live="polite"></span></footer>
 </dialog>
 <script>
+import {resetImageRecovery} from '../lib/image-loading';
 const dialog=document.querySelector<HTMLDialogElement>('#lightbox')!;
 const image=document.querySelector<HTMLImageElement>('#viewer-image')!;
 const title=document.querySelector('#viewer-title')!,info=document.querySelector('#viewer-info')!,count=document.querySelector('#viewer-count')!;
@@ -29,7 +30,7 @@ function showCaption(caption:string){
  const label=document.createElement('strong');label.textContent=heading[1];
  info.replaceChildren(label,document.createElement('br'),document.createTextNode(caption.slice(heading[0].length)));
 }
-function update(){const a=links[index];image.src=a.getAttribute('href')!;image.alt=a.dataset.alt||a.dataset.title||'';title.textContent=a.dataset.title||'';showCaption(a.dataset.caption||'');count.textContent=`${index+1} / ${links.length}`;}
+function update(){const a=links[index];resetImageRecovery(image);image.dataset.fallbackSrc=a.dataset.fallbackSrc||a.getAttribute('href')!;image.src=a.getAttribute('href')!;image.alt=a.dataset.alt||a.dataset.title||'';title.textContent=a.dataset.title||'';showCaption(a.dataset.caption||'');count.textContent=`${index+1} / ${links.length}`;}
 function step(delta:number){index=(index+delta+links.length)%links.length;update();}
 document.addEventListener('click',event=>{
  const link=(event.target as Element).closest<HTMLAnchorElement>('a[data-lightbox]');
@@ -37,7 +38,7 @@ document.addEventListener('click',event=>{
  event.preventDefault();links=[...document.querySelectorAll<HTMLAnchorElement>('a[data-lightbox]')].filter(a=>a.dataset.group===link.dataset.group);index=links.indexOf(link);returnFocus=link;update();overflow=document.body.style.overflow;document.body.style.overflow='hidden';dialog.showModal();close.focus();
 });
 close.addEventListener('click',()=>dialog.close());
-dialog.addEventListener('close',()=>{document.body.style.overflow=overflow;image.removeAttribute('src');returnFocus?.focus({preventScroll:true});});
+dialog.addEventListener('close',()=>{document.body.style.overflow=overflow;resetImageRecovery(image);image.removeAttribute('src');delete image.dataset.fallbackSrc;returnFocus?.focus({preventScroll:true});});
 document.querySelector('#viewer-prev')!.addEventListener('click',()=>step(-1));document.querySelector('#viewer-next')!.addEventListener('click',()=>step(1));
 dialog.addEventListener('click',event=>{if(event.target===dialog)dialog.close();});
 dialog.addEventListener('keydown',event=>{if(event.key==='ArrowLeft'){event.preventDefault();step(-1);}if(event.key==='ArrowRight'){event.preventDefault();step(1);}});

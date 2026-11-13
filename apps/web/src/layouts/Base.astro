@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Lightbox from '../components/Lightbox.astro';
+import ImageLoading from '../components/ImageLoading.astro';
 import ApertureIntro from '../components/ApertureIntro.astro';
 import HoverFeedback from '../components/HoverFeedback.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
@@ -28,5 +29,5 @@ const shareImage=Astro.props.shareImage || (settings.seo.shareImage?imageUrl(set
  <a class="skip-link" href="#main">跳到正文</a><Header/>
  <main id="main" tabindex="-1"><slot/></main>
  <footer class="site-footer container"><span>© {new Date().getFullYear()} REVERIAN · PHOTOGRAPHY</span><span>{mode==='demo'?'演示版 · 照片、地点与文字为占位内容':'按下快门，因为热爱'}</span><a href="/about/">关于我 ↗</a></footer>
- <Lightbox/><HoverFeedback/><ScrollReveal/>
+ <Lightbox/><ImageLoading/><HoverFeedback/><ScrollReveal/>
  </body></html>

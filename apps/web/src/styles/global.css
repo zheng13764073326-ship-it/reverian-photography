@@ -598,10 +598,10 @@ summary::-webkit-details-marker {
   bottom: 28px;
   color: #bebbb1;
 }
-#viewer-info { min-width: 0; }
-/* Preserve intentional paragraphs while keeping long stories clear of the photo. */
+#viewer-info { min-width: 0; line-height: 1.65; }
+/* Collapse manual line breaks while keeping long stories clear of the photo. */
 #viewer-info[data-paragraphs] {
-  white-space: pre-line;
+  white-space: normal;
   max-height: min(40dvh, max(40px, calc(100dvh - 280px)), 360px);
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -946,3 +946,7 @@ summary::-webkit-details-marker {
     animation: none !important;
   }
 }
+
+/* Keep descriptive alt text accessible without drawing it over failed photos. */
+img { color: transparent; font-size: 0; }
+img[data-image-state="failed"] { opacity: 0; }

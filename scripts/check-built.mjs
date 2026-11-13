@@ -31,6 +31,10 @@ for (const file of htmlFiles) {
   }
   assert.match(html, /<html lang="zh-CN"/);
   if (production) {
+    assert.doesNotMatch(html, /https:\/\/cdn\.sanity\.io\/images\//, file + ': external photo dependency');
+    for (const [target] of html.matchAll(/\/_photos\/[a-f0-9]+\.jpg/g)) {
+      assert.ok((await stat(join(root, target)).catch(() => null))?.isFile(), file + ': missing ' + target);
+    }
     assert.doesNotMatch(html, /演示版 · 照片、地点与文字为占位内容/);
     assert.doesNotMatch(html, /name="robots" content="noindex, nofollow"/);
     assert.match(
