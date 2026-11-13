@@ -40,6 +40,10 @@ const mobileStyle=fullRoadMobile?`--mobile-aspect:${portraitAsset.width}/${portr
    <p class="cover-eyebrow">PHOTOGRAPHY PORTFOLIO</p>
    <h1>{settings.photographer}</h1>
   </div>
+  <div class="cover-note">
+   <p class="cover-note-zh">漫游者的白日梦，与未曾褪色的显影。</p>
+   <p class="cover-note-en" lang="en">A visual archive of waking dreams and quiet wanderings.</p>
+  </div>
   <a href="#selected" class="home-scroll" aria-label="向下浏览精选作品"><i aria-hidden="true"></i></a>
  </>}
 </section>
@@ -47,9 +51,13 @@ const mobileStyle=fullRoadMobile?`--mobile-aspect:${portraitAsset.width}/${portr
  .editorial-cover{height:100svh;min-height:500px;background:#19251e;color:#f5f0df;isolation:isolate}
  .editorial-cover .cover-picture{position:absolute;inset:0;z-index:-2}
  .cover-shade{position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(9,22,14,.42) 0%,rgba(12,24,16,.12) 52%,rgba(9,18,12,.04) 70%,rgba(8,16,11,.45) 100%),radial-gradient(ellipse 42% 43% at 50% 21%,rgba(17,27,22,.52),transparent 100%)}
- .editorial-cover .home-identity{inset:19% 20px auto;text-align:center;text-shadow:none}
+ .editorial-cover .home-identity{inset:22% 20px auto;text-align:center;text-shadow:none}
  .editorial-cover .cover-eyebrow{font:500 clamp(11px,1.05vw,18px)/1.4 'Cormorant Garamond',Georgia,serif;letter-spacing:.42em;margin:0 0 12px;padding-left:.42em;white-space:nowrap}
  .editorial-cover .home-identity h1{font:italic 400 clamp(100px,10.8vw,182px)/.85 'Cormorant Garamond',Georgia,serif;letter-spacing:-.045em;margin:0;white-space:nowrap}
+ .cover-note{position:absolute;left:clamp(24px,3.6vw,60px);bottom:5%;max-width:calc(50% - 80px);text-shadow:0 1px 10px rgba(0,0,0,.65)}
+ .cover-note p{margin:0}
+ .cover-note .cover-note-zh{font:400 clamp(14px,1.1vw,18px)/1.65 var(--serif-zh);letter-spacing:.04em}
+ .cover-note .cover-note-en{font:italic 400 clamp(16px,1.2vw,20px)/1.4 "Cormorant Garamond",Georgia,serif;margin-top:4px}
  .editorial-cover .home-scroll{inset:auto auto 3.8% 50%;transform:translateX(-50%);width:52px;height:52px;display:grid;place-items:center}
  .editorial-cover .home-scroll i{display:block;width:16px;height:16px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:rotate(45deg);animation:cover-arrow-pulse 2.4s ease-in-out infinite}
  .editorial-cover .home-scroll:is(:hover,:focus-visible) i{animation:none;opacity:1}
@@ -66,9 +74,12 @@ const mobileStyle=fullRoadMobile?`--mobile-aspect:${portraitAsset.width}/${portr
   .editorial-cover[data-full-road] .hero-photo{inset:0;width:100%;height:100%;object-fit:contain;object-position:bottom}
   .editorial-cover[data-full-road] .cover-shade{background:linear-gradient(180deg,rgba(6,17,10,.16),rgba(6,17,10,.22) 30%,transparent 53%,rgba(5,13,8,.12) 100%)}
   .cover-shade{background:linear-gradient(180deg,rgba(8,20,13,.4),rgba(10,23,15,.52) 26%,rgba(10,23,15,.28) 43%,transparent 62%,rgba(7,16,11,.36) 100%)}
-  .editorial-cover .home-identity{inset:22% 12px auto}
+  .editorial-cover .home-identity{inset:25% 12px auto}
   .editorial-cover .cover-eyebrow{font-size:clamp(10px,2.75vw,18px);letter-spacing:.3em;padding-left:.3em;margin-bottom:16px}
   .editorial-cover .home-identity h1{font-size:clamp(84px,27.5vw,195px);letter-spacing:-.045em;line-height:.95}
+  .cover-note{left:22px;right:22px;bottom:calc(5.7% + 64px);max-width:none}
+  .cover-note .cover-note-zh{font-size:clamp(13px,3.55vw,17px);letter-spacing:.02em}
+  .cover-note .cover-note-en{font-size:16px;line-height:1.35}
   .editorial-cover .home-scroll{bottom:5.7%}
   .editorial-cover .home-scroll i{width:15px;height:15px}
  }
@@ -77,9 +88,12 @@ const mobileStyle=fullRoadMobile?`--mobile-aspect:${portraitAsset.width}/${portr
  }
  @media(max-height:520px) and (orientation:landscape){
   .editorial-cover{min-height:360px}
-  .editorial-cover .home-identity{top:29%}
+  .editorial-cover .home-identity{top:32%}
   .editorial-cover .home-identity h1{font-size:clamp(80px,10vw,120px)}
   .editorial-cover .cover-eyebrow{font-size:10px;margin-bottom:7px}
+  .cover-note{bottom:5%;max-width:calc(50% - 64px)}
+  .cover-note .cover-note-zh{font-size:13px}
+  .cover-note .cover-note-en{font-size:15px;line-height:1.2;margin-top:2px}
   .editorial-cover .home-scroll{bottom:3%;height:44px}
  }
 </style>

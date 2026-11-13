@@ -14,7 +14,8 @@ import '../styles/global.css';
 interface Props {title?:string;description?:string;home?:boolean;shareImage?:string}
 const {settings,mode}=await getContent();
 const {title,description=settings.seo.description,home=false}=Astro.props;
-const fullTitle=title?`${title} — ${settings.title}`:settings.title;
+const siteTitle='挽风 | Reverian Photography';
+const fullTitle=home?siteTitle:title?`${title} — ${siteTitle}`:siteTitle;
 const canonical=new URL(Astro.url.pathname,Astro.site);
 const shareImage=Astro.props.shareImage || (settings.seo.shareImage?imageUrl(settings.seo.shareImage.photo,1200):undefined);
 ---
@@ -25,6 +26,7 @@ const shareImage=Astro.props.shareImage || (settings.seo.shareImage?imageUrl(set
  {shareImage && <meta property="og:image" content={new URL(shareImage,Astro.site)}/>}
  {mode==='demo' && <meta name="robots" content="noindex, nofollow"/>}
  <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+ {home && <link rel="preload" href="/images/branding/wanfeng-white.png" as="image"/>}
  </head><body class:list={[{'is-home':home}]}>
  {home && <ApertureIntro name={settings.photographer}/>}
  <a class="skip-link" href="#main">跳到正文</a><Header home={home}/>

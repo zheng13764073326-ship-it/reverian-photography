@@ -953,9 +953,16 @@ img[data-image-state="failed"] { opacity: 0; }
 
 /* The home cover uses its own signature styling. */
 .site-header.home-header .brand-signature {
-  font: italic 400 36px/1 "Cormorant Garamond", Georgia, serif;
-  letter-spacing: -.025em;
+  display: block;
+  width: 116px;
+  height: auto;
+  aspect-ratio: 984 / 407;
+  overflow: hidden;
+  filter: brightness(0);
+  opacity: .86;
 }
+.site-header.home-header.over-cover .brand-signature { filter: none; opacity: 1; }
+.site-header.home-header.menu-open .brand-signature { filter: brightness(0); opacity: .86; }
 .site-header.home-header.over-cover { color: #f5f0df; }
 @media (min-width: 801px) {
   .site-header.home-header { min-height: 84px; }
@@ -963,7 +970,7 @@ img[data-image-state="failed"] { opacity: 0; }
   .site-header.home-header .portfolio-nav summary > span { display: none; }
 }
 @media (max-width: 800px) {
-  .site-header.home-header .brand-signature { font-size: 26px; }
+  .site-header.home-header .brand-signature { width: 86px; }
   .site-header.home-header.menu-open { color: var(--ink); }
 }
 

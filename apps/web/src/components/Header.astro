@@ -4,7 +4,7 @@ const {home=false}=Astro.props;
 const path=Astro.url.pathname;
 ---
 <header class:list={['site-header',{'home-header':home,'over-cover':home}]} id="site-header">
- <a class="brand" href="/" aria-label="Reverian 首页">{home?<span class="brand-signature">Reverian</span>:<><strong>PHOTOGRAPHY</strong><small>CURATED SEQUENCE</small></>}</a>
+ <a class="brand" href="/" aria-label="挽风 | Reverian Photography 首页">{home?<svg class="brand-signature" viewBox="498 840 984 407" role="img" aria-label="挽风"><image href="/images/branding/wanfeng-white.png" width="2000" height="2000"/></svg>:<><strong>PHOTOGRAPHY</strong><small>CURATED SEQUENCE</small></>}</a>
  <button class="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="打开导航"><span></span><span></span><span></span></button>
  <nav id="main-nav" aria-label="主导航">
   <a href="/" aria-current={path==='/'?'page':undefined}>首页</a>
