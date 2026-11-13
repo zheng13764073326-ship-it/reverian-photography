@@ -14,6 +14,7 @@ const destinations = [
   {id:'dalian',city:'大连',country:'中国',longitude:121.62,latitude:38.92},
   {id:'suzhou',city:'苏州',country:'中国',longitude:120.58,latitude:31.30},
   {id:'kinmen',city:'金门',country:'中国台湾',longitude:118.32,latitude:24.44},
+  {id:'kunming',city:'昆明',country:'中国',longitude:102.71,latitude:25.04},
 ];
 export function albumFootprints(albums:Album[]) {
   return destinations.flatMap(place=>{
