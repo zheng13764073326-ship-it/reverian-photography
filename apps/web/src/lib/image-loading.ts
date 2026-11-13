@@ -16,7 +16,9 @@ function recover(image: HTMLImageElement) {
   recoveries.set(image, state);
   if (state.timer || state.attempts >= 2) return;
   const original = image.getAttribute('src');
-  const fallback = image.dataset.fallbackSrc || original!;
+  const preferred = [...(image.closest('picture')?.querySelectorAll('source') ?? [])]
+    .find(source => source.dataset.fallbackSrc && (!source.media || matchMedia(source.media).matches));
+  const fallback = preferred?.dataset.fallbackSrc || image.dataset.fallbackSrc || original!;
   state.attempts++;
   state.timer = setTimeout(() => {
     state.timer = undefined;

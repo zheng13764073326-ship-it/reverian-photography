@@ -1,0 +1,22 @@
+{
+  "width": 941,
+  "height": 1671,
+  "source": "User-provided portrait reference, UI removed with built-in image_gen; compressed original used as detail reference.",
+  "images": [
+    {
+      "width": 400,
+      "src": "/images/covers/kinmen-portrait-v2-400.jpg",
+      "bytes": 80362
+    },
+    {
+      "width": 800,
+      "src": "/images/covers/kinmen-portrait-v2-800.jpg",
+      "bytes": 276360
+    },
+    {
+      "width": 941,
+      "src": "/images/covers/kinmen-portrait-v2-941.jpg",
+      "bytes": 356922
+    }
+  ]
+}
