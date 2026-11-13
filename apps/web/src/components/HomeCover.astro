@@ -16,7 +16,6 @@ const spots=[
 const mobileSources=mobile?[400,800,1200].map(w=>`${imageUrl(mobile.photo,w,mobile,9/16)} ${w}w`).join(', '):undefined;
 const fullRoadMobile=desktop?.photo.id==='kinmen-2026-14'&&mobile?.photo.id==='kinmen-2026-14';
 const portraitSources=portraitAsset.images.map(image=>`${image.src} ${image.width}w`).join(', ');
-const place=desktop?.photo.location?.city==='金门'?'KINMEN':desktop?.photo.location?.city;
 ---
 <section class:list={['home-cover',{'editorial-cover':!desk}]} aria-label="Reverian 摄影封面" data-full-road={fullRoadMobile||undefined} style={fullRoadMobile?`--mobile-canopy:url('${portraitAsset.images[0].src}')`:undefined}>
  {desk ? <>
@@ -38,9 +37,7 @@ const place=desktop?.photo.location?.city==='金门'?'KINMEN':desktop?.photo.loc
    <h1>{settings.photographer}</h1>
    <span class="cover-rule" aria-hidden="true"></span>
   </div>
-  <div class="cover-edition" aria-hidden="true"><span>No.01</span><i></i></div>
-  <a href="#selected" class="home-scroll" aria-label="向下浏览精选作品"><span class="scroll-desktop">Scroll</span><span class="scroll-mobile">Explore</span><i aria-hidden="true"></i></a>
-  <p class="cover-index"><span>LANDSCAPE</span><b aria-hidden="true">/</b><span>TRAVEL</span>{place&&<><b aria-hidden="true">/</b><span>{place}</span></>}</p>
+  <a href="#selected" class="home-scroll" aria-label="向下浏览精选作品"><i aria-hidden="true"></i></a>
  </>}
 </section>
 <style>
@@ -51,14 +48,10 @@ const place=desktop?.photo.location?.city==='金门'?'KINMEN':desktop?.photo.loc
  .editorial-cover .cover-eyebrow{font:500 clamp(11px,1.05vw,18px)/1.4 'Cormorant Garamond',Georgia,serif;letter-spacing:.42em;margin:0 0 12px;padding-left:.42em;white-space:nowrap}
  .editorial-cover .home-identity h1{font:italic 400 clamp(100px,10.8vw,182px)/.85 'Cormorant Garamond',Georgia,serif;letter-spacing:-.045em;margin:0;white-space:nowrap}
  .cover-rule{display:block;width:34px;height:1px;background:currentColor;margin:14px auto 0;opacity:.9}
- .cover-edition{position:absolute;left:3.6%;bottom:4.2%;display:flex;align-items:center;gap:18px;width:25%;font:italic 400 23px/1 'Cormorant Garamond',Georgia,serif}
- .cover-edition i{height:1px;background:currentColor;opacity:.7;flex:1}
- .editorial-cover .home-scroll{inset:auto auto 3.8% 50%;transform:translateX(-50%);min-width:64px;min-height:56px;display:flex;align-items:center;flex-direction:column;gap:9px;font:italic 400 25px/1 'Cormorant Garamond',Georgia,serif;letter-spacing:0}
- .editorial-cover .home-scroll span{margin:0}
- .editorial-cover .home-scroll i{width:16px;height:16px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:rotate(45deg)}
- .editorial-cover .home-scroll .scroll-mobile{display:none}
- .cover-index{position:absolute;right:3.6%;bottom:4.3%;display:flex;gap:26px;align-items:center;margin:0;font:500 12px/1 'Cormorant Garamond',Georgia,serif;letter-spacing:.22em}
- .cover-index b{font-weight:400}
+ .editorial-cover .home-scroll{inset:auto auto 3.8% 50%;transform:translateX(-50%);width:52px;height:52px;display:grid;place-items:center}
+ .editorial-cover .home-scroll i{display:block;width:16px;height:16px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:rotate(45deg);animation:cover-arrow-pulse 2.4s ease-in-out infinite}
+ .editorial-cover .home-scroll:is(:hover,:focus-visible) i{animation:none;opacity:1}
+ @keyframes cover-arrow-pulse{0%,100%{opacity:.3}50%{opacity:1}}
  @media(max-width:800px) and (orientation:portrait){
   .editorial-cover{min-height:520px}
   .editorial-cover .hero-photo{object-position:var(--focus-mobile,center)}
@@ -72,10 +65,7 @@ const place=desktop?.photo.location?.city==='金门'?'KINMEN':desktop?.photo.loc
   .editorial-cover .cover-eyebrow{font-size:clamp(10px,2.75vw,18px);letter-spacing:.3em;padding-left:.3em;margin-bottom:16px}
   .editorial-cover .home-identity h1{font-size:clamp(84px,27.5vw,195px);letter-spacing:-.045em;line-height:.95}
   .cover-rule{width:24px;margin-top:14px}
-  .cover-edition,.cover-index{display:none}
-  .editorial-cover .home-scroll{bottom:5.7%;gap:13px;font-size:25px;min-height:60px}
-  .editorial-cover .home-scroll .scroll-desktop{display:none}
-  .editorial-cover .home-scroll .scroll-mobile{display:block}
+  .editorial-cover .home-scroll{bottom:5.7%}
   .editorial-cover .home-scroll i{width:15px;height:15px}
  }
  @media(max-height:520px) and (orientation:landscape){
@@ -84,7 +74,6 @@ const place=desktop?.photo.location?.city==='金门'?'KINMEN':desktop?.photo.loc
   .editorial-cover .home-identity h1{font-size:clamp(80px,10vw,120px)}
   .editorial-cover .cover-eyebrow{font-size:10px;margin-bottom:7px}
   .cover-rule{margin-top:12px}
-  .cover-edition{font-size:18px}.cover-index{font-size:9px;gap:12px}
-  .editorial-cover .home-scroll{font-size:20px;bottom:3%;gap:5px;min-height:44px}
+  .editorial-cover .home-scroll{bottom:3%;height:44px}
  }
 </style>
