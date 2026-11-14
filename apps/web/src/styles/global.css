@@ -550,6 +550,10 @@ summary::-webkit-details-marker {
   font-size: 13px;
   letter-spacing: 0.04em;
 }
+.footer-links {display:flex;align-items:center;justify-content:flex-end;gap:28px;margin-left:auto;align-self:flex-end}
+.footer-home {font:17px/1.8 var(--serif-zh);color:var(--ink);white-space:nowrap;text-underline-offset:6px}
+.footer-home:hover {text-decoration:underline;text-decoration-thickness:1px}
+.footer-links a:focus-visible {outline:2px solid var(--accent);outline-offset:5px}
 #lightbox {
   position: fixed;
   inset: 0;

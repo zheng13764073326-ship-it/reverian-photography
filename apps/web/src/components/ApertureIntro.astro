@@ -25,15 +25,11 @@ const leaves = Array.from({ length: 6 }, (_, i) => {
     const intro = document.getElementById('aperture-intro');
     if (!intro) return;
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const key = 'reverian:aperture-seen:v1';
-    let seen = false;
-    try { seen = sessionStorage.getItem(key) === '1'; } catch {}
     const navigation = performance.getEntriesByType('navigation')[0];
-    if (seen || motion.matches || location.hash || navigation?.type === 'back_forward') {
+    if (motion.matches || location.hash || navigation?.type === 'back_forward') {
       intro.remove();
       return;
     }
-    try { sessionStorage.setItem(key, '1'); } catch {}
     let timer;
     const finish = () => {
       clearTimeout(timer);
