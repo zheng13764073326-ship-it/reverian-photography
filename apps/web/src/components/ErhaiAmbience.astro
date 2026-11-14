@@ -5,8 +5,7 @@
   <span class="ambience-bars" aria-hidden="true"><i></i><i></i><i></i></span>
   <span class="ambience-time" aria-hidden="true">00:15</span>
  </button>
- <span class="ambience-caption">洱海公园 · 现场录音</span>
- <details class="ambience-credit"><summary>声音来源</summary><p><a href="https://freesound.org/people/lulocasero/sounds/666936/" target="_blank" rel="noopener noreferrer">DALI erhai 大理洱海公园</a>，录制：Linlin Wang；编辑：Luis López Casero（lulocasero）。<a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener noreferrer">CC BY-NC 4.0</a>，仅限非商业使用。本页选取 15 秒，并加入淡入淡出。</p></details>
+ <a class="ambience-caption" href="/audio/erhai-field-15s.LICENSE.txt" target="_blank" rel="noopener noreferrer" aria-label="录制于洱海，查看录音出处与授权">录制于洱海</a>
  <span class="ambience-status" role="status" aria-live="polite"></span>
  <audio preload="none" src="/audio/erhai-field-15s.wav" hidden></audio>
 </div>
@@ -26,11 +25,11 @@ if(root){
  button.addEventListener('click',async()=>{
   if(active){stop();return;}
   const token=++request;active=true;root.dataset.state='loading';button.setAttribute('aria-pressed','true');button.setAttribute('aria-busy','true');
-  button.setAttribute('aria-label','停止洱海实录');label.textContent='风声将至…';status.textContent='正在准备洱海实录。';
+  button.setAttribute('aria-label','停止洱海实录');label.textContent='听见洱海的风';status.textContent='正在准备洱海实录。';
   try{
    await audio.play();
    if(token!==request)return;
-   root.dataset.state='playing';button.removeAttribute('aria-busy');label.textContent='让风歇一会';status.textContent='洱海实录正在播放，15秒后自动结束，再次点击可停止。';
+   root.dataset.state='playing';button.removeAttribute('aria-busy');label.textContent='听见洱海的风';status.textContent='洱海实录正在播放，15秒后自动结束，再次点击可停止。';
   }catch{
    if(token!==request)return;
    stop('暂时无法播放，请再试一次。');root.dataset.state='error';label.textContent='再听一次风声';
@@ -53,11 +52,8 @@ if(root){
  .ambience-toggle:hover,.ambience-toggle[aria-pressed=true]{border-color:#b3a18a;background:rgba(148,127,98,.06)}
  .ambience-icon{width:20px;height:20px;flex:none;color:#907b62}
  .ambience-time{font-family:'Courier New',monospace;font-size:13px;letter-spacing:.02em;color:var(--muted);font-variant-numeric:tabular-nums;min-width:5ch}
- .ambience-caption{font-family:var(--serif-zh);font-size:14px;letter-spacing:.08em}
- .ambience-credit{font-family:var(--serif-zh);font-size:13px;line-height:1.8}
- .ambience-credit summary{cursor:pointer;text-underline-offset:4px;text-decoration:underline;text-decoration-color:var(--line)}
- .ambience-credit[open]{flex-basis:100%;max-width:760px}
- .ambience-credit p{margin:8px 0 0}.ambience-credit a{text-decoration:underline;text-underline-offset:3px}
+ .ambience-caption{white-space:nowrap;font-family:var(--serif-zh);font-size:14px;letter-spacing:.08em}
+ .ambience-caption:hover{text-decoration:underline;text-underline-offset:4px}
  .ambience-bars{display:none;align-items:center;gap:3px;height:16px;color:#907b62}
  .ambience-bars i{display:block;width:2px;height:12px;background:currentColor;animation:wind-bar 1.4s ease-in-out infinite alternate}
  .ambience-bars i:nth-child(2){animation-delay:-.5s;height:16px}.ambience-bars i:nth-child(3){animation-delay:-1s}
