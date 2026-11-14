@@ -29,7 +29,7 @@ const isPortraitPair=(spread:typeof spreads[number])=>spread.layout==='pair'&&sp
   <header class="album-opening">
    <div class="album-topline"><a href="/albums/">← 光影存档</a><span>REVERIAN / PHOTO ARCHIVE</span></div>
    <div class="album-heading">
-    <div class="album-title-block"><h1>{splitTitle?<><span class="album-city">{titleParts[0]}</span><span class="album-subtitle">{titleParts[1]}</span></>:album.title}</h1>{album.subtitle&&<p class="album-english">{album.subtitle}</p>}</div>
+    <div class="album-title-block"><h1>{splitTitle?<><span class="album-city">{titleParts[0]}</span><span class="album-subtitle">{titleParts[1]}</span></>:album.title}</h1>{album.subtitle&&<p class:list={['album-english',{'album-subtitle-zh':/[\u3400-\u9fff]/.test(album.subtitle)}]}>{album.subtitle}</p>}</div>
     <div class="album-edition"><p>{album.country} / {album.city}</p><p>{album.date.slice(0,7).replace('-','.')} <span>·</span> {photoCount} 张作品</p></div>
    </div>
   </header>
@@ -64,6 +64,7 @@ const isPortraitPair=(spread:typeof spreads[number])=>spread.layout==='pair'&&sp
  .album-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:34px}
  .album-heading h1{margin:0;font-size:clamp(36px,4.2vw,62px);letter-spacing:.04em}
  .album-title-block{min-width:0}.album-english{font:15px/1.7 var(--sans);letter-spacing:.12em;color:var(--muted);margin:18px 0 0}
+ .album-subtitle-zh{font-family:var(--serif-zh);font-size:19px;font-style:italic;letter-spacing:.06em}
  .album-city{display:block;font-size:clamp(54px,6vw,86px);line-height:1.1;letter-spacing:.16em}
  .album-subtitle{display:block;font-family:var(--serif-zh);font-variant-numeric:lining-nums;font-size:clamp(22px,2.1vw,30px);margin-top:14px;letter-spacing:.16em}
  .album-edition{text-align:right;letter-spacing:.1em;flex-shrink:0}

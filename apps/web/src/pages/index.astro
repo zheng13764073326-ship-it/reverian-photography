@@ -13,7 +13,7 @@ const filmPhotos=content.photos.filter(photo=>photo.sections.includes('film'));
 ---
 <Base home><HomeCover settings={content.settings}/>
  <section class="container section" id="selected"><SectionHeading title="精选作品" english="SELECTED PHOTOGRAPHS" href="/works/"/><div class="selected-grid">{content.featured.slice(0,6).map(p=><Photo photo={p} group="selected"/>)}</div></section>
- <section class="container section" id="albums"><SectionHeading title="光影存档" english="PHOTO ARCHIVE" href="/albums/"/><div class="album-grid">{content.albums.slice(0,6).map(album=><AlbumCard album={album} showExcerpt={false}/>)}</div></section>
+ <section class="container section" id="albums"><SectionHeading title="光影存档" english="PHOTO ARCHIVE" href="/albums/"/><div class="album-grid">{content.albums.filter(album=>album.showOnHome!==false).slice(0,6).map(album=><AlbumCard album={album} showExcerpt={false}/>)}</div></section>
  <section class="container section" id="street"><SectionHeading title="街巷观察" english="STREET OBSERVATIONS" href="/street/"/><div class="photo-grid">{content.photos.filter(p=>p.sections.includes('street')).slice(0,3).map(p=><Photo photo={p} group="street"/>)}</div></section>
  <section class="container section" id="film"><SectionHeading title="胶片来信" english="SILVER HALIDE" href="/film/spring-drift-2026/" label="进入暗房"/><p class="film-home-intro">脱离数码屏幕的即时预览，把决定权交给塑料镜头、过片齿轮与未知的时间。</p><DriftCard/>{filmPhotos.length>0&&<div class="film-home-grid">{filmPhotos.slice(0,2).map((photo,index)=><FilmFrame photo={photo} index={index} preview/>)}</div>}</section>
  <HomeAbout settings={content.settings}/>

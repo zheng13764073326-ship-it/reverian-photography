@@ -247,7 +247,7 @@ const album = defineType({
   type: "document",
   fields: [
     requiredText("title", "影集标题"),
-    defineField({name: "subtitle", title: "英文副标题", type: "string"}),
+    defineField({name: "subtitle", title: "副标题", type: "string"}),
     slug,
     requiredText("city", "城市 / 目的地"),
     requiredText("country", "国家 / 地区"),
@@ -270,6 +270,7 @@ const album = defineType({
       rows: 3,
       validation: (r) => r.max(240),
     }),
+    defineField({name: "showOnHome", title: "在首页光影存档预览中展示", type: "boolean", initialValue: true, description: "关闭后仍显示在全部影集目录及足迹地图中。"}),
     defineField({ name: "preface", title: "序言", type: "body" }),
     defineField({
       name: "spreads",

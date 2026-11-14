@@ -15,6 +15,8 @@ const destinations = [
   {id:'suzhou',city:'苏州',country:'中国',longitude:120.58,latitude:31.30},
   {id:'kinmen',city:'金门',country:'中国台湾',longitude:118.32,latitude:24.44},
   {id:'kunming',city:'昆明',country:'中国',longitude:102.71,latitude:25.04},
+  // Airport reference point: CAA aerodrome chart, 25°04′49″N 121°13′56″E.
+  {id:'taoyuan-airport',city:'桃园机场',country:'中国台湾',longitude:121+13/60+56/3600,latitude:25+4/60+49/3600},
   {id:'dali',city:'大理',country:'中国',longitude:100.23,latitude:25.60},
 ];
 export function albumFootprints(albums:Album[]) {

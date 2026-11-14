@@ -33,6 +33,7 @@ export interface Spread {
   text: RichText;
 }
 export interface Album {
+  showOnHome?: boolean;
   id: string;
   slug: string;
   title: string;
