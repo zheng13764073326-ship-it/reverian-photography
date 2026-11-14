@@ -8,7 +8,7 @@ const rows=[[35,9,22,11,34,28],[10,36,19,23,33,12]].map(ids=>ids.map(id=>issue.p
    <div class:list={['reel-track',{'reel-reverse':row===1}]}>
     {[0,1].map(()=> <div class="reel-copy">
      {photos.map(photo=><figure class="reel-frame">
-      <img src={photo.preview} srcset={photo.srcset} sizes="(max-width:600px) 240px, 340px" width={photo.width} height={photo.height} alt={photo.alt} loading="lazy" decoding="async"/>
+      <span class="reel-image"><img src={photo.preview} srcset={photo.srcset} sizes="(max-width:600px) 240px, 340px" width={photo.width} height={photo.height} alt={photo.alt} loading="lazy" decoding="async"/></span>
       <figcaption><span>{String(photo.number).padStart(2,'0')}A</span><span>SILVER HALIDE <span class="reel-arrow">▸</span></span></figcaption>
      </figure>)}
     </div>)}
@@ -31,6 +31,7 @@ const rows=[[35,9,22,11,34,28],[10,36,19,23,33,12]].map(ids=>ids.map(id=>issue.p
  .reel-reverse{animation-direction:reverse;animation-duration:80s}
  .reel-copy{display:flex;gap:var(--reel-gap);padding-right:var(--reel-gap);flex-shrink:0}
  .reel-frame{margin:0;flex:none}
+ .reel-image{display:block;overflow:hidden}
  .reel-frame img{display:block;width:auto;height:var(--reel-height);max-width:none;object-fit:contain;background:#292722}
  .reel-frame figcaption{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:6px 2px 0;font:10px/1.2 'Courier New',monospace;letter-spacing:.13em;color:var(--reel-gold)}
  .reel-frame figcaption>span:first-child{font-size:12px}.reel-arrow{padding-left:8px}
