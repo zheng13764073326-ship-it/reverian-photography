@@ -1,11 +1,12 @@
 ---
 import type {Photo,Cover} from '../lib/types';
 import {imageUrl,imageSet} from '../lib/images';
+import {hasPhotoStory} from '../lib/photo-stories';
 interface Props {storyMark?:boolean;photo:Photo;cover?:Pick<Cover,'focusX'|'focusY'>;ratio?:number;fit?:"cover"|"contain";eager?:boolean;sizes?:string;lightbox?:boolean;caption?:boolean;showInfo?:boolean;lightboxCaption?:string;group?:string}
 const {storyMark=false,photo,cover,ratio,fit="cover",eager=false,sizes='(max-width: 600px) calc(100vw - 40px), (max-width: 1000px) 46vw, 560px',lightbox=true,caption=true,showInfo=true,lightboxCaption,group='photos'}=Astro.props;
 const story=(lightboxCaption??photo.caption)?.trim()||'';
 // Older captions can be location credits alone, rather than a shooting note.
-const hasStory=storyMark && Boolean(story) && !/^拍摄于[^。！？!?\r\n]+[。.]?$/.test(story);
+const hasStory=storyMark && hasPhotoStory(story);
 const sourceRatio=fit==='contain'?undefined:ratio;
 const style=`background: #e6e1d7${fit==='cover'?` url('${photo.image.lqip||''}') center/cover`:''};${ratio?`aspect-ratio:${ratio};`:''}`;
 const innerStyle=(cover?`object-position:${cover.focusX*100}% ${cover.focusY*100}%;`:'')+(fit==='contain'?'object-fit:contain;transform:none;':'')||undefined;

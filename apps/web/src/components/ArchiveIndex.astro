@@ -1,0 +1,35 @@
+---
+import type {Album} from '../lib/types';
+import {getArchiveStats} from '../lib/archive-stats';
+interface Props {albums: Album[]}
+const stats = getArchiveStats(Astro.props.albums);
+const entries = [
+ {key: 'cities', value: stats.cities, title: 'CITIES', label: '座城'},
+ {key: 'frames', value: stats.frames, title: 'FRAMES', label: '张定格'},
+ {key: 'stories', value: stats.stories, title: 'STORIES', label: '段手记'},
+];
+---
+<section class="archive-index" aria-label="光影存档足迹统计">
+ <dl>
+  {entries.map(entry => <div class="archive-index-item" data-stat={entry.key}>
+   <dt><span>{entry.title}</span><span class="archive-index-label">{entry.label}</span></dt>
+   <dd>{String(entry.value).padStart(2, '0')}</dd>
+  </div>)}
+ </dl>
+</section>
+<style>
+ .archive-index{border-block:1px solid var(--line);padding:24px 0;margin:0 0 52px}
+ dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;max-width:820px;margin:0}
+ .archive-index-item{display:flex;align-items:center;gap:16px}
+ dt{font-family:var(--sans);font-size:13px;line-height:1.5;letter-spacing:.14em;color:var(--muted)}
+ .archive-index-label{display:block;font-family:var(--serif-zh);font-size:14px;letter-spacing:.12em;margin-top:3px}
+ dd{order:-1;margin:0;font-family:var(--serif);font-size:40px;line-height:1;font-variant-numeric:lining-nums tabular-nums;color:var(--ink)}
+ @media(max-width:600px){
+  .archive-index{padding:22px 0;margin-bottom:36px}
+  dl{gap:12px}
+  .archive-index-item{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+  dd{font-size:34px}
+  dt{font-size:12px;letter-spacing:.1em}
+  .archive-index-label{font-size:14px;margin-top:4px}
+ }
+</style>

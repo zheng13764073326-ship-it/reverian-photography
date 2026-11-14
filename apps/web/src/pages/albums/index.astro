@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
 import AlbumCard from '../../components/AlbumCard.astro';
+import ArchiveIndex from '../../components/ArchiveIndex.astro';
 import {getContent} from '../../lib/content';
 const {albums}=await getContent();
 ---
@@ -11,7 +12,7 @@ const {albums}=await getContent();
   <p>每一座城市都被封存为一册独立的影集。往里走，除了定格的画面，那些令我驻足良久的瞬间，都被写在了相纸的背面。</p>
  </div>
  <aside class="archive-reading-note" aria-label="翻阅提示"><span class="archive-note-star" aria-hidden="true">✦</span><p><span class="archive-note-title">翻阅提示：</span>按地点点击进入对应影集。影集中带有印记的照片附有拍摄手记，<strong>点开单张照片即可阅读当时的故事</strong>。</p></aside>
- </section><div class="album-grid">{albums.map(album=><AlbumCard album={album}/>)}</div>{!albums.length&&<p>光影存档正在整理中。</p>}</div></Base>
+ </section><ArchiveIndex albums={albums}/><div class="album-grid">{albums.map(album=><AlbumCard album={album}/>)}</div>{!albums.length&&<p>光影存档正在整理中。</p>}</div></Base>
 
 <style>
  .archive-introduction{max-width:820px;margin:0 0 64px}
