@@ -1,0 +1,28 @@
+---
+import DriftPhoto from './DriftPhoto.astro';
+interface Props {ids:number[];index?:number;ending?:boolean}
+const {ids,index=0,ending=false}=Astro.props;
+const lost=!ending&&[3,6].includes(index);
+---
+<section class:list={['drift-interlude',{'drift-last-frames':ending}]} data-interlude={ending?undefined:index} aria-label={ending?'最后的两帧':`第 ${index} 段底片过场`}>
+ <p class="drift-strip-caption">{ending?'— LAST LIGHT · 最后的春光 —':'— DRIFTING · 相机在春风里继续传递 —'}</p>
+ <div class="drift-filmstrip"><div class="drift-strip-track" tabindex="0" role="group" aria-label="底片条，可横向滚动；点击照片放大">
+  {ids.map(id=><div class="drift-strip-cell"><DriftPhoto id={id} compact/></div>)}
+  {lost&&<div class="drift-strip-cell lost-frame" aria-label="未能显影的春光，示意占位，不计入照片数量"><div><span>[ FRAME LOST IN DARKROOM ]</span><span>未能显影的春光</span></div><span class="lost-frame-number">— / UNDEVELOPED</span></div>}
+ </div></div>
+</section>
+<style>
+ .drift-interlude{margin:64px 0 104px}
+ .drift-strip-caption{font:12px/1.8 'Courier New',monospace;letter-spacing:.1em;color:#8c8881;margin:0 0 16px}
+ .drift-filmstrip{position:relative;background:#161615;padding:30px 22px 28px}
+ .drift-filmstrip::before,.drift-filmstrip::after{content:'';position:absolute;left:22px;right:22px;height:6px;background:repeating-linear-gradient(90deg,#eee9dd 0 9px,transparent 9px 23px);opacity:.65}
+ .drift-filmstrip::before{top:8px}.drift-filmstrip::after{bottom:8px}
+ .drift-strip-track{display:flex;gap:18px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:thin;scrollbar-color:#76664e #161615;padding:4px 0 10px}
+ .drift-strip-track:focus-visible{outline:1px solid #d2a365;outline-offset:6px}
+ .drift-strip-cell{flex:1 0 0;min-width:170px;scroll-snap-align:start}
+ .lost-frame{display:flex;flex-direction:column;color:#a59a88}
+ .lost-frame>div{height:190px;border:1px dashed #74634b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:15px;padding:16px;background:radial-gradient(ellipse at top right,#7c44241c,transparent 70%),repeating-linear-gradient(115deg,#ffffff02 0 1px,transparent 1px 4px);text-align:center;font:11px/1.8 'Courier New',monospace}
+ .lost-frame-number{margin-top:10px;font:11px/1.7 'Courier New',monospace;letter-spacing:.1em}
+ .drift-last-frames{max-width:780px;margin:80px auto 0}
+ @media(max-width:600px){.drift-interlude{margin:44px 0 64px}.drift-filmstrip{padding-inline:16px}.drift-strip-track{gap:14px}.drift-strip-cell{flex:0 0 220px;min-width:0}.lost-frame>div{height:174px}.drift-strip-caption{font-size:11px;letter-spacing:.02em}.drift-last-frames{margin-top:48px}}
+</style>

@@ -1,0 +1,21 @@
+---
+import issue from '../../data/film/drift-01.json';
+const cover=issue.photos.find(photo=>photo.id===issue.cover)!;
+---
+<a class="drift-card" href="/film/spring-drift-2026/" aria-label="进入暗房：春日胶片漂流">
+ <div class="drift-card-cover"><img src={cover.preview} srcset={cover.srcset} sizes="(max-width: 800px) calc(100vw - 40px), 700px" width={cover.width} height={cover.height} alt="春日胶片漂流：弯曲步道旁盛放的粉色樱花" loading="lazy" decoding="async"/><span>ISSUE 01</span></div>
+ <div class="drift-card-copy"><p class="drift-card-kicker">2026 SPRING / THE DRIFTING CAMERAS</p><h2>春日胶片漂流</h2><p class="drift-card-description">两台相机在朋友之间传递。<br/>38 帧留下的春光，8 封写给画面的来信。</p><p class="drift-card-count">02 CAMERAS · 38 FRAMES · 08 NOTES</p><span class="drift-card-enter">进入暗房 <span aria-hidden="true">↗</span></span></div>
+</a>
+<style>
+ .drift-card{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);align-items:center;gap:clamp(30px,5vw,76px);padding:28px 0 44px;border-bottom:1px solid #e2dfd7;color:#1c1c1a}
+ .drift-card-cover{position:relative;padding:10px;background:#fffcf7;box-shadow:0 5px 18px #201d1610}
+ .drift-card-cover img{width:100%;height:auto;display:block}
+ .drift-card-cover>span{position:absolute;bottom:24px;left:24px;background:#f4f1e9eb;padding:7px 10px;font:12px/1.5 'Courier New',monospace;letter-spacing:.12em}
+ .drift-card-kicker{font:12px/1.8 var(--sans);color:#8c8881;letter-spacing:.15em;margin:0 0 22px}
+ .drift-card h2{font:400 clamp(28px,3vw,44px)/1.5 var(--serif-zh);letter-spacing:.06em;margin:0 0 24px}
+ .drift-card-description{font:18px/2 'Songti SC','SimSun',var(--serif-zh);color:var(--muted);margin:0 0 28px}
+ .drift-card-count{font:12px/1.8 'Courier New',monospace;letter-spacing:.05em;color:#8c8881}
+ .drift-card-enter{display:inline-flex;gap:40px;font:17px/1.8 var(--serif-zh);border-bottom:1px solid #bbae98;padding-bottom:8px;margin-top:24px}
+ .drift-card:hover .drift-card-enter{border-color:#1c1c1a}.drift-card:focus-visible{outline:2px solid #9d713b;outline-offset:8px}
+ @media(max-width:800px){.drift-card{grid-template-columns:1fr;gap:28px}.drift-card h2{margin-bottom:16px}.drift-card-kicker{margin-bottom:12px}.drift-card-description{font-size:17px;margin-bottom:20px}.drift-card-enter{margin-top:12px}}
+</style>

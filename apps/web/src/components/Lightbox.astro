@@ -73,7 +73,20 @@ function sizePaper(){
  stage.style.width=`${flipped?backWidth:frontWidth}px`;stage.style.height=`${flipped?backHeight:frontHeight}px`;
 }
 async function present(source?:DOMRect){
- if(!isStory||!dialog.open)return;
+ if(!dialog.open)return;
+ if(!isStory){
+  if(!dialog.classList.contains('film-view'))return;
+  const token=generation;
+  try{await image.decode();}catch{}
+  if(token!==generation||!dialog.open)return;
+  image.style.removeProperty('opacity');
+  if(reduced.matches)return;
+  const rect=image.getBoundingClientRect();
+  const from=source&&rect.width&&rect.height?`translate(${source.x+source.width/2-rect.x-rect.width/2}px,${source.y+source.height/2-rect.y-rect.height/2}px) scale(${source.width/rect.width},${source.height/rect.height})`:'scale(.96)';
+  entrance=image.animate([{transform:from,opacity:source?1:0},{transform:'none',opacity:1}],{duration:source?480:260,easing:'cubic-bezier(.22,1,.36,1)'});
+  try{await entrance.finished;}catch{}
+  return;
+ }
  const token=generation;
  sizePaper();
  if(!reduced.matches){
@@ -88,6 +101,7 @@ async function present(source?:DOMRect){
 }
 function update(){
  cancelSequence();const a=links[index];
+ const isFilm=a.dataset.film==='true';dialog.classList.toggle('film-view',isFilm);image.style.removeProperty('opacity');if(isFilm&&!reduced.matches)image.style.opacity='0';
  isStory=a.dataset.story==='true';dialog.classList.toggle('story-view',isStory);flip.hidden=!isStory;
  dialog.style.removeProperty('--viewer-footer-space');
  // Disable transitions while replacing a different photo, avoiding a flash of the previous back.
@@ -103,7 +117,7 @@ function update(){
   const date=a.dataset.photoDate?.slice(0,4),place=a.dataset.photoLocation,heading=a.dataset.photoTitle;
   signature.textContent=[date,place].filter(Boolean).join(' · ')+(heading?` / ${heading}`:'');sizePaper();
  }else{stage.removeAttribute('style');front.style.removeProperty('background-image');ghost.removeAttribute('style');story.textContent='';signature.textContent='';}
- count.textContent=`${index+1} / ${links.length}`;
+ count.textContent=isFilm?`FRAME #${a.dataset.frameNumber||index+1} / ${a.dataset.frameTotal||links.length}`:`${index+1} / ${links.length}`;
  // Flush the front face before allowing subsequent rotation transitions.
  void stage.offsetHeight;stage.classList.remove('paper-reset');
  requestAnimationFrame(()=>{info.scrollTop=0;story.scrollTop=0;});
@@ -143,6 +157,12 @@ image.addEventListener('touchstart',event=>{start=event.touches.length===1?{x:ev
 image.addEventListener('touchend',event=>{if(!start)return;const t=event.changedTouches[0],dx=t.clientX-start.x,dy=t.clientY-start.y;if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.3){moved=true;step(dx<0?1:-1);}start=null;},{passive:true});
 </script>
 <style is:global>
+ #lightbox.film-view{background:rgba(236,231,219,.96);color:#34332d}
+ #lightbox.film-view::backdrop{background:rgba(93,83,65,.25);backdrop-filter:blur(10px)}
+ #lightbox.film-view #viewer-image{border:12px solid #fffcf7;box-shadow:0 20px 65px #392f302e;background:#fffcf7}
+ #lightbox.film-view footer{color:#786b57}
+ #lightbox.film-view #viewer-count{font-family:'Courier New',monospace;font-size:13px;letter-spacing:.05em}
+ @media(max-width:600px){#lightbox.film-view #viewer-image{border-width:7px}#lightbox.film-view footer{gap:12px}#lightbox.film-view #viewer-info{font-size:13px}}
  #paper-stage,#photo-paper,#paper-front{display:contents}
  #paper-back{display:none}
  #paper-flip[hidden]{display:none}

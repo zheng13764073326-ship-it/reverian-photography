@@ -6,7 +6,7 @@ import Photo from '../components/Photo.astro';
 import AlbumCard from '../components/AlbumCard.astro';
 import HomeAbout from '../components/HomeAbout.astro';
 import FilmFrame from '../components/film/FilmFrame.astro';
-import FilmEmpty from '../components/film/FilmEmpty.astro';
+import DriftCard from '../components/film/DriftCard.astro';
 import {getContent} from '../lib/content';
 const content=await getContent();
 const filmPhotos=content.photos.filter(photo=>photo.sections.includes('film'));
@@ -15,11 +15,12 @@ const filmPhotos=content.photos.filter(photo=>photo.sections.includes('film'));
  <section class="container section" id="selected"><SectionHeading title="精选作品" english="SELECTED PHOTOGRAPHS" href="/works/"/><div class="selected-grid">{content.featured.slice(0,6).map(p=><Photo photo={p} group="selected"/>)}</div></section>
  <section class="container section" id="albums"><SectionHeading title="光影存档" english="PHOTO ARCHIVE" href="/albums/"/><div class="album-grid">{content.albums.slice(0,6).map(album=><AlbumCard album={album} showExcerpt={false}/>)}</div></section>
  <section class="container section" id="street"><SectionHeading title="街巷观察" english="STREET OBSERVATIONS" href="/street/"/><div class="photo-grid">{content.photos.filter(p=>p.sections.includes('street')).slice(0,3).map(p=><Photo photo={p} group="street"/>)}</div></section>
- <section class="container section" id="film"><SectionHeading title="胶片来信" english="LETTERS ON FILM" href="/film/"/><p class="film-home-intro">用一次性胶片相机留下日常，让照片与短文成为一封封慢慢显影的来信。</p>{filmPhotos.length?<div class="film-home-grid">{filmPhotos.slice(0,2).map((photo,index)=><FilmFrame photo={photo} index={index} preview/>)}</div>:<FilmEmpty/>}</section>
+ <section class="container section" id="film"><SectionHeading title="胶片来信" english="SILVER HALIDE" href="/film/" label="进入暗房"/><p class="film-home-intro">脱离数码屏幕的即时预览，把决定权交给塑料镜头、过片齿轮与未知的时间。</p><DriftCard/>{filmPhotos.length>0&&<div class="film-home-grid">{filmPhotos.slice(0,2).map((photo,index)=><FilmFrame photo={photo} index={index} preview/>)}</div>}</section>
  <HomeAbout settings={content.settings}/>
 </Base>
 
 <style>
+ #film :global(.eyebrow){letter-spacing:.15em;color:#8c8881} #film :global(.section-heading h2){color:#1c1c1a}
  .film-home-intro{max-width:720px;margin:0 0 36px;font:18px/2 var(--serif-zh);color:var(--muted)}
  .film-home-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:48px}
  @media(max-width:800px){.film-home-grid{grid-template-columns:1fr;gap:48px}.film-home-intro{font-size:17px}}

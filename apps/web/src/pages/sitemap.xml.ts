@@ -3,7 +3,7 @@ import {getContent} from '../lib/content';
 import {pageItems} from '../lib/publishing';
 export const GET:APIRoute=async({site})=>{
  const data=await getContent();
- const paths=['/','/works/','/albums/','/street/','/film/','/about/',...data.albums.map(a=>`/albums/${a.slug}/`)];
+ const paths=['/','/works/','/albums/','/street/','/film/','/film/spring-drift-2026/','/about/',...data.albums.map(a=>`/albums/${a.slug}/`)];
  for(const section of ['works','street']){
   const count=pageItems(data.photos.filter(p=>section==='works'?p.featured:p.sections.includes('street'))).length;
   for(let n=2;n<=count;n++)paths.push(`/${section}/${n}/`);

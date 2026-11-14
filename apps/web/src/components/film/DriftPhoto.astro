@@ -1,0 +1,23 @@
+---
+import issue from '../../data/film/drift-01.json';
+interface Props {id:number;compact?:boolean;eager?:boolean}
+const {id,compact=false,eager=false}=Astro.props;
+const photo=issue.photos.find(photo=>photo.id===id)!;
+---
+<figure class:list={['drift-photo',{'drift-photo-compact':compact,'drift-photo-portrait':photo.height>photo.width}]} data-frame-id={photo.id}>
+ <a class="drift-photo-link" href={photo.original} data-lightbox data-film="true" data-frame-number={photo.number} data-frame-total={issue.total} data-group="drift-01" data-title="春日胶片漂流" data-alt={photo.alt} data-caption={photo.author?`CAPTURED BY ${photo.author}`:''} data-fallback-src={photo.preview} aria-label={`放大查看第 ${photo.number} / ${issue.total} 帧：${photo.alt}${photo.author?`，拍摄者 ${photo.author}`:''}`}>
+  <img src={photo.preview} srcset={photo.srcset} sizes={compact?'(max-width: 600px) 220px, 300px':'(max-width: 600px) calc(100vw - 64px), (max-width: 1000px) 46vw, 740px'} width={photo.width} height={photo.height} alt={photo.alt} loading={eager?'eager':'lazy'} decoding="async" data-fallback-src={photo.original}/>
+ </a>
+ <figcaption><span>{String(photo.number).padStart(2,'0')}A</span><span>{compact?'SILVER HALIDE':`FRAME ${String(photo.number).padStart(2,'0')} / 38`}</span></figcaption>
+</figure>
+<style>
+ .drift-photo{margin:0;min-width:0;width:100%}
+ .drift-photo-link{display:block;background:#fffcf7;border:10px solid #fffcf7;box-shadow:0 5px 18px #201d1610,0 1px 3px #201d1612}
+ .drift-photo-link img{display:block;width:100%;height:auto;max-width:100%}
+ .drift-photo figcaption{display:flex;justify-content:space-between;gap:12px;margin-top:12px;color:#8c8881;font:12px/1.7 'Courier New',monospace;letter-spacing:.1em}
+ .drift-photo-link:focus-visible{outline:2px solid #9d713b;outline-offset:5px}
+ .drift-photo-compact .drift-photo-link{border:0;background:#10100f;box-shadow:none}
+ .drift-photo-compact img{width:100%;height:190px;object-fit:contain}
+ .drift-photo-compact figcaption{color:#d2a365;font-size:11px;margin-top:10px}
+ @media(max-width:600px){.drift-photo-link{border-width:7px}.drift-photo figcaption{font-size:11px}.drift-photo-compact img{height:174px}}
+</style>
