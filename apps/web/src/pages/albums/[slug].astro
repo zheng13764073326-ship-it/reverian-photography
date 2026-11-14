@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Photo from '../../components/Photo.astro';
+import ErhaiAmbience from '../../components/ErhaiAmbience.astro';
 import RichText from '../../components/RichText.astro';
 import {getContent} from '../../lib/content';
 import {imageUrl} from '../../lib/images';
@@ -32,6 +33,7 @@ const isPortraitPair=(spread:typeof spreads[number])=>spread.layout==='pair'&&sp
     <div class="album-edition"><p>{album.country} / {album.city}</p><p>{album.date.slice(0,7).replace('-','.')} <span>·</span> {photoCount} 张作品</p></div>
    </div>
   </header>
+  {album.slug==='dali-2025'&&<ErhaiAmbience/>}
   <div class="album-cover">
    <Photo photo={album.cover.photo} group="album" storyMark caption={false} showInfo={false} lightboxCaption={album.cover.photo.caption} eager sizes="(max-width: 600px) calc(100vw - 40px), (max-width: 1280px) calc(100vw - 80px), 1200px"/>
    <div class="album-cover-note"><span class="album-cover-credit">{album.slug!=='kunming-2025'&&<span>摄影 / Reverian</span>}{!['suzhou-2025','suzhou-yangchenghu','kinmen-2026','kunming-2025','dali-2025'].includes(album.slug)&&album.cover.photo.caption&&<span class="cover-location">{album.cover.photo.caption}</span>}</span><a href="#album-sequence">展开这段旅程 ↓</a><span>点击照片，放大观看</span></div>
