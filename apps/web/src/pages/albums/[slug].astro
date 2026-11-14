@@ -5,6 +5,7 @@ import ErhaiAmbience from '../../components/ErhaiAmbience.astro';
 import RichText from '../../components/RichText.astro';
 import {getContent} from '../../lib/content';
 import {imageUrl} from '../../lib/images';
+import {hasPhotoStory} from '../../lib/photo-stories';
 export async function getStaticPaths(){const {albums}=await getContent();return albums.map((album,i)=>({params:{slug:album.slug},props:{album,previous:albums[i-1],next:albums[i+1]}}));}
 const {album,previous,next}=Astro.props;
 // The cover opens the viewing sequence; avoid showing it again in the body.
@@ -36,7 +37,7 @@ const isPortraitPair=(spread:typeof spreads[number])=>spread.layout==='pair'&&sp
   {album.slug==='dali-2025'&&<ErhaiAmbience/>}
   <div class="album-cover">
    <Photo photo={album.cover.photo} group="album" storyMark caption={false} showInfo={false} lightboxCaption={album.cover.photo.caption} eager sizes="(max-width: 600px) calc(100vw - 40px), (max-width: 1280px) calc(100vw - 80px), 1200px"/>
-   <div class="album-cover-note"><span class="album-cover-credit">{album.slug!=='kunming-2025'&&<span>摄影 / Reverian</span>}{!['suzhou-2025','suzhou-yangchenghu','kinmen-2026','kunming-2025','dali-2025'].includes(album.slug)&&album.cover.photo.caption&&<span class="cover-location">{album.cover.photo.caption}</span>}</span><a href="#album-sequence">展开这段旅程 ↓</a><span>点击照片，放大观看</span></div>
+   <div class="album-cover-note"><span class="album-cover-credit">{album.slug!=='kunming-2025'&&<span>摄影 / Reverian</span>}{!['suzhou-2025','suzhou-yangchenghu','kinmen-2026','kunming-2025','dali-2025'].includes(album.slug)&&album.cover.photo.caption&&!hasPhotoStory(album.cover.photo.caption)&&<span class="cover-location">{album.cover.photo.caption}</span>}</span><a href="#album-sequence">展开这段旅程 ↓</a><span>点击照片，放大观看</span></div>
   </div>
   <section class="album-preface" aria-label="影集序言">
    <p class="eyebrow">A NOTE BEFORE THE JOURNEY</p>
