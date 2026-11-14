@@ -180,8 +180,7 @@ try {
       "/albums/kyoto-2026/",
       "/works/",
       "/street/",
-      "/journal/",
-      "/journal/on-light/",
+      "/film/",
       "/about/",
     ]) {
       await navigate(path);

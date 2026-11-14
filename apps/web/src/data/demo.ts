@@ -140,6 +140,6 @@ export const demo: Content = {
     ),
     portrait: cover("valley"),
     socialLinks: [],
-    seo: { description: "Reverian 的旅行摄影、街巷观察与影像札记。" },
+    seo: { description: "Reverian 的旅行摄影、街巷观察与胶片来信。" },
   },
 };

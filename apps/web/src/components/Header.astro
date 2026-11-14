@@ -9,7 +9,7 @@ const path=Astro.url.pathname;
  <nav id="main-nav" aria-label="主导航">
   <a href="/" aria-current={path==='/'?'page':undefined}>首页</a>
   <details class="portfolio-nav"><summary>作品集 <span aria-hidden="true">⌄</span></summary><div class="portfolio-panel">
-   <a href="/works/">精选作品</a><a href="/albums/">光影存档</a><a href="/street/">街巷观察</a><a href="/journal/">影像札记</a>
+   <a href="/works/">精选作品</a><a href="/albums/">光影存档</a><a href="/street/">街巷观察</a><a href="/film/">胶片来信</a>
   </div></details>
   <a href="/about/" aria-current={path==='/about/'?'page':undefined}>关于我</a>
  </nav>
@@ -46,6 +46,6 @@ document.addEventListener('keydown',event=>{
 const hero=document.querySelector('.home-cover');
 if(hero)new IntersectionObserver(([entry])=>header.classList.toggle('over-cover',entry.isIntersecting),{rootMargin:'-80px 0px 0px 0px',threshold:0}).observe(hero);
 // Preserve the shared prototype links when moving to real page URLs.
-const legacy:Record<string,string>={'#/home':'/','#/selected':'/works/','#/collections':'/albums/','#/street':'/street/','#/film':'/journal/','#/about':'/about/'};
+const legacy:Record<string,string>={'#/home':'/','#/selected':'/works/','#/collections':'/albums/','#/street':'/street/','#/film':'/film/','#/about':'/about/'};
 if(location.hash in legacy)location.replace(legacy[location.hash]);
 </script>

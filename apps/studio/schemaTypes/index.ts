@@ -122,7 +122,7 @@ const photo = defineType({
       description: "描述画面主体，供屏幕阅读器和搜索引擎使用。",
       validation: (r) => r.required().min(3).max(240),
     }),
-    defineField({ name: "caption", title: "作品说明", type: "text", rows: 3 }),
+    defineField({ name: "caption", title: "作品说明", type: "text", rows: 5, description: "胶片来信的文案显示在照片下方；可用空行分段。" }),
     defineField({ name: "takenAt", title: "拍摄日期", type: "date" }),
     defineField({
       name: "location",
@@ -148,7 +148,8 @@ const photo = defineType({
       options: {
         list: [
           { title: "街巷观察", value: "street" },
-          { title: "影像札记", value: "journal" },
+          { title: "胶片来信", value: "film" },
+          { title: "旧札记（已停用）", value: "journal" },
         ],
       },
     }),
@@ -302,7 +303,7 @@ const album = defineType({
 });
 const journal = defineType({
   name: "journal",
-  title: "影像札记",
+  title: "旧札记（归档）",
   type: "document",
   fields: [
     requiredText("title", "标题"),

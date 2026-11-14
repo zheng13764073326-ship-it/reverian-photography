@@ -1,0 +1,25 @@
+---
+import Base from '../../layouts/Base.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import FilmFrame from '../../components/film/FilmFrame.astro';
+import FilmEmpty from '../../components/film/FilmEmpty.astro';
+import {getContent} from '../../lib/content';
+const {photos}=await getContent();
+const frames=photos.filter(photo=>photo.sections.includes('film'));
+---
+<Base title="胶片来信" description="用一次性胶片相机留下日常，让照片与短文成为一封封慢慢显影的来信。">
+ <div class="container page film-page">
+  <SectionHeading title="胶片来信" english="LETTERS ON FILM" page/>
+  <div class="film-introduction">
+   <p>有些画面，要等一卷胶片洗出来，才算真正相见。</p>
+   <p>这里收下一次性胶片相机留下的日常：偶然的光线、轻微的失焦，还有按下快门时没能说完的话。一张照片，一段短文，像一封慢慢抵达的来信。</p>
+  </div>
+  {frames.length?<div class="film-sequence">{frames.map((photo,index)=><FilmFrame photo={photo} index={index}/>)}</div>:<FilmEmpty/>}
+ </div>
+</Base>
+<style>
+ .film-introduction{max-width:760px;margin-bottom:64px;font:18px/2.1 var(--serif-zh);color:var(--muted)}
+ .film-introduction p{margin:0 0 1em}.film-introduction p:first-child{color:var(--ink)}
+ .film-sequence{display:grid;gap:88px}
+ @media(max-width:600px){.film-introduction{font-size:17px;margin-bottom:42px}.film-sequence{gap:60px}}
+</style>

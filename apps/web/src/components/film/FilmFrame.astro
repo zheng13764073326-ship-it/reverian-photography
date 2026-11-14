@@ -1,0 +1,24 @@
+---
+import Photo from '../../components/Photo.astro';
+import type {Photo as PhotoData} from '../../lib/types';
+interface Props {photo:PhotoData;index:number;preview?:boolean}
+const {photo,index,preview=false}=Astro.props;
+const paragraphs=(photo.caption||'').split(/\r?\n\s*\r?\n|\r?\n/).map(p=>p.trim()).filter(Boolean);
+const portrait=photo.image.height>photo.image.width;
+---
+<article class:list={['film-frame',{'film-frame-portrait':portrait,'film-frame-preview':preview}]}>
+ <div class="film-frame-meta"><span>FRAME {String(index+1).padStart(2,'0')}</span><span>{[photo.location?.city,photo.takenAt?.replaceAll('-','.')].filter(Boolean).join(' · ')}</span></div>
+ <div class="film-print"><Photo photo={photo} caption={false} storyMark group="film" lightboxCaption={photo.caption} sizes={preview?'(max-width: 800px) calc(100vw - 64px), 540px':portrait?'(max-width: 600px) 78vw, 420px':'(max-width: 600px) calc(100vw - 64px), 876px'}/></div>
+ <div class="film-letter"><h2>{photo.title}</h2>{!preview&&paragraphs.map(text=><p>{text}</p>)}</div>
+</article>
+<style>
+ .film-frame{width:100%;max-width:900px;margin-inline:auto}
+ .film-frame-meta{display:flex;justify-content:space-between;gap:16px;margin-bottom:14px;font:13px/1.7 var(--sans);letter-spacing:.1em;color:var(--muted)}
+ .film-print{padding:12px;background:#faf8f2;border:1px solid var(--line)}
+ .film-frame-portrait .film-print{max-width:444px;margin-inline:auto}
+ .film-letter{max-width:640px;margin:28px auto 0}
+ .film-letter h2{font:500 clamp(24px,2.5vw,32px)/1.5 var(--serif-zh);margin:0 0 18px;letter-spacing:.04em}
+ .film-letter p{font:18px/2 var(--serif-zh);color:var(--muted);margin:0 0 1em;overflow-wrap:anywhere}
+ .film-frame-preview .film-letter{margin-top:20px}.film-frame-preview h2{font-size:24px}
+ @media(max-width:600px){.film-print{padding:8px}.film-frame-portrait .film-print{width:78%;max-width:340px}.film-frame-meta{font-size:12px;gap:10px}.film-letter{margin-top:24px}.film-letter p{font-size:17px}}
+</style>
