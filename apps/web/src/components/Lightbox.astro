@@ -49,9 +49,9 @@ function writeStory(caption:string){
 function cancelSequence(){generation++;clearTimeout(autoFlip);autoFlip=undefined;entrance?.cancel();entrance=undefined;}
 function setFace(value:boolean){
  flipped=value;paper.classList.toggle('is-flipped',value);
+ if(!value&&back.contains(document.activeElement))(isStory?flip:close).focus({preventScroll:true});
  front.setAttribute('aria-hidden',String(value));back.setAttribute('aria-hidden',String(!value));back.inert=!value;
  flip.setAttribute('aria-pressed',String(value));flip.textContent=value?'返回照片 ↻':'翻至背面 ↻';
- if(!value&&back.contains(document.activeElement))flip.focus({preventScroll:true});
  if(isStory){stage.style.height=`${value?backHeight:frontHeight}px`;stage.style.width=`${value?backWidth:frontWidth}px`;}
 }
 function sizePaper(){
