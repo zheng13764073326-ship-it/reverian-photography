@@ -25,7 +25,7 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--sans);
-  font-size: 15px;
+  font-size: 18px;
   line-height: 1.8;
 }
 a {
@@ -104,7 +104,7 @@ summary::-webkit-details-marker {
 }
 .eyebrow {
   font-family: var(--sans);
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 400;
   letter-spacing: 0.22em;
   color: var(--muted);
@@ -113,11 +113,11 @@ summary::-webkit-details-marker {
   display: inline-block;
   border-bottom: 1px solid var(--accent);
   padding: 8px 0;
-  font-size: 13px;
+  font-size: 16px;
 }
 .back-link {
   display: inline-block;
-  font-size: 13px;
+  font-size: 16px;
   color: var(--muted);
   margin-bottom: 36px;
 }
@@ -153,12 +153,12 @@ summary::-webkit-details-marker {
 }
 .brand strong {
   font-family: Georgia, serif;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 400;
   letter-spacing: 0.48em;
 }
 .brand small {
-  font-size: 8px;
+  font-size: 11px;
   letter-spacing: 0.28em;
   margin-top: 12px;
   opacity: 0.65;
@@ -179,7 +179,7 @@ summary::-webkit-details-marker {
 }
 .portfolio-nav summary span {
   font-family: var(--sans);
-  font-size: 12px;
+  font-size: 15px;
   padding-left: 6px;
 }
 .portfolio-panel {
@@ -269,7 +269,7 @@ summary::-webkit-details-marker {
   position: absolute;
   right: 4%;
   bottom: 8%;
-  font-size: 11px;
+  font-size: 14px;
   letter-spacing: 0.15em;
 }
 .home-scroll span {
@@ -302,7 +302,7 @@ summary::-webkit-details-marker {
 }
 .section-heading > a {
   flex-shrink: 0;
-  font-size: 12px;
+  font-size: 15px;
   color: var(--muted);
   padding-bottom: 5px;
 }
@@ -323,7 +323,7 @@ summary::-webkit-details-marker {
   justify-content: space-between;
   gap: 12px;
   margin-top: 12px;
-  font-size: 12px;
+  font-size: 15px;
   color: var(--muted);
 }
 .cover-photo .image-frame {
@@ -369,17 +369,17 @@ summary::-webkit-details-marker {
   margin-bottom: 5px;
 }
 .album-meta span {
-  font-size: 11px;
+  font-size: 14px;
   color: var(--muted);
 }
 .album-location {
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: 0.12em;
   color: var(--muted);
   margin-bottom: 12px;
 }
 .album-excerpt {
-  font-size: 12px;
+  font-size: 15px;
   color: var(--muted);
   line-height: 1.9;
   margin: 0;
@@ -398,7 +398,7 @@ summary::-webkit-details-marker {
   border-bottom: 1px solid var(--line);
 }
 .journal-row time {
-  font-size: 11px;
+  font-size: 14px;
   color: var(--muted);
 }
 .journal-row h3 {
@@ -406,7 +406,7 @@ summary::-webkit-details-marker {
 }
 .journal-row p {
   margin: 0;
-  font-size: 13px;
+  font-size: 16px;
   color: var(--muted);
 }
 .intro {
@@ -429,7 +429,7 @@ summary::-webkit-details-marker {
   margin-bottom: 22px;
 }
 .album-title > p:last-child {
-  font-size: 14px;
+  font-size: 17px;
   color: var(--muted);
 }
 .preface {
@@ -489,7 +489,7 @@ summary::-webkit-details-marker {
   margin-top: 70px;
   border-top: 1px solid var(--line);
   padding-top: 25px;
-  font-size: 14px;
+  font-size: 17px;
 }
 .journal-preview {
   display: grid;
@@ -504,7 +504,7 @@ summary::-webkit-details-marker {
   font-size: 32px;
 }
 .journal-preview > div > p:not(.eyebrow) {
-  font-size: 14px;
+  font-size: 17px;
   color: var(--muted);
 }
 .journal-detail {
@@ -532,7 +532,7 @@ summary::-webkit-details-marker {
 }
 .demo-note {
   margin-top: 70px;
-  font-size: 12px;
+  font-size: 15px;
   color: var(--muted);
 }
 .demo-note a {
@@ -547,7 +547,7 @@ summary::-webkit-details-marker {
   padding: 30px 0 40px;
   margin-top: 50px;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: 0.04em;
 }
 #lightbox {
@@ -588,7 +588,7 @@ summary::-webkit-details-marker {
   display: flex;
   justify-content: space-between;
   gap: 24px;
-  font-size: 12px;
+  font-size: 15px;
 }
 #lightbox header {
   top: 24px;
@@ -598,9 +598,9 @@ summary::-webkit-details-marker {
   bottom: 28px;
   color: #bebbb1;
 }
-#viewer-info { min-width: 0; line-height: 1.65; }
-/* Collapse manual line breaks while keeping long stories clear of the photo. */
-#viewer-info[data-paragraphs] {
+#viewer-info { min-width: 0; font-size: 17px; line-height: 1.8; }
+/* Keep all stories readable without covering the photograph. */
+#viewer-info {
   white-space: normal;
   max-height: min(40dvh, max(40px, calc(100dvh - 280px)), 360px);
   overflow-y: auto;
@@ -670,11 +670,11 @@ summary::-webkit-details-marker {
     padding-inline: 20px;
   }
   .brand strong {
-    font-size: 11px;
+    font-size: 14px;
     letter-spacing: 0.35em;
   }
   .brand small {
-    font-size: 7px;
+    font-size: 10px;
     margin-top: 10px;
     letter-spacing: 0.24em;
   }
@@ -743,7 +743,7 @@ summary::-webkit-details-marker {
     font-size: clamp(65px, 12vw, 105px);
   }
   .home-identity p {
-    font-size: 14px;
+    font-size: 17px;
   }
   .home-scroll {
     bottom: 5%;
@@ -751,6 +751,8 @@ summary::-webkit-details-marker {
   }
 }
 @media (max-width: 600px) {
+  body { font-size: 16px; }
+  #viewer-info { font-size: 16px; }
   .container {
     width: calc(100% - 40px);
   }
@@ -766,7 +768,7 @@ summary::-webkit-details-marker {
     gap: 14px;
   }
   .section-heading .eyebrow {
-    font-size: 9px;
+    font-size: 12px;
     letter-spacing: 0.16em;
     margin-bottom: 10px;
   }
@@ -777,7 +779,7 @@ summary::-webkit-details-marker {
     font-size: 28px;
   }
   .section-heading > a {
-    font-size: 10px;
+    font-size: 13px;
   }
   .hero-photo {
     object-position: var(--focus-mobile, center);
@@ -805,15 +807,15 @@ summary::-webkit-details-marker {
     font-size: 22px;
   }
   .album-meta span {
-    font-size: 10px;
+    font-size: 13px;
   }
   .album-location {
-    font-size: 9px;
+    font-size: 12px;
     margin-bottom: 8px;
     letter-spacing: 0;
   }
   .album-excerpt {
-    font-size: 11px;
+    font-size: 14px;
     line-height: 1.7;
   }
   .journal-row {
@@ -833,7 +835,7 @@ summary::-webkit-details-marker {
   .journal-row p {
     grid-column: 1;
     grid-row: 3;
-    font-size: 12px;
+    font-size: 15px;
   }
   .journal-row > span {
     grid-column: 2;
@@ -846,10 +848,10 @@ summary::-webkit-details-marker {
     font-size: 55px;
   }
   .intro > p:not(.eyebrow) {
-    font-size: 15px;
+    font-size: 18px;
   }
   .back-link {
-    font-size: 12px;
+    font-size: 15px;
     margin-bottom: 22px;
   }
   .album-title {
@@ -862,7 +864,7 @@ summary::-webkit-details-marker {
     margin-bottom: 40px;
   }
   .prose {
-    font-size: 14px;
+    font-size: 17px;
     line-height: 2;
   }
   .spreads {
@@ -905,7 +907,7 @@ summary::-webkit-details-marker {
   }
   .album-pagination,
   .pagination {
-    font-size: 12px;
+    font-size: 15px;
     margin-top: 45px;
   }
   #lightbox {
@@ -916,7 +918,7 @@ summary::-webkit-details-marker {
   #lightbox footer {
     left: 20px;
     right: 20px;
-    font-size: 11px;
+    font-size: 14px;
   }
   #lightbox footer {
     bottom: 88px;

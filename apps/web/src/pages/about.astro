@@ -18,13 +18,13 @@ const aboutHeading=settings.about.find(block=>block.style==='h2')?.children.map(
  .about-layout{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(32px,5vw,72px);padding-top:12px}
  .about-portrait{position:sticky;top:calc(var(--header) + 28px)}
  .about-copy{min-width:0}
- .about-copy :global(.prose){font-size:15px;line-height:2.05;color:var(--ink)}
- .about-copy :global(.prose>p:first-child){font-family:var(--sans);font-size:11px;line-height:1.8;letter-spacing:.12em;color:var(--muted);margin:0 0 18px}
+ .about-copy :global(.prose){font-size:18px;line-height:2.05;color:var(--ink)}
+ .about-copy :global(.prose>p:first-child){font-family:var(--sans);font-size:14px;line-height:1.8;letter-spacing:.12em;color:var(--muted);margin:0 0 18px}
  .about-copy :global(.prose h2){font-family:var(--serif-zh);font-size:clamp(23px,2.1vw,29px);line-height:1.6;margin:0 0 30px;letter-spacing:.02em;text-wrap:balance}
  .about-copy :global(.prose p){margin-bottom:1.5em}
  .about-copy :global(.prose p:last-child){margin-bottom:0}
  .about-without-photo{grid-template-columns:1fr;max-width:720px;margin-inline:auto}
  @media(max-width:800px){.about-layout{grid-template-columns:1fr;gap:32px}.about-portrait{position:static}.about-copy{max-width:650px}}
- @media(max-width:600px){.about-layout{padding-top:0;gap:28px}.about-copy :global(.prose){font-size:15px}.about-copy :global(.prose>p:first-child){font-size:10px;letter-spacing:.09em}.about-copy :global(.prose h2){font-size:24px;margin-bottom:24px}}
+ @media(max-width:600px){.about-layout{padding-top:0;gap:28px}.about-copy :global(.prose){font-size:18px}.about-copy :global(.prose>p:first-child){font-size:13px;letter-spacing:.09em}.about-copy :global(.prose h2){font-size:24px;margin-bottom:24px}}
 </style>
 

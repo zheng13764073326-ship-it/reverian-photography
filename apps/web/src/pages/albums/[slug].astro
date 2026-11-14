@@ -56,12 +56,12 @@ const isPortraitPair=(spread:typeof spreads[number])=>spread.layout==='pair'&&sp
 </Base>
 <style>
  .album-detail{padding-top:calc(var(--header) + 28px)}
- .album-topline,.album-edition,.album-cover-note,.album-colophon>span{font-size:11px;color:var(--muted)}
+ .album-topline,.album-edition,.album-cover-note,.album-colophon>span{font-size:14px;color:var(--muted)}
  .album-topline{display:flex;justify-content:space-between;align-items:center;gap:20px;font-size:16px;letter-spacing:.08em;margin-bottom:28px}
  .album-topline a{padding-block:8px}
  .album-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:34px}
  .album-heading h1{margin:0;font-size:clamp(36px,4.2vw,62px);letter-spacing:.04em}
- .album-title-block{min-width:0}.album-english{font:12px/1.7 var(--sans);letter-spacing:.12em;color:var(--muted);margin:18px 0 0}
+ .album-title-block{min-width:0}.album-english{font:15px/1.7 var(--sans);letter-spacing:.12em;color:var(--muted);margin:18px 0 0}
  .album-city{display:block;font-size:clamp(54px,6vw,86px);line-height:1.1;letter-spacing:.16em}
  .album-subtitle{display:block;font-family:var(--serif-zh);font-variant-numeric:lining-nums;font-size:clamp(22px,2.1vw,30px);margin-top:14px;letter-spacing:.16em}
  .album-edition{text-align:right;letter-spacing:.1em;flex-shrink:0}
@@ -70,11 +70,11 @@ const isPortraitPair=(spread:typeof spreads[number])=>spread.layout==='pair'&&sp
  .album-cover-credit{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px 12px}.cover-location{border-left:1px solid var(--line);padding-left:12px}
  .album-preface{max-width:720px;margin:80px auto 100px}
  .album-excerpt-lead{font-family:var(--serif);font-size:26px;line-height:1.85;max-width:320px;margin:0}
- .album-preface :global(.prose){font-size:14px;color:var(--muted)}
+ .album-preface :global(.prose){font-size:17px;color:var(--muted)}
  .album-preface :global(.prose p){margin-block:0}
  .album-preface :global(.prose p + p){margin-top:1lh}
  .album-detail :global(.spreads){gap:48px}
- .album-detail :global(.spread-text .prose){padding:0 clamp(16px,4vw,64px);color:var(--muted);font-size:14px;line-height:2.2}
+ .album-detail :global(.spread-text .prose){padding:0 clamp(16px,4vw,64px);color:var(--muted);font-size:17px;line-height:2.2}
  .album-detail :global(.spread-text h2){font-size:32px;color:var(--ink);margin:0 0 30px}
  .album-detail :global(.spread-text .photograph){width:100%;max-width:510px}
  .album-detail :global(.spread-reverse .photograph){grid-column:2;grid-row:1;justify-self:end}
@@ -84,25 +84,29 @@ const isPortraitPair=(spread:typeof spreads[number])=>spread.layout==='pair'&&sp
  .album-detail :global(.spread-quiet.spread-reverse){justify-content:flex-end}
  .album-detail :global(.spread-quiet .photograph){width:64%;max-width:760px}
  .album-detail :global(.spread-quiet.spread-portrait .photograph){max-width:360px}
+ .album-detail :global(.spread-portrait){grid-template-columns:1fr}
+ .album-detail :global(.spread-quiet.spread-portrait){justify-content:center}
+ .album-detail :global(.spread-portrait .photograph){width:64%;max-width:360px;margin-inline:auto;justify-self:center;grid-column:auto;grid-row:auto}
+ .album-detail :global(.spread-portrait .prose){grid-column:auto;grid-row:auto}
  .album-detail :global(.spread-portrait-pair){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;max-width:880px;margin-inline:auto}
  .album-detail :global(.spread-portrait-pair>.photograph:nth-child(2)){margin-top:0}
  .album-colophon{text-align:center;margin:96px auto 80px}
  .album-colophon p{margin:20px 0}
  .album-next{border-top:1px solid var(--line);padding-top:36px}
  .next-story{display:grid;grid-template-columns:360px 1fr;gap:60px;align-items:center}
- .next-story h2{font-family:var(--serif-zh);font-variant-numeric:lining-nums;font-size:32px;margin-bottom:12px}.next-story p:not(.eyebrow){color:var(--muted);font-size:13px}.next-story span{font-size:13px}
+ .next-story h2{font-family:var(--serif-zh);font-variant-numeric:lining-nums;font-size:32px;margin-bottom:12px}.next-story p:not(.eyebrow){color:var(--muted);font-size:16px}.next-story span{font-size:16px}
  .return-stories{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:18px 0}.return-stories>span:last-child{font-family:var(--serif);font-size:26px}
  @media(max-width:800px){.album-preface{gap:36px;margin-block:64px}.next-story{grid-template-columns:1fr 1fr;gap:30px}.album-detail :global(.spread-text .prose){padding-inline:12px}}
  @media(max-width:600px){
-  .album-detail{padding-top:calc(var(--header) + 24px)}.album-topline{font-size:14px;letter-spacing:0;margin-bottom:22px;gap:12px}.album-topline>span{font-size:11px;letter-spacing:.02em;text-align:right}
-  .album-heading{display:block;margin-bottom:26px}.album-subtitle{font-size:22px;letter-spacing:.08em;margin-top:12px}.album-edition{text-align:left;display:flex;flex-wrap:wrap;gap:6px 20px;font-size:10px;margin-top:24px}
-  .album-cover-note{font-size:9px;gap:8px;letter-spacing:0;flex-wrap:wrap}.album-cover-note>span:last-child{display:none}
-  .album-preface{grid-template-columns:1fr;gap:24px;margin:48px 0 60px}.album-excerpt-lead{font-size:23px;max-width:none}.album-preface :global(.prose){font-size:14px}
+  .album-detail{padding-top:calc(var(--header) + 24px)}.album-topline{font-size:17px;letter-spacing:0;margin-bottom:22px;gap:12px}.album-topline>span{font-size:14px;letter-spacing:.02em;text-align:right}
+  .album-heading{display:block;margin-bottom:26px}.album-subtitle{font-size:22px;letter-spacing:.08em;margin-top:12px}.album-edition{text-align:left;display:flex;flex-wrap:wrap;gap:6px 20px;font-size:13px;margin-top:24px}
+  .album-cover-note{font-size:12px;gap:8px;letter-spacing:0;flex-wrap:wrap}.album-cover-note>span:last-child{display:none}
+  .album-preface{grid-template-columns:1fr;gap:24px;margin:48px 0 60px}.album-excerpt-lead{font-size:23px;max-width:none}.album-preface :global(.prose){font-size:17px}
   .album-detail :global(.spreads){gap:28px}.album-detail :global(.spread){gap:20px}.album-detail :global(.spread-text .prose){padding:12px 6px 0}.album-detail :global(.spread-text h2){font-size:27px;margin-bottom:20px}
   .album-detail :global(.spread-text .photograph){max-width:none}.album-detail :global(.spread-text .photograph img){max-height:none}
   .album-detail :global(.spread-quiet .photograph){width:100%;max-width:none}
-  .album-detail :global(.spread-quiet.spread-portrait .photograph){width:78%;max-width:320px}
+  .album-detail :global(.spread-portrait .photograph){width:78%;max-width:320px}
   .album-detail :global(.spread-portrait-pair){gap:12px}
-  .album-colophon{margin:64px auto 48px}.next-story{grid-template-columns:1fr;gap:24px}.next-story h2{font-size:28px}.return-stories>span:last-child{font-size:22px}.return-stories .eyebrow{font-size:9px}
+  .album-colophon{margin:64px auto 48px}.next-story{grid-template-columns:1fr;gap:24px}.next-story h2{font-size:28px}.return-stories>span:last-child{font-size:22px}.return-stories .eyebrow{font-size:12px}
  }
 </style>

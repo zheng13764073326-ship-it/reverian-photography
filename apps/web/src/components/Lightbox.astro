@@ -20,7 +20,7 @@ new ResizeObserver(()=>{
 function showCaption(caption:string){
  const paragraphs=/\r?\n\s*\r?\n/.test(caption);
  info.toggleAttribute('data-paragraphs',paragraphs);
- if(paragraphs)info.setAttribute('tabindex','0');else info.removeAttribute('tabindex');
+ if(caption.trim())info.setAttribute('tabindex','0');else info.removeAttribute('tabindex');
  // A closed dialog has no layout; reset after it becomes visible.
  requestAnimationFrame(()=>{info.scrollTop=0;});
 
