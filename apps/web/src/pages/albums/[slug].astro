@@ -34,7 +34,7 @@ const isPortraitPair=(spread:typeof spreads[number])=>spread.layout==='pair'&&sp
   </header>
   <div class="album-cover">
    <Photo photo={album.cover.photo} group="album" caption={false} showInfo={false} lightboxCaption={album.cover.photo.caption} eager sizes="(max-width: 600px) calc(100vw - 40px), (max-width: 1280px) calc(100vw - 80px), 1200px"/>
-   <div class="album-cover-note"><span class="album-cover-credit">{album.slug!=='kunming-2025'&&<span>摄影 / Reverian</span>}{!['suzhou-2025','suzhou-yangchenghu','kinmen-2026','kunming-2025'].includes(album.slug)&&album.cover.photo.caption&&<span class="cover-location">{album.cover.photo.caption}</span>}</span><a href="#album-sequence">展开这段旅程 ↓</a><span>点击照片，放大观看</span></div>
+   <div class="album-cover-note"><span class="album-cover-credit">{album.slug!=='kunming-2025'&&<span>摄影 / Reverian</span>}{!['suzhou-2025','suzhou-yangchenghu','kinmen-2026','kunming-2025','dali-2025'].includes(album.slug)&&album.cover.photo.caption&&<span class="cover-location">{album.cover.photo.caption}</span>}</span><a href="#album-sequence">展开这段旅程 ↓</a><span>点击照片，放大观看</span></div>
   </div>
   <section class="album-preface" aria-label="影集序言">
    <p class="eyebrow">A NOTE BEFORE THE JOURNEY</p>
