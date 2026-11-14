@@ -353,7 +353,7 @@ summary::-webkit-details-marker {
 }
 .album-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 32px 20px;
 }
 .album-meta {
@@ -634,9 +634,6 @@ summary::-webkit-details-marker {
 @media (max-width: 1000px) {
   .container {
     width: calc(100% - 48px);
-  }
-  .album-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .photo-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

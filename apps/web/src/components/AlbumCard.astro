@@ -6,6 +6,6 @@ const {album,showExcerpt=true}=Astro.props;
 const count=new Set([album.cover.photo.id,...album.spreads.flatMap(s=>s.photos.map(p=>p.id))]).size;
 ---
 <article class="album-card"><a href={`/albums/${album.slug}/`}>
- <Photo photo={album.cover.photo} cover={album.cover} ratio={3/2} fit={album.slug==='kunming-2025'?'contain':'cover'} lightbox={false} caption={false} sizes="(max-width: 600px) 44vw, (max-width: 1000px) 44vw, 380px"/>
+ <Photo photo={album.cover.photo} cover={album.cover} ratio={3/2} fit={album.slug==='kunming-2025'?'contain':'cover'} lightbox={false} caption={false} sizes="(max-width: 600px) calc(100vw - 40px), (max-width: 1000px) calc(100vw - 48px), (max-width: 1280px) calc(100vw - 80px), 1200px"/>
  <div class="album-meta"><h3>{album.title}</h3><span>{album.date.slice(0,4)}</span></div><p class="album-location">{album.country} / {album.city} · {count} 张作品</p>{showExcerpt&&<p class="album-excerpt">{album.excerpt}</p>}
 </a></article>
