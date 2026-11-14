@@ -106,7 +106,14 @@ function update(){
  dialog.style.removeProperty('--viewer-footer-space');
  // Disable transitions while replacing a different photo, avoiding a flash of the previous back.
  stage.classList.add('paper-reset');setFace(false);
- resetImageRecovery(image);image.dataset.fallbackSrc=a.dataset.fallbackSrc||a.href;image.src=a.href;image.alt=a.dataset.alt||a.dataset.title||'';
+ resetImageRecovery(image);image.dataset.fallbackSrc=a.dataset.fallbackSrc||a.href;
+ const filmPreview=isFilm?(a.querySelector('img')?.currentSrc||a.dataset.fallbackSrc):undefined;
+ image.src=filmPreview||a.href;image.alt=a.dataset.alt||a.dataset.title||'';
+ // Enlarge the already-visible scan immediately, then replace it with the original.
+ if(isFilm&&image.src!==a.href){
+  const token=generation,original=new Image();original.src=a.href;
+  void original.decode().then(()=>{if(token===generation&&dialog.open&&links[index]===a)image.src=a.href;}).catch(()=>{});
+ }
  title.textContent=a.dataset.title||'';
  const caption=a.dataset.caption||'';writeCaption(info,caption);info.toggleAttribute('tabindex',Boolean(caption.trim()));if(caption.trim())info.tabIndex=0;
  info.toggleAttribute('data-paragraphs',/\r?\n\s*\r?\n/.test(caption));
