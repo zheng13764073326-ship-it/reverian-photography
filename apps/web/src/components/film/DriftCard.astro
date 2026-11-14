@@ -1,21 +1,69 @@
 ---
 import issue from '../../data/film/drift-01.json';
-const cover=issue.photos.find(photo=>photo.id===issue.cover)!;
+const rows=[[35,9,22,11,34,28],[10,36,19,23,33,12]].map(ids=>ids.map(id=>issue.photos.find(photo=>photo.id===id)!));
 ---
-<a class="drift-card" href="/film/spring-drift-2026/" aria-label="进入暗房：春日胶片漂流">
- <div class="drift-card-cover"><img src={cover.preview} srcset={cover.srcset} sizes="(max-width: 800px) calc(100vw - 40px), 700px" width={cover.width} height={cover.height} alt="春日胶片漂流：弯曲步道旁盛放的粉色樱花" loading="lazy" decoding="async"/><span>ISSUE 01</span></div>
- <div class="drift-card-copy"><p class="drift-card-kicker">2026 SPRING / THE DRIFTING CAMERAS</p><h2>春日胶片漂流</h2><p class="drift-card-description">两台相机在朋友之间传递。<br/>38 帧留下的春光，8 封写给画面的来信。</p><p class="drift-card-count">02 CAMERAS · 38 FRAMES · 08 NOTES</p><span class="drift-card-enter">进入暗房 <span aria-hidden="true">↗</span></span></div>
-</a>
+<div class="film-reel" data-film-reel>
+ <a class="drift-card" href="/film/spring-drift-2026/" aria-label="进入暗房，翻阅春日胶片漂流">
+  {rows.map((photos,row)=><div class="reel-row" aria-hidden="true">
+   <div class:list={['reel-track',{'reel-reverse':row===1}]}>
+    {[0,1].map(()=> <div class="reel-copy">
+     {photos.map(photo=><figure class="reel-frame">
+      <img src={photo.preview} srcset={photo.srcset} sizes="(max-width:600px) 240px, 340px" width={photo.width} height={photo.height} alt={photo.alt} loading="lazy" decoding="async"/>
+      <figcaption><span>{String(photo.number).padStart(2,'0')}A</span><span>SILVER HALIDE <span class="reel-arrow">▸</span></span></figcaption>
+     </figure>)}
+    </div>)}
+   </div>
+  </div>)}
+ </a>
+ <button class="reel-toggle" type="button" aria-label="暂停胶片滚动" aria-pressed="false" title="暂停胶片滚动">
+  <svg class="reel-pause" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5v10M13 5v10"/></svg>
+  <svg class="reel-play" viewBox="0 0 20 20" aria-hidden="true"><path d="m7 5 8 5-8 5Z"/></svg>
+ </button>
+</div>
 <style>
- .drift-card{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);align-items:center;gap:clamp(30px,5vw,76px);padding:28px 0 44px;border-bottom:1px solid #e2dfd7;color:#1c1c1a}
- .drift-card-cover{position:relative;padding:10px;background:#fffcf7;box-shadow:0 5px 18px #201d1610}
- .drift-card-cover img{width:100%;height:auto;display:block}
- .drift-card-cover>span{position:absolute;bottom:24px;left:24px;background:#f4f1e9eb;padding:7px 10px;font:12px/1.5 'Courier New',monospace;letter-spacing:.12em}
- .drift-card-kicker{font:12px/1.8 var(--sans);color:#8c8881;letter-spacing:.15em;margin:0 0 22px}
- .drift-card h2{font:400 clamp(28px,3vw,44px)/1.5 var(--serif-zh);letter-spacing:.06em;margin:0 0 24px}
- .drift-card-description{font:18px/2 'Songti SC','SimSun',var(--serif-zh);color:var(--muted);margin:0 0 28px}
- .drift-card-count{font:12px/1.8 'Courier New',monospace;letter-spacing:.05em;color:#8c8881}
- .drift-card-enter{display:inline-flex;gap:40px;font:17px/1.8 var(--serif-zh);border-bottom:1px solid #bbae98;padding-bottom:8px;margin-top:24px}
- .drift-card:hover .drift-card-enter{border-color:#1c1c1a}.drift-card:focus-visible{outline:2px solid #9d713b;outline-offset:8px}
- @media(max-width:800px){.drift-card{grid-template-columns:1fr;gap:28px}.drift-card h2{margin-bottom:16px}.drift-card-kicker{margin-bottom:12px}.drift-card-description{font-size:17px;margin-bottom:20px}.drift-card-enter{margin-top:12px}}
+ .film-reel{position:relative;margin:0 0 32px;--reel-height:clamp(164px,17vw,232px);--reel-gap:14px;--reel-gold:#c7a065}
+ .drift-card{display:block;color:var(--reel-gold)}
+ .reel-row{position:relative;overflow:hidden;background:#1c1b18;padding:25px 0 31px;isolation:isolate}
+ .reel-row+.reel-row{margin-top:12px}
+ .reel-row::before,.reel-row::after{content:'';position:absolute;inset-inline:0;height:10px;z-index:1;pointer-events:none;background:repeating-linear-gradient(90deg,transparent 0 10px,#f2f0e9 10px 19px,transparent 19px 29px);opacity:.9}
+ .reel-row::before{top:7px}.reel-row::after{bottom:7px}
+ .reel-track{display:flex;width:max-content;animation:film-travel 72s linear infinite;animation-play-state:paused;will-change:transform}
+ .reel-reverse{animation-direction:reverse;animation-duration:80s}
+ .reel-copy{display:flex;gap:var(--reel-gap);padding-right:var(--reel-gap);flex-shrink:0}
+ .reel-frame{margin:0;flex:none}
+ .reel-frame img{display:block;width:auto;height:var(--reel-height);max-width:none;object-fit:contain;background:#292722}
+ .reel-frame figcaption{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:6px 2px 0;font:10px/1.2 'Courier New',monospace;letter-spacing:.13em;color:var(--reel-gold)}
+ .reel-frame figcaption>span:first-child{font-size:12px}.reel-arrow{padding-left:8px}
+ [data-visible="true"][data-paused="false"] .reel-track{animation-play-state:running}
+ .drift-card:focus-visible .reel-track{animation-play-state:paused}
+ .reel-toggle{position:absolute;right:12px;bottom:40px;z-index:2;display:grid;place-items:center;width:36px;height:36px;border:1px solid #c7a06580;border-radius:50%;background:#1c1b18e8;color:#e8d6b4;cursor:pointer}
+ .reel-toggle svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.5}.reel-toggle .reel-play{display:none}
+ [data-paused="true"] .reel-toggle .reel-play{display:block}[data-paused="true"] .reel-toggle .reel-pause{display:none}
+ .drift-card:focus-visible,.reel-toggle:focus-visible{outline:2px solid #aa7d42;outline-offset:4px}
+ @media(hover:hover){.drift-card:hover .reel-track{animation-play-state:paused}}
+ @keyframes film-travel{to{transform:translateX(-50%)}}
+ @media(max-width:600px){.film-reel{--reel-height:154px;--reel-gap:10px}.reel-row+.reel-row{margin-top:10px}.reel-frame figcaption{font-size:8px;letter-spacing:.07em}.reel-toggle{right:8px;width:34px;height:34px}}
+ @media(prefers-reduced-motion:reduce){.reel-track{animation:none;transform:none;will-change:auto}.reel-copy:nth-child(2){display:none}.reel-row{overflow-x:auto;scrollbar-width:thin;scrollbar-color:#9c8155 #1c1b18}.reel-toggle{display:none}}
 </style>
+<script>
+ document.querySelectorAll<HTMLElement>('[data-film-reel]').forEach(reel=>{
+  const button=reel.querySelector<HTMLButtonElement>('.reel-toggle')!;
+  reel.dataset.paused='false';
+  let visible=false;
+  const syncVisibility=()=>{reel.dataset.visible=String(visible&&!document.hidden);};
+  const observer=new IntersectionObserver(entries=>{
+   visible=entries[0].isIntersecting;
+   if(visible)reel.querySelectorAll<HTMLImageElement>('img').forEach(img=>{img.loading='eager';});
+   syncVisibility();
+  });
+  observer.observe(reel);
+  document.addEventListener('visibilitychange',syncVisibility);
+  button.addEventListener('click',()=>{
+   const paused=reel.dataset.paused!=='true';
+   reel.dataset.paused=String(paused);
+   button.setAttribute('aria-pressed',String(paused));
+   const label=paused?'继续胶片滚动':'暂停胶片滚动';
+   button.setAttribute('aria-label',label);button.title=label;
+  });
+ });
+</script>
