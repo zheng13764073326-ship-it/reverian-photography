@@ -1,4 +1,4 @@
-import {analysePixels,wavePoints,wavePath,reportBars,dimensionScores,radarPoints,histogramPoints} from './report-math';
+import {analysePixels,wavePoints,wavePath,dimensionScores,radarPoints,histogramPoints} from './report-math';
 import type {PictureAnalysis} from './report-math';
 import type {ReportSnapshot} from './report-export';
 
@@ -10,7 +10,7 @@ export function createOpticalReport(root:HTMLElement){
  const preview=get<HTMLDialogElement>('[data-report-preview]'),previewImage=get<HTMLImageElement>('[data-report-preview-image]');
  const exportButton=get<HTMLButtonElement>('[data-export-report]'),retry=get<HTMLButtonElement>('[data-analysis-retry]');
  const reduced=matchMedia('(prefers-reduced-motion: reduce)'),mouse=matchMedia('(hover: hover) and (pointer: fine)');
- let generation=0,animationFrame=0,hoverTimer=0,tiltFrame=0,entryTimer=0,observer:IntersectionObserver|undefined;
+ let generation=0,animationFrame=0,tiltFrame=0,entryTimer=0,observer:IntersectionObserver|undefined;
  let snapshot:(Omit<ReportSnapshot,'analysis'> & {analysis?:PictureAnalysis})|undefined,currentImage:HTMLImageElement|undefined,analysis:PictureAnalysis|undefined;
  let urls:string[]=[],active=-1,correct:boolean[]=[],completed=false,analysing=false,analysisRun=0;
  let items:HTMLElement[]=[],nodes:SVGGElement[]=[];
@@ -18,7 +18,7 @@ export function createOpticalReport(root:HTMLElement){
  const resetTilt=()=>{cancelAnimationFrame(tiltFrame);tiltFrame=0;card.style.removeProperty('--rx');card.style.removeProperty('--ry');};
  function reset(){
   generation++;analysisRun++;analysing=false;completed=false;snapshot=undefined;analysis=undefined;currentImage=undefined;
-  cancelAnimationFrame(animationFrame);clearTimeout(hoverTimer);clearTimeout(entryTimer);observer?.disconnect();observer=undefined;resetTilt();
+  cancelAnimationFrame(animationFrame);clearTimeout(entryTimer);observer?.disconnect();observer=undefined;resetTilt();
   result.classList.remove('is-focusing');details.inert=false;card.inert=false;reviewPanel.open=false;if(preview.open)preview.close();releaseUrls();
   exportButton.disabled=true;exportButton.textContent='导出测光报告';retry.hidden=true;active=-1;
  }
@@ -49,11 +49,10 @@ export function createOpticalReport(root:HTMLElement){
   wave.innerHTML=`<defs><linearGradient id="wave-area" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#237489" stop-opacity=".14"/><stop offset="1" stop-color="#237489" stop-opacity="0"/></linearGradient></defs>${grid}<path fill="url(#wave-area)" d="${wavePath(mine)} L570 116H30Z"/>`+mine.map(p=>`<path class="wave-reference" d="M ${p.x} 6 V 116"/>`).join('')+`<path class="wave-mine" d="${wavePath(mine)}"/><path class="wave-visitor" d="${wavePath(visitor)}"/>`+mine.map((p,i)=>`<g class="wave-node" role="button" tabindex="0" data-index="${i}" data-correct="${correct[i]}" aria-controls="tacit-answer-${i+1}" aria-label="第 ${i+1} 题，${correct[i]?'合焦':'失焦'}，查看答案"><rect class="wave-hit" x="${p.x-27}" y="1" width="54" height="147" rx="3"/><circle class="wave-dot" cx="${p.x}" cy="${p.y}" r="3"/>${correct[i]?'':`<circle class="wave-dot visitor" cx="${p.x}" cy="${visitor[i].y}" r="3"/>`}<text class="node-code" x="${p.x+10}" y="${Math.max(10,Math.min(p.y,visitor[i].y)-9)}">${correct[i]?'LK':'DF'}</text><text x="${p.x}" y="139">${String(i+1).padStart(2,'0')}</text></g>`).join('');
   nodes=[...wave.querySelectorAll<SVGGElement>('.wave-node')];
   nodes.forEach((node,i)=>{
-   node.addEventListener('click',()=>{clearTimeout(hoverTimer);locate(i);});
+   node.addEventListener('click',()=>locate(i));
    node.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();locate(i);}else if(event.key==='ArrowRight'||event.key==='ArrowLeft'){event.preventDefault();nodes[(i+(event.key==='ArrowRight'?1:9))%10].focus();}});
    node.addEventListener('focus',()=>activate(i));
-   node.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse'&&mouse.matches){activate(i);clearTimeout(hoverTimer);hoverTimer=window.setTimeout(()=>locate(i),550);}});
-   node.addEventListener('pointerleave',()=>clearTimeout(hoverTimer));
+   node.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse'&&mouse.matches)activate(i);});
   });
  }
  function finishFocus(){
@@ -109,7 +108,7 @@ export function createOpticalReport(root:HTMLElement){
   });
   const now=new Date(),date=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('');
   const id=`RF-${date}-${input.id.replaceAll('-','').slice(0,12).toUpperCase()}`;
-  const timestamp=new Intl.DateTimeFormat('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(now);
+  const timestamp=new Intl.DateTimeFormat('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
   get('[data-report-id]').textContent=id;get('[data-report-time]').textContent=timestamp;get('[data-report-time]').setAttribute('datetime',now.toISOString());
   const tier=input.score>=8?2:input.score>=4?1:0,images=[...root.querySelectorAll<HTMLImageElement>('[data-match]')];
   currentImage=images.find(image=>Number(image.dataset.match)===tier)||images[0];images.forEach(image=>image.hidden=image!==currentImage);
@@ -120,8 +119,6 @@ export function createOpticalReport(root:HTMLElement){
   drawWave();const scores=dimensionScores(correct),vertices=radarPoints(scores),radar=root.querySelector<SVGSVGElement>('[data-radar]')!;
   radar.dataset.scores=JSON.stringify(scores);radar.setAttribute('aria-label',scores.map((v,i)=>`${['光影','偏爱','直觉'][i]} ${Math.round(v*100)}%`).join('，'));
   radar.innerHTML=[19,38,57,76].map(r=>`<circle class="radar-grid" cx="120" cy="116" r="${r}"/>`).join('')+radarPoints([1,1,1]).map(p=>`<path class="radar-grid" d="M120 116L${p.x} ${p.y}"/>`).join('')+`<polygon class="radar-area" points="${vertices.map(p=>`${p.x},${p.y}`).join(' ')}"/>`+vertices.map(p=>`<circle class="radar-dot" cx="${p.x}" cy="${p.y}" r="2"/>`).join('')+[[120,22],[40,200],[200,200]].map(([x,y],i)=>`<text x="${x}" y="${y}">${['光影','偏爱','直觉'][i]} ${Math.round(scores[i]*100)}%</text>`).join('');
-  const bars=reportBars(id),width=bars.reduce((sum,w)=>sum+w+1,0);let x=0;
-  const barcode=root.querySelector<SVGSVGElement>('[data-report-barcode]')!;barcode.setAttribute('viewBox',`0 0 ${width} 32`);barcode.innerHTML=bars.map(w=>{const rect=`<rect x="${x}" width="${w}" height="32"/>`;x+=w+1;return rect;}).join('');
   get('[data-score]').textContent=reduced.matches?String(input.score):'0';
   if(reduced.matches)finishFocus();else{
    result.classList.add('is-focusing');details.inert=true;card.inert=true;get('[data-optical-status]').textContent='测光 · 解析共鸣';card.style.setProperty('--focus-score','0');
@@ -157,7 +154,7 @@ export function createOpticalReport(root:HTMLElement){
    get('[data-export-status]').textContent='报告暂未生成，请稍后重试。';if(mobile&&preview.open)get('[data-preview-hint]').textContent='报告暂未生成，请关闭后重试。';
   }finally{if(token===generation){exportButton.disabled=false;exportButton.textContent='导出测光报告';}}
  });
- window.addEventListener('pagehide',()=>{cancelAnimationFrame(animationFrame);clearTimeout(entryTimer);clearTimeout(hoverTimer);resetTilt();observer?.disconnect();releaseUrls();if(preview.open)preview.close();});
+ window.addEventListener('pagehide',()=>{cancelAnimationFrame(animationFrame);clearTimeout(entryTimer);resetTilt();observer?.disconnect();releaseUrls();if(preview.open)preview.close();});
  window.addEventListener('pageshow',event=>{if(event.persisted){finishFocus();connectReview();}});
  return {present,reset};
 }

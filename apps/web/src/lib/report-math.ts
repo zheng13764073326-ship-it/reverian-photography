@@ -19,8 +19,9 @@ export function wavePoints(correct:boolean[]): {mine:Point[];visitor:Point[]} {
 export function wavePath(points:Point[]):string {
   return points.map((p,i)=>i?`C ${(points[i-1].x+p.x)/2} ${points[i-1].y}, ${(points[i-1].x+p.x)/2} ${p.y}, ${p.x} ${p.y}`:`M ${p.x} ${p.y}`).join(' ');
 }
-export function reportBars(id:string):number[] {
-  return [...id].flatMap(c=>Array.from({length:4},(_,i)=>1+((c.charCodeAt(0)>>(i*2))&3)));
+export function barcodeRuns(bits:string):{start:number;width:number}[]{
+  return [...bits.matchAll(/1+/g)].map(match=>({start:match.index,width:match[0].length}));
+
 }
 export function analysePixels(data:Uint8ClampedArray):PictureAnalysis {
   const bins=new Map<number,{r:number;g:number;b:number;n:number}>();

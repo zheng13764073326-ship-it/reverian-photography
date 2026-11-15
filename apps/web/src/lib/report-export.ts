@@ -1,4 +1,4 @@
-import {wavePoints,wavePath,reportBars,dimensionScores,radarPoints,histogramPoints} from './report-math';
+import {wavePoints,wavePath,barcodeRuns,dimensionScores,radarPoints,histogramPoints} from './report-math';
 import type {PictureAnalysis} from './report-math';
 export type ReportSnapshot={id:string;timestamp:string;score:number;title:string;message:string;correct:boolean[];image:HTMLImageElement;analysis:PictureAnalysis;photoTitle:string;place:string;archive:string};
 export async function renderReport(s:ReportSnapshot,element:HTMLElement):Promise<Blob>{
@@ -27,7 +27,7 @@ export async function renderReport(s:ReportSnapshot,element:HTMLElement):Promise
  for(let i=0;i<60;i++){const a=i*Math.PI/30;line(cx+Math.cos(a)*(r-4),cy+Math.sin(a)*(r-4),cx+Math.cos(a)*(r-(i%5===0?14:9)),cy+Math.sin(a)*(r-(i%5===0?14:9)));}
  c.strokeStyle='#23748925';c.beginPath();c.arc(cx,cy,53,0,2*Math.PI);c.stroke();c.strokeStyle=blue;c.lineWidth=1.5;c.beginPath();c.arc(cx,cy,53,-Math.PI/2,-Math.PI/2+Math.PI*2*s.score/10);c.stroke();
  c.textAlign='center';text(s.title,cx,117,25,blue,serif);c.textAlign='left';
- const scoreText=String(s.score), suffix='/ 10 合焦';
+ const scoreText=String(s.score), suffix='/ 合焦';
  c.font=`55px ${mono}`;const scoreWidth=c.measureText(scoreText).width;
  c.font=`9px ${mono}`;const suffixWidth=c.measureText(suffix).width;
  const scoreX=cx-(scoreWidth+suffixWidth+4)/2;
@@ -57,9 +57,23 @@ export async function renderReport(s:ReportSnapshot,element:HTMLElement):Promise
  s.analysis.palette.forEach((color,i)=>{c.fillStyle=color;c.fillRect(417+i*70,y+37,63,38);text(color,417+i*70,y+88,8);});text('SAMPLED FROM THE MATCHED FRAME',417,y+108,7);
  const a=s.analysis,barX=417,barW=352,barY=y+126;c.fillStyle=blue;c.fillRect(barX,barY,barW*a.cool/100,4);c.fillStyle='#c8d1cd';c.fillRect(barX+barW*a.cool/100,barY,barW*a.neutral/100,4);c.fillStyle=orange;c.fillRect(barX+barW*(a.cool+a.neutral)/100,barY,barW*a.warm/100,4);
  const pointer=barX+barW*(.5+(a.warm-a.cool)/200);line(pointer,barY-5,pointer,barY+10,ink,1);text(`${a.cool}% COOL`,417,y+151,8);text(`${a.neutral}% NEUTRAL`,535,y+151,8);text(`${a.warm}% WARM`,697,y+151,8);text('C.04',757,y+174,6);
- y+=185;const qr: {size:number;bits:string}=JSON.parse(element.dataset.qr||'null');const qrSize=(qr.size+8)*2;const footerHeight=Math.max(90,qrSize+16);box(16,y,768,footerHeight);text('reverian-photography.pages.dev',30,y+35,10);text(s.timestamp,30,y+54,9);
- const bars=reportBars(s.id),sum=bars.reduce((n,w)=>n+w+1,0);let bx=535;c.fillStyle=ink;for(const w of bars){c.fillRect(bx,y+footerHeight/2-10,w/sum*132,20);bx+=(w+1)/sum*132;}
- const qx=774-qrSize,qy=y+8;c.fillStyle=paper;c.fillRect(qx,qy,qrSize,qrSize);c.fillStyle=ink;[...qr.bits].forEach((v,i)=>{if(v==='1')c.fillRect(qx+(i%qr.size+4)*2,qy+(Math.floor(i/qr.size)+4)*2,2,2);});
+ y=Math.ceil(y+185);
+ const qr:{size:number;bits:string}=JSON.parse(element.dataset.qr!);
+ const codeHeight=qr.size+8;
+ const footerHeight=codeHeight+16;
+ const domain=element.querySelector('[data-report-domain]')?.textContent||'';
+ box(16,y,768,footerHeight);
+ text(domain+' · '+s.timestamp,30,y+footerHeight/2+4,10);
+ const qrX=774-codeHeight,codeY=y+8;
+ const barcode=element.dataset.barcode!;
+ // Each Code 128 module is one physical pixel in the 2× PNG.
+ const barsX=qrX-8-(barcode.length+20)/2;
+ c.fillStyle=paper;c.fillRect(barsX,codeY,(barcode.length+20)/2,codeHeight);
+ c.fillStyle=ink;
+ for(const {start,width} of barcodeRuns(barcode))c.fillRect(barsX+(start+10)/2,codeY+4,width/2,codeHeight-8);
+ c.fillStyle=paper;c.fillRect(qrX,codeY,codeHeight,codeHeight);
+ c.fillStyle=ink;
+ [...qr.bits].forEach((v,i)=>{if(v==='1')c.fillRect(qrX+i%qr.size+4,codeY+Math.floor(i/qr.size)+4,1,1);});
  const height=Math.ceil(y+footerHeight+16);const output=document.createElement('canvas');output.width=1600;output.height=height*2;const ctx=output.getContext('2d');if(!ctx)throw Error('无法生成图片');ctx.drawImage(source,0,0);ctx.strokeStyle='#aeb8ae';ctx.lineWidth=1.4;ctx.strokeRect(20,20,1560,output.height-40);
  return new Promise((resolve,reject)=>output.toBlob(blob=>blob?resolve(blob):reject(Error('图片导出失败')),'image/png'));
 }

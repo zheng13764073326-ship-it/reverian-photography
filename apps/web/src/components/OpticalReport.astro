@@ -2,20 +2,28 @@
 import {getContent} from '../lib/content';
 import {imageUrl} from '../lib/images';
 import QRCode from 'qrcode';
+import JsBarcode from 'jsbarcode';
+import wechatUrl from '../data/report-wechat.json';
+import {barcodeRuns} from '../lib/report-math';
 const {albums}=await getContent();
 const matches=['taipei-not-yet-2026','kinmen-2026','dali-2025'].map((slug,i)=>albums.find(a=>a.slug===slug)||albums[i]||albums[0]).filter(Boolean);
 const homepage=new URL('/',Astro.site||Astro.url).href;
-const matrix=QRCode.create(homepage,{errorCorrectionLevel:'M'}).modules;
+// JsBarcode supports returning raw encodings into a plain object on the server.
+const barcodeOutput: {encodings?: {data: string}[]}={};
+JsBarcode(barcodeOutput as unknown as SVGElement,homepage,{format:'CODE128',displayValue:false});
+const barcode=barcodeOutput.encodings!.map(encoding=>encoding.data).join('');
+const barcodePath=barcodeRuns(barcode).map(({start,width})=>`M${10+start} 4h${width}v42h-${width}z`).join('');
+const matrix=QRCode.create(wechatUrl,{errorCorrectionLevel:'M'}).modules;
 const qr={size:matrix.size,bits:Array.from(matrix.data).join('')};
 const qrPath=Array.from(matrix.data).map((v,i)=>v?`M${i%qr.size+4} ${Math.floor(i/qr.size)+4}h1v1h-1z`:'').join('');
 ---
-<article class="optical-report" data-report data-qr={JSON.stringify(qr)} aria-label="光学同频档案卡">
+<article class="optical-report" data-report data-qr={JSON.stringify(qr)} data-barcode={barcode} aria-label="光学同频档案卡">
  <header class="optical-top"><span>REVERIAN OPTICAL LAB <b>//</b> <span data-report-id></span></span><span class="lab-lock" data-optical-status role="status">AF-C LOCKED</span></header>
  <div class="optical-cabins">
   <section class="sync-cabin module"><span class="module-label">00 // SYNC</span>
    <div class="sync-body">
     <h3 class="result-kicker" tabindex="-1" data-result-title>合焦完成</h3>
-    <div class="reticle"><svg viewBox="0 0 200 200" aria-hidden="true"><circle class="ring-outer" cx="100" cy="100" r="94"/><circle class="ring-inner" cx="100" cy="100" r="78"/>{Array.from({length:60},(_,i)=><line x1="100" y1="10" x2="100" y2={i%5===0?20:15} transform={`rotate(${i*6} 100 100)`}/>)}<circle class="ring-score" data-ring cx="100" cy="100" r="78" pathLength="100" transform="rotate(-90 100 100)"/></svg><p class="score"><span data-score>0</span><span class="score-unit">/ 10 合焦</span></p></div>
+    <div class="reticle"><svg viewBox="0 0 200 200" aria-hidden="true"><circle class="ring-outer" cx="100" cy="100" r="94"/><circle class="ring-inner" cx="100" cy="100" r="78"/>{Array.from({length:60},(_,i)=><line x1="100" y1="10" x2="100" y2={i%5===0?20:15} transform={`rotate(${i*6} 100 100)`}/>)}<circle class="ring-score" data-ring cx="100" cy="100" r="78" pathLength="100" transform="rotate(-90 100 100)"/></svg><p class="score"><span data-score>0</span><span class="score-unit">/ 合焦</span></p></div>
     <p data-result-message></p>
    </div>
    <div class="optical-lock" aria-hidden="true"><i></i><i></i><i></i><i></i></div><span class="module-corner">SYNC.00</span>
@@ -25,13 +33,19 @@ const qrPath=Array.from(matrix.data).map((v,i)=>v?`M${i%qr.size+4} ${Math.floor(
   </section>
  </div>
  <div class="optical-fold"><div>
-  <section class="optical-wave module" aria-label="十道题的双波同频图"><div class="optical-label"><span>02 // WAVEFORM</span><span class="wave-key"><b>— 我</b><b>┄ 你</b><em>● 合焦 / ○ 失焦</em></span></div><div class="wave-viewport"><svg data-wave viewBox="0 0 600 150" aria-label="点击或悬停题号，前往对应答案"></svg></div><span class="module-corner">W.02</span></section>
+  <section class="optical-wave module" aria-label="十道题的双波同频图"><div class="optical-label"><span>02 // WAVEFORM</span><span class="wave-key"><b>— 我</b><b>┄ 你</b><em>● 合焦 / ○ 失焦</em></span></div><div class="wave-viewport"><svg data-wave viewBox="0 0 600 150" aria-label="点击题号，前往对应答案"></svg></div><span class="module-corner">W.02</span></section>
   <section class="optical-picture module" aria-label="匹配摄影作品"><div class="film-edge"><span>REVF // PIXEL LAB</span><span data-photo-archive>FRAME 02A</span></div><figure class="optical-photo-frame">{matches.map((album,i)=><img hidden data-match={i} data-city={album.city} data-photo-title={album.title} data-photo-date={album.cover.photo.takenAt||album.date} data-photo-id={album.cover.photo.id} src={imageUrl(album.cover.photo,1200)} width={album.cover.photo.image.width} height={album.cover.photo.image.height} alt={album.cover.photo.alt} loading="lazy" decoding="async" crossorigin="anonymous"/>)}<i class="viewfinder tl" aria-hidden="true"></i><i class="viewfinder tr" aria-hidden="true"></i><i class="viewfinder bl" aria-hidden="true"></i><i class="viewfinder br" aria-hidden="true"></i><span class="center-cross" aria-hidden="true">+</span></figure><div class="film-edge bottom"><span data-match-title></span><span>REVERIAN / VISUAL ARCHIVE</span></div></section>
   <div class="optical-telemetry">
    <section class="telemetry-histogram module"><div class="optical-label"><span>03 // LUMINANCE</span><span data-luma>— / 100</span></div><svg data-histogram viewBox="0 0 260 96" role="img" aria-label="照片像素的真实亮度直方图"></svg><div class="histogram-axis"><span>0 / SHADOW</span><span>255 / LIGHT</span></div><p class="optical-caption" data-match-place></p><span class="module-corner">L.03</span></section>
    <section class="telemetry-spectrum module"><div class="optical-label"><span>04 // CHROMATIC DNA</span><span data-analysis-state role="status">等待画面</span></div><div class="optical-spectrum" data-spectrum aria-label="画面五种代表色"></div><p class="color-value" data-color-value aria-live="polite">选择色条，读取 HEX</p><div class="temperature-scale" data-thermal aria-label="照片冷暖比例尺"><i data-temperature-pointer></i></div><p class="thermal-caption" data-thermal-label></p><button class="quiz-action" type="button" data-analysis-retry hidden>重新解析画面</button><span class="module-corner">C.04</span></section>
   </div>
-  <footer class="optical-footer module"><div><span>reverian-photography.pages.dev</span><time data-report-time></time></div><div class="archive-codes"><svg data-report-barcode aria-hidden="true" viewBox="0 0 240 24"></svg><a class="report-qr" href={homepage} aria-label="扫码或点击回到网站首页"><svg data-report-qr viewBox={`0 0 ${qr.size+8} ${qr.size+8}`} role="img" aria-label="网站首页二维码" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="#f4f1e9"/><path d={qrPath} fill="#262722"/></svg></a></div></footer>
+  <footer class="optical-footer module">
+   <p class="report-footer-meta"><a href={homepage} data-report-domain>{new URL(homepage).hostname}</a><span aria-hidden="true"> · </span><time data-report-time></time></p>
+   <div class="archive-codes">
+    <a class="report-barcode" href={homepage} aria-label="打开网站首页，支持 Code 128 扫描" title="网站首页"><svg data-report-barcode viewBox={`0 0 ${barcode.length+20} 50`} preserveAspectRatio="none" shape-rendering="crispEdges" aria-hidden="true"><rect width="100%" height="100%" fill="#f4f1e9"/><path d={barcodePath} fill="#262722"/></svg></a>
+    <a class="report-qr" href={wechatUrl} aria-label="打开微信名片，也可使用微信扫一扫" title="微信名片"><svg data-report-qr viewBox={`0 0 ${qr.size+8} ${qr.size+8}`} role="img" aria-label="微信名片二维码" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="#f4f1e9"/><path d={qrPath} fill="#262722"/></svg></a>
+   </div>
+  </footer>
  </div></div>
 </article>
 <dialog class="report-preview" aria-labelledby="report-preview-title" data-report-preview><header><h2 id="report-preview-title">测光报告</h2><button type="button" class="quiz-action" data-preview-close autofocus>关闭 ×</button></header><p data-preview-hint role="status">正在生成高清图片…</p><img data-report-preview-image width="1600" height="2400" hidden alt="你的专属测光报告，长按可保存图片"/><a class="quiz-action" data-preview-download download>下载图片</a></dialog>
@@ -108,5 +122,19 @@ const qrPath=Array.from(matrix.data).map((v,i)=>v?`M${i%qr.size+4} ${Math.floor(
   .optical-report .telemetry-spectrum [data-analysis-state]{font-size:6px}
   .optical-report .optical-spectrum{margin-top:6px;min-height:38px}
   .optical-report .report-qr{width:43px}
+ }
+</style>
+
+<style is:global>
+ .optical-report .report-footer-meta{margin:0;white-space:nowrap;font-size:9px}
+ .optical-report .archive-codes{--code-height:48px;flex:none;gap:7px}
+ .optical-report .report-barcode{display:block;width:158px;height:var(--code-height)}
+ .optical-report .report-qr{width:var(--code-height);height:var(--code-height)}
+ .optical-report .report-barcode svg{display:block;width:100%;height:100%}
+ .optical-report .report-barcode:focus-visible,.optical-report .report-footer-meta a:focus-visible{outline:2px solid var(--focus-color);outline-offset:2px}
+ @media(max-width:600px){
+  .optical-report .archive-codes{--code-height:38px;gap:4px}
+  .optical-report .report-barcode{width:clamp(68px,23vw,120px)}
+  .optical-report .report-footer-meta{font-size:clamp(5.8px,1.6vw,8px)}
  }
 </style>
