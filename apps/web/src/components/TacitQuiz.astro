@@ -1,5 +1,6 @@
 ---
 import {tacitQuestions} from '../lib/tacit';
+import OpticalReport from './OpticalReport.astro';
 ---
 <section id="tacit" class="tacit" aria-label="默契度测试">
   <div class="tacit-intro">
@@ -26,21 +27,24 @@ import {tacitQuestions} from '../lib/tacit';
       <div class="quiz-verdict" data-verdict hidden aria-hidden="true"><span class="verdict-word" data-verdict-word></span><span class="verdict-sub" data-verdict-sub></span></div>
     </div>
     <div class="quiz-result" data-result hidden>
-      <h3 class="result-kicker" tabindex="-1" data-result-title>合焦完成</h3>
-      <p class="score"><span data-score>0</span><span class="score-unit"> / 10 合焦</span></p>
-      <p data-result-message></p>
+      <OpticalReport/>
+      <div data-result-details>
       <p class="save-note" role="status" data-save-note></p>
       <button class="quiz-action" type="button" data-save-retry hidden>重试保存</button>
-      <div id="tacit-review" class="quiz-review"><ol data-review aria-label="逐题答案对照"></ol></div>
-      <div class="result-actions"><button type="button" class="quiz-action" data-restart>再测一次</button><a class="quiz-action" href="/about/">回到简介</a></div>
+      <details id="tacit-review" class="quiz-review" data-review-panel><summary>查看 10 道题的答案对照</summary><ol data-review aria-label="逐题答案对照"></ol></details>
+      <div class="result-actions"><button type="button" class="quiz-action" data-restart>再测一次</button><a class="quiz-action" href="/about/">回到简介</a><button type="button" class="quiz-action" data-export-report disabled>导出测光报告</button></div>
+      <p class="save-note" role="status" data-export-status></p>
+      </div>
     </div>
   </div>
 </section>
 
 <script>
+  import {createOpticalReport} from '../lib/optical-report';
   import {tacitQuestions, isInFocus, tacitScore, tacitResult, QUIZ_VERSION} from '../lib/tacit';
   const root = document.querySelector<HTMLElement>('#tacit');
   if (root) {
+    const opticalReport = createOpticalReport(root);
     const get = <T extends HTMLElement = HTMLElement>(selector: string) => root.querySelector<T>(selector)!;
     const start = get<HTMLButtonElement>('[data-start]');
     const nameForm = get<HTMLFormElement>('[data-name-form]');
@@ -191,6 +195,7 @@ import {tacitQuestions} from '../lib/tacit';
         review.append(item);
       });
       focus(get('[data-result-title]'));
+      opticalReport.present({correct:tacitQuestions.map((q,i)=>isInFocus(q,answers[i])),score:score/10,title:resultCopy.title,message:resultCopy.message,id:attemptId});
       submission = {id:attemptId,name:nickname,version:QUIZ_VERSION,answers:answers.map(answer=>[...answer])};
       void saveResult();
     };
@@ -213,6 +218,7 @@ import {tacitQuestions} from '../lib/tacit';
       } finally { if (saving === current.id) saving = ''; }
     };
     const showName = () => {
+      opticalReport.reset();
       clearAdvance();
       frame.hidden = true;
       get('.tacit-intro').hidden = true;
