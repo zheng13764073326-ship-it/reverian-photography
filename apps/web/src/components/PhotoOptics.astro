@@ -1,0 +1,30 @@
+<svg class="photo-optics-defs" width="0" height="0" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="photo-edge-optics" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="red"/>
+      <feOffset in="red" dx=".65" dy=".15" result="red-shift"/>
+      <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" result="cyan"/>
+      <feOffset in="cyan" dx="-.65" dy="-.15" result="cyan-shift"/>
+      <feBlend in="red-shift" in2="cyan-shift" mode="screen" result="dispersion"/>
+      <feImage href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cdefs%3E%3CradialGradient id='g'%3E%3Cstop offset='.45' stop-color='white' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='white' stop-opacity='.85'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='100' height='100' fill='url(%23g)'/%3E%3C/svg%3E" preserveAspectRatio="none" x="0" y="0" width="100%" height="100%" result="edge-mask"/>
+      <feComposite in="dispersion" in2="edge-mask" operator="in" result="edges"/>
+      <feComposite in="SourceGraphic" in2="edge-mask" operator="out" result="center"/>
+      <feComposite in="center" in2="edges" operator="arithmetic" k2="1" k3="1"/>
+    </filter>
+  </defs>
+</svg>
+<style is:global>
+  .photo-optics-defs { position: absolute; pointer-events: none; overflow: hidden; }
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .editorial-cover:hover .hero-photo,
+    .image-frame:hover img,
+    .reel-image:hover img,
+    .drift-photo-link:hover img {
+      --photo-optics-filter: url('#photo-edge-optics');
+      filter: var(--photo-optics-filter);
+    }
+    @media (max-width: 800px) and (orientation: portrait) {
+      .editorial-cover[data-full-road]:hover .hero-photo { filter: none; }
+    }
+  }
+</style>

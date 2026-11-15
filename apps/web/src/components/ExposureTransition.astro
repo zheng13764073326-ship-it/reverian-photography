@@ -1,0 +1,69 @@
+<script is:inline>
+(() => {
+  const root = document.documentElement;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const key = 'reverian-shutter';
+  let pending = '', departure = 0, recovery = 0;
+  const reset = () => {
+    clearTimeout(departure);
+    clearTimeout(recovery);
+    pending = '';
+    delete root.dataset.shutter;
+  };
+  // Read before the body paints. A destination-bound ticket never affects a
+  // direct visit, reload, return-home intro or restored history entry.
+  try {
+    const ticket = JSON.parse(sessionStorage.getItem(key) || 'null');
+    sessionStorage.removeItem(key);
+    const navigation = performance.getEntriesByType('navigation')[0];
+    if (!reduced.matches && navigation?.type === 'navigate' && ticket?.url === location.href && Date.now() - ticket.at < 10000) {
+      root.dataset.shutter = 'opening';
+      recovery = window.setTimeout(reset, 650);
+    }
+  } catch {}
+  document.addEventListener('click', event => {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || reduced.matches) return;
+    const link = event.target instanceof Element ? event.target.closest('a[href]') : null;
+    if (!link || link.hasAttribute('download') || (link.target && link.target !== '_self') || link.hasAttribute('data-lightbox')) return;
+    const url = new URL(link.href, location.href);
+    if (url.origin !== location.origin || !/^\/(albums|film)\//.test(url.pathname) || url.pathname === location.pathname) return;
+    event.preventDefault();
+    if (pending) return;
+    reset();
+    pending = url.href;
+    root.dataset.shutter = 'closing';
+    departure = window.setTimeout(() => {
+      try { sessionStorage.setItem(key, JSON.stringify({ url: pending, at: Date.now() })); } catch {}
+      location.assign(pending);
+    }, 180);
+    // Release the page if navigation is interrupted or the network stalls.
+    recovery = window.setTimeout(reset, 4000);
+  });
+  window.addEventListener('pagehide', reset);
+  window.addEventListener('pageshow', event => { if (event.persisted) reset(); });
+  document.addEventListener('keydown', event => { if (event.key === 'Escape' && pending) reset(); });
+  reduced.addEventListener('change', () => {
+    const destination = pending;
+    reset();
+    if (destination) location.assign(destination);
+  });
+})();
+</script>
+<style is:global>
+  @media (prefers-reduced-motion: no-preference) {
+    html[data-shutter]::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 1200;
+      pointer-events: none;
+      background: linear-gradient(to bottom, #b7aa94 0, #e7e2d8 3px, #e7e2d8 calc(100% - 3px), #b7aa94 100%);
+      transform-origin: top;
+    }
+    html[data-shutter='closing']::after { animation: shutter-close .18s cubic-bezier(.4,0,.8,1) both, shutter-release 4s step-end forwards; }
+    html[data-shutter='opening']::after { transform-origin: bottom; animation: shutter-open .52s cubic-bezier(.22,.7,.25,1) both; }
+  }
+  @keyframes shutter-close { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  @keyframes shutter-open { from { transform: scaleY(1); } to { transform: scaleY(0); } }
+  @keyframes shutter-release { to { visibility: hidden; } }
+</style>

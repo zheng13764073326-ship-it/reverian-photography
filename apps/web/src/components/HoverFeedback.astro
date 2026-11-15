@@ -63,6 +63,6 @@
   .album-card img,.photograph a img,.next-story img,.reel-frame img,.drift-photo-link img{transition:transform .5s ease}
   .album-card a:hover img,.photograph a:hover img,.next-story:hover img,.reel-frame:hover img,.drift-photo-link:hover img{transform:scale(1.018);animation:photo-exposure .48s ease-out 1}
  }
- @keyframes photo-exposure{0%,100%{filter:brightness(1)}40%{filter:brightness(var(--photo-exposure-peak, 1.12))}}
+ @keyframes photo-exposure{0%,100%{filter:var(--photo-optics-filter, brightness(1)) brightness(1)}40%{filter:var(--photo-optics-filter, brightness(1)) brightness(var(--photo-exposure-peak, 1.12))}}
  .section-heading a:focus-visible,.album-card a:focus-visible,.photograph a:focus-visible,.journal-row:focus-visible{outline:2px solid var(--accent);outline-offset:5px}
 </style>
