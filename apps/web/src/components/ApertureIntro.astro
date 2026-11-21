@@ -30,9 +30,16 @@ const leaves = Array.from({ length: 6 }, (_, i) => {
       intro.remove();
       return;
     }
-    let timer;
+    let timer, revealTimer;
+    const reveal = () => {
+      if (intro.dataset.revealed === 'true') return;
+      intro.dataset.revealed = 'true';
+      window.dispatchEvent(new Event('reverian:hero-reveal'));
+    };
     const finish = () => {
       clearTimeout(timer);
+      clearTimeout(revealTimer);
+      reveal();
       intro.remove();
       window.removeEventListener('keydown', finish);
       window.removeEventListener('wheel', finish);
@@ -42,6 +49,8 @@ const leaves = Array.from({ length: 6 }, (_, i) => {
       motion.removeEventListener('change', finish);
     };
     intro.classList.add('is-playing');
+    // The curtain starts opening at 48%; let the photograph focus as it appears.
+    revealTimer = window.setTimeout(reveal, 1000);
     timer = window.setTimeout(finish, 2200);
     window.addEventListener('keydown', finish, { once: true });
     window.addEventListener('wheel', finish, { once: true, passive: true });

@@ -59,21 +59,6 @@
   .site-header nav>a:hover,.portfolio-nav summary:hover,.portfolio-panel a:hover,.section-heading h2 a:hover,.section-heading>a:hover,.text-link:hover,.back-link:hover,.album-topline>a:hover,.return-stories:hover>span:last-child{transform:scale(1.045)}
   .album-meta h3,.journal-row h3{transform-origin:left center;transition:transform .25s ease}
   .album-card a:hover h3,.journal-row:hover h3{transform:scale(1.025)}
-  .editorial-cover .cover-picture {
-    --photo-exposure-peak: 1.06;
-    transition: transform .75s ease;
-  }
-  .editorial-cover:hover .cover-picture {
-    transform: scale(1.015);
-    animation: photo-exposure .65s ease-out 1;
-  }
-  @media (max-width: 800px) and (orientation: portrait) {
-    /* The portrait road cover blends the photo into a separate canopy layer. */
-    .editorial-cover[data-full-road]:hover .cover-picture {
-      transform: none;
-      animation: none;
-    }
-  }
   .album-card img,.photograph a img,.next-story img,.reel-frame img,.drift-photo-link img{transition:transform .5s ease}
   .album-card a:hover img,.photograph a:hover img,.next-story:hover img,.reel-frame:hover img,.drift-photo-link:hover img{transform:scale(1.018);animation:photo-exposure .48s ease-out 1}
  }

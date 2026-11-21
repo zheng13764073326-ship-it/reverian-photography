@@ -26,18 +26,23 @@ const mobileStyle=fullRoadMobile?`--mobile-aspect:${portraitAsset.width}/${portr
   <img class="hero-photo" src={`/images/responsive/home-desk-${assets['home-desk'].width}.webp`} srcset={assets['home-desk'].widths.map(w=>`/images/responsive/home-desk-${w}.webp ${w}w`).join(', ')} sizes="(max-aspect-ratio: 16/9) 178svh, 100vw" width={assets['home-desk'].width} height={assets['home-desk'].height} alt="暖光中的摄影桌面，照片盒与桌面上摆放着三张照片" fetchpriority="high"/>
   <svg class="photo-hotspots" viewBox="0 0 1672 941" preserveAspectRatio="xMidYMid slice" aria-label="点击照片放大">{spots.map(s=>{const p=demoPhotos.find(p=>p.id===s.id)!;return <a href={imageUrl(p,2400)} data-lightbox data-group="cover" data-title={p.title} data-alt={p.alt} data-caption="封面场景中的示例照片" aria-label={`放大查看：${p.title}`}><polygon points={s.hit}/></a>;})}</svg>
  </> : desktop ? <>
+  <div class="cover-scene"><div class="cover-focus">
   <picture class="cover-picture">
    {mobile && <source media="(max-width: 800px) and (orientation: portrait)" srcset={fullRoadMobile?portraitSources:mobileSources} sizes="100vw" width={fullRoadMobile?portraitAsset.width:900} height={fullRoadMobile?portraitAsset.height:1600} data-fallback-src={fullRoadMobile?portraitAsset.images[0].src:imageUrl(mobile.photo,400,mobile,9/16)}/>}
    <img class="hero-photo" src={imageUrl(desktop.photo,1920)} srcset={desktopSources} sizes="100vw" data-fallback-src={imageUrl(desktop.photo,800)} width={desktop.photo.image.width} height={desktop.photo.image.height} style={`--focus-desktop:${desktop.focusX*100}% ${desktop.focusY*100}%;--focus-mobile:${mobile!.focusX*100}% ${mobile!.focusY*100}%`} alt={desktop.photo.alt} fetchpriority="high"/>
   </picture>
+  </div></div>
   <div class="cover-shade" aria-hidden="true"></div>
+  <div class="cover-grain" aria-hidden="true"></div>
  </> : <div class="empty-cover">Reverian Photography</div>}
  {desk ? <>
   <div class="home-identity"><h1>{settings.photographer}</h1><p>{settings.genres}</p><p class="motto">{settings.motto}</p></div>
  </> : <>
   <div class="home-identity">
+   <div class="cover-title-focus">
    <p class="cover-eyebrow">PHOTOGRAPHY PORTFOLIO</p>
    <h1>{settings.photographer}</h1>
+   </div>
   </div>
   <div class="cover-note">
    <p class="cover-note-zh">漫游者的白日梦，与未曾褪色的显影。</p>
@@ -45,12 +50,36 @@ const mobileStyle=fullRoadMobile?`--mobile-aspect:${portraitAsset.width}/${portr
   </div>
  </>}
 </section>
+<script>
+ import {setupHeroMotion} from '../lib/hero-motion';
+ const hero=document.querySelector<HTMLElement>('.editorial-cover');
+ if(hero) setupHeroMotion(hero);
+</script>
 <style>
+ .editorial-cover .cover-scene,.editorial-cover .cover-focus{position:absolute;inset:0}
+ .editorial-cover .cover-scene{z-index:-2;pointer-events:none}
+ .editorial-cover .cover-focus{transform:scale(1.03);transform-origin:center;filter:none}
+ .cover-title-focus{transform-origin:center}
+ .cover-grain{position:absolute;inset:-8px;z-index:-1;pointer-events:none;opacity:.04;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23n)' d='M0 0h160v160H0z'/%3E%3C/svg%3E");background-size:160px 160px;animation:cover-grain-drift 2.4s steps(1,end) infinite;animation-play-state:paused}
+ .editorial-cover[data-hero-motion="active"] .cover-scene,.editorial-cover[data-hero-motion="active"] .home-identity{will-change:transform,opacity}
+ .editorial-cover[data-hero-motion="active"] .cover-grain{animation-play-state:running;will-change:transform}
+ .editorial-cover[data-hero-entry="waiting"] .cover-focus{transform:scale(1.07);filter:blur(8px)}
+ .editorial-cover[data-hero-entry="waiting"] .cover-title-focus{opacity:0;transform:translate3d(0,14px,0);filter:blur(4px)}
+ .editorial-cover[data-hero-entry="entering"] .cover-focus{animation:cover-optical-focus .9s cubic-bezier(.22,1,.36,1) both;will-change:transform,filter}
+ .editorial-cover[data-hero-entry="entering"] .cover-title-focus{animation:cover-title-focus .9s cubic-bezier(.22,1,.36,1) .15s both;will-change:transform,opacity,filter}
+ @keyframes cover-optical-focus{from{transform:scale(1.07);filter:blur(8px)}to{transform:scale(1.03);filter:blur(0)}}
+ @keyframes cover-title-focus{from{opacity:0;transform:translate3d(0,14px,0);filter:blur(4px)}to{opacity:1;transform:translate3d(0,0,0);filter:blur(0)}}
+ @keyframes cover-grain-drift{0%,100%{transform:translate3d(0,0,0)}20%{transform:translate3d(-3px,2px,0)}40%{transform:translate3d(2px,-3px,0)}60%{transform:translate3d(-2px,-1px,0)}80%{transform:translate3d(3px,2px,0)}}
+ @media(prefers-reduced-motion:reduce){
+  .editorial-cover .cover-scene,.editorial-cover .home-identity,.editorial-cover .cover-focus,.editorial-cover .cover-title-focus{animation:none!important;transform:none!important;filter:none!important;opacity:1!important;will-change:auto!important}
+  .editorial-cover .cover-grain{animation:none;transform:none;will-change:auto}
+ }
+
  .editorial-cover{height:100svh;min-height:500px;background:#19251e;color:#f5f0df;isolation:isolate}
  /* Share the following section's paper color at every stop, including theme changes. */
  .editorial-cover::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:180px;z-index:0;pointer-events:none;background:linear-gradient(to bottom,color-mix(in srgb,var(--paper) 0%,transparent) 0%,color-mix(in srgb,var(--paper) 15%,transparent) 35%,color-mix(in srgb,var(--paper) 55%,transparent) 68%,color-mix(in srgb,var(--paper) 92%,transparent) 90%,var(--paper) 100%)}
  .editorial-cover .home-identity,.editorial-cover .cover-note{z-index:1}
- .editorial-cover .cover-picture{position:absolute;inset:0;z-index:-2}
+ .editorial-cover .cover-picture{position:absolute;inset:0}
  .cover-shade{position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(9,22,14,.42) 0%,rgba(12,24,16,.12) 52%,rgba(9,18,12,.04) 70%,rgba(8,16,11,.45) 100%),radial-gradient(ellipse 42% 43% at 50% 21%,rgba(17,27,22,.52),transparent 100%)}
  .editorial-cover .home-identity{inset:22% 20px auto;text-align:center;text-shadow:none}
  .editorial-cover .cover-eyebrow{font:500 clamp(11px,1.05vw,18px)/1.4 'Cormorant Garamond',Georgia,serif;letter-spacing:.42em;margin:0 0 12px;padding-left:.42em;white-space:nowrap}
@@ -63,9 +92,9 @@ const mobileStyle=fullRoadMobile?`--mobile-aspect:${portraitAsset.width}/${portr
  @media(max-width:800px) and (orientation:portrait){
   .editorial-cover{min-height:520px}
   .editorial-cover .hero-photo{object-position:var(--focus-mobile,center)}
-  /* Preserve the full width of the portrait: never crop the road edges.
-     On taller phones only the upper canopy fills the additional space. */
-  .editorial-cover[data-full-road]{background-image:var(--mobile-canopy),var(--mobile-placeholder);background-size:100% auto;background-position:center -20vw;background-repeat:no-repeat}
+  /* Keep the portrait and its canopy together in one optical motion layer.
+     The portrait retains its aspect ratio beneath the small focus overscan. */
+  .editorial-cover[data-full-road] .cover-focus{background-image:var(--mobile-canopy),var(--mobile-placeholder);background-size:100% auto;background-position:center -20vw;background-repeat:no-repeat}
   /* Reserve the portrait frame before decoding, including retries that remove source.
      The placeholder shares this frame so the road never appears at another height. */
   .editorial-cover[data-full-road] .cover-picture{inset:auto 0 0;width:100%;height:auto;aspect-ratio:var(--mobile-aspect);background:var(--mobile-placeholder) center/100% 100% no-repeat;mask-image:linear-gradient(to bottom,transparent,black 10%)}
@@ -80,7 +109,7 @@ const mobileStyle=fullRoadMobile?`--mobile-aspect:${portraitAsset.width}/${portr
   .cover-note .cover-note-en{font-size:16px;line-height:1.35}
  }
  @media(min-width:401px) and (max-width:800px) and (orientation:portrait){
-  .editorial-cover[data-full-road]{background-image:var(--mobile-canopy-wide),var(--mobile-placeholder)}
+  .editorial-cover[data-full-road] .cover-focus{background-image:var(--mobile-canopy-wide),var(--mobile-placeholder)}
  }
  @media(max-height:520px) and (orientation:landscape){
   .editorial-cover{min-height:360px}
