@@ -30,3 +30,13 @@ test('relative image luminance is finite and histogram covers every sampled pixe
  const black=analysePixels(pixels([[0,0,0]])),white=analysePixels(pixels([[255,255,255]]));
  assert.equal(black.relativeEV,-2);assert.equal(white.relativeEV,2);assert.equal(black.histogram[0],1);assert.equal(white.histogram[31],1);
 });
+
+test('cool and warm luminance layers conserve every pixel without inventing curves',()=>{
+ const a=analysePixels(pixels([[230,80,20],[20,80,230],[100,100,100],[0,0,0],[255,255,255]]));
+ a.histogram.forEach((n,i)=>assert.ok(Math.abs(a.coolHistogram[i]+a.warmHistogram[i]-n)<1e-9));
+ assert.equal(a.coolHistogram.reduce((n,v)=>n+v,0)+a.warmHistogram.reduce((n,v)=>n+v,0),a.samples);
+ const red=analysePixels(pixels([[255,0,0]])),blue=analysePixels(pixels([[0,0,255]])),gray=analysePixels(pixels([[128,128,128]]));
+ assert.equal(red.coolHistogram.reduce((n,v)=>n+v,0),0);
+ assert.equal(blue.warmHistogram.reduce((n,v)=>n+v,0),0);
+ assert.deepEqual(gray.coolHistogram,gray.warmHistogram);
+});

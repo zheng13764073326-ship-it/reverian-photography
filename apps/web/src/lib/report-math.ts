@@ -1,13 +1,13 @@
 export type Point = {x:number;y:number};
-export type PictureAnalysis = {palette:string[];brightness:number;warm:number;cool:number;neutral:number;histogram:number[];samples:number;relativeEV:number};
+export type PictureAnalysis = {palette:string[];brightness:number;warm:number;cool:number;neutral:number;histogram:number[];coolHistogram:number[];warmHistogram:number[];samples:number;relativeEV:number};
 export function dimensionScores(correct:boolean[]):number[]{
  return [[0,1,2,3],[4,5,6],[7,8,9]].map(group=>group.filter(i=>correct[i]).length/group.length);
 }
 export function radarPoints(values:number[],cx=120,cy=116,radius=76):Point[]{
  return values.map((v,i)=>{const angle=(-90-i*120)*Math.PI/180;return{x:cx+Math.cos(angle)*radius*v,y:cy+Math.sin(angle)*radius*v};});
 }
-export function histogramPoints(histogram:number[],width=240,height=80):Point[]{
- const smooth=histogram.map((n,i)=>((histogram[i-1]||0)+2*n+(histogram[i+1]||0))/4),peak=Math.max(1,...smooth);
+export function histogramPoints(histogram:number[],width=240,height=80,sharedPeak?:number):Point[]{
+ const smooth=histogram.map((n,i)=>((histogram[i-1]||0)+2*n+(histogram[i+1]||0))/4),peak=sharedPeak??Math.max(1,...smooth);
  return smooth.map((n,i)=>({x:i*width/(smooth.length-1),y:height-height*n/peak}));
 }
 export function wavePoints(correct:boolean[]): {mine:Point[];visitor:Point[]} {
@@ -25,13 +25,16 @@ export function barcodeRuns(bits:string):{start:number;width:number}[]{
 }
 export function analysePixels(data:Uint8ClampedArray):PictureAnalysis {
   const bins=new Map<number,{r:number;g:number;b:number;n:number}>();
-  let total=0,luma=0,warm=0,cool=0,linearSum=0;const histogram=Array<number>(32).fill(0);
+  let total=0,luma=0,warm=0,cool=0,linearSum=0;const histogram=Array<number>(32).fill(0),coolHistogram=Array<number>(32).fill(0),warmHistogram=Array<number>(32).fill(0);
   const linear=(v:number)=>v<=10.31475?v/3294.6:((v/255+.055)/1.055)**2.4;
   for(let i=0;i<data.length;i+=4){
     if(data[i+3]<128)continue;
     const r=data[i],g=data[i+1],b=data[i+2];
     const brightness=.2126*r+.7152*g+.0722*b;
-    total++;luma+=brightness;histogram[Math.min(31,Math.floor(brightness/8))]++;
+    total++;luma+=brightness;const binIndex=Math.min(31,Math.floor(brightness/8));histogram[binIndex]++;
+    // Split each sample by its red/blue balance; neutral samples contribute equally.
+    const warmWeight=(1+Math.max(-1,Math.min(1,(r-b)/64)))/2;
+    warmHistogram[binIndex]+=warmWeight;coolHistogram[binIndex]+=1-warmWeight;
     linearSum+=.2126*linear(r)+.7152*linear(g)+.0722*linear(b);
     if(r-b>12)warm++;else if(b-r>12)cool++;
     const key=((r>>4)<<8)|((g>>4)<<4)|(b>>4);
@@ -58,5 +61,5 @@ export function analysePixels(data:Uint8ClampedArray):PictureAnalysis {
   centers.sort((a,b)=>(a[0]*.2126+a[1]*.7152+a[2]*.0722)-(b[0]*.2126+b[1]*.7152+b[2]*.0722));
   const round=(v:number)=>Math.round(v/total*100);
   const w=round(warm),c=round(cool);
-  return {palette:centers.map(c=>'#'+c.map(v=>Math.round(v).toString(16).padStart(2,'0')).join('').toUpperCase()),brightness:Math.round(luma/total/255*100),warm:w,cool:c,neutral:100-w-c,histogram,samples:total,relativeEV:Math.max(-2,Math.min(2,Math.log2(Math.max(.0001,linearSum/total)/.18)))};
+  return {palette:centers.map(c=>'#'+c.map(v=>Math.round(v).toString(16).padStart(2,'0')).join('').toUpperCase()),brightness:Math.round(luma/total/255*100),warm:w,cool:c,neutral:100-w-c,histogram,coolHistogram,warmHistogram,samples:total,relativeEV:Math.max(-2,Math.min(2,Math.log2(Math.max(.0001,linearSum/total)/.18)))};
 }

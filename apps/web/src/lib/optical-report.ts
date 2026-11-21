@@ -45,8 +45,8 @@ export function createOpticalReport(root:HTMLElement){
  function drawWave(){
   const {mine,visitor}=wavePoints(correct);
   // Only generated numbers enter SVG markup. Captions use textContent below.
-  const grid=Array.from({length:37},(_,i)=>`<path class="wave-grid" d="M ${30+i*15} 6V116"/>`).join('')+Array.from({length:12},(_,i)=>`<path class="wave-grid" d="M30 ${6+i*10}H570"/>`).join('');
-  wave.innerHTML=`<defs><linearGradient id="wave-area" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#237489" stop-opacity=".14"/><stop offset="1" stop-color="#237489" stop-opacity="0"/></linearGradient></defs>${grid}<path fill="url(#wave-area)" d="${wavePath(mine)} L570 116H30Z"/>`+mine.map(p=>`<path class="wave-reference" d="M ${p.x} 6 V 116"/>`).join('')+`<path class="wave-mine" d="${wavePath(mine)}"/><path class="wave-visitor" d="${wavePath(visitor)}"/>`+mine.map((p,i)=>`<g class="wave-node" role="button" tabindex="0" data-index="${i}" data-correct="${correct[i]}" aria-controls="tacit-answer-${i+1}" aria-label="第 ${i+1} 题，${correct[i]?'合焦':'失焦'}，查看答案"><rect class="wave-hit" x="${p.x-27}" y="1" width="54" height="147" rx="3"/><circle class="wave-dot" cx="${p.x}" cy="${p.y}" r="3"/>${correct[i]?'':`<circle class="wave-dot visitor" cx="${p.x}" cy="${visitor[i].y}" r="3"/>`}<text class="node-code" x="${p.x+10}" y="${Math.max(10,Math.min(p.y,visitor[i].y)-9)}">${correct[i]?'LK':'DF'}</text><text x="${p.x}" y="139">${String(i+1).padStart(2,'0')}</text></g>`).join('');
+  const ticks=Array.from({length:91},(_,i)=>{const x=30+i*6,len=i%10===0?16:i%5===0?10:5;return '<path class="wave-caliper" d="M'+x+' 5v'+len+' M'+x+' 117v-'+len+'"/>';}).join('');
+  wave.innerHTML=ticks+'<path class="wave-mine" d="'+wavePath(mine)+'"/><path class="wave-visitor" d="'+wavePath(visitor)+'"/>'+mine.map((p,i)=>'<g class="wave-node" role="button" tabindex="0" data-index="'+i+'" data-correct="'+correct[i]+'" aria-controls="tacit-answer-'+(i+1)+'" aria-label="第 '+(i+1)+' 题，点击查看答案"><rect class="wave-hit" x="'+(p.x-27)+'" y="1" width="54" height="147"/><circle class="wave-dot" cx="'+p.x+'" cy="'+p.y+'" r="4"/>'+(correct[i]?'':'<circle class="wave-dot visitor" cx="'+p.x+'" cy="'+visitor[i].y+'" r="4"/>')+'<text x="'+p.x+'" y="139">'+String(i+1).padStart(2,'0')+'</text></g>').join('');
   nodes=[...wave.querySelectorAll<SVGGElement>('.wave-node')];
   nodes.forEach((node,i)=>{
    node.addEventListener('click',()=>locate(i));
@@ -84,14 +84,16 @@ export function createOpticalReport(root:HTMLElement){
     const select=()=>{get('[data-color-value]').textContent=color;spectrum.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));};
     button.addEventListener('click',select);button.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse')select();});button.addEventListener('focus',select);spectrum.append(button);
    });
-   const {brightness,cool,warm,neutral,histogram,relativeEV}=analysis;
+   const {brightness,cool,warm,neutral,histogram,coolHistogram,warmHistogram,relativeEV}=analysis;
    get('[data-luma]').textContent=`${brightness} / 100`;
-   const chart=root.querySelector<SVGSVGElement>('[data-histogram]')!,points=histogramPoints(histogram,260,80);
-   chart.setAttribute('aria-label',`画面亮度直方图，平均亮度 ${brightness}/100`);
-   chart.innerHTML=Array.from({length:5},(_,i)=>`<path class="histogram-grid" d="M${i*65} 0V80 M0 ${i*20}H260"/>`).join('')+`<path class="histogram-area" d="${wavePath(points)}L260 80H0Z"/><path class="histogram-marker" d="M${brightness*2.6} 0V80"/>`;
+   const chart=root.querySelector<SVGSVGElement>('[data-histogram]')!;
+   const peak=Math.max(1,...coolHistogram,...warmHistogram);
+   chart.setAttribute('aria-label','冷暖加权亮度分布，平均亮度 '+brightness+'/100');
+   chart.innerHTML='<path class="histogram-baseline" d="M0 80H260"/>'+[[coolHistogram,'cool'],[warmHistogram,'warm']].map(([bins,kind])=>'<path class="histogram-area '+kind+'" d="'+wavePath(histogramPoints(bins as number[],260,80,peak))+'L260 80H0Z"/>').join('');
    chart.dataset.bins=JSON.stringify(histogram);
+   chart.dataset.coolBins=JSON.stringify(coolHistogram);chart.dataset.warmBins=JSON.stringify(warmHistogram);
    const ev=root.querySelector('[data-ev-pointer]')!;ev.setAttribute('transform',`translate(0 ${14+(2-relativeEV)/4*158-4})`);get('.relative-exposure').dataset.ready='true';
-   get('[data-thermal]').style.background=`linear-gradient(90deg,var(--focus-color) 0 ${cool}%,#c8d1cd ${cool}% ${cool+neutral}%,var(--miss-color) ${cool+neutral}% 100%)`;
+   get('[data-thermal]').style.background='linear-gradient(90deg,#537784 0%,#d6d8d1 50%,#B86B35 100%)';
    get('[data-thermal]').dataset.ready='true';get('[data-thermal]').style.setProperty('--temperature',`${50+(warm-cool)/2}%`);
    get('[data-thermal-label]').replaceChildren(...[[cool,'COOL'],[neutral,'NEUTRAL'],[warm,'WARM']].map(([value,label])=>{const span=document.createElement('span');span.textContent=`${value}% ${label}`;return span;}));
    get('[data-analysis-state]').textContent='PIXEL OK';exportButton.disabled=!completed;
@@ -116,9 +118,9 @@ export function createOpticalReport(root:HTMLElement){
   const image=currentImage,photoTitle=image?.dataset.photoTitle||'',place=[image?.dataset.city,image?.dataset.photoDate?.slice(0,10)].filter(Boolean).join(' · '),archive=`FRAME ${String(tier+1).padStart(2,'0')}A`;
   get('[data-match-title]').textContent=photoTitle;get('[data-match-place]').textContent=place;get('[data-photo-archive]').textContent=archive;
   snapshot={...input,id,timestamp,image,photoTitle,place,archive};if(image)image.loading='eager';
-  drawWave();const scores=dimensionScores(correct),vertices=radarPoints(scores),radar=root.querySelector<SVGSVGElement>('[data-radar]')!;
+  drawWave();const scores=dimensionScores(correct),vertices=radarPoints(scores,120,116,90),radar=root.querySelector<SVGSVGElement>('[data-radar]')!;
   radar.dataset.scores=JSON.stringify(scores);radar.setAttribute('aria-label',scores.map((v,i)=>`${['光影','偏爱','直觉'][i]} ${Math.round(v*100)}%`).join('，'));
-  radar.innerHTML=[19,38,57,76].map(r=>`<circle class="radar-grid" cx="120" cy="116" r="${r}"/>`).join('')+radarPoints([1,1,1]).map(p=>`<path class="radar-grid" d="M120 116L${p.x} ${p.y}"/>`).join('')+`<polygon class="radar-area" points="${vertices.map(p=>`${p.x},${p.y}`).join(' ')}"/>`+vertices.map(p=>`<circle class="radar-dot" cx="${p.x}" cy="${p.y}" r="2"/>`).join('')+[[120,22],[40,200],[200,200]].map(([x,y],i)=>`<text x="${x}" y="${y}">${['光影','偏爱','直觉'][i]} ${Math.round(scores[i]*100)}%</text>`).join('');
+  radar.innerHTML=[22.5,45,67.5,90].map(r=>`<circle class="radar-grid" cx="120" cy="116" r="${r}"/>`).join('')+radarPoints([1,1,1],120,116,90).map(p=>`<path class="radar-grid" d="M120 116L${p.x} ${p.y}"/>`).join('')+`<polygon class="radar-area" points="${vertices.map(p=>`${p.x},${p.y}`).join(' ')}"/>`+vertices.map(p=>`<circle class="radar-dot" cx="${p.x}" cy="${p.y}" r="2"/>`).join('')+[[120,15],[40,218],[200,218]].map(([x,y],i)=>`<text x="${x}" y="${y}"><tspan class="radar-cn">${['光影','偏爱','直觉'][i]}</tspan> ${Math.round(scores[i]*100)}%</text>`).join('');
   get('[data-score]').textContent=reduced.matches?String(input.score):'0';
   if(reduced.matches)finishFocus();else{
    result.classList.add('is-focusing');details.inert=true;card.inert=true;get('[data-optical-status]').textContent='测光 · 解析共鸣';card.style.setProperty('--focus-score','0');
