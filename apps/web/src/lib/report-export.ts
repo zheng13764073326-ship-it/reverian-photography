@@ -31,10 +31,10 @@ export async function renderReport(s:ReportSnapshot,element:HTMLElement):Promise
   }
   return lines;
  };
- const message=wrapLines(s.message,half-pad*2,30),top=90,topHeight=Math.max(530,418+(message.length-1)*45+24);
+ const message=wrapLines(s.message,half-pad*2,30),top=90,topHeight=Math.max(530,478+(message.length-1)*45+24);
  const waveY=top+topHeight+gap,waveHeight=200,photoY=waveY+waveHeight+gap;
  const photoWidth=w-40,photoHeight=Math.round(photoWidth/(s.image.naturalWidth/s.image.naturalHeight));
- const photoBand=36,photoBoxHeight=photoHeight+photoBand*2,telemetryY=photoY+photoBoxHeight+gap,telemetryHeight=230;
+ const photoBand=40,photoBoxHeight=photoHeight+photoBand*2,telemetryY=photoY+photoBoxHeight+gap,telemetryHeight=230;
  const qr:{size:number;bits:string}=JSON.parse(element.dataset.qr!),cell=2,codeSize=(qr.size+8)*cell;
  const footerY=telemetryY+telemetryHeight+gap,footerHeight=Math.max(106,codeSize+24),height=footerY+footerHeight+18;
  output.width=width*scale;output.height=height*scale;c.scale(scale,scale);c.fillStyle=paper;c.fillRect(0,0,width,height);
@@ -59,16 +59,16 @@ export async function renderReport(s:ReportSnapshot,element:HTMLElement):Promise
 
  box(x,top,half,topHeight);box(right,top,half,topHeight);
  text('00 // SYNC',x+pad,top+30);text('01 // RESONANCE RADAR',right+pad,top+30);
- const cx=x+half/2,cy=top+244,r=142;
- text(s.title,cx,top+82,56,blue,serif,700,'center');
+ const cx=x+half/2,cy=top+280,r=158,innerRadius=143;
+ text(s.title,cx,top+94,56,blue,serif,700,'center');
  c.strokeStyle='#7a8d87';c.lineWidth=1.5;c.beginPath();c.arc(cx,cy,r,0,Math.PI*2);c.stroke();
- for(let i=0;i<100;i++){const angle=i*Math.PI/50;line(cx+Math.cos(angle)*(r-6),cy+Math.sin(angle)*(r-6),cx+Math.cos(angle)*(r-(i%5===0?23:15)),cy+Math.sin(angle)*(r-(i%5===0?23:15)),'#7a8d87',1.4);}
- c.strokeStyle='#1E4D5430';c.lineWidth=1.5;c.beginPath();c.arc(cx,cy,129,0,2*Math.PI);c.stroke();
- c.strokeStyle=blue;c.lineWidth=3;c.beginPath();c.arc(cx,cy,129,-Math.PI/2,-Math.PI/2+Math.PI*2*s.score/10);c.stroke();
+ for(let i=0;i<100;i++){const angle=i*Math.PI/50;line(cx+Math.cos(angle)*(r-4),cy+Math.sin(angle)*(r-4),cx+Math.cos(angle)*(r-(i%5===0?12:8)),cy+Math.sin(angle)*(r-(i%5===0?12:8)),'#7a8d87',1.4);}
+ c.strokeStyle='#1E4D5430';c.lineWidth=1.5;c.beginPath();c.arc(cx,cy,innerRadius,0,2*Math.PI);c.stroke();
+ c.strokeStyle=blue;c.lineWidth=3;c.beginPath();c.arc(cx,cy,innerRadius,-Math.PI/2,-Math.PI/2+Math.PI*2*s.score/10);c.stroke();
  c.font=font(130,mono,700);const digits=[...String(s.score)],digitWidth=c.measureText('0').width,digitAdvance=digits.length>1?60:digitWidth,scoreWidth=digitWidth+(digits.length-1)*digitAdvance;
  c.font=font(34,serif);const unitWidth=c.measureText('/ 合焦').width,scoreX=cx-(scoreWidth+10+unitWidth)/2;
  digits.forEach((digit,i)=>text(digit,scoreX+i*digitAdvance,cy+40,130,blue,mono,700));text('/ 合焦',scoreX+scoreWidth+10,cy+31,34,ink,serif);
- message.forEach((row,i)=>text(row,x+pad,top+418+i*45,30,ink,serif,600));
+ message.forEach((row,i)=>text(row,x+pad,top+478+i*45,30,ink,serif,600));
 
  const radarX=right+206,radarY=top+279,radius=150,dims=dimensionScores(s.correct),radar=radarPoints(dims,radarX,radarY,radius);
  for(const ratio of [.25,.5,.75,1]){c.beginPath();c.arc(radarX,radarY,radius*ratio,0,2*Math.PI);c.strokeStyle='#89958c';c.lineWidth=1.1;c.stroke();}
@@ -83,8 +83,8 @@ export async function renderReport(s:ReportSnapshot,element:HTMLElement):Promise
 
  box(x,waveY,w,waveHeight);text('02 // WAVEFORM',x+pad,waveY+30);
  const {mine,visitor}=wavePoints(s.correct),plotLeft=x+42,plotWidth=w-84;
- const mapPoint=(p:{x:number;y:number})=>({x:plotLeft+(p.x-30)/540*plotWidth,y:waveY+38+p.y});
- for(let i=0;i<=90;i++){const xx=plotLeft+i*plotWidth/90,len=i%10===0?21:i%5===0?13:7;line(xx,waveY+42,xx,waveY+42+len,'#61716a',1.25);line(xx,waveY+156,xx,waveY+156-len,'#61716a',1.25);}
+ const mapPoint=(p:{x:number;y:number})=>({x:plotLeft+(p.x-30)/540*plotWidth,y:waveY+66+p.y*.65});
+ for(let i=0;i<=90;i++){const xx=plotLeft+i*plotWidth/90,len=i%10===0?14:i%5===0?10:6;line(xx,waveY+47,xx,waveY+47+len,'#61716a',1.25);line(xx,waveY+157,xx,waveY+157-len,'#61716a',1.25);}
  const mainWave=mine.map(mapPoint),visitorWave=visitor.map(mapPoint);
  path(wavePath(mainWave),blue,2.7);c.setLineDash([7,5]);path(wavePath(visitorWave),orange,2.7);c.setLineDash([]);
  s.correct.forEach((same,i)=>{dot(mainWave[i].x,mainWave[i].y,5.5,blue,same);if(!same)dot(visitorWave[i].x,visitorWave[i].y,5.5,orange,false);text(String(i+1).padStart(2,'0'),mainWave[i].x,waveY+185,26,ink,mono,400,'center');});
