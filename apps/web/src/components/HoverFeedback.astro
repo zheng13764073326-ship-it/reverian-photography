@@ -1,10 +1,12 @@
-<div class="pointer-ring" aria-hidden="true"><span></span></div>
+<div class="focus-cursor" aria-hidden="true">
+ <span class="pointer-frame"><i></i><i></i><i></i><i></i></span>
+ <span class="pointer-center"></span>
+</div>
 <script>
- const ring=document.querySelector<HTMLElement>('.pointer-ring')!;
- const label=ring.querySelector('span')!;
+ const ring=document.querySelector<HTMLElement>('.focus-cursor')!;
  const enabled=matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
  let x=0,y=0,frame=0,visible=false;
- function hide(){if(frame)cancelAnimationFrame(frame);frame=0;visible=false;document.documentElement.classList.remove('pointer-ready');ring.classList.remove('is-visible');}
+ function hide(){if(frame)cancelAnimationFrame(frame);frame=0;visible=false;document.documentElement.classList.remove('pointer-ready');ring.classList.remove('is-visible','is-pressed');}
  function paint(){
   frame=0;
   const target=document.elementFromPoint(x,y);
@@ -12,7 +14,8 @@
   const link=target.closest('a,button,summary,[role="button"]');
   const photo=target.closest('a[data-lightbox]');
   const album=target.closest('.album-card a,.next-story,.drift-card');
-  label.textContent=photo?'':album?'查看':'';
+  const imageSurface=target.closest('.editorial-cover,.album-card,.photograph,.next-story,.reel-frame,.drift-photo-link,.optical-photo-frame');
+  ring.dataset.surface=imageSurface?'image':'paper';
   ring.dataset.kind=photo||album?'photo':link?'link':'idle';
   ring.style.transform=`translate3d(${x}px,${y}px,0) translate(-50%,-50%)`;
   ring.classList.add('is-visible');document.documentElement.classList.add('pointer-ready');visible=true;
@@ -24,23 +27,34 @@
  },{passive:true});
  document.addEventListener('scroll',()=>{if(visible)schedule();},{passive:true,capture:true});
  document.addEventListener('pointerleave',hide);
- document.addEventListener('pointerdown',event=>{if(event.pointerType!=='mouse')hide();},{passive:true});
+ document.addEventListener('pointerdown',event=>{if(event.pointerType!=='mouse'){hide();return;}if(visible&&event.button===0)ring.classList.add('is-pressed');},{passive:true});
+ document.addEventListener('pointerup',()=>ring.classList.remove('is-pressed'),{passive:true});
+ document.addEventListener('pointercancel',hide,{passive:true});
  document.addEventListener('keydown',event=>{if(event.key==='Tab'||event.key==='Escape')hide();});
  window.addEventListener('blur',hide);
  document.addEventListener('visibilitychange',()=>{if(document.hidden)hide();});
  enabled.addEventListener('change',hide);
 </script>
 <style is:global>
- .pointer-ring{display:none;position:fixed;top:0;left:0;z-index:1000;width:18px;height:18px;border:1px solid #fff;border-radius:50%;color:#fff;mix-blend-mode:difference;pointer-events:none;opacity:0;align-items:center;justify-content:center;font:11px var(--sans);letter-spacing:.1em;transition:width .18s ease,height .18s ease,opacity .15s ease;will-change:transform}
- .pointer-ring span{white-space:nowrap}
+ .focus-cursor{--frame-size:56px;--corner-size:12px;display:none;position:fixed;top:0;left:0;z-index:1000;width:var(--frame-size);height:var(--frame-size);color:#a58a4b;pointer-events:none;opacity:0;transition:width .22s ease,height .22s ease,opacity .15s ease,color .2s ease;will-change:transform}
+ .focus-cursor[data-surface="image"]{color:#c6aa65;filter:drop-shadow(0 1px 1px #171a1326)}
+ .pointer-frame{position:absolute;inset:0;transform-origin:center;transition:transform .18s cubic-bezier(.2,.7,.2,1)}
+ .pointer-frame i{position:absolute;display:block;width:var(--corner-size);height:var(--corner-size);border:0 solid currentColor;transition:width .22s ease,height .22s ease}
+ .pointer-frame i:nth-child(1){top:0;left:0;border-width:2px 0 0 2px}
+ .pointer-frame i:nth-child(2){top:0;right:0;border-width:2px 2px 0 0}
+ .pointer-frame i:nth-child(3){bottom:0;left:0;border-width:0 0 2px 2px}
+ .pointer-frame i:nth-child(4){bottom:0;right:0;border-width:0 2px 2px 0}
+ .pointer-center{position:absolute;left:50%;top:50%;width:5px;height:5px;border-radius:50%;background:currentColor;transform:translate(-50%,-50%);transition:transform .18s ease}
+ .focus-cursor.is-pressed .pointer-frame{transform:scale(.83)}
+ .focus-cursor.is-pressed .pointer-center{transform:translate(-50%,-50%) scale(.8)}
  @media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
-  .pointer-ring{display:flex}
-  .pointer-ring.is-visible{opacity:1}
-  .pointer-ring[data-kind="link"]{width:36px;height:36px}
-  .pointer-ring[data-kind="photo"]{width:64px;height:64px}
+  .focus-cursor{display:block}
+  .focus-cursor.is-visible{opacity:1}
+  .focus-cursor[data-kind="link"]{--frame-size:36px;--corner-size:9px}
+  .focus-cursor[data-kind="photo"]{--frame-size:64px;--corner-size:14px}
   html.pointer-ready,html.pointer-ready *{cursor:none!important}
   html.pointer-ready:has(dialog[open]),html.pointer-ready:has(dialog[open]) *{cursor:auto!important}
-  html.pointer-ready:has(dialog[open]) .pointer-ring{opacity:0}
+  html.pointer-ready:has(dialog[open]) .focus-cursor{opacity:0}
   .site-header nav>a,.portfolio-nav summary,.portfolio-panel a,.section-heading h2 a,.section-heading>a,.text-link,.back-link,.album-topline>a,.return-stories>span:last-child{display:inline-block;transform-origin:left center;transition:transform .22s ease,color .22s ease}
   .site-header nav>a:hover,.portfolio-nav summary:hover,.portfolio-panel a:hover,.section-heading h2 a:hover,.section-heading>a:hover,.text-link:hover,.back-link:hover,.album-topline>a:hover,.return-stories:hover>span:last-child{transform:scale(1.045)}
   .album-meta h3,.journal-row h3{transform-origin:left center;transition:transform .25s ease}
