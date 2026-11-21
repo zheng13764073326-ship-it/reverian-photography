@@ -14,7 +14,7 @@ import '../styles/checkin-font.css';
     <div class="checkin-body">
       <h2 id="checkin-title">在按下快门之前，怎么称呼你？</h2>
       <p id="checkin-note" class="checkin-note">你的名字将印在最终生成的对焦报告单上</p>
-      <input id="quiz-name" name="nickname" aria-label="名字或代号" aria-describedby="checkin-note" autocomplete="nickname" enterkeyhint="go" maxlength="32" required placeholder="输入名字或代号..."/>
+      <input id="quiz-name" name="nickname" aria-label="名字或代号" aria-describedby="checkin-note" autocomplete="off" enterkeyhint="go" maxlength="32" required placeholder="输入名字或代号..."/>
       <button type="submit" class="quiz-action checkin-submit"><span aria-hidden="true">[</span><i aria-hidden="true"></i><span>开始对焦</span><span aria-hidden="true">→ ]</span></button>
     </div>
   </form>
@@ -271,10 +271,11 @@ import '../styles/checkin-font.css';
       if (index === tacitQuestions.length) showResult(); else renderQuestion();
     }
     next.addEventListener('click',advance);
-    // A portrait link on the homepage opens the nickname step directly.
+    // Deep links reveal the invitation first; only an explicit click opens check-in.
     if (new URLSearchParams(window.location.search).get('quiz')==='start') {
-      if (document.readyState==='complete') showName();
-      else window.addEventListener('load',()=>requestAnimationFrame(showName),{once:true});
+      const showEntry=()=>{start.focus({preventScroll:true});root.scrollIntoView({block:'center',behavior:'instant'});};
+      if (document.readyState==='complete') showEntry();
+      else window.addEventListener('load',()=>requestAnimationFrame(showEntry),{once:true});
     }
     window.addEventListener('pagehide',clearAdvance);
   }
@@ -291,11 +292,13 @@ import '../styles/checkin-font.css';
  .checkin-body{padding:52px 38px 48px;text-align:center}
  .tacit .quiz-name-card h2{margin:0 0 12px;font:700 clamp(25px,2.8vw,32px)/1.6 var(--serif-zh);text-wrap:balance;letter-spacing:.01em}
  .checkin-note{margin:0;font:400 13px/1.8 var(--serif-zh);color:#6c706b;text-wrap:pretty}
- .quiz-name-card input{display:block;width:min(100%,460px);height:62px;margin:28px auto 34px;padding:16px 0;border:none;border-bottom:1px solid rgba(34,34,34,.25);border-radius:0;outline:none;box-shadow:none;background:transparent;appearance:none;font:400 18px/1.6 var(--serif-zh);color:#222;caret-color:var(--checkin-ink);transition:border-color .2s ease,border-bottom-width .2s ease}
+ .quiz-name-card input{display:block;width:min(100%,340px);height:50px;margin:28px auto 34px;padding:10px 0;text-align:center;border:none;border-bottom:1px solid rgba(34,34,34,.25);border-radius:0;outline:none;box-shadow:none;background:transparent;appearance:none;font:400 18px/1.6 var(--serif-zh);color:#222;caret-color:var(--checkin-ink);transition:border-color .2s ease}
  .quiz-name-card input::placeholder{color:#92938c;opacity:1}
- .quiz-name-card input:focus,.quiz-name-card input:focus-visible{border-bottom:1.5px solid var(--checkin-ink);outline:none;box-shadow:none;background:transparent}
- .quiz-name-card .checkin-submit{width:auto;min-height:48px;margin:0;padding:12px 25px;gap:10px;border:1px solid var(--checkin-ink);border-radius:3px;background:var(--checkin-ink);color:#F4F3EE;font:400 17px/1.4 var(--serif-zh);letter-spacing:.12em;transition:background .2s ease,transform .2s ease}
- .checkin-submit i{width:6px;height:6px;border-radius:50%;background:#B86B35;flex:none}
+ .quiz-name-card input:focus,.quiz-name-card input:focus-visible{border-bottom:1px solid var(--checkin-ink);outline:none;box-shadow:none;background:transparent}
+ .quiz-name-card input:-webkit-autofill,.quiz-name-card input:-webkit-autofill:hover,.quiz-name-card input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 1000px #F4F3EE inset!important;box-shadow:0 0 0 1000px #F4F3EE inset!important;-webkit-text-fill-color:#222222!important;font-weight:400;transition:background-color 5000s ease-in-out 0s,border-color .2s ease}
+ .quiz-name-card input:autofill{box-shadow:0 0 0 1000px #F4F3EE inset!important;color:#222222;font-weight:400}
+ .quiz-name-card .checkin-submit{display:inline-flex;align-items:center;justify-content:center;width:auto;min-height:46px;margin:0;padding:12px 28px;gap:6px;border:1px solid var(--checkin-ink);border-radius:3px;background:var(--checkin-ink);color:#F4F3EE;font:400 15px/1.4 var(--serif-zh);letter-spacing:.04em;transition:background .2s ease,transform .2s ease}
+ .checkin-submit i{align-self:center;margin:0;width:6px;height:6px;border-radius:50%;background:#B86B35;flex:none}
  .quiz-name-card .checkin-submit:hover{background:#173e44;border-color:#173e44}.quiz-name-card .checkin-submit:active{transform:translateY(1px)}.quiz-name-card .checkin-submit:focus-visible{outline:1.5px solid var(--checkin-ink);outline-offset:4px}
  .save-note{font-size:12px;color:var(--muted);margin:16px 0 24px}
 
