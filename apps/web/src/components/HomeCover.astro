@@ -47,15 +47,19 @@ const mobileStyle=fullRoadMobile?`--mobile-aspect:${portraitAsset.width}/${portr
 </section>
 <style>
  .editorial-cover{height:100svh;min-height:500px;background:#19251e;color:#f5f0df;isolation:isolate}
+ /* Share the following section's paper color at every stop, including theme changes. */
+ .editorial-cover::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:180px;z-index:0;pointer-events:none;background:linear-gradient(to bottom,color-mix(in srgb,var(--paper) 0%,transparent) 0%,color-mix(in srgb,var(--paper) 15%,transparent) 35%,color-mix(in srgb,var(--paper) 55%,transparent) 68%,color-mix(in srgb,var(--paper) 92%,transparent) 90%,var(--paper) 100%)}
+ .editorial-cover .home-identity,.editorial-cover .cover-note{z-index:1}
  .editorial-cover .cover-picture{position:absolute;inset:0;z-index:-2}
  .cover-shade{position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(9,22,14,.42) 0%,rgba(12,24,16,.12) 52%,rgba(9,18,12,.04) 70%,rgba(8,16,11,.45) 100%),radial-gradient(ellipse 42% 43% at 50% 21%,rgba(17,27,22,.52),transparent 100%)}
  .editorial-cover .home-identity{inset:22% 20px auto;text-align:center;text-shadow:none}
  .editorial-cover .cover-eyebrow{font:500 clamp(11px,1.05vw,18px)/1.4 'Cormorant Garamond',Georgia,serif;letter-spacing:.42em;margin:0 0 12px;padding-left:.42em;white-space:nowrap}
  .editorial-cover .home-identity h1{font:italic 400 clamp(100px,10.8vw,182px)/.85 'Cormorant Garamond',Georgia,serif;letter-spacing:-.045em;margin:0;white-space:nowrap}
- .cover-note{position:absolute;left:clamp(24px,3.6vw,60px);bottom:max(24px,env(safe-area-inset-bottom));max-width:calc(50% - 80px);text-shadow:0 1px 10px rgba(0,0,0,.65)}
+ .cover-note{position:absolute;left:clamp(24px,3.6vw,60px);bottom:calc(max(24px,env(safe-area-inset-bottom)) + 64px);max-width:calc(50% - 80px);text-shadow:0 2px 12px rgba(0,0,0,.35)}
  .cover-note p{margin:0}
  .cover-note .cover-note-zh{font:400 clamp(16px,1.25vw,20px)/1.65 var(--serif-zh);letter-spacing:.04em}
  .cover-note .cover-note-en{font:italic 400 clamp(16px,1.2vw,20px)/1.4 "Cormorant Garamond",Georgia,serif;margin-top:4px}
+ @media(max-width:800px){.editorial-cover::after{height:120px}}
  @media(max-width:800px) and (orientation:portrait){
   .editorial-cover{min-height:520px}
   .editorial-cover .hero-photo{object-position:var(--focus-mobile,center)}
@@ -71,7 +75,7 @@ const mobileStyle=fullRoadMobile?`--mobile-aspect:${portraitAsset.width}/${portr
   .editorial-cover .home-identity{inset:25% 12px auto}
   .editorial-cover .cover-eyebrow{font-size:clamp(10px,2.75vw,18px);letter-spacing:.3em;padding-left:.3em;margin-bottom:16px}
   .editorial-cover .home-identity h1{font-size:clamp(84px,27.5vw,195px);letter-spacing:-.045em;line-height:.95}
-  .cover-note{left:22px;right:22px;bottom:max(24px,calc(env(safe-area-inset-bottom) + 16px));max-width:none}
+  .cover-note{left:22px;right:22px;bottom:calc(max(24px,calc(env(safe-area-inset-bottom) + 16px)) + 56px);max-width:none}
   .cover-note .cover-note-zh{font-size:clamp(15px,3.85vw,18px);letter-spacing:.02em}
   .cover-note .cover-note-en{font-size:16px;line-height:1.35}
  }
@@ -80,10 +84,11 @@ const mobileStyle=fullRoadMobile?`--mobile-aspect:${portraitAsset.width}/${portr
  }
  @media(max-height:520px) and (orientation:landscape){
   .editorial-cover{min-height:360px}
+  .editorial-cover::after{height:120px}
   .editorial-cover .home-identity{top:32%}
   .editorial-cover .home-identity h1{font-size:clamp(80px,10vw,120px)}
   .editorial-cover .cover-eyebrow{font-size:10px;margin-bottom:7px}
-  .cover-note{bottom:max(16px,env(safe-area-inset-bottom));max-width:calc(50% - 64px)}
+  .cover-note{bottom:calc(max(16px,env(safe-area-inset-bottom)) + 56px);max-width:calc(50% - 64px)}
   .cover-note .cover-note-zh{font-size:13px}
   .cover-note .cover-note-en{font-size:15px;line-height:1.2;margin-top:2px}
  }
