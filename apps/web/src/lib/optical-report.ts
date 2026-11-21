@@ -102,7 +102,7 @@ export function createOpticalReport(root:HTMLElement){
    get('[data-analysis-state]').textContent='暂未能读取画面，请重试';retry.hidden=false;
   }finally{clearTimeout(timeout);if(token===generation&&run===analysisRun)analysing=false;}
  }
- function present(input:{correct:boolean[];score:number;title:string;message:string;id:string}){
+ function present(input:{correct:boolean[];score:number;title:string;message:string;id:string;name:string}){
   reset();correct=input.correct;items=[...root.querySelectorAll<HTMLElement>('[data-review] li')];
   items.forEach((item,i)=>{
    item.id=`tacit-answer-${i+1}`;item.tabIndex=-1;item.dataset.correct=String(correct[i]);
@@ -111,7 +111,7 @@ export function createOpticalReport(root:HTMLElement){
   const now=new Date(),date=[now.getFullYear(),String(now.getMonth()+1).padStart(2,'0'),String(now.getDate()).padStart(2,'0')].join('');
   const id=`RF-${date}-${input.id.replaceAll('-','').slice(0,12).toUpperCase()}`;
   const timestamp=new Intl.DateTimeFormat('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
-  get('[data-report-id]').textContent=id;get('[data-report-time]').textContent=timestamp;get('[data-report-time]').setAttribute('datetime',now.toISOString());
+  get('[data-report-subject]').textContent=input.name?'SUBJECT / '+input.name:'';get('[data-report-id]').textContent=id;get('[data-report-time]').textContent=timestamp;get('[data-report-time]').setAttribute('datetime',now.toISOString());
   const tier=input.score>=8?2:input.score>=4?1:0,images=[...root.querySelectorAll<HTMLImageElement>('[data-match]')];
   currentImage=images.find(image=>Number(image.dataset.match)===tier)||images[0];images.forEach(image=>image.hidden=image!==currentImage);
   get('[data-spectrum]').replaceChildren();root.querySelector('[data-histogram]')!.replaceChildren();get('[data-luma]').textContent='— / 100';get('[data-thermal]').style.removeProperty('background');delete get('[data-thermal]').dataset.ready;delete get('.relative-exposure').dataset.ready;get('[data-thermal-label]').textContent='';get('[data-color-value]').textContent='选择色条，读取 HEX';

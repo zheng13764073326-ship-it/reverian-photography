@@ -1,18 +1,22 @@
 ---
 import {tacitQuestions} from '../lib/tacit';
 import OpticalReport from './OpticalReport.astro';
+import '../styles/checkin-font.css';
 ---
 <section id="tacit" class="tacit" aria-label="默契度测试">
   <div class="tacit-intro">
     <button type="button" class="quiz-entry" data-start hidden><strong>测测我们的默契度</strong><span>十道题，看看你多懂我</span><span aria-hidden="true">→</span></button>
     <noscript><p>请开启浏览器的 JavaScript 来参与测试。</p></noscript>
   </div>
-  <form class="quiz-name-card" data-name-form hidden>
-    <p class="name-kicker">默契度测试</p>
-    <h2>先告诉我你的名字</h2>
-    <label class="name-label" for="quiz-name">名字或昵称</label>
-    <input id="quiz-name" name="nickname" autocomplete="nickname" maxlength="32" required placeholder="你的名字"/>
-    <button type="submit" class="quiz-action">开始答题</button>
+  <form class="quiz-name-card" data-name-form aria-labelledby="checkin-title" hidden>
+    <header class="checkin-meta"><span>00 // SUBJECT CHECK-IN</span><span>10 QUESTIONS · ~1 MIN</span></header>
+    <i class="checkin-corner tl" aria-hidden="true"></i><i class="checkin-corner tr" aria-hidden="true"></i><i class="checkin-corner bl" aria-hidden="true"></i><i class="checkin-corner br" aria-hidden="true"></i>
+    <div class="checkin-body">
+      <h2 id="checkin-title">在按下快门之前，怎么称呼你？</h2>
+      <p id="checkin-note" class="checkin-note">你的名字将印在最终生成的对焦报告单上</p>
+      <input id="quiz-name" name="nickname" aria-label="名字或代号" aria-describedby="checkin-note" autocomplete="nickname" enterkeyhint="go" maxlength="32" required placeholder="输入名字或代号..."/>
+      <button type="submit" class="quiz-action checkin-submit"><span aria-hidden="true">[</span><i aria-hidden="true"></i><span>开始对焦</span><span aria-hidden="true">→ ]</span></button>
+    </div>
   </form>
   <div class="quiz-frame" data-frame hidden>
     <i class="corner tl" aria-hidden="true"></i><i class="corner tr" aria-hidden="true"></i><i class="corner bl" aria-hidden="true"></i><i class="corner br" aria-hidden="true"></i>
@@ -195,7 +199,7 @@ import OpticalReport from './OpticalReport.astro';
         review.append(item);
       });
       focus(get('[data-result-title]'));
-      opticalReport.present({correct:tacitQuestions.map((q,i)=>isInFocus(q,answers[i])),score:score/10,title:resultCopy.title,message:resultCopy.message,id:attemptId});
+      opticalReport.present({correct:tacitQuestions.map((q,i)=>isInFocus(q,answers[i])),score:score/10,title:resultCopy.title,message:resultCopy.message,id:attemptId,name:nickname});
       submission = {id:attemptId,name:nickname,version:QUIZ_VERSION,answers:answers.map(answer=>[...answer])};
       void saveResult();
     };
@@ -279,7 +283,22 @@ import OpticalReport from './OpticalReport.astro';
 <style>
  .tacit{--focus-color:#237489;--miss-color:#9a601f;--quiz-mono:ui-monospace,Consolas,monospace;margin:44px 0;scroll-margin-top:calc(var(--header) + 24px)}
  .tacit-intro{display:flex;justify-content:center}.quiz-entry{display:flex;align-items:center;gap:20px;max-width:100%;padding:18px 30px;border:1px solid #aabebc;border-radius:999px;line-height:1.6}.quiz-entry strong{font-size:17px;font-weight:500;color:var(--focus-color)}.quiz-entry>span{font-size:14px;color:var(--muted)}.quiz-entry>span:last-child{font-size:23px;color:var(--focus-color)}.quiz-entry:hover{background:#e8ece4;border-color:var(--focus-color)}
- .tacit h2,.tacit h3{font-family:var(--serif-zh)}.tacit h2{font-size:clamp(25px,3vw,34px);margin-bottom:28px}.quiz-name-card{max-width:640px;margin:auto;border:1px solid #c8d1cd;border-radius:4px;padding:36px}.name-kicker{font:12px var(--quiz-mono);letter-spacing:.3em;color:var(--focus-color);margin-bottom:20px}.name-label{display:block;font-size:12px;color:var(--muted);margin-bottom:8px}.quiz-name-card input{width:100%;background:transparent;border:0;border-bottom:1px solid var(--focus-color);font:18px var(--sans);color:var(--ink);padding:10px 2px;outline-offset:5px}.quiz-name-card input:focus-visible{outline:2px solid var(--focus-color)}.save-note{font-size:12px;color:var(--muted);margin:16px 0 24px}.quiz-name-card .quiz-action{margin-top:24px;width:100%;background:var(--focus-color);border-color:var(--focus-color);color:var(--paper)}
+ .tacit h2,.tacit h3{font-family:var(--serif-zh)}.tacit h2{font-size:clamp(25px,3vw,34px);margin-bottom:28px}
+ .quiz-name-card{--checkin-ink:#1E4D54;--serif-zh:'Noto Serif SC','Source Han Serif SC','Songti SC','SimSun',serif;--quiz-mono:'Courier New',monospace;position:relative;max-width:760px;margin:auto;padding:0;border:1px solid rgba(34,34,34,.16);border-radius:2px;background:#F4F3EE;color:#222;line-break:strict}
+ .checkin-meta{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:56px;padding:16px 26px;border-bottom:1px solid rgba(34,34,34,.12);font:11px/1.6 var(--quiz-mono);letter-spacing:.02em;color:#6c706b}
+ .checkin-meta span{white-space:nowrap}
+ .checkin-corner{position:absolute;width:10px;height:10px;border-style:solid;border-color:#1E4D5459;pointer-events:none}.checkin-corner.tl{top:8px;left:8px;border-width:1px 0 0 1px}.checkin-corner.tr{top:8px;right:8px;border-width:1px 1px 0 0}.checkin-corner.bl{bottom:8px;left:8px;border-width:0 0 1px 1px}.checkin-corner.br{bottom:8px;right:8px;border-width:0 1px 1px 0}
+ .checkin-body{padding:52px 38px 48px;text-align:center}
+ .tacit .quiz-name-card h2{margin:0 0 12px;font:700 clamp(25px,2.8vw,32px)/1.6 var(--serif-zh);text-wrap:balance;letter-spacing:.01em}
+ .checkin-note{margin:0;font:400 13px/1.8 var(--serif-zh);color:#6c706b;text-wrap:pretty}
+ .quiz-name-card input{display:block;width:min(100%,460px);height:62px;margin:28px auto 34px;padding:16px 0;border:none;border-bottom:1px solid rgba(34,34,34,.25);border-radius:0;outline:none;box-shadow:none;background:transparent;appearance:none;font:400 18px/1.6 var(--serif-zh);color:#222;caret-color:var(--checkin-ink);transition:border-color .2s ease,border-bottom-width .2s ease}
+ .quiz-name-card input::placeholder{color:#92938c;opacity:1}
+ .quiz-name-card input:focus,.quiz-name-card input:focus-visible{border-bottom:1.5px solid var(--checkin-ink);outline:none;box-shadow:none;background:transparent}
+ .quiz-name-card .checkin-submit{width:auto;min-height:48px;margin:0;padding:12px 25px;gap:10px;border:1px solid var(--checkin-ink);border-radius:3px;background:var(--checkin-ink);color:#F4F3EE;font:400 17px/1.4 var(--serif-zh);letter-spacing:.12em;transition:background .2s ease,transform .2s ease}
+ .checkin-submit i{width:6px;height:6px;border-radius:50%;background:#B86B35;flex:none}
+ .quiz-name-card .checkin-submit:hover{background:#173e44;border-color:#173e44}.quiz-name-card .checkin-submit:active{transform:translateY(1px)}.quiz-name-card .checkin-submit:focus-visible{outline:1.5px solid var(--checkin-ink);outline-offset:4px}
+ .save-note{font-size:12px;color:var(--muted);margin:16px 0 24px}
+
  .quiz-action{min-height:46px;display:inline-flex;align-items:center;justify-content:center;gap:24px;border:1px solid #adbabc;border-radius:3px;padding:10px 24px;font-size:14px;letter-spacing:.12em}.quiz-action:hover{background:#e4e9e5;border-color:var(--focus-color)}.quiz-action:disabled{opacity:.4;cursor:default}
  .quiz-frame{position:relative;max-width:760px;min-height:450px;margin:0 auto;padding:28px 30px 24px;border:1px solid #c8d1cd;border-radius:4px;scroll-margin-top:calc(var(--header) + 24px)}
  .corner{position:absolute;width:16px;height:16px;border-color:var(--focus-color);border-style:solid;border-width:0;pointer-events:none;opacity:.9}
@@ -300,6 +319,7 @@ import OpticalReport from './OpticalReport.astro';
  .quiz-review ol{display:grid;grid-template-columns:1fr;gap:8px;list-style:none;padding:0;margin:0;text-align:left}.quiz-review :global(li){padding:14px 16px;border:1px solid #c8d1cd;border-radius:3px}.quiz-review :global(.review-head){display:flex;justify-content:space-between;gap:12px;font:12px var(--quiz-mono);letter-spacing:.14em;color:var(--muted);margin-bottom:8px}.quiz-review :global(h5){font:16px/1.6 var(--sans);margin:0 0 6px}.quiz-review :global(.review-comparison){font-size:14px;line-height:1.6;color:var(--muted);margin:0;overflow-wrap:anywhere}.quiz-review :global(.review-focus){color:var(--focus-color)}.quiz-review :global(.review-miss){color:var(--miss-color)}.quiz-review :global(.review-comparison .review-focus){font-weight:600}
  @keyframes verdict-pop{0%{opacity:0;transform:scale(.55);filter:blur(12px)}55%{opacity:1;filter:blur(0)}100%{opacity:1;transform:scale(1);filter:blur(0)}}
  @keyframes corner-lock{0%{transform:scale(1.9);opacity:.25}60%{transform:scale(.94);opacity:1}100%{transform:scale(1);opacity:.9}}
- @media(max-width:600px){.tacit{margin:32px 0}.quiz-entry{display:grid;grid-template-columns:1fr auto;gap:2px 16px;padding:15px 24px;text-align:left}.quiz-entry strong{font-size:16px}.quiz-entry>span:nth-child(2){font-size:12px;grid-column:1}.quiz-entry>span:last-child{grid-column:2;grid-row:1/3}.quiz-name-card{padding:26px 20px}.quiz-frame{padding:24px 18px;min-height:0}.quiz-options{grid-template-columns:1fr;gap:8px}.quiz-options :global(.quiz-option){min-height:48px;padding:10px 12px}.frame-meta{font-size:10px;letter-spacing:0;gap:6px}.tacit h3{font-size:21px}.show-result{padding:32px 14px}.quiz-review :global(li){padding:12px}.quiz-review :global(h5){font-size:15px}.quiz-review :global(.review-comparison){font-size:13px}.score-unit{font-size:12px}.result-actions{gap:12px}.result-actions .quiz-action{padding:10px 18px}.quiz-controls .quiz-action{width:100%}}
- @media(prefers-reduced-motion:reduce){.quiz-options :global(.quiz-option){transition:none}.corner,.quiz-verdict{animation:none!important}}
+ @media(max-width:600px){.tacit{margin:32px 0}.quiz-entry{display:grid;grid-template-columns:1fr auto;gap:2px 16px;padding:15px 24px;text-align:left}.quiz-entry strong{font-size:16px}.quiz-entry>span:nth-child(2){font-size:12px;grid-column:1}.quiz-entry>span:last-child{grid-column:2;grid-row:1/3}.checkin-meta{padding:15px 18px;font-size:9px;letter-spacing:0;gap:8px}.checkin-body{padding:36px 22px 34px}.quiz-name-card input{margin-top:24px;margin-bottom:28px}.tacit .quiz-name-card h2{font-size:25px}.checkin-note{max-width:26em;margin-inline:auto}.quiz-frame{padding:24px 18px;min-height:0}.quiz-options{grid-template-columns:1fr;gap:8px}.quiz-options :global(.quiz-option){min-height:48px;padding:10px 12px}.frame-meta{font-size:10px;letter-spacing:0;gap:6px}.tacit h3{font-size:21px}.show-result{padding:32px 14px}.quiz-review :global(li){padding:12px}.quiz-review :global(h5){font-size:15px}.quiz-review :global(.review-comparison){font-size:13px}.score-unit{font-size:12px}.result-actions{gap:12px}.result-actions .quiz-action{padding:10px 18px}.quiz-controls .quiz-action{width:100%}}
+ @media(max-width:360px){.checkin-meta{padding-inline:12px;font-size:8px}.checkin-body{padding-inline:18px}.tacit .quiz-name-card h2{font-size:24px}}
+ @media(prefers-reduced-motion:reduce){.quiz-name-card input,.quiz-name-card .checkin-submit{transition:none}.quiz-options :global(.quiz-option){transition:none}.corner,.quiz-verdict{animation:none!important}}
 </style>

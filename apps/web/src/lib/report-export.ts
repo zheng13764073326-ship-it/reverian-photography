@@ -1,12 +1,12 @@
 import {wavePoints,wavePath,barcodeRuns,dimensionScores,radarPoints,histogramPoints} from './report-math';
 import type {PictureAnalysis} from './report-math';
-export type ReportSnapshot={id:string;timestamp:string;score:number;title:string;message:string;correct:boolean[];image:HTMLImageElement;analysis:PictureAnalysis;photoTitle:string;place:string;archive:string};
+export type ReportSnapshot={name?:string;id:string;timestamp:string;score:number;title:string;message:string;correct:boolean[];image:HTMLImageElement;analysis:PictureAnalysis;photoTitle:string;place:string;archive:string};
 
 export async function renderReport(s:ReportSnapshot,element:HTMLElement):Promise<Blob>{
  const css=getComputedStyle(element),ink='#222222',paper='#F4F3EE',muted='#6c706b',blue='#1E4D54',orange='#B86B35';
  const mono=css.getPropertyValue('--quiz-mono').trim(),serif=css.getPropertyValue('--serif-zh').trim();
  await Promise.all([
-  document.fonts.load(`400 28px "Noto Serif SC"`,s.photoTitle+s.place+'合焦光影偏爱直觉'),
+  document.fonts.load(`400 28px "Noto Serif SC"`,s.photoTitle+s.place+(s.name||'')+'合焦光影偏爱直觉'),
   document.fonts.load(`600 30px "Noto Serif SC"`,s.message),
   document.fonts.load(`700 56px "Noto Serif SC"`,s.title),
  ]);
@@ -36,7 +36,9 @@ export async function renderReport(s:ReportSnapshot,element:HTMLElement):Promise
  const photoWidth=w-40,photoHeight=Math.round(photoWidth/(s.image.naturalWidth/s.image.naturalHeight));
  const photoBand=40,photoBoxHeight=photoHeight+photoBand*2,telemetryY=photoY+photoBoxHeight+gap,telemetryHeight=230;
  const qr:{size:number;bits:string}=JSON.parse(element.dataset.qr!),cell=2,codeSize=(qr.size+8)*cell;
- const footerY=telemetryY+telemetryHeight+gap,footerHeight=Math.max(106,codeSize+24),height=footerY+footerHeight+18;
+ const qrX=x+w-12-codeSize,barcode=element.dataset.barcode!,barWidth=(barcode.length+20)/2,barsX=qrX-38-barWidth;
+ const subjectLines=s.name?wrapLines('SUBJECT / '+s.name,barsX-x-pad-20,22,400):[],footerTextHeight=subjectLines.length*30+22;
+ const footerY=telemetryY+telemetryHeight+gap,footerHeight=Math.max(106,codeSize+24,footerTextHeight+24),height=footerY+footerHeight+18;
  output.width=width*scale;output.height=height*scale;c.scale(scale,scale);c.fillStyle=paper;c.fillRect(0,0,width,height);
  let seed=17;c.fillStyle='#22222209';
  for(let i=0;i<Math.round(width*height/30);i++){seed=(Math.imul(seed,1664525)+1013904223)>>>0;const xx=seed%(width*2);seed=(Math.imul(seed,1664525)+1013904223)>>>0;c.fillRect(xx/2,(seed%(height*2))/2,.5,.5);}
@@ -114,9 +116,10 @@ export async function renderReport(s:ReportSnapshot,element:HTMLElement):Promise
  text(`${a.cool}% COOL`,barX,telemetryY+214,22);text(`${a.neutral}% NEUTRAL`,barX+barW/2,telemetryY+214,22,muted,mono,400,'center');text(`${a.warm}% WARM`,barX+barW,telemetryY+214,22,muted,mono,400,'right');
 
  box(x,footerY,w,footerHeight);
- const domain=element.querySelector('[data-report-domain]')?.textContent||'',codeY=footerY+(footerHeight-codeSize)/2,qrX=x+w-12-codeSize;
- text(domain+' · '+s.timestamp,x+pad,footerY+footerHeight/2+7,22,ink);
- const barcode=element.dataset.barcode!,barWidth=(barcode.length+20)/2,barsX=qrX-38-barWidth;
+ const domain=element.querySelector('[data-report-domain]')?.textContent||'',codeY=footerY+(footerHeight-codeSize)/2;
+ const footerTextY=footerY+(footerHeight-footerTextHeight)/2+20;
+ subjectLines.forEach((row,i)=>text(row,x+pad,footerTextY+i*30,22,ink,serif));
+ text(domain+' · '+s.timestamp,x+pad,footerTextY+subjectLines.length*30,22,ink);
  c.fillStyle='#fff';c.fillRect(barsX,codeY,barWidth,codeSize);c.fillStyle=ink;
  for(const {start,width:runWidth} of barcodeRuns(barcode))c.fillRect(barsX+(start+10)/2,codeY+8,runWidth/2,codeSize-16);
  c.save();c.translate(qrX-16,codeY+codeSize/2);c.rotate(Math.PI/2);text('DX',0,9,30,ink,mono,700,'center');c.restore();
