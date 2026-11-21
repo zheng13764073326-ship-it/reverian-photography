@@ -36,22 +36,22 @@
  enabled.addEventListener('change',hide);
 </script>
 <style is:global>
- .focus-cursor{--frame-size:56px;--corner-size:12px;display:none;position:fixed;top:0;left:0;z-index:1000;width:var(--frame-size);height:var(--frame-size);color:#a58a4b;pointer-events:none;opacity:0;transition:width .22s ease,height .22s ease,opacity .15s ease,color .2s ease;will-change:transform}
+ .focus-cursor{--frame-size:40px;--corner-size:9px;display:none;position:fixed;top:0;left:0;z-index:1000;width:var(--frame-size);height:var(--frame-size);color:#a58a4b;pointer-events:none;opacity:0;transition:width .22s ease,height .22s ease,opacity .15s ease,color .2s ease;will-change:transform}
  .focus-cursor[data-surface="image"]{color:#c6aa65;filter:drop-shadow(0 1px 1px #171a1326)}
  .pointer-frame{position:absolute;inset:0;transform-origin:center;transition:transform .18s cubic-bezier(.2,.7,.2,1)}
  .pointer-frame i{position:absolute;display:block;width:var(--corner-size);height:var(--corner-size);border:0 solid currentColor;transition:width .22s ease,height .22s ease}
- .pointer-frame i:nth-child(1){top:0;left:0;border-width:2px 0 0 2px}
- .pointer-frame i:nth-child(2){top:0;right:0;border-width:2px 2px 0 0}
- .pointer-frame i:nth-child(3){bottom:0;left:0;border-width:0 0 2px 2px}
- .pointer-frame i:nth-child(4){bottom:0;right:0;border-width:0 2px 2px 0}
- .pointer-center{position:absolute;left:50%;top:50%;width:5px;height:5px;border-radius:50%;background:currentColor;transform:translate(-50%,-50%);transition:transform .18s ease}
+ .pointer-frame i:nth-child(1){top:0;left:0;border-width:1.5px 0 0 1.5px}
+ .pointer-frame i:nth-child(2){top:0;right:0;border-width:1.5px 1.5px 0 0}
+ .pointer-frame i:nth-child(3){bottom:0;left:0;border-width:0 0 1.5px 1.5px}
+ .pointer-frame i:nth-child(4){bottom:0;right:0;border-width:0 1.5px 1.5px 0}
+ .pointer-center{position:absolute;left:50%;top:50%;width:4px;height:4px;border-radius:50%;background:currentColor;transform:translate(-50%,-50%);transition:transform .18s ease}
  .focus-cursor.is-pressed .pointer-frame{transform:scale(.83)}
  .focus-cursor.is-pressed .pointer-center{transform:translate(-50%,-50%) scale(.8)}
  @media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
   .focus-cursor{display:block}
   .focus-cursor.is-visible{opacity:1}
-  .focus-cursor[data-kind="link"]{--frame-size:36px;--corner-size:9px}
-  .focus-cursor[data-kind="photo"]{--frame-size:64px;--corner-size:14px}
+  .focus-cursor[data-kind="link"]{--frame-size:28px;--corner-size:7px}
+  .focus-cursor[data-kind="photo"]{--frame-size:46px;--corner-size:10px}
   html.pointer-ready,html.pointer-ready *{cursor:none!important}
   html.pointer-ready:has(dialog[open]),html.pointer-ready:has(dialog[open]) *{cursor:auto!important}
   html.pointer-ready:has(dialog[open]) .focus-cursor{opacity:0}
