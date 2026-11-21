@@ -55,7 +55,7 @@ export async function renderReport(s:ReportSnapshot,element:HTMLElement):Promise
  y+=photoHeight+44;box(14,y,384,142);box(402,y,384,142);text('03 // LUMINANCE',24,y+16,9);text(`${s.analysis.brightness} / 100`,335,y+16,9,blue);text('04 // CHROMATIC DNA',412,y+16,9);text('PIXEL OK',735,y+16,8);
  c.save();c.translate(24,y+25);line(0,74,364,74);const peak=Math.max(1,...s.analysis.coolHistogram,...s.analysis.warmHistogram);
  path(wavePath(histogramPoints(s.analysis.coolHistogram,364,74,peak))+'L364 74H0Z','#537784',1.2,'#53778455');path(wavePath(histogramPoints(s.analysis.warmHistogram,364,74,peak))+'L364 74H0Z',orange,1.2,'#B86B3545');c.restore();
- text('0 / SHADOW',24,y+110,7);text('255 / LIGHT',335,y+110,7);text(s.place,24,y+131,10,muted,serif);
+ text('0 / SHADOW',24,y+110,7);text('255 / LIGHT',335,y+110,7);text(s.place,24,y+131,10,muted,mono);
  s.analysis.palette.forEach((color,i)=>{c.fillStyle=color;c.fillRect(412+i*73,y+29,69,35);text(color,412+i*73,y+78,8);});
  const a=s.analysis,barX=412,barW=364,barY=y+99,thermal=c.createLinearGradient(barX,0,barX+barW,0);thermal.addColorStop(0,'#537784');thermal.addColorStop(.5,'#d6d8d1');thermal.addColorStop(1,orange);c.fillStyle=thermal;c.fillRect(barX,barY,barW,5);
  const pointer=barX+barW*(.5+(a.warm-a.cool)/200);line(pointer,barY-5,pointer,barY+11,ink,1.2);text(`${a.cool}% COOL`,412,y+129,8);text(`${a.neutral}% NEUTRAL`,543,y+129,8);text(`${a.warm}% WARM`,719,y+129,8);
