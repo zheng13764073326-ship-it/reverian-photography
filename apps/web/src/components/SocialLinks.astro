@@ -6,7 +6,7 @@ const {links,compact=false,id='social-title'}=Astro.props;
 const displayName=(label:string)=>/instagram/i.test(label)?'@reverian':/小红书|抖音/i.test(label)?'@挽风':'';
 ---
 {links.length>0&&<section class:list={['social-section',{'social-compact':compact}]} aria-labelledby={id}>
-  {compact?<h3 id={id}>CONNECT // 联络</h3>:<h2 id={id}>CONNECT // 联络</h2>}
+  {compact?<h3 id={id}>社媒</h3>:<h2 id={id}>社媒</h2>}
   <ol class="social-list" role="list">
     {links.map((link,index)=><li>
       <a class="social-row" href={link.url} target="_blank" rel="noopener noreferrer" aria-label={`${link.label}（新窗口打开）`}>
