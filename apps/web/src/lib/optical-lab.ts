@@ -1,17 +1,17 @@
 export function setupOpticalLab(root:HTMLElement) {
-  const tabs=[...root.querySelectorAll<HTMLButtonElement>('[data-lab-tab]')];
+  const links=[...document.querySelectorAll<HTMLAnchorElement>('[data-lab-link]')];
   const panels=[...root.querySelectorAll<HTMLElement>('[data-lab-panel]')];
   const filters=[...root.querySelectorAll<HTMLButtonElement>('[data-prompt-filter]')];
   const prompts=[...root.querySelectorAll<HTMLElement>('[data-prompt-category]')];
   let weather:Promise<{ensure:()=>void}>|undefined;
   function activate(id:string,write=false) {
-    tabs.forEach(tab=>{const selected=tab.dataset.labTab===id;tab.setAttribute('aria-selected',String(selected));tab.tabIndex=selected?0:-1;});
+    links.forEach(link=>{if(link.dataset.labLink===id)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');});
     panels.forEach(panel=>{panel.hidden=panel.dataset.labPanel!==id;});
     if(write){const url=new URL(location.href);if(id==='guides')url.searchParams.delete('tab');else url.searchParams.set('tab',id);history.pushState(null,'',url);}
     if(id==='sunset'){
       weather??=import('./lab-weather').then(module=>module.setupLabWeather(root.querySelector<HTMLElement>('[data-lab-panel="sunset"]')!));
       void weather.then(controller=>controller.ensure()).catch(()=>{
-        weather=undefined;root.querySelector<HTMLElement>('[data-weather-status]')!.textContent='观测模块暂未加载，请重新选择火烧云页签或刷新页面。';
+        weather=undefined;root.querySelector<HTMLElement>('[data-weather-status]')!.textContent='观测模块暂未加载，请重新选择火烧云栏目或刷新页面。';
       });
     }
   }
@@ -23,15 +23,19 @@ export function setupOpticalLab(root:HTMLElement) {
   }
   function restore() {
     const params=new URL(location.href).searchParams,tab=params.get('tab'),use=params.get('use');
-    activate(tabs.some(button=>button.dataset.labTab===tab)?tab!:'guides');
+    activate(links.some(link=>link.dataset.labLink===tab)?tab!:'guides');
     filter(filters.some(button=>button.dataset.promptFilter===use)?use!:'all');
   }
-  tabs.forEach((tab,index)=>{
-    tab.addEventListener('click',()=>activate(tab.dataset.labTab!,true));
-    tab.addEventListener('keydown',event=>{
-      const next=event.key==='ArrowRight'?(index+1)%tabs.length:event.key==='ArrowLeft'?(index+tabs.length-1)%tabs.length:event.key==='Home'?0:event.key==='End'?tabs.length-1:-1;
-      if(next<0)return;event.preventDefault();tabs[next].focus();activate(tabs[next].dataset.labTab!,true);
-    });
+  // These are ordinary links on other pages; only the current lab view switches in place.
+  document.addEventListener('click',event=>{
+    if(event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+    const link=event.target instanceof Element?event.target.closest<HTMLAnchorElement>('a[data-lab-link]'):null;
+    if(!link||link.origin!==location.origin||link.pathname!==location.pathname)return;
+    event.preventDefault();
+    activate(link.dataset.labLink!,true);
+    const heading=panels.find(panel=>!panel.hidden)?.querySelector<HTMLElement>('h2');
+    if(heading){heading.tabIndex=-1;heading.focus({preventScroll:true});}
+    window.scrollTo({top:0,behavior:'auto'});
   });
   filters.forEach(button=>button.addEventListener('click',()=>filter(button.dataset.promptFilter!,true)));
 

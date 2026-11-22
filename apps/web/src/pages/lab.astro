@@ -7,7 +7,6 @@ import '@fontsource-variable/noto-serif-sc/wght.css';
 import '@fontsource/jetbrains-mono/latin-400.css';
 import '../styles/lab.css';
 const uses=[['all','全部'],...prompts.map(prompt=>[prompt.category,prompt.title])];
-const tabs=[['guides','01','摄影入门'],['ai','02','AI 影像'],['sunset','LAB','火烧云']];
 ---
 <Base title="光学实验室" description="从快门逻辑到气象观测，记录光影背后的技术手记。" lab>
   <div class="lab-page container" data-optical-lab>
@@ -16,12 +15,8 @@ const tabs=[['guides','01','摄影入门'],['ai','02','AI 影像'],['sunset','LA
       <h1>光学实验室</h1>
       <p class="lab-subtitle">从快门逻辑到气象观测，记录光影背后的技术手记。</p>
     </header>
-    <div class="lab-tabs" role="tablist" aria-label="光学实验室栏目">
-      {tabs.map(([id,index,title],i)=><button type="button" role="tab" id={`lab-tab-${id}`} data-lab-tab={id} aria-controls={`lab-panel-${id}`} aria-selected={i===0?'true':'false'} tabindex={i===0?0:-1}><span>{index}</span>{title}</button>)}
-    </div>
-
-    <section id="lab-panel-guides" class="lab-panel" role="tabpanel" aria-labelledby="lab-tab-guides" tabindex="0" data-lab-panel="guides">
-      <div class="lab-section-line"><h2>摄影入门</h2><p>FIELD NOTES <span>/ 04 GUIDES</span></p></div>
+    <section id="lab-panel-guides" class="lab-panel" aria-labelledby="lab-section-guides" data-lab-panel="guides">
+      <div class="lab-section-line"><h2 id="lab-section-guides">摄影入门</h2><p>FIELD NOTES <span>/ 04 GUIDES</span></p></div>
       <div class="lab-guide-grid">
         {guides.map(guide=><button type="button" class="lab-guide-card lab-corners" data-guide={guide.id} aria-haspopup="dialog" aria-controls="lab-reader">
           <span class="lab-card-index">GUIDE {guide.index}<span>{guide.tag}</span></span>
@@ -35,8 +30,8 @@ const tabs=[['guides','01','摄影入门'],['ai','02','AI 影像'],['sunset','LA
       </template>)}
     </section>
 
-    <section id="lab-panel-ai" class="lab-panel" role="tabpanel" aria-labelledby="lab-tab-ai" tabindex="0" data-lab-panel="ai" hidden>
-      <div class="lab-section-line"><h2>AI 影像</h2><p>PROMPT ARCHIVE <span>/ 06 PRESETS</span></p></div>
+    <section id="lab-panel-ai" class="lab-panel" aria-labelledby="lab-section-ai" data-lab-panel="ai" hidden>
+      <div class="lab-section-line"><h2 id="lab-section-ai">AI 影像</h2><p>PROMPT ARCHIVE <span>/ 06 PRESETS</span></p></div>
       <div class="lab-use-filters" role="group" aria-label="提示词用途筛选">{uses.map(([id,label])=><button type="button" data-prompt-filter={id} aria-pressed={id==='all'?'true':'false'} aria-controls="lab-prompt-grid">{label}</button>)}</div>
       <p class="lab-prompt-intro">保留照片本来的故事，让调整有明确的方向。复制后，连同原片交给你使用的 AI 修图工具。</p>
       <output class="lab-sr-only" data-prompt-count aria-live="polite">6 条提示词</output>
@@ -52,9 +47,9 @@ const tabs=[['guides','01','摄影入门'],['ai','02','AI 影像'],['sunset','LA
       </div>
     </section>
 
-    <section id="lab-panel-sunset" class="lab-panel" role="tabpanel" aria-labelledby="lab-tab-sunset" tabindex="0" data-lab-panel="sunset" hidden>
-      <div class="lab-weather-heading"><div><p class="lab-eyebrow">SUNSET OBSERVATORY</p><h2>晚霞观测台</h2><p>上海 / 南京 / 杭州 · 日落前后 1 小时</p></div><button type="button" class="lab-refresh" data-weather-refresh>刷新观测 ↻</button></div>
-      <div class="lab-weather-strip"><span><time data-weather-date>—</time> <span>UTC+8</span></span><p data-weather-status role="status" aria-live="polite">选择此页签后获取今日预报。</p></div>
+    <section id="lab-panel-sunset" class="lab-panel" aria-labelledby="lab-section-sunset" data-lab-panel="sunset" hidden>
+      <div class="lab-weather-heading"><div><p class="lab-eyebrow">SUNSET OBSERVATORY</p><h2 id="lab-section-sunset">晚霞观测台</h2><p>上海 / 南京 / 杭州 · 日落前后 1 小时</p></div><button type="button" class="lab-refresh" data-weather-refresh>刷新观测 ↻</button></div>
+      <div class="lab-weather-strip"><span><time data-weather-date>—</time> <span>UTC+8</span></span><p data-weather-status role="status" aria-live="polite">进入火烧云栏目后获取今日预报。</p></div>
       <div class="lab-weather-grid">
         {cities.map((city,index)=><article class="lab-weather-card" data-city={city.id} aria-label={`${city.name}晚霞观测`}>
           <header><div><p class="lab-station">STATION 0{index+1} // {city.english}</p><h3>{city.name}</h3></div><span class="lab-source" data-weather="source">等待观测</span></header>
@@ -71,7 +66,7 @@ const tabs=[['guides','01','摄影入门'],['ai','02','AI 影像'],['sunset','LA
         <p class="lab-attribution">Weather data by <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo ↗</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> · 指数由本站计算</p>
       </div>
     </section>
-    <noscript><p class="lab-noscript">请开启 JavaScript，以切换栏目、阅读指南和获取天气数据。</p></noscript>
+    <noscript><p class="lab-noscript">请开启 JavaScript，以使用栏目导航、阅读指南和获取天气数据。</p></noscript>
     <dialog id="lab-reader" class="lab-reader" aria-labelledby="lab-reader-title">
       <header><span data-reader-index>GUIDE</span><button type="button" data-reader-close autofocus aria-label="关闭指南">关闭 ×</button></header>
       <div class="lab-reader-scroll" tabindex="0"><p class="lab-eyebrow" data-reader-tag></p><h2 id="lab-reader-title"></h2><div data-reader-body></div></div>

@@ -172,7 +172,8 @@ summary::-webkit-details-marker {
   font-size: 22px;
   letter-spacing: 2px;
 }
-.site-header nav > a[aria-current] {
+.site-header nav > a[aria-current],
+.site-header .lab-nav > summary[aria-current] {
   border-bottom: 1px solid currentColor;
 }
 .portfolio-nav {
@@ -199,7 +200,8 @@ summary::-webkit-details-marker {
   font-size: 17px;
   letter-spacing: 1px;
 }
-.portfolio-panel a:hover {
+.portfolio-panel a:hover,
+.portfolio-panel a[aria-current] {
   color: var(--accent);
 }
 .site-header.over-cover {

@@ -12,7 +12,11 @@ const portfolios=[['/works/','精选作品'],['/albums/','光影存档'],['/wild
   <details class="portfolio-nav"><summary>作品集 <span aria-hidden="true">⌄</span></summary><div class="portfolio-panel">
    {portfolios.map(([href,label])=><a href={href} aria-current={path.startsWith(href)?'page':undefined}>{label}</a>)}
   </div></details>
-  <a href="/lab/" aria-current={path==='/lab/'?'page':undefined}>光学实验室</a>
+  <details class="portfolio-nav lab-nav"><summary aria-current={path==='/lab/'?'true':undefined}>光学实验室 <span aria-hidden="true">⌄</span></summary><div class="portfolio-panel">
+   <a href="/lab/" data-lab-link="guides">摄影入门</a>
+   <a href="/lab/?tab=ai" data-lab-link="ai">AI 影像</a>
+   <a href="/lab/?tab=sunset" data-lab-link="sunset">火烧云</a>
+  </div></details>
   <a href="/about/" aria-current={path==='/about/'?'page':undefined}>关于我</a>
  </nav>
 </header>
@@ -21,7 +25,8 @@ const header=document.querySelector<HTMLElement>('.site-header')!;
 const toggle=header.querySelector<HTMLButtonElement>('.menu-toggle')!;
 const nav=header.querySelector<HTMLElement>('nav')!;
 const main=document.querySelector<HTMLElement>('main')!;
-const details=header.querySelector<HTMLDetailsElement>('details')!;
+const dropdowns=[...header.querySelectorAll<HTMLDetailsElement>('details')];
+const closeDropdowns=()=>dropdowns.forEach(details=>{details.open=false;});
 const media=matchMedia('(max-width: 800px)');
 let previousOverflow='';
 function setMenu(open:boolean){
@@ -33,11 +38,23 @@ function setMenu(open:boolean){
  nav.inert=media.matches&&!open;
 }
 toggle.addEventListener('click',()=>setMenu(toggle.getAttribute('aria-expanded')!=='true'));
-media.addEventListener('change',()=>{setMenu(false);details.open=false;});
+media.addEventListener('change',()=>{setMenu(false);closeDropdowns();});
 nav.inert=media.matches;
-document.addEventListener('click',event=>{if(!header.contains(event.target as Node))details.open=false;});
+dropdowns.forEach(details=>details.addEventListener('toggle',()=>{
+ if(details.open)dropdowns.forEach(other=>{if(other!==details)other.open=false;});
+}));
+nav.addEventListener('click',event=>{
+ if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+ if((event.target as Element).closest('a[href]')){setMenu(false);closeDropdowns();}
+});
+document.addEventListener('click',event=>{if(!header.contains(event.target as Node))closeDropdowns();});
 document.addEventListener('keydown',event=>{
- if(event.key==='Escape'){const opened=toggle.getAttribute('aria-expanded')==='true';setMenu(false);details.open=false;if(opened)toggle.focus();}
+ if(event.key==='Escape'){
+  const opened=toggle.getAttribute('aria-expanded')==='true';
+  const active=dropdowns.find(details=>details.open&&details.contains(document.activeElement));
+  setMenu(false);closeDropdowns();
+  if(opened)toggle.focus();else active?.querySelector('summary')?.focus();
+ }
  if(event.key==='Tab'&&toggle.getAttribute('aria-expanded')==='true'){
   const focusable=[...header.querySelectorAll<HTMLElement>('a,button,summary')].filter(el=>el.getClientRects().length);
   const first=focusable[0],last=focusable.at(-1)!;
