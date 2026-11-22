@@ -8,15 +8,15 @@ import '@fontsource/jetbrains-mono/latin-400.css';
 import '../styles/lab.css';
 const uses=[['all','全部'],...prompts.map(prompt=>[prompt.category,prompt.title])];
 ---
-<Base title="光学实验室" description="从快门逻辑到气象观测，记录光影背后的技术手记。" lab>
+<Base title="摄影入门" description="从快门逻辑到气象观测，记录光影背后的技术手记。" lab>
   <div class="lab-page container" data-optical-lab>
     <header class="lab-heading">
       <p class="lab-eyebrow">OPTICAL LAB <span>// 01</span></p>
-      <h1>光学实验室</h1>
+      <h1 data-lab-title>摄影入门</h1>
       <p class="lab-subtitle">从快门逻辑到气象观测，记录光影背后的技术手记。</p>
     </header>
     <section id="lab-panel-guides" class="lab-panel" aria-labelledby="lab-section-guides" data-lab-panel="guides">
-      <div class="lab-section-line"><h2 id="lab-section-guides">摄影入门</h2><p>FIELD NOTES <span>/ 04 GUIDES</span></p></div>
+      <div class="lab-section-line"><h2 id="lab-section-guides">入门指南</h2><p>FIELD NOTES <span>/ 04 GUIDES</span></p></div>
       <div class="lab-guide-grid">
         {guides.map(guide=><button type="button" class="lab-guide-card lab-corners" data-guide={guide.id} aria-haspopup="dialog" aria-controls="lab-reader">
           <span class="lab-card-index">GUIDE {guide.index}<span>{guide.tag}</span></span>
@@ -31,7 +31,7 @@ const uses=[['all','全部'],...prompts.map(prompt=>[prompt.category,prompt.titl
     </section>
 
     <section id="lab-panel-ai" class="lab-panel" aria-labelledby="lab-section-ai" data-lab-panel="ai" hidden>
-      <div class="lab-section-line"><h2 id="lab-section-ai">AI 影像</h2><p>PROMPT ARCHIVE <span>/ 06 PRESETS</span></p></div>
+      <div class="lab-section-line"><h2 id="lab-section-ai">提示词档案</h2><p>PROMPT ARCHIVE <span>/ 06 PRESETS</span></p></div>
       <div class="lab-use-filters" role="group" aria-label="提示词用途筛选">{uses.map(([id,label])=><button type="button" data-prompt-filter={id} aria-pressed={id==='all'?'true':'false'} aria-controls="lab-prompt-grid">{label}</button>)}</div>
       <p class="lab-prompt-intro">保留照片本来的故事，让调整有明确的方向。复制后，连同原片交给你使用的 AI 修图工具。</p>
       <output class="lab-sr-only" data-prompt-count aria-live="polite">6 条提示词</output>

@@ -1,10 +1,16 @@
 export function setupOpticalLab(root:HTMLElement) {
   const links=[...document.querySelectorAll<HTMLAnchorElement>('[data-lab-link]')];
   const panels=[...root.querySelectorAll<HTMLElement>('[data-lab-panel]')];
+  const heading=root.querySelector<HTMLElement>('[data-lab-title]')!;
+  const titleSuffix=document.title.slice(document.title.indexOf(' — '));
   const filters=[...root.querySelectorAll<HTMLButtonElement>('[data-prompt-filter]')];
   const prompts=[...root.querySelectorAll<HTMLElement>('[data-prompt-category]')];
   let weather:Promise<{ensure:()=>void}>|undefined;
   function activate(id:string,write=false) {
+    const title=links.find(link=>link.dataset.labLink===id)!.textContent!.trim();
+    heading.textContent=title;
+    document.title=title+titleSuffix;
+    document.querySelector<HTMLMetaElement>('meta[property="og:title"]')?.setAttribute('content',document.title);
     links.forEach(link=>{if(link.dataset.labLink===id)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');});
     panels.forEach(panel=>{panel.hidden=panel.dataset.labPanel!==id;});
     if(write){const url=new URL(location.href);if(id==='guides')url.searchParams.delete('tab');else url.searchParams.set('tab',id);history.pushState(null,'',url);}

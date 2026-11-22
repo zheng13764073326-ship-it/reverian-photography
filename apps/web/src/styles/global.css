@@ -200,6 +200,11 @@ summary::-webkit-details-marker {
   font-size: 17px;
   letter-spacing: 1px;
 }
+.lab-nav .portfolio-panel a {
+  font-family: "Noto Serif SC Variable", "Noto Serif SC", var(--serif-zh);
+  font-weight: 500;
+  font-synthesis: none;
+}
 .portfolio-panel a:hover,
 .portfolio-panel a[aria-current] {
   color: var(--accent);
