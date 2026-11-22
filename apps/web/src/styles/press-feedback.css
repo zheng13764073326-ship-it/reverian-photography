@@ -1,0 +1,39 @@
+/* A shared shutter feel for controls; photo surfaces keep their own optics. */
+:root {
+  --press-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+a, button, summary, [role="button"] {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+/* Include dynamic quiz options. Specificity keeps component color transitions
+   from replacing the transform rebound; disabled controls never depress. */
+html body :is(button, .quiz-action, .about-link, .social-buttons a, .footer-links a,
+  .site-header nav > a, .portfolio-nav summary, .portfolio-panel a,
+  .section-heading a, .text-link, .back-link, .album-topline > a,
+  .home-scroll, .quiz-fallback, .drift-begin, .pagination a, .album-pagination a,
+  .quiz-review > summary):not([hidden]):not([inert]) {
+  transform-origin: center;
+  transition: transform .35s var(--press-spring), color .2s ease,
+    background-color .2s ease, border-color .2s ease;
+}
+/* Preserve the positional transform of map pins while pressing. */
+.map-point { --press-anchor: translate(-50%, -50%); }
+@media (prefers-reduced-motion: no-preference) {
+  html body :is(button, .quiz-action, .about-link, .social-buttons a, .footer-links a,
+    .site-header nav > a, .portfolio-nav summary, .portfolio-panel a,
+    .section-heading a, .text-link, .back-link, .album-topline > a,
+    .home-scroll, .quiz-fallback, .drift-begin, .pagination a, .album-pagination a,
+    .quiz-review > summary):not(:disabled):not([aria-disabled="true"]):active {
+    transform: var(--press-anchor, translate(0, 0)) scale(.95) translateY(1px);
+    transition-duration: .08s;
+    transition-timing-function: ease-out;
+  }
+  html body :is(.social-buttons a, .footer-links a, .site-header nav > a,
+    .portfolio-nav summary, .portfolio-panel a, .section-heading a,
+    .text-link, .back-link, .album-topline > a, .home-scroll,
+    .quiz-fallback, .drift-begin, .pagination a, .album-pagination a,
+    .quiz-review > summary):not(:disabled):not([aria-disabled="true"]):active {
+    transform: scale(.96);
+  }
+}

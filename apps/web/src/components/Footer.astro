@@ -1,0 +1,31 @@
+---
+interface Props {home?:boolean;demo?:boolean}
+const {home=false,demo=false}=Astro.props;
+---
+<footer class="site-footer container">
+  <span class="footer-copyright">© {new Date().getFullYear()} REVERIAN · PHOTOGRAPHY</span>
+  <span class="footer-motto">{demo?'演示版 · 照片、地点与文字为占位内容':'按下快门，因为热爱'}</span>
+  <nav class="footer-links" aria-label="页脚导航">
+    {!home&&<a href="/">回到首页 <span aria-hidden="true">↗</span></a>}
+    <a href="#top" class="back-to-top" data-back-to-top aria-label="回到顶部" title="回到顶部"><span aria-hidden="true">↑</span> TOP</a>
+  </nav>
+</footer>
+<script>
+  document.querySelector<HTMLAnchorElement>('[data-back-to-top]')?.addEventListener('click',event=>{
+    if(event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+    event.preventDefault();
+    document.querySelector<HTMLElement>('.site-header .brand')?.focus({preventScroll:true});
+    window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  });
+</script>
+<style>
+ .site-footer{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:baseline;gap:12px 28px;border-top:1px solid var(--line);padding:20px 0 24px;margin-top:36px;color:rgba(34,34,34,.45);font:400 12px/1.6 var(--sans);letter-spacing:.025em}
+ .footer-copyright{white-space:nowrap}
+ .footer-links{display:flex;align-items:baseline;justify-content:flex-end;gap:24px}
+ .footer-links a{display:inline-flex;align-items:baseline;gap:5px;min-height:44px;padding-block:12px;border:0;white-space:nowrap}
+ .back-to-top{font-family:'Courier New',var(--sans),monospace;letter-spacing:.08em}
+ .footer-links a:focus-visible{outline:2px solid #1E4D54;outline-offset:4px}
+ @media(hover:hover){.footer-links a:hover{color:#1E4D54;text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1px}}
+ @media(max-width:760px){.site-footer{grid-template-columns:minmax(0,1fr) auto;gap:0 12px;padding:20px 0}.footer-copyright{grid-column:1/-1}.footer-links{gap:16px}}
+ @media(max-width:360px){.site-footer{letter-spacing:0}.footer-links{gap:12px}}
+</style>
