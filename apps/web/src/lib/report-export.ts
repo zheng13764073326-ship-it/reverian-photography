@@ -5,10 +5,11 @@ export type ReportSnapshot={name?:string;id:string;timestamp:string;score:number
 export async function renderReport(s:ReportSnapshot,element:HTMLElement):Promise<Blob>{
  const css=getComputedStyle(element),ink='#222222',paper='#F4F3EE',muted='#6c706b',blue='#1E4D54',orange='#B86B35';
  const mono=css.getPropertyValue('--quiz-mono').trim(),serif=css.getPropertyValue('--serif-zh').trim();
+ const signature='挽风 · 摄影作品集';
  await Promise.all([
-  document.fonts.load(`400 28px "Noto Serif SC"`,s.photoTitle+s.place+(s.name||'')+'合焦光影偏爱直觉'),
-  document.fonts.load(`600 30px "Noto Serif SC"`,s.message),
-  document.fonts.load(`700 56px "Noto Serif SC"`,s.title),
+  document.fonts.load(`400 28px ${serif}`,s.photoTitle+s.place+(s.name||'')+signature+'合焦光影偏爱直觉'),
+  document.fonts.load(`600 30px ${serif}`,s.message),
+  document.fonts.load(`700 56px ${serif}`,s.title),
  ]);
  await document.fonts.ready;
 
@@ -121,7 +122,7 @@ export async function renderReport(s:ReportSnapshot,element:HTMLElement):Promise
  subjectLines.forEach((row,i)=>text(row,x+pad,footerTextY+i*30,22,ink,serif));
  const domainY=footerTextY+subjectLines.length*30+34;
  text(domain,x+pad,domainY,48,blue,mono,700);
- text('挽风 · 摄影作品集',x+pad,domainY+36,22,muted,serif);
+ text(signature,x+pad,domainY+36,22,muted,serif);
  text(s.timestamp,qrX-28,domainY+36,22,muted,mono,400,'right');
  // Paper-colored quiet zone removes the white badge while preserving scan contrast.
  // Five-pixel modules stay crisp in the 2× export and its resized sharing preview.

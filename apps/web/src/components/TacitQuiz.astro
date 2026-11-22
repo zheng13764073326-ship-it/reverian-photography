@@ -1,7 +1,7 @@
 ---
 import {tacitQuestions} from '../lib/tacit';
 import OpticalReport from './OpticalReport.astro';
-import '../styles/checkin-font.css';
+
 ---
 <section id="tacit" class="tacit" aria-label="默契度测试">
   <div class="tacit-intro">
@@ -285,7 +285,7 @@ import '../styles/checkin-font.css';
  .tacit{--focus-color:#237489;--miss-color:#9a601f;--quiz-mono:ui-monospace,Consolas,monospace;margin:44px 0;scroll-margin-top:calc(var(--header) + 24px)}
  .tacit-intro{display:flex;justify-content:center}.quiz-entry{display:flex;align-items:center;gap:20px;max-width:100%;padding:18px 30px;border:1px solid #aabebc;border-radius:999px;line-height:1.6}.quiz-entry strong{font-size:17px;font-weight:500;color:var(--focus-color)}.quiz-entry>span{font-size:14px;color:var(--muted)}.quiz-entry>span:last-child{font-size:23px;color:var(--focus-color)}.quiz-entry:hover{background:#e8ece4;border-color:var(--focus-color)}
  .tacit h2,.tacit h3{font-family:var(--serif-zh)}.tacit h2{font-size:clamp(25px,3vw,34px);margin-bottom:28px}
- .quiz-name-card{--checkin-ink:#1E4D54;--serif-zh:'Noto Serif SC','Source Han Serif SC','Songti SC','SimSun',serif;--quiz-mono:'Courier New',monospace;position:relative;max-width:760px;margin:auto;padding:0;border:1px solid rgba(34,34,34,.16);border-radius:2px;background:#F4F3EE;color:#222;line-break:strict}
+ .quiz-name-card{--checkin-ink:#1E4D54;--serif-zh:'Noto Serif SC Variable','Songti SC','SimSun',serif;--quiz-mono:'Courier New',monospace;position:relative;max-width:760px;margin:auto;padding:0;border:1px solid rgba(34,34,34,.16);border-radius:2px;background:#F4F3EE;color:#222;line-break:strict}
  .checkin-meta{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:56px;padding:16px 26px;border-bottom:1px solid rgba(34,34,34,.12);font:11px/1.6 var(--quiz-mono);letter-spacing:.02em;color:#6c706b}
  .checkin-meta span{white-space:nowrap}
  .checkin-corner{position:absolute;width:10px;height:10px;border-style:solid;border-color:#1E4D5459;pointer-events:none}.checkin-corner.tl{top:8px;left:8px;border-width:1px 0 0 1px}.checkin-corner.tr{top:8px;right:8px;border-width:1px 1px 0 0}.checkin-corner.bl{bottom:8px;left:8px;border-width:0 0 1px 1px}.checkin-corner.br{bottom:8px;right:8px;border-width:0 1px 1px 0}
@@ -293,7 +293,7 @@ import '../styles/checkin-font.css';
  .tacit .quiz-name-card h2{margin:0 0 12px;font:700 clamp(25px,2.8vw,32px)/1.6 var(--serif-zh);text-wrap:balance;letter-spacing:.01em}
  .checkin-note{margin:0;font:400 13px/1.8 var(--serif-zh);color:#6c706b;text-wrap:pretty}
  .quiz-name-card input{display:block;width:min(100%,340px);height:50px;margin:28px auto 34px;padding:10px 0;text-align:center;border:none;border-bottom:1px solid rgba(34,34,34,.25);border-radius:0;outline:none;box-shadow:none;background:transparent;appearance:none;font:400 18px/1.6 var(--serif-zh);color:#222;caret-color:var(--checkin-ink);transition:border-color .2s ease}
- .quiz-name-card input::placeholder{color:#92938c;opacity:1}
+ .quiz-name-card input::placeholder{font:inherit;color:#92938c;opacity:1}
  .quiz-name-card input:focus,.quiz-name-card input:focus-visible{border-bottom:1px solid var(--checkin-ink);outline:none;box-shadow:none;background:transparent}
  .quiz-name-card input:-webkit-autofill,.quiz-name-card input:-webkit-autofill:hover,.quiz-name-card input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 1000px #F4F3EE inset!important;box-shadow:0 0 0 1000px #F4F3EE inset!important;-webkit-text-fill-color:#222222!important;font-weight:400;transition:background-color 5000s ease-in-out 0s,border-color .2s ease}
  .quiz-name-card input:autofill{box-shadow:0 0 0 1000px #F4F3EE inset!important;color:#222222;font-weight:400}
