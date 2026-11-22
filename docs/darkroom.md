@@ -31,3 +31,14 @@
 `npm test` 包含评片 JSON、输入验证、Mock 隔离、模型失败、同源与 D1 原子限额测试；`npm run check` 检查网页、Studio 和 Functions；`npm run build:production` 检查网站静态输出；`wrangler pages functions build` 检查边缘函数打包。
 
 浏览器验证覆盖真实文件输入、等待/合焦、错误重试、4 个维度/2+2 条内容、栏目切换、320/390/768/1440px 排版、高细节 PNG、带 EXIF 竖图、透明 PNG 和 WebP。测试中高细节图约 179KB，竖图输出 683×1024 且无 EXIF。
+
+
+## 分享报告图片（2026-11-23）
+
+评片成功后显示“导出报告图片”，本地 Canvas 生成1080px宽的PNG，长度按照片比例与文本自动增长。包含原比例照片、评分、四维刻度、完整亮点/建议、日期和AI标记；底部突出 reverian.cc，并放置指向 https://reverian.cc/ 的网站二维码。使用已加载的Noto Serif SC可变字体与JetBrains Mono，显式等待字体加载，避免中文混用字重/字体。二维码由构建时qrcode生成矩阵，绘制时保留四模块米白静区，无外部二维码服务。
+
+代码位于 apps/web/src/lib/critique-export.ts，按钮和弹窗位于 DarkroomCritique.astro，生命周期在 lab-critique.ts。导出脚本只在点击时加载，不截图网页，不上传照片，不新增AI请求，不占评片次数。用户原文件名不进入分享图或下载文件名。报告仅留在浏览器内存，关窗/重传/离开页面释放Blob URL；重新上传时不保留旧报告快照。本地Mock导出也明确标注“本地示例 · 非AI评片”。
+
+弹窗提供预览和下载，手机可以长按保存。支持 navigator.canShare({files}) 的浏览器显示系统“分享图片”按钮，系统分享仅由用户点击发起，不自动发送至任何平台。下载文件名为 reverian-critique-年月日-时分秒.png。
+
+验证资料在对话工作目录 work/darkroom-export/。已验证横图、带EXIF竖图、长文本、满分、重复导出不新增评片请求、生成中关闭后可重试、390px手机无横向溢出。二维码在1080px原图与540px/JPEG质量80的压缩图中均解码为网站首页。

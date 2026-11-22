@@ -1,8 +1,11 @@
 ---
 import '../styles/critique.css';
+import QRCode from 'qrcode';
+const modules=QRCode.create('https://reverian.cc/',{errorCorrectionLevel:'M'}).modules;
+const qr={size:modules.size,bits:Array.from(modules.data).join('')};
 const dimensions=[['composition','构图','COMPOSITION'],['lighting','光影','LIGHT'],['color','色彩','COLOR'],['mood','情绪张力','MOOD']];
 ---
-<div class="darkroom" data-darkroom data-state="empty">
+<div class="darkroom" data-darkroom data-state="empty" data-critique-qr={JSON.stringify(qr)}>
   <div class="lab-section-line"><h2 id="lab-section-critique">让照片，慢慢显影</h2><p>LAB <span>/ 04 DARKROOM</span></p></div>
   <p class="darkroom-intro">放下一张照片，看看画面的重心、光线的去向，以及还能再靠近一点的地方。</p>
   <input class="lab-sr-only" type="file" accept="image/jpeg,image/png,image/webp" data-critique-file tabindex="-1" aria-label="选择待评片照片"/>
@@ -35,6 +38,12 @@ const dimensions=[['composition','构图','COMPOSITION'],['lighting','光影','L
       <div class="darkroom-error" data-critique-error hidden role="alert"><span class="darkroom-eyebrow">DEVELOPMENT PAUSED</span><h3>这次显影，稍作停留。</h3><p data-critique-error-text></p><button type="button" class="darkroom-button" data-critique-retry>重新评片 ↗</button></div>
     </section>
   </div>
-  <div class="darkroom-actions"><p data-critique-status role="status" aria-live="polite">选择一张你想再看一遍的照片。</p><button type="button" class="darkroom-button darkroom-secondary" data-critique-reset hidden>重新上传评片 ↗</button></div>
+  <div class="darkroom-actions"><p data-critique-status role="status" aria-live="polite">选择一张你想再看一遍的照片。</p><div class="darkroom-action-buttons"><button type="button" class="darkroom-button" data-critique-export aria-haspopup="dialog" aria-controls="critique-share-preview" hidden>导出报告图片 ↗</button><button type="button" class="darkroom-button darkroom-secondary" data-critique-reset hidden>重新上传评片 ↗</button></div></div>
+  <dialog id="critique-share-preview" class="darkroom-share" data-critique-share aria-labelledby="critique-share-title">
+    <header><h2 id="critique-share-title">评片分享报告</h2><button type="button" data-critique-share-close autofocus aria-label="关闭报告预览">关闭 ×</button></header>
+    <p class="darkroom-share-hint" data-critique-share-hint role="status" aria-live="polite">正在生成分享图片…</p>
+    <div class="darkroom-share-scroll"><img data-critique-share-image width="1080" height="2200" loading="lazy" decoding="async" hidden alt="暗房评片分享报告，含照片、评分、建议和 reverian.cc 网站二维码，可长按保存"/></div>
+    <footer><a class="darkroom-button" data-critique-download download hidden>下载报告图片 ↓</a><button type="button" class="darkroom-button darkroom-secondary" data-critique-native-share hidden>分享图片 ↗</button></footer>
+  </dialog>
   <p class="darkroom-credit">AI ASSISTED <span>//</span> <a href="https://developers.cloudflare.com/workers-ai/" target="_blank" rel="noopener noreferrer">Cloudflare Workers AI</a> · Built with Llama</p>
 </div>
