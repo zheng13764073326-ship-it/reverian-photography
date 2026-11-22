@@ -6,12 +6,16 @@ const root=resolve(import.meta.dirname,'../apps/web/dist'),production=process.ar
 async function walk(dir){const files=[];for(const entry of await readdir(dir,{withFileTypes:true})){const path=join(dir,entry.name);if(entry.isDirectory())files.push(...await walk(path));else files.push(path);}return files;}
 const files=await walk(root),pages=files.filter(file=>file.endsWith('.html')),metadata=new Map();let links=0;
 async function imageMeta(url){const path=join(root,url);if(!metadata.has(path))metadata.set(path,await sharp(path).metadata());return metadata.get(path);}
+// Some stock mobile browsers reject media query range syntax entirely.
+function checkMediaQueries(css,file){for(const [query] of css.matchAll(/@media[^{}]+/g))assert.doesNotMatch(query,/[<>]/,file+': unsupported media range; preserve min/max-width queries');}
 for(const file of files){
+ if(file.endsWith('.css'))checkMediaQueries(await readFile(file,'utf8'),file);
  assert.ok(!/\.(jpe?g|png)$/i.test(file),'Raw/legacy raster image in publish output: '+file);
  if(file.endsWith('.webp')){const meta=await sharp(file).metadata();metadata.set(file,meta);assert.equal(meta.format,'webp');assert.ok(!meta.orientation||meta.orientation===1,file+': uncorrected EXIF orientation');assert.ok(Math.max(meta.width,meta.height)<=(basename(file).includes('_thumb')?1200:2400),file+': exceeds image size budget');}
 }
 for(const file of pages){
  const html=await readFile(file,'utf8');
+ for(const [,css] of html.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/g))checkMediaQueries(css,file);
  for(const match of html.matchAll(/(?:src|href)="(\/[^"#?]*)/g)){const target=decodeURIComponent(match[1]),path=join(root,target.endsWith('/')?target+'index.html':target);assert.ok((await stat(path).catch(()=>null))?.isFile(),`${file}: broken ${target}`);links++;}
  for(const [target] of html.matchAll(/\/(?:_photos|images)\/[^"'<>\s,()\\]+\.webp/g))assert.ok((await stat(join(root,target)).catch(()=>null))?.isFile(),file+': missing '+target);
  for(const [,srcset] of html.matchAll(/\bsrcset="([^"]+)"/g))for(const [,src,width] of srcset.matchAll(/(\/[^\s,]+)\s+(\d+)w/g)){const meta=await imageMeta(src);assert.equal(meta.width,Number(width),file+': inaccurate srcset descriptor '+src);}

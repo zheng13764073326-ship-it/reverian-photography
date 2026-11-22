@@ -75,9 +75,9 @@ const mobileStyle=fullRoadMobile?`--mobile-aspect:${portraitAsset.width}/${portr
   .editorial-cover .cover-grain{animation:none;transform:none;will-change:auto}
  }
 
- .editorial-cover{height:100svh;min-height:500px;background:#EAE8E0;color:#f5f0df;isolation:isolate}
+ .editorial-cover{height:100vh;height:100svh;min-height:500px;background:#EAE8E0;color:#f5f0df;isolation:isolate}
  /* Share the following section's paper color at every stop, including theme changes. */
- .editorial-cover::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:180px;z-index:0;pointer-events:none;background:linear-gradient(to bottom,color-mix(in srgb,var(--paper) 0%,transparent) 0%,color-mix(in srgb,var(--paper) 15%,transparent) 35%,color-mix(in srgb,var(--paper) 55%,transparent) 68%,color-mix(in srgb,var(--paper) 92%,transparent) 90%,var(--paper) 100%)}
+ .editorial-cover::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:180px;z-index:0;pointer-events:none;background:linear-gradient(to bottom,transparent 0%,#f4f1e926 35%,#f4f1e98c 68%,#f4f1e9eb 90%,var(--paper) 100%);background:linear-gradient(to bottom,color-mix(in srgb,var(--paper) 0%,transparent) 0%,color-mix(in srgb,var(--paper) 15%,transparent) 35%,color-mix(in srgb,var(--paper) 55%,transparent) 68%,color-mix(in srgb,var(--paper) 92%,transparent) 90%,var(--paper) 100%)}
  .editorial-cover .home-identity,.editorial-cover .cover-note{z-index:1}
  .editorial-cover .cover-picture{position:absolute;inset:0}
  .cover-shade{position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(9,22,14,.42) 0%,rgba(12,24,16,.12) 52%,rgba(9,18,12,.04) 70%,rgba(8,16,11,.45) 100%),radial-gradient(ellipse 42% 43% at 50% 21%,rgba(17,27,22,.52),transparent 100%)}

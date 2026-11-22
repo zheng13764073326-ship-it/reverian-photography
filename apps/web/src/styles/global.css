@@ -97,6 +97,7 @@ summary::-webkit-details-marker {
 }
 .page {
   padding-top: calc(var(--header) + 42px);
+  min-height: 70vh;
   min-height: 70svh;
 }
 .section {
@@ -209,6 +210,7 @@ summary::-webkit-details-marker {
   display: none;
 }
 .home-cover {
+  height: 100vh;
   height: 100svh;
   min-height: 600px;
   position: relative;
@@ -561,6 +563,7 @@ summary::-webkit-details-marker {
   border: 0;
   margin: 0;
   width: 100vw;
+  height: 100vh;
   height: 100dvh;
   max-width: none;
   max-height: none;
@@ -608,6 +611,7 @@ summary::-webkit-details-marker {
 /* Keep all stories readable without covering the photograph. */
 #viewer-info {
   white-space: normal;
+  max-height: min(40vh, max(40px, calc(100vh - 280px)), 360px);
   max-height: min(40dvh, max(40px, calc(100dvh - 280px)), 360px);
   overflow-y: auto;
   overscroll-behavior: contain;
