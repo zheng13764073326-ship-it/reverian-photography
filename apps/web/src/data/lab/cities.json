@@ -1,0 +1,5 @@
+[
+  {"id":"shanghai","name":"上海","english":"SHANGHAI","latitude":31.23,"longitude":121.47,"sample":{"high":58,"mid":42,"low":18,"rain":10,"wind":3.2}},
+  {"id":"nanjing","name":"南京","english":"NANJING","latitude":32.06,"longitude":118.79,"sample":{"high":45,"mid":30,"low":68,"rain":45,"wind":4.1}},
+  {"id":"hangzhou","name":"杭州","english":"HANGZHOU","latitude":30.27,"longitude":120.15,"sample":{"high":25,"mid":48,"low":35,"rain":20,"wind":2.6}}
+]

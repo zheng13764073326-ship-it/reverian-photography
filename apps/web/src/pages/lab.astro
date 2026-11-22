@@ -1,0 +1,86 @@
+---
+import Base from '../layouts/Base.astro';
+import guides from '../data/lab/guides.json';
+import prompts from '../data/lab/prompts.json';
+import cities from '../data/lab/cities.json';
+import '@fontsource-variable/noto-serif-sc/wght.css';
+import '@fontsource/jetbrains-mono/latin-400.css';
+import '../styles/lab.css';
+const uses=[['all','全部'],...prompts.map(prompt=>[prompt.category,prompt.title])];
+const tabs=[['guides','01','摄影入门'],['ai','02','AI 影像'],['sunset','LAB','火烧云']];
+---
+<Base title="光学实验室" description="从快门逻辑到气象观测，记录光影背后的技术手记。" lab>
+  <div class="lab-page container" data-optical-lab>
+    <header class="lab-heading">
+      <p class="lab-eyebrow">OPTICAL LAB <span>// 01</span></p>
+      <h1>光学实验室</h1>
+      <p class="lab-subtitle">从快门逻辑到气象观测，记录光影背后的技术手记。</p>
+    </header>
+    <div class="lab-tabs" role="tablist" aria-label="光学实验室栏目">
+      {tabs.map(([id,index,title],i)=><button type="button" role="tab" id={`lab-tab-${id}`} data-lab-tab={id} aria-controls={`lab-panel-${id}`} aria-selected={i===0?'true':'false'} tabindex={i===0?0:-1}><span>{index}</span>{title}</button>)}
+    </div>
+
+    <section id="lab-panel-guides" class="lab-panel" role="tabpanel" aria-labelledby="lab-tab-guides" tabindex="0" data-lab-panel="guides">
+      <div class="lab-section-line"><h2>摄影入门</h2><p>FIELD NOTES <span>/ 04 GUIDES</span></p></div>
+      <div class="lab-guide-grid">
+        {guides.map(guide=><button type="button" class="lab-guide-card lab-corners" data-guide={guide.id} aria-haspopup="dialog" aria-controls="lab-reader">
+          <span class="lab-card-index">GUIDE {guide.index}<span>{guide.tag}</span></span>
+          <strong>{guide.title}</strong><span class="lab-guide-summary">{guide.summary}</span>
+          <span class="lab-card-bottom"><span>大纲 · 预计 {guide.readTime}</span><span aria-hidden="true">↗</span></span>
+        </button>)}
+      </div>
+      {guides.map(guide=><template data-guide-template={guide.id} data-title={guide.title} data-index={guide.index} data-tag={guide.tag}>
+        <p class="lab-reader-intro">{guide.summary}</p><p class="lab-outline-label">指南大纲 · 内容与实拍对照持续补充</p>
+        {guide.content.map(section=><section><h3>{section.heading}</h3><ul>{section.points.map(point=><li>{point}</li>)}</ul></section>)}
+      </template>)}
+    </section>
+
+    <section id="lab-panel-ai" class="lab-panel" role="tabpanel" aria-labelledby="lab-tab-ai" tabindex="0" data-lab-panel="ai" hidden>
+      <div class="lab-section-line"><h2>AI 影像</h2><p>PROMPT ARCHIVE <span>/ 06 PRESETS</span></p></div>
+      <div class="lab-use-filters" role="group" aria-label="提示词用途筛选">{uses.map(([id,label])=><button type="button" data-prompt-filter={id} aria-pressed={id==='all'?'true':'false'} aria-controls="lab-prompt-grid">{label}</button>)}</div>
+      <p class="lab-prompt-intro">保留照片本来的故事，让调整有明确的方向。复制后，连同原片交给你使用的 AI 修图工具。</p>
+      <output class="lab-sr-only" data-prompt-count aria-live="polite">6 条提示词</output>
+      <div class="lab-prompt-grid" id="lab-prompt-grid">
+        {prompts.map(prompt=><article class="lab-prompt-card" data-prompt-category={prompt.category}>
+          <header><h3>PROMPT {prompt.index} <span>// {prompt.title}</span></h3><span>{prompt.style}</span></header>
+          <div class="lab-prompt-image">
+            {prompt.src?<img src={prompt.src} alt={`${prompt.title}样片`} width="1600" height="900" loading="lazy" decoding="async"/>:<span aria-label="未曝光样片占位">FRAME {prompt.index}<small>// 16:9 · PENDING</small></span>}
+          </div>
+          <pre tabindex="0" aria-label={`${prompt.title}提示词`}><code lang="en">{prompt.prompt}</code></pre>
+          <footer><span class="lab-copy-status" role="status" aria-live="polite"></span><button type="button" class="lab-copy" data-copy-prompt aria-label={`复制${prompt.title}提示词`}><i aria-hidden="true" hidden></i><span>复制提示词</span></button></footer>
+        </article>)}
+      </div>
+    </section>
+
+    <section id="lab-panel-sunset" class="lab-panel" role="tabpanel" aria-labelledby="lab-tab-sunset" tabindex="0" data-lab-panel="sunset" hidden>
+      <div class="lab-weather-heading"><div><p class="lab-eyebrow">SUNSET OBSERVATORY</p><h2>晚霞观测台</h2><p>上海 / 南京 / 杭州 · 日落前后 1 小时</p></div><button type="button" class="lab-refresh" data-weather-refresh>刷新观测 ↻</button></div>
+      <div class="lab-weather-strip"><span><time data-weather-date>—</time> <span>UTC+8</span></span><p data-weather-status role="status" aria-live="polite">选择此页签后获取今日预报。</p></div>
+      <div class="lab-weather-grid">
+        {cities.map((city,index)=><article class="lab-weather-card" data-city={city.id} aria-label={`${city.name}晚霞观测`}>
+          <header><div><p class="lab-station">STATION 0{index+1} // {city.english}</p><h3>{city.name}</h3></div><span class="lab-source" data-weather="source">等待观测</span></header>
+          <div class="lab-sunset-line"><div><span>SUNSET <small data-weather="phase">今日日落</small></span><strong data-weather="sunset">--:--</strong></div><div class="lab-bearing"><svg viewBox="0 0 36 36" width="36" height="36" fill="none" aria-hidden="true"><circle cx="18" cy="18" r="16" stroke="currentColor" opacity=".2"/><path data-compass d="M18 28V8m-5 6 5-6 5 6" stroke="currentColor" stroke-width="1.3"/></svg><span data-weather="bearing">— 方位角</span></div></div>
+          <div class="lab-score"><span>火烧云指数</span><div><strong data-weather="score">--</strong><span>/ 100</span></div><p data-weather="advice">等待日落窗口的气象数据。</p></div>
+          <div class="lab-clouds">{[['high','高云','HIGH'],['mid','中云','MID'],['low','低云','LOW']].map(([id,label,english])=><div class="lab-cloud"><div><span>{label} <small>{english}</small></span><strong data-weather={id}>--%</strong></div><span class="lab-cloud-scale" data-cloud-bar={id} style="--cloud:0%" aria-hidden="true"><i></i></span></div>)}</div>
+          <div class="lab-weather-pair"><div><span>降水概率</span><strong data-weather="rain">--%</strong></div><div><span>风速 / M·S⁻¹</span><strong><span data-weather="wind">--</span> <small>m/s</small></strong></div></div>
+          <footer><span>WINDOW <span data-weather="window">--:-- — --:--</span></span><p data-weather="updated">北京时间 · 按城市独立更新</p></footer>
+        </article>)}
+      </div>
+      <div class="lab-weather-notes">
+        <p>实验性参考指数，不是火烧云发生概率。实际晚霞还受西侧远端云墙、能见度等影响。</p>
+        <details><summary>评分如何计算 <span aria-hidden="true">＋</span></summary><div><p>取日落前后 1 小时内的小时采样：云量与风速取均值，降水概率取最高值。高云与中云各自处于 30%–75% 时得分最高，过少或过密都会减分。</p><p>高云 / 中云权重为 35 / 30；低云通透度与无降水条件权重为 25 / 10，另扣降水概率 × 0.2。低云超过 60% 时总分再乘 0.35，最终限制在 0–100。风速供拍摄参考，不参与指数。</p><p>接口超时或数据不完整时，优先使用 15 分钟内的同日缓存，否则显示带标记的本地模拟数据。模拟云量不代表天气实况，模拟卡片的日落时间与方位使用天文估算。</p></div></details>
+        <p class="lab-attribution">Weather data by <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo ↗</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> · 指数由本站计算</p>
+      </div>
+    </section>
+    <noscript><p class="lab-noscript">请开启 JavaScript，以切换栏目、阅读指南和获取天气数据。</p></noscript>
+    <dialog id="lab-reader" class="lab-reader" aria-labelledby="lab-reader-title">
+      <header><span data-reader-index>GUIDE</span><button type="button" data-reader-close autofocus aria-label="关闭指南">关闭 ×</button></header>
+      <div class="lab-reader-scroll" tabindex="0"><p class="lab-eyebrow" data-reader-tag></p><h2 id="lab-reader-title"></h2><div data-reader-body></div></div>
+      <footer>REVERIAN // OPTICAL LAB</footer>
+    </dialog>
+  </div>
+</Base>
+<script>
+  import {setupOpticalLab} from '../lib/optical-lab';
+  const root=document.querySelector<HTMLElement>('[data-optical-lab]');
+  if(root)setupOpticalLab(root);
+</script>

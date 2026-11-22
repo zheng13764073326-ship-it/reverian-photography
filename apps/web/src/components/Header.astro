@@ -12,6 +12,7 @@ const portfolios=[['/works/','精选作品'],['/albums/','光影存档'],['/wild
   <details class="portfolio-nav"><summary>作品集 <span aria-hidden="true">⌄</span></summary><div class="portfolio-panel">
    {portfolios.map(([href,label])=><a href={href} aria-current={path.startsWith(href)?'page':undefined}>{label}</a>)}
   </div></details>
+  <a href="/lab/" aria-current={path==='/lab/'?'page':undefined}>光学实验室</a>
   <a href="/about/" aria-current={path==='/about/'?'page':undefined}>关于我</a>
  </nav>
 </header>
@@ -47,6 +48,6 @@ document.addEventListener('keydown',event=>{
 const hero=document.querySelector('.home-cover');
 if(hero)new IntersectionObserver(([entry])=>header.classList.toggle('over-cover',entry.isIntersecting),{rootMargin:'-80px 0px 0px 0px',threshold:0}).observe(hero);
 // Preserve the shared prototype links when moving to real page URLs.
-const legacy:Record<string,string>={'#/home':'/','#/selected':'/works/','#/collections':'/albums/','#/street':'/works/','#/wild':'/wild/','#/above':'/above/','#/film':'/film/','#/about':'/about/'};
+const legacy:Record<string,string>={'#/home':'/','#/selected':'/works/','#/collections':'/albums/','#/street':'/works/','#/wild':'/wild/','#/above':'/above/','#/film':'/film/','#/about':'/about/','#/lab':'/lab/'};
 if(location.hash in legacy)location.replace(legacy[location.hash]);
 </script>

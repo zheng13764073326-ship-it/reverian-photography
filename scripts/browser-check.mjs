@@ -181,6 +181,7 @@ try {
       "/works/",
       "/wild/",
       "/above/",
+      "/lab/",
       "/film/",
       "/about/",
     ]) {
