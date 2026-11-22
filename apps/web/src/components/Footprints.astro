@@ -16,7 +16,7 @@ const albumCount=places.reduce((sum,place)=>sum+place.albums.length,0);
     <div class="map-surface">
       <div class="map-caption"><span>中国</span><span>点击地点，翻开影集</span></div>
       <div class="map-canvas">
-        <img class="map-outline" src="/maps/china.svg" width={mapFrame.width} height={mapFrame.height} loading="lazy" alt={`中国旅行地图，已收录${places.map(place=>place.city).join('、')}影集`}/>
+        <img class="map-outline" src="/maps/china.svg" width={mapFrame.width} height={mapFrame.height} loading="lazy" decoding="async" alt={`中国旅行地图，已收录${places.map(place=>place.city).join('、')}影集`}/>
         {places.map(place=><button type="button" class="map-point" style={`--point-x:${place.x/mapFrame.width*100}%;--point-y:${place.y/mapFrame.height*100}%`} data-place={place.id} aria-label={`${place.city}，查看 ${place.albums.length} 本影集预览`} aria-expanded="false" aria-controls={`place-${place.id}`}>
           <span class="point-dot" aria-hidden="true"></span><span class="point-name">{place.city}</span>
         </button>)}
@@ -25,7 +25,7 @@ const albumCount=places.reduce((sum,place)=>sum+place.albums.length,0);
         {places.map(place=><div class="place-preview" id={`place-${place.id}`} data-preview={place.id} hidden>
           <div class="preview-heading"><span>{place.city} · {place.country}</span><button class="preview-close" type="button" aria-label="关闭影集预览">×</button></div>
           {place.albums.map(album=><a class="preview-album" href={`/albums/${album.slug}/`}>
-            <img src={imageUrl(album.cover.photo,480,album.cover,4/3)} width="480" height="360" loading="lazy" alt={album.cover.photo.alt}/>
+            <img src={imageUrl(album.cover.photo,480,album.cover,4/3)} width="480" height="360" loading="lazy" decoding="async" alt={album.cover.photo.alt}/>
             <span class="preview-title">{album.title}</span>
             <span class="preview-meta"><span>{album.date.slice(0,4)}</span><span>查看影集 ↗</span></span>
           </a>)}
@@ -60,7 +60,7 @@ const albumCount=places.reduce((sum,place)=>sum+place.albums.length,0);
  .preview-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--muted);font:11px var(--sans);margin-bottom:8px}
  .preview-close{font:22px var(--sans);border:0;background:none;color:var(--muted);padding:0;min-width:32px;min-height:32px;margin:-8px -6px -4px 0}
  .preview-album{display:block;color:var(--ink)}.preview-album+.preview-album{margin-top:20px}
- .preview-album img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}
+ .preview-album img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;background:#EAE8E0}
  .preview-title{display:block;font:17px/1.6 var(--serif-zh);margin-top:12px;text-wrap:balance}
  .preview-meta{display:flex;justify-content:space-between;gap:12px;margin-top:8px;font:11px var(--sans);color:var(--map-blue)}
  .preview-album:hover .preview-title{text-decoration:underline;text-underline-offset:4px}

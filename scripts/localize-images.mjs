@@ -1,3 +1,4 @@
+import sharp from 'sharp';
 import { createHash } from 'node:crypto';
 import { mkdir, readFile, readdir, writeFile, copyFile, rename } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
@@ -18,17 +19,18 @@ async function htmlFiles(dir) {
 
 function sourceUrl(raw) {
   const url = new URL(raw.replaceAll('&amp;', '&'));
-  // Request a deterministic, widely supported format rather than negotiating
-  // a format for the build machine. Original assets remain untouched in Sanity.
+  // Request WebP at the dimensions/quality chosen by the frontend.
+  // Sanity originals remain untouched and are never copied to the public build.
   url.searchParams.delete('auto');
-  url.searchParams.set('fm', 'jpg');
+  url.searchParams.set('fm', 'webp');
+  if (!url.searchParams.has('q')) url.searchParams.set('q', '80');
   url.searchParams.sort();
   return url.href;
 }
 
-function validJpeg(data) {
-  return data.length > 4 && data.length <= maxBytes &&
-    data[0] === 0xff && data[1] === 0xd8 && data[2] === 0xff;
+async function validWebp(data) {
+  if (data.length < 16 || data.length > maxBytes || data.toString('ascii', 0, 4) !== 'RIFF' || data.toString('ascii', 8, 12) !== 'WEBP') return false;
+  try { const meta = await sharp(data).metadata(); return meta.format === 'webp' && Math.max(meta.width, meta.height) <= 2400 && (!meta.orientation || meta.orientation === 1); } catch { return false; }
 }
 
 export async function localizeImages({
@@ -41,7 +43,7 @@ export async function localizeImages({
   for (const { html } of pages) {
     for (const [raw] of html.matchAll(sourcePattern)) {
       const url = sourceUrl(raw);
-      const name = createHash('sha256').update(url).digest('hex').slice(0, 32) + '.jpg';
+      const name = createHash('sha256').update(url).digest('hex').slice(0, 32) + (Number(new URL(url).searchParams.get('q')) <= 80 ? '_thumb.webp' : '.webp');
       replacements.set(raw, '/_photos/' + name);
       assets.set(name, url);
     }
@@ -54,16 +56,16 @@ export async function localizeImages({
   async function download(name, url) {
     const cachedPath = join(cache, name);
     let data = await readFile(cachedPath).catch(() => null);
-    if (data && validJpeg(data)) cached++;
+    if (data && await validWebp(data)) cached++;
     else {
       let lastError;
       for (let attempt = 0; attempt < attempts; attempt++) {
         try {
           const response = await fetchImage(url, { signal: AbortSignal.timeout(30_000) });
           if (!response.ok) throw Error(`HTTP ${response.status}`);
-          if (!response.headers.get('content-type')?.startsWith('image/jpeg')) throw Error('Unexpected image format');
+          if (!response.headers.get('content-type')?.startsWith('image/webp')) throw Error('Unexpected image format');
           data = Buffer.from(await response.arrayBuffer());
-          if (!validJpeg(data)) throw Error('Invalid or oversized JPEG');
+          if (!await validWebp(data)) throw Error('Invalid, unrotated or oversized WebP');
           lastError = null;
           break;
         } catch (error) {
@@ -101,7 +103,7 @@ export async function localizeImages({
     await writeFile(file, local);
   }
   const report = { pages: pages.length, variants: assets.size, downloaded, cached, bytes };
-  log(`Photo assets: ${JSON.stringify(report)}`);
+  log(`WebP photo assets: ${JSON.stringify(report)}`);
   return report;
 }
 

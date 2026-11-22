@@ -28,7 +28,7 @@ const shareImage=Astro.props.shareImage || (settings.seo.shareImage?imageUrl(set
  {shareImage && <meta property="og:image" content={new URL(shareImage,Astro.site)}/>}
  {mode==='demo' && <meta name="robots" content="noindex, nofollow"/>}
  <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
- {home && <link rel="preload" href="/images/branding/wanfeng-white.png" as="image"/>}
+ {home && <link rel="preload" href="/images/branding/wanfeng-white.webp" as="image"/>}
  <ExposureTransition/>
  </head><body class:list={[{'is-home':home}]}>
  {home && <ApertureIntro name={settings.photographer}/>}

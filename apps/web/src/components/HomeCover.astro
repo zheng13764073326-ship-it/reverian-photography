@@ -1,8 +1,8 @@
 ---
 import type {Settings} from '../lib/types';
 import {demoPhotos} from '../data/demo';
-import {imageUrl} from '../lib/images';
-import assets from '../data/assets.json';
+import {imageUrl,imageSet} from '../lib/images';
+import assets from '../data/local-images.json';
 import portraitAsset from '../data/home-mobile-cover.json';
 interface Props {settings:Settings}
 const {settings}=Astro.props;
@@ -13,23 +13,23 @@ const spots=[
  {id:'gardenchair',hit:'861,41 1177,75 1143,432 945,411 861,160'},
  {id:'afternoon',hit:'1233,200 1540,301 1415,637 1077,533'},
 ];
-const mobileSources=mobile?[400,800,1200].map(w=>`${imageUrl(mobile.photo,w,mobile,9/16)} ${w}w`).join(', '):undefined;
+const mobileSources=mobile?imageSet(mobile.photo,mobile,9/16,'hero'):undefined;
 const fullRoadMobile=desktop?.photo.id==='kinmen-2026-14'&&mobile?.photo.id==='kinmen-2026-14';
 const portraitSources=portraitAsset.images.map(image=>`${image.src} ${image.width}w`).join(', ');
-const desktopSources=desktop?[...new Set([800,1200,1920,2560,3200,4096].map(w=>Math.min(w,desktop.photo.image.width)))].map(w=>`${imageUrl(desktop.photo,w)} ${w}w`).join(', '):undefined;
+const desktopSources=desktop?imageSet(desktop.photo,undefined,undefined,'hero'):undefined;
 const portraitImage=(width:number)=>portraitAsset.images.find(image=>image.width>=width)||portraitAsset.images[portraitAsset.images.length-1];
 const canopy=(baseWidth:number)=>`image-set(${[1,2,3].map(dpr=>`url('${portraitImage(baseWidth*dpr).src}') ${dpr}x`).join(', ')})`;
 const mobileStyle=fullRoadMobile?`--mobile-aspect:${portraitAsset.width}/${portraitAsset.height};--mobile-placeholder:url('${portraitAsset.lqip}');--mobile-canopy:${canopy(400)};--mobile-canopy-wide:${canopy(800)}`:undefined;
 ---
 <section class:list={['home-cover',{'editorial-cover':!desk}]} aria-label="Reverian 摄影封面" data-full-road={fullRoadMobile||undefined} style={mobileStyle}>
  {desk ? <>
-  <img class="hero-photo" src={`/images/responsive/home-desk-${assets['home-desk'].width}.webp`} srcset={assets['home-desk'].widths.map(w=>`/images/responsive/home-desk-${w}.webp ${w}w`).join(', ')} sizes="(max-aspect-ratio: 16/9) 178svh, 100vw" width={assets['home-desk'].width} height={assets['home-desk'].height} alt="暖光中的摄影桌面，照片盒与桌面上摆放着三张照片" fetchpriority="high"/>
-  <svg class="photo-hotspots" viewBox="0 0 1672 941" preserveAspectRatio="xMidYMid slice" aria-label="点击照片放大">{spots.map(s=>{const p=demoPhotos.find(p=>p.id===s.id)!;return <a href={imageUrl(p,2400)} data-lightbox data-group="cover" data-title={p.title} data-alt={p.alt} data-caption="封面场景中的示例照片" aria-label={`放大查看：${p.title}`}><polygon points={s.hit}/></a>;})}</svg>
+  <img class="hero-photo" src={assets['home-desk'].full.src} srcset={[...assets['home-desk'].thumbnails.filter(i=>i.width<assets['home-desk'].full.width),assets['home-desk'].full].map(i=>`${i.src} ${i.width}w`).join(', ')} sizes="(max-aspect-ratio: 16/9) 178svh, 100vw" width={assets['home-desk'].width} height={assets['home-desk'].height} alt="暖光中的摄影桌面，照片盒与桌面上摆放着三张照片" fetchpriority="high" loading="eager" decoding="sync"/>
+  <svg class="photo-hotspots" viewBox="0 0 1672 941" preserveAspectRatio="xMidYMid slice" aria-label="点击照片放大">{spots.map(s=>{const p=demoPhotos.find(p=>p.id===s.id)!;return <a href={imageUrl(p,2048,undefined,undefined,'lightbox')} data-lightbox data-group="cover" data-title={p.title} data-alt={p.alt} data-caption="封面场景中的示例照片" aria-label={`放大查看：${p.title}`}><polygon points={s.hit}/></a>;})}</svg>
  </> : desktop ? <>
   <div class="cover-scene"><div class="cover-focus">
   <picture class="cover-picture">
    {mobile && <source media="(max-width: 800px) and (orientation: portrait)" srcset={fullRoadMobile?portraitSources:mobileSources} sizes="100vw" width={fullRoadMobile?portraitAsset.width:900} height={fullRoadMobile?portraitAsset.height:1600} data-fallback-src={fullRoadMobile?portraitAsset.images[0].src:imageUrl(mobile.photo,400,mobile,9/16)}/>}
-   <img class="hero-photo" src={imageUrl(desktop.photo,1920)} srcset={desktopSources} sizes="100vw" data-fallback-src={imageUrl(desktop.photo,800)} width={desktop.photo.image.width} height={desktop.photo.image.height} style={`--focus-desktop:${desktop.focusX*100}% ${desktop.focusY*100}%;--focus-mobile:${mobile!.focusX*100}% ${mobile!.focusY*100}%`} alt={desktop.photo.alt} fetchpriority="high"/>
+   <img class="hero-photo" src={imageUrl(desktop.photo,2400,undefined,undefined,'hero')} srcset={desktopSources} sizes="100vw" data-fallback-src={imageUrl(desktop.photo,800)} width={desktop.photo.image.width} height={desktop.photo.image.height} style={`--focus-desktop:${desktop.focusX*100}% ${desktop.focusY*100}%;--focus-mobile:${mobile!.focusX*100}% ${mobile!.focusY*100}%`} alt={desktop.photo.alt} fetchpriority="high" loading="eager" decoding="sync"/>
   </picture>
   </div></div>
   <div class="cover-shade" aria-hidden="true"></div>
@@ -75,7 +75,7 @@ const mobileStyle=fullRoadMobile?`--mobile-aspect:${portraitAsset.width}/${portr
   .editorial-cover .cover-grain{animation:none;transform:none;will-change:auto}
  }
 
- .editorial-cover{height:100svh;min-height:500px;background:#19251e;color:#f5f0df;isolation:isolate}
+ .editorial-cover{height:100svh;min-height:500px;background:#EAE8E0;color:#f5f0df;isolation:isolate}
  /* Share the following section's paper color at every stop, including theme changes. */
  .editorial-cover::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:180px;z-index:0;pointer-events:none;background:linear-gradient(to bottom,color-mix(in srgb,var(--paper) 0%,transparent) 0%,color-mix(in srgb,var(--paper) 15%,transparent) 35%,color-mix(in srgb,var(--paper) 55%,transparent) 68%,color-mix(in srgb,var(--paper) 92%,transparent) 90%,var(--paper) 100%)}
  .editorial-cover .home-identity,.editorial-cover .cover-note{z-index:1}

@@ -1,53 +1,30 @@
-import { createImageUrlBuilder } from "@sanity/image-url";
-import assets from "../data/assets.json";
-import type { Photo, Cover } from "./types";
-export function imageUrl(
-  photo: Photo,
-  width = 1200,
-  cover?: Pick<Cover, "focusX" | "focusY">,
-  ratio?: number,
-): string {
+import {createImageUrlBuilder} from '@sanity/image-url';
+import localImages from '../data/local-images.json';
+import type {Photo, Cover} from './types';
+import {imageSize, imageWidths, imagePresets, type ImagePurpose} from './image-sizing';
+
+export function imageUrl(photo: Photo, width = 1200, cover?: Pick<Cover, 'focusX' | 'focusY'>, ratio?: number, purpose: ImagePurpose = 'thumbnail'): string {
   const img = photo.image;
   if (img.localKey) {
-    const meta = assets[img.localKey as keyof typeof assets];
-    const w = meta.widths.find((w) => w >= width) ?? meta.width;
-    return `/images/responsive/${img.localKey}-${w}.webp`;
+    const meta = localImages[img.localKey as keyof typeof localImages];
+    if (purpose !== 'thumbnail') return meta.full.src;
+    return (meta.thumbnails.find(item => item.width >= width) || meta.thumbnail).src;
   }
   if (!img.assetRef) return img.url;
-  let builder = createImageUrlBuilder({
-    projectId: import.meta.env.SANITY_PROJECT_ID,
-    dataset: import.meta.env.SANITY_DATASET || "production",
-  })
-    .image({ asset: { _ref: img.assetRef } })
-    .width(Math.min(width, img.width))
-    .auto("format")
-    .quality(85);
-  if (cover && ratio)
-    builder = builder
-      .height(Math.round(Math.min(width, img.width) / ratio))
-      .fit("crop")
-      .crop("focalpoint")
-      .focalPoint(cover.focusX, cover.focusY);
-  else builder = builder.fit("max");
+  const size = imageSize(img.width, img.height, width, purpose, cover ? ratio : undefined);
+  let builder = createImageUrlBuilder({projectId: import.meta.env.SANITY_PROJECT_ID, dataset: import.meta.env.SANITY_DATASET || 'production'})
+    .image({asset: {_ref: img.assetRef}}).width(size.width).format('webp').quality(imagePresets[purpose].quality);
+  if (cover && ratio) builder = builder.height(size.height).fit('crop').crop('focalpoint').focalPoint(cover.focusX, cover.focusY);
+  else builder = builder.fit('max');
   return builder.url();
 }
-export function imageSet(
-  photo: Photo,
-  cover?: Pick<Cover, "focusX" | "focusY">,
-  ratio?: number,
-): string {
+
+export function imageSet(photo: Photo, cover?: Pick<Cover, 'focusX' | 'focusY'>, ratio?: number, purpose: ImagePurpose = 'thumbnail'): string {
   if (photo.image.localKey) {
-    const meta = assets[photo.image.localKey as keyof typeof assets];
-    return meta.widths.map((w) => `${imageUrl(photo, w)} ${w}w`).join(", ");
+    const meta = localImages[photo.image.localKey as keyof typeof localImages];
+    const candidates = purpose === 'thumbnail' ? meta.thumbnails : [...meta.thumbnails.filter(item => item.width < meta.full.width), meta.full];
+    return candidates.map(item => `${item.src} ${item.width}w`).join(', ');
   }
-  const widths = [
-    ...new Set(
-      [400, 800, 1200, 1920]
-        .filter((w) => w < photo.image.width)
-        .concat(Math.min(photo.image.width, 2400)),
-    ),
-  ];
-  return widths
-    .map((w) => `${imageUrl(photo, w, cover, ratio)} ${w}w`)
-    .join(", ");
+  return imageWidths(photo.image.width, photo.image.height, purpose, cover ? ratio : undefined)
+    .map(width => `${imageUrl(photo, width, cover, ratio, purpose)} ${width}w`).join(', ');
 }

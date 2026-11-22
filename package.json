@@ -18,7 +18,8 @@
     "preview": "npm run preview -w @reverian/web",
     "check": "npm run check -w @reverian/web && npm run check -w @reverian/studio && tsc -p functions/tsconfig.json",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
-    "assets": "node scripts/prepare-assets.mjs"
+    "assets": "node scripts/optimize-images.mjs",
+    "images:optimize": "node scripts/optimize-images.mjs"
   },
   "devDependencies": {
     "sharp": "^0.34.5",

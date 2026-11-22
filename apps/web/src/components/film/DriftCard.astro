@@ -31,8 +31,8 @@ const rows=[[35,9,22,11,34,28],[10,36,19,23,33,12]].map(ids=>ids.map(id=>issue.p
  .reel-reverse{animation-direction:reverse;animation-duration:80s}
  .reel-copy{display:flex;gap:var(--reel-gap);padding-right:var(--reel-gap);flex-shrink:0}
  .reel-frame{margin:0;flex:none}
- .reel-image{display:block;overflow:hidden}
- .reel-frame img{display:block;width:auto;height:var(--reel-height);max-width:none;object-fit:contain;background:#292722}
+ .reel-image{display:block;overflow:hidden;background:#EAE8E0}
+ .reel-frame img{display:block;width:auto;height:var(--reel-height);max-width:none;object-fit:contain;background:#EAE8E0}
  .reel-frame figcaption{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:6px 2px 0;font:10px/1.2 'Courier New',monospace;letter-spacing:.13em;color:var(--reel-gold)}
  .reel-frame figcaption>span:first-child{font-size:12px}.reel-arrow{padding-left:8px}
  [data-visible="true"][data-paused="false"] .reel-track{animation-play-state:running}
@@ -54,7 +54,6 @@ const rows=[[35,9,22,11,34,28],[10,36,19,23,33,12]].map(ids=>ids.map(id=>issue.p
   const syncVisibility=()=>{reel.dataset.visible=String(visible&&!document.hidden);};
   const observer=new IntersectionObserver(entries=>{
    visible=entries[0].isIntersecting;
-   if(visible)reel.querySelectorAll<HTMLImageElement>('img').forEach(img=>{img.loading='eager';});
    syncVisibility();
   });
   observer.observe(reel);

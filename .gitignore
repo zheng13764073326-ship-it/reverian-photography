@@ -9,3 +9,8 @@ dist/
 *.log
 artifacts/
 .browser-profile/
+
+# Raw originals belong in an external backup, never in deployed assets.
+apps/web/public/images/**/*.[jJ][pP][gG]
+apps/web/public/images/**/*.[jJ][pP][eE][gG]
+apps/web/public/images/**/*.[pP][nN][gG]

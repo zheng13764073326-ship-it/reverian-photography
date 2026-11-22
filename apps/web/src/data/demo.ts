@@ -1,4 +1,4 @@
-import assets from "./assets.json";
+import assets from "./local-images.json";
 import type { Content, Photo, RichText, Cover } from "../lib/types";
 export const paragraph = (text: string): RichText => [
   {
@@ -38,7 +38,7 @@ export const demoPhotos: Photo[] = definitions.map(([id, title, alt]) => {
     featured: !["stilllight", "gardenchair", "afternoon"].includes(id),
     isPublic: true,
     image: {
-      url: `/images/${id}.jpg`,
+      url: meta.thumbnail.src,
       width: meta.width,
       height: meta.height,
       lqip: meta.lqip,

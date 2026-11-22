@@ -307,6 +307,7 @@ summary::-webkit-details-marker {
   padding-bottom: 5px;
 }
 .photograph .image-frame {
+  background: #EAE8E0;
   display: block;
   width: 100%;
   overflow: hidden;
@@ -577,6 +578,7 @@ summary::-webkit-details-marker {
   background: #191915;
 }
 #viewer-image {
+  background: #EAE8E0;
   max-width: 100%;
   max-height: 100%;
   width: auto;
