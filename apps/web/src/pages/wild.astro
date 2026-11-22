@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+import CollectionGallery from '../components/CollectionGallery.astro';
+import frames from '../data/collections/wild-encounters.json';
+const intro = '在人类的刻度之外，凝视另一种心跳与羽翼。';
+---
+<Base title="万物生灵" description={intro} collection>
+  <CollectionGallery kind="wild" number="03" title="万物生灵" english="WILD ENCOUNTERS"
+    intro={intro} translation="Beyond human scales—quiet encounters with wings, fins, and untamed gazes."
+    filters={[{id:'all',label:'ALL'},{id:'birds',label:'BIRDS'},{id:'beneath',label:'BENEATH THE BLUE'},{id:'portraits',label:'LIVING PORTRAITS'}]}
+    frames={frames}/>
+</Base>

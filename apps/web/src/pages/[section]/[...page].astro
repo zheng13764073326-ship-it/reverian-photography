@@ -6,7 +6,7 @@ import {getContent} from '../../lib/content';
 import {pageItems} from '../../lib/publishing';
 export async function getStaticPaths(){
  const {photos}=await getContent();
- return [{section:'works',title:'精选作品',english:'SELECTED PHOTOGRAPHS',items:photos.filter(p=>p.featured)},{section:'street',title:'街巷观察',english:'STREET OBSERVATIONS',items:photos.filter(p=>p.sections.includes('street'))}].flatMap(({items,...section})=>{
+ return [{section:'works',title:'精选作品',english:'SELECTED PHOTOGRAPHS',items:photos.filter(p=>p.featured)}].flatMap(({items,...section})=>{
   const pages=pageItems(items,24);return pages.map((photos,i)=>({params:{section:section.section,page:i?String(i+1):undefined},props:{...section,photos,current:i+1,total:pages.length}}));
  });
 }

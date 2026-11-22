@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+import CollectionGallery from '../components/CollectionGallery.astro';
+import frames from '../data/collections/from-above.json';
+const intro = '离开地面之后，世界退回成线条、色块与云层。';
+---
+<Base title="云端视角" description={intro} collection>
+  <CollectionGallery kind="above" number="04" title="云端视角" english="FROM ABOVE"
+    intro={intro} translation="Detached from the ground—where the world dissolves into geometry, tides, and clouds."
+    filters={[{id:'all',label:'ALL'},{id:'aerial',label:'AERIAL · 航拍'},{id:'window',label:'WINDOW SEAT · 万米舷窗'}]}
+    frames={frames}/>
+</Base>

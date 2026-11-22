@@ -179,7 +179,8 @@ try {
       "/albums/",
       "/albums/kyoto-2026/",
       "/works/",
-      "/street/",
+      "/wild/",
+      "/above/",
       "/film/",
       "/about/",
     ]) {

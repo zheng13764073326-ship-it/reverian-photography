@@ -1,0 +1,74 @@
+---
+import {frameGeometry, type GalleryFrame} from '../lib/collections';
+import '@fontsource-variable/noto-serif-sc/wght.css';
+import '@fontsource/jetbrains-mono/latin-400.css';
+import '../styles/collections.css';
+interface Props {
+  kind: 'wild' | 'above';
+  number: string;
+  title: string;
+  english: string;
+  intro: string;
+  translation: string;
+  filters: {id: string; label: string}[];
+  frames: GalleryFrame[];
+}
+const {kind, number, title, english, intro, translation, filters, frames} = Astro.props;
+---
+<section class:list={['collection container',`collection-${kind}`]} data-collection={kind} aria-labelledby="collection-title">
+  <header class="collection-heading">
+    <div>
+      <p class="collection-index"><span>{number}</span><span aria-hidden="true">/</span>{english}</p>
+      <h1 id="collection-title">{title}</h1>
+    </div>
+    <div class="collection-intro">
+      <p>{intro}</p>
+      <p lang="en">{translation}</p>
+    </div>
+  </header>
+  <div class="collection-toolbar">
+    <div class="collection-filters" role="group" aria-label={`${title}分类筛选`}>
+      {filters.map(filter => <button type="button" data-filter={filter.id} aria-pressed={filter.id==='all'?'true':'false'} aria-controls="collection-frames">{filter.label}</button>)}
+    </div>
+    <output class="collection-count" aria-live="polite" aria-atomic="true">{String(frames.length).padStart(2,'0')} FRAMES</output>
+  </div>
+  <div id="collection-frames" class="collection-frames">
+    {frames.map((frame, index) => {
+      const {aspectRatio, width, height, padding} = frameGeometry(frame);
+      const serial = String(index + 1).padStart(2,'0');
+      const detail = frame.environment ? `${frame.title} · [ ${frame.environment} ]` : frame.meta;
+      return <figure class:list={['collection-frame',{'frame-wide':frame.layout==='wide'}]}
+        data-frame-id={frame.id} data-category={frame.category} data-title={frame.title}
+        data-detail={detail} data-ratio={aspectRatio} data-width={width} data-height={height} data-serial={serial}>
+        <button type="button" class="frame-surface" style={`--frame-padding:${padding}%`} aria-label={`预览 ${frame.title}${frame.src?'':' · 未曝光胶片'}`} aria-haspopup="dialog">
+          <span class="frame-placeholder" aria-hidden="true">
+            <span class="frame-corner">{number} / {serial}</span>
+            <span class="frame-mark">FRAME {serial}<span>// {aspectRatio} · PENDING</span></span>
+            <span class="frame-edge">UNEXPOSED FILM</span>
+          </span>
+          {frame.src && <img class="collection-image" src={frame.src} alt={frame.title} width={width} height={height} loading="lazy" decoding="async"/>}
+          {kind==='wild' && <span class="frame-info" aria-hidden="true">{detail}<span>↗</span></span>}
+        </button>
+        {kind==='above' && <figcaption class="frame-footnote"><span>{frame.meta}</span><span>{serial}</span></figcaption>}
+      </figure>;
+    })}
+  </div>
+  <p class="collection-empty" hidden>这一卷还在整理中。</p>
+  <div class="collection-end">
+    <span data-roll-end>END OF ROLL // {String(frames.length).padStart(2,'0')} FRAMES</span>
+    {kind==='wild' && <button type="button" class="collection-load" disabled aria-describedby="collection-load-note">加载更多 <span lang="en">· LOAD MORE</span></button>}
+    {kind==='wild' && <small id="collection-load-note">新的相遇，等待曝光。</small>}
+  </div>
+  <dialog class="collection-viewer" aria-labelledby="collection-viewer-title">
+    <header class="collection-viewer-head"><span>{english} // <span data-preview-count></span></span><button type="button" data-preview-close autofocus aria-label="关闭预览">关闭 ×</button></header>
+    <div class="collection-viewer-stage" role="img" aria-label="未曝光胶片预览"></div>
+    <footer class="collection-viewer-foot">
+      <div><h2 id="collection-viewer-title"></h2><p data-preview-detail></p></div>
+      <div class="collection-viewer-controls"><button type="button" data-preview-prev aria-label="上一张">←</button><button type="button" data-preview-next aria-label="下一张">→</button></div>
+    </footer>
+  </dialog>
+</section>
+<script>
+  import {setupCollectionGallery} from '../lib/collection-gallery';
+  document.querySelectorAll<HTMLElement>('[data-collection]').forEach(setupCollectionGallery);
+</script>
