@@ -172,8 +172,7 @@ summary::-webkit-details-marker {
   font-size: 22px;
   letter-spacing: 2px;
 }
-.site-header nav > a[aria-current],
-.site-header .lab-nav > summary[aria-current] {
+.site-header nav > a[aria-current] {
   border-bottom: 1px solid currentColor;
 }
 .portfolio-nav {

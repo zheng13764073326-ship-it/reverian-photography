@@ -9,6 +9,16 @@ export interface ForecastData {date:string;timezone:string;hours:Hour[];days:{da
 export interface Reading {date:string;event:EventKind;eventTime:string;bearing:number;metrics:Atmosphere;score:number;advice:string;hours:Hour[];source:'forecast'|'cache'|'sample';fetchedAt:number;visibility:number|null;temperature:number|null;golden:[string,string]|null;blue:[string,string]|null;arrival:string}
 for(const [angle,rise,set] of [[-4,'obsBlueMorningEnd','obsBlueEveningStart'],[-8,'obsBlueMorningStart','obsBlueEveningEnd']] as const){if(!times.some(row=>row[1]===rise))addTime(angle,rise,set);}
 export const dayDate=(offset:number,now=new Date(),timezone='Asia/Shanghai')=>new Date(Date.parse(dateAt(now,timezone)+'T12:00:00Z')+offset*86400_000).toISOString().slice(0,10);
+export const LAST_PLACE_KEY='reverian-observatory-place-v1';
+/** City preference is independent of the short-lived weather cache. */
+export function readSavedPlace(raw:string|null):Place|null {
+ try {
+  if(!raw||raw.length>4096)return null;
+  const p=JSON.parse(raw);
+  if(!p||typeof p.id!=='string'||!p.id.trim()||p.id.length>100||typeof p.name!=='string'||!p.name.trim()||p.name.length>240||!validTimezone(p.timezone)||typeof p.latitude!=='number'||!Number.isFinite(p.latitude)||Math.abs(p.latitude)>90||typeof p.longitude!=='number'||!Number.isFinite(p.longitude)||Math.abs(p.longitude)>180)return null;
+  return {id:p.id,name:p.name,latitude:p.latitude,longitude:p.longitude,timezone:p.timezone};
+ }catch{return null;}
+}
 export const placeKey=(place:Place)=>`${place.latitude.toFixed(4)},${place.longitude.toFixed(4)},${place.timezone}`;
 export const directionLabel=(angle:number)=>['北','东北','东','东南','南','西南','西','西北'][Math.round(angle/45)%8];
 export const rangeLabel=(range:[string,string]|null,timezone:string)=>range?range.map(time=>timeAt(time,timezone)).join(' – '):'—';

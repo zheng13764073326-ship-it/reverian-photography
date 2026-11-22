@@ -1,14 +1,16 @@
 import cities from '../data/lab/cities.json';
 import {CACHE_AGE} from './sunset';
 import {civilNoon,dateAt,timeAt,zoneLabel} from './local-time';
-import {coordinates,dayDate,directionLabel,fetchObservatory,geocodingUrl,observation,parsePlaces,placeKey,rangeLabel,readObservatoryCache,type EventKind,type ForecastData,type Place,type Reading} from './observatory';
+import {LAST_PLACE_KEY,readSavedPlace,coordinates,dayDate,directionLabel,fetchObservatory,geocodingUrl,observation,parsePlaces,placeKey,rangeLabel,readObservatoryCache,type EventKind,type ForecastData,type Place,type Reading} from './observatory';
 
 export function setupLabWeather(root:HTMLElement){
  const q=<T extends Element=HTMLElement>(selector:string)=>root.querySelector<T>(selector)!;
  const all=<T extends Element=HTMLElement>(selector:string)=>[...root.querySelectorAll<T>(selector)];
  const put=(key:string,value:string)=>{q('[data-obs-'+key+']').textContent=value;};
  const refresh=q<HTMLButtonElement>('[data-weather-refresh]'),status=q('[data-weather-status]'),shell=q('[data-obs-reading]');
- const memory=new Map<string,string>();let place:Place=cities[0],day=0,event:EventKind='sunset',forecast:ForecastData|null=null,reading:Reading|null=null;
+ let initialPlace:Place=cities[0];
+ try{const saved=readSavedPlace(localStorage.getItem(LAST_PLACE_KEY));if(saved)initialPlace=cities.find(city=>city.id===saved.id)??saved;}catch{}
+ const memory=new Map<string,string>();let place:Place=initialPlace,day=0,event:EventKind='sunset',forecast:ForecastData|null=null,reading:Reading|null=null;
  const currentDate=()=>dateAt(new Date(),place.timezone),selectedDate=(offset:number)=>dayDate(offset,new Date(),place.timezone),localTime=(date:Date|string|number)=>timeAt(date,place.timezone);
  const getReading=(date:string)=>{try{return observation(place,date,event,forecast);}catch{return null;}};
  let loading=false,loaded=false,request=0,abort:AbortController|undefined,lastDate=currentDate(),lastAttempt=0;
@@ -84,9 +86,12 @@ export function setupLabWeather(root:HTMLElement){
  all<HTMLButtonElement>('[data-obs-event]').forEach(button=>button.addEventListener('click',()=>{event=button.dataset.obsEvent as EventKind;render();}));
  refresh.addEventListener('click',()=>void load(true));
  const form=q<HTMLFormElement>('[data-obs-search]'),input=q<HTMLInputElement>('#obs-city-query'),searchStatus=q('[data-obs-search-status]'),results=q('#obs-search-results');
+ input.value=place.name.split(' · ')[0];searchStatus.textContent='当前观测：'+place.name;
  const submit=form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
  let searchAbort:AbortController|undefined,searchVersion=0;
  function selectPlace(candidate:Place){
+  // Save a confirmed selection immediately, even if the forecast request fails.
+  try{const {id,name,latitude,longitude,timezone}=candidate;localStorage.setItem(LAST_PLACE_KEY,JSON.stringify({id,name,latitude,longitude,timezone}));}catch{}
   searchVersion++;searchAbort?.abort();place=candidate;results.replaceChildren();results.hidden=true;searchStatus.hidden=false;searchStatus.textContent='当前观测：'+candidate.name;input.value=candidate.name.split(' · ')[0];submit.textContent='查询城市 ↗';
   const heading=q('.obs-summary h3');heading.tabIndex=-1;heading.focus({preventScroll:true});void load();
  }
