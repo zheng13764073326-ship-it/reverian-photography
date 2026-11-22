@@ -1,14 +1,21 @@
+import introductions from '../data/lab/introductions.json';
+
 export function setupOpticalLab(root:HTMLElement) {
   const links=[...document.querySelectorAll<HTMLAnchorElement>('[data-lab-link]')];
   const panels=[...root.querySelectorAll<HTMLElement>('[data-lab-panel]')];
   const heading=root.querySelector<HTMLElement>('[data-lab-title]')!;
+  const subtitle=root.querySelector<HTMLElement>('[data-lab-subtitle]')!;
   const titleSuffix=document.title.slice(document.title.indexOf(' — '));
   const filters=[...root.querySelectorAll<HTMLButtonElement>('[data-prompt-filter]')];
   const prompts=[...root.querySelectorAll<HTMLElement>('[data-prompt-category]')];
   let weather:Promise<{ensure:()=>void}>|undefined;
   function activate(id:string,write=false) {
     const title=links.find(link=>link.dataset.labLink===id)!.textContent!.trim();
+    const description=introductions[id as keyof typeof introductions] || introductions.guides;
     heading.textContent=title;
+    subtitle.textContent=description;
+    document.querySelector<HTMLMetaElement>('meta[name="description"]')?.setAttribute('content',description);
+    document.querySelector<HTMLMetaElement>('meta[property="og:description"]')?.setAttribute('content',description);
     document.title=title+titleSuffix;
     document.querySelector<HTMLMetaElement>('meta[property="og:title"]')?.setAttribute('content',document.title);
     links.forEach(link=>{if(link.dataset.labLink===id)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');});

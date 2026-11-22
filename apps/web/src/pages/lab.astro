@@ -3,17 +3,18 @@ import Base from '../layouts/Base.astro';
 import guides from '../data/lab/guides.json';
 import prompts from '../data/lab/prompts.json';
 import cities from '../data/lab/cities.json';
+import introductions from '../data/lab/introductions.json';
 import '@fontsource-variable/noto-serif-sc/wght.css';
 import '@fontsource/jetbrains-mono/latin-400.css';
 import '../styles/lab.css';
 const uses=[['all','全部'],...prompts.map(prompt=>[prompt.category,prompt.title])];
 ---
-<Base title="摄影入门" description="从快门逻辑到气象观测，记录光影背后的技术手记。" lab>
+<Base title="摄影入门" description={introductions.guides} lab>
   <div class="lab-page container" data-optical-lab>
     <header class="lab-heading">
       <p class="lab-eyebrow">OPTICAL LAB <span>// 01</span></p>
       <h1 data-lab-title>摄影入门</h1>
-      <p class="lab-subtitle">从快门逻辑到气象观测，记录光影背后的技术手记。</p>
+      <p class="lab-subtitle" data-lab-subtitle>{introductions.guides}</p>
     </header>
     <section id="lab-panel-guides" class="lab-panel" aria-labelledby="lab-section-guides" data-lab-panel="guides">
       <div class="lab-section-line"><h2 id="lab-section-guides">入门指南</h2><p>FIELD NOTES <span>/ 04 GUIDES</span></p></div>

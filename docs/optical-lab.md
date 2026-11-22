@@ -4,6 +4,8 @@
 
 页面大标题及浏览器标题随当前子目录显示「摄影入门」「AI 影像」「火烧云」，直接进入查询链接、菜单切换和历史返回均同步更新。页内二级标题采用「入门指南」「提示词档案」「晚霞观测台」，避免与大标题重复。三个实验室子菜单统一以 Noto Serif SC / 中文宋体字体栈呈现中英文、字重 500，避免 AI 单独落到 Cormorant。全站不额外加载首屏字体；实验室复用现有本地 Noto 字库，其余页面沿用中文宋体回退。
 
+三个栏目的导语独立存放于 `data/lab/introductions.json`：摄影入门介绍相机、镜头、焦距与曝光；AI 影像介绍修图提示词与保留原片故事；火烧云介绍三城云层、降水与日落观测。页面导语与浏览器内 description / og:description 随直达、切换和历史同步更新；静态默认页使用摄影入门导语。
+
 ## 数据与界面
 
 - `apps/web/src/data/lab/guides.json`：4 篇结构化指南大纲。字段 `id, index, tag, title, summary, readTime, content`；content 为 `{heading, points: string[]}` 数组。标题、内容以文本渲染，不接受未处理 HTML。阅读抽屉支持 Escape、背景关闭、键盘焦点与关闭后返回卡片。
