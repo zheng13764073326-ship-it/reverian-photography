@@ -5,15 +5,19 @@ import '../styles/observatory.css';
 <div class="observatory" data-observatory>
   <header class="obs-heading"><div><p class="obs-kicker">FIELD STATION // 03</p><h2 id="lab-section-sunset">追光观测台</h2></div><p>先看天空的条件，再决定往哪里出发。</p></header>
   <div class="obs-controls">
-    <div class="obs-place-row">
-      <div class="obs-presets" role="group" aria-label="常用观测城市">{cities.map((city,index)=><button type="button" data-obs-city={city.id} aria-pressed={index===0?'true':'false'}>{city.name}</button>)}</div>
-      <form class="obs-search" data-obs-search role="search"><label class="lab-sr-only" for="obs-city-query">搜索中国大陆城市</label><input id="obs-city-query" name="city" type="search" maxlength="50" placeholder="搜索其他城市" autocomplete="off" aria-controls="obs-search-results"/><button type="submit" aria-label="搜索城市">搜索 ↗</button></form>
+    <div class="obs-city-picker">
+      <form class="obs-search" data-obs-search role="search">
+        <label for="obs-city-query">输入城市，查询朝晚霞 <span>LOCATION SEARCH</span></label>
+        <div class="obs-search-field"><input id="obs-city-query" name="city" type="search" maxlength="50" value="上海" placeholder="城市名，例如：北京、香港、New York" autocomplete="off" enterkeyhint="search" aria-describedby="obs-search-help" aria-controls="obs-search-results"/><button type="submit">查询城市 ↗</button></div>
+        <p id="obs-search-help">输入中文或英文城市名，按回车查询；按地区选择同名地点，预报使用城市当地时间。</p>
+      </form>
+      <p class="obs-search-status" data-obs-search-status role="status">当前观测：上海</p><div id="obs-search-results" class="obs-search-results" aria-label="城市搜索结果" hidden></div>
+      <div class="obs-shortcuts"><span>快捷选择</span><div class="obs-presets" role="group" aria-label="常用观测城市">{cities.map((city,index)=><button type="button" data-obs-city={city.id} aria-pressed={index===0?'true':'false'}>{city.name}</button>)}</div></div>
     </div>
-    <p class="obs-search-status" data-obs-search-status role="status" hidden></p><div id="obs-search-results" class="obs-search-results" aria-label="城市搜索结果" hidden></div>
     <div class="obs-days" role="group" aria-label="观测日期">{['今天','明天','后天'].map((day,index)=><button type="button" data-obs-day={index} aria-pressed={index===0?'true':'false'}><span>{day} <small data-day-date>—</small></span><span class="obs-day-index"><b data-day-score>—</b><small>条件分</small></span></button>)}</div>
     <div class="obs-event-row"><div class="obs-events" role="group" aria-label="观测时段"><button type="button" data-obs-event="sunset" aria-pressed="true">晚霞 <span>SUNSET</span></button><button type="button" data-obs-event="sunrise" aria-pressed="false">朝霞 <span>SUNRISE</span></button></div><button type="button" class="obs-refresh" data-weather-refresh>更新预报 ↻</button></div>
   </div>
-  <div class="obs-status-line"><span data-obs-status-date>UTC+8 / 北京时间</span><p data-weather-status role="status" aria-live="polite">选择地点与时段，等待观测数据。</p></div>
+  <div class="obs-status-line"><span data-obs-status-date>UTC+8 / 城市当地时间</span><p data-weather-status role="status" aria-live="polite">选择地点与时段，等待观测数据。</p></div>
   <div class="obs-reading" data-obs-reading aria-busy="true">
     <div class="obs-overview">
       <article class="obs-summary">
@@ -33,7 +37,7 @@ import '../styles/observatory.css';
           <text x="130" y="20" text-anchor="middle">N</text><text x="244" y="134" text-anchor="middle">E</text><text x="130" y="250" text-anchor="middle">S</text><text x="16" y="134" text-anchor="middle">W</text>
           <g data-obs-bearing-arrow><path d="M130 130L110 54L150 54Z" fill="var(--lab-orange)" opacity=".13"/><path d="M130 130V48m-6 9 6-9 6 9" fill="none" stroke="var(--lab-orange)" stroke-width="2"/><circle cx="130" cy="43" r="6" fill="var(--lab-orange)"/></g><circle cx="130" cy="130" r="4" fill="currentColor"/>
         </svg><div class="obs-bearing-label"><strong data-obs-bearing>—°</strong><span data-obs-direction>太阳方位</span></div></div>
-        <div class="obs-event-time"><span data-obs-event-label>日落 / SUNSET</span><strong data-obs-event-time>--:--</strong><small data-obs-phase>北京时间</small></div>
+        <div class="obs-event-time"><span data-obs-event-label>日落 / SUNSET</span><strong data-obs-event-time>--:--</strong><small data-obs-phase>城市当地时间</small></div>
         <p class="obs-direction-note">面向标示方位寻找开阔地平线，留意远处云墙与建筑遮挡。</p>
       </article>
     </div>
@@ -54,7 +58,7 @@ import '../styles/observatory.css';
       </section>
     </div>
   </div>
-  <footer class="obs-notes"><details><summary>数据来源与判断方法 <span aria-hidden="true">＋</span></summary><div><p>气象数据来自 Open-Meteo 自动选模预报，时区统一为北京时间。条件指数沿用本站的云量与降水经验评分：日出或日落前后 1 小时内，高云、中云、低云与风速取均值，降水概率取最高值。高、中云 30%–75% 区间加分，低云超过 60% 时大幅减分。能见度、气温及风速提供拍摄参考，不额外加入评分。</p><p>这不是经过概率校准的火烧云预报，也未计算远端云墙的光路遮挡或气溶胶光学厚度（AOD），不能等同于 Sunsetbot 或天文通的预测结果。日出日落方位、黄金与蓝调时段按天文算法估算。</p><p>每次获取未来三天的数据，缓存最多保留 15 分钟。刷新失败时优先使用仍有效的缓存；无有效数据时明确显示「模拟示例」，不生成虚构的逐小时趋势。城市查询支持中国大陆城市。</p></div></details>
+  <footer class="obs-notes"><details><summary>数据来源与判断方法 <span aria-hidden="true">＋</span></summary><div><p>气象数据来自 Open-Meteo 自动选模预报，日期与时刻跟随所选城市的当地时区，自动处理夏令时。条件指数沿用本站的云量与降水经验评分：日出或日落前后 1 小时内，高云、中云、低云与风速取均值，降水概率取最高值。高、中云 30%–75% 区间加分，低云超过 60% 时大幅减分。能见度、气温及风速提供拍摄参考，不额外加入评分。</p><p>这不是经过概率校准的火烧云预报，也未计算远端云墙的光路遮挡或气溶胶光学厚度（AOD），不能等同于 Sunsetbot 或天文通的预测结果。日出日落方位、黄金与蓝调时段按天文算法估算。</p><p>每次获取未来三天的数据，缓存最多保留 15 分钟。刷新失败时优先使用仍有效的缓存；无有效数据时明确显示「模拟示例」，不生成虚构的逐小时趋势。支持中英文城市搜索，同名地点可根据地区与经纬度选择。</p></div></details>
     <div class="obs-credits"><p>WEATHER <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo ↗</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a><br/>GEOCODING <a href="https://www.geonames.org/" target="_blank" rel="noopener noreferrer">GeoNames ↗</a> · SOLAR TIMES SunCalc</p><p>交叉参考 <a href="https://www.sunsetbot.top/" target="_blank" rel="noopener noreferrer">Sunsetbot ↗</a> <a href="https://twtapp.com/" target="_blank" rel="noopener noreferrer">天文通 ↗</a></p></div>
   </footer>
 </div>

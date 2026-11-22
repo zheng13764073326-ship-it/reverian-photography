@@ -10,7 +10,7 @@
 
 - `apps/web/src/data/lab/guides.json`：4 篇结构化指南大纲。字段 `id, index, tag, title, summary, readTime, content`；content 为 `{heading, points: string[]}` 数组。标题、内容以文本渲染，不接受未处理 HTML。阅读抽屉支持 Escape、背景关闭、键盘焦点与关闭后返回卡片。
 - `apps/web/src/data/lab/prompts.json`：6 个用途各一条示例提示词，字段 `id, index, category, title, style, src, prompt`。src 为空时不创建 img；填写压缩后的图片 URL 即显示 16:9、lazy/async 样片。复制完整 prompt，代码框可滚动 / 选择文字；Clipboard 成功后反馈 1.5 秒，权限拒绝时不显示虚假成功，提示手动复制并选中文字。
-- `apps/web/src/data/lab/cities.json`：上海 / 南京 / 杭州固定坐标、英文名及明确标记的本地模拟云量数据。
+- `apps/web/src/data/lab/cities.json`：上海 / 香港 / 纽约固定坐标、英文名、IANA 时区及明确标记的本地模拟云量数据。
 - 页面 `pages/lab.astro`、样式 `styles/lab.css`、交互 `lib/optical-lab.ts`。顶部三个子目录在实验室页内支持无刷新切换、URL / 后退，在其他页面使用正常链接直达；菜单可用键盘 Enter / Tab / Escape 操作，当前子目录通过 aria-current 标记。手机选择后收起菜单并解除滚动 / inert 限制，焦点移到栏目标题；筛选使用 aria-pressed。
 - 采用 #F4F3EE / #EAE8E0 / #222222 / #1E4D54 / #B86B35；Noto Serif SC Variable 与 JetBrains Mono 本地托管，只在实验室页面引入。按钮沿用全站 .95 按压与弹簧回弹，减少动态效果偏好生效。
 
@@ -18,13 +18,13 @@
 
 参考 [Sunsetbot](https://www.sunsetbot.top/) 的地点 / 日出日落选择和分项判断，以及 [天文通官方界面](https://twtapp.com/) 的日期、小时矩阵与观测方位层次；界面保留本站米白、墨青、焦糖橙、衬线中文与等宽参数，没有复制外部图表或接入对方私有模型。
 
-- 页面组件 `components/SunsetObservatory.astro`，独立样式 `styles/observatory.css`。原三张并排城市卡片已替换。保留上海 / 南京 / 杭州快捷选择，支持中国大陆城市搜索、今天 / 明天 / 后天、朝霞 / 晚霞、条件分、太阳方位、黄金 / 蓝调窗口、云层与逐小时趋势表。所有按钮沿用全站快门按压。
-- `lib/lab-weather.ts` 管理选择、请求、缓存和渲染，仍只在打开火烧云时动态加载。`lib/observatory.ts` 负责三天数据校验、选定日出日落窗口、太阳位置、缓存及搜索解析，复用 `lib/sunset.ts` 的评分和 UTC+8 工具。旧单日解析函数仅保留兼容测试，新界面不再调用旧 fetchForecast / parseForecast。
-- 一次仅请求当前地点的三天预报：`forecast_days=3`、`daily=sunrise,sunset`、`timezone=Asia/Shanghai`、`wind_speed_unit=ms`；小时变量为高 / 中 / 低云、降水概率、风速、气温和能见度。切换日期与朝晚霞复用同一响应，不重复请求。
+- 页面组件 `components/SunsetObservatory.astro`，独立样式 `styles/observatory.css`。原三张并排城市卡片已替换。城市输入框为顶部通栏主入口，标注「输入城市，查询朝晚霞」，支持中英文名、回车查询、按行政区与地区选择同名地点；选择后输入框保留城市名，并显示「当前观测」。上海 / 香港 / 纽约作为输入框下的小型快捷选项。编辑查询或切换快捷城市会取消旧搜索、清空过时结果。支持全球城市搜索、今天 / 明天 / 后天、朝霞 / 晚霞、条件分、太阳方位、黄金 / 蓝调窗口、云层与逐小时趋势表。所有按钮沿用全站快门按压。
+- `lib/lab-weather.ts` 管理选择、请求、缓存和渲染，仍只在打开火烧云时动态加载。`lib/observatory.ts` 负责三天数据校验、选定日出日落窗口、太阳位置、缓存及搜索解析，复用 `lib/sunset.ts` 的评分；`lib/local-time.ts` 使用 Intl / IANA 时区处理日期、当地时刻、夏令时与天文计算的民用正午。旧单日解析函数仅保留兼容测试，新界面不再调用旧 fetchForecast / parseForecast。
+- 一次仅请求当前地点的三天预报：`forecast_days=3`、`daily=sunrise,sunset`、`timezone=所选城市时区`、`timeformat=unixtime`、`wind_speed_unit=ms`；小时变量为高 / 中 / 低云、降水概率、风速、气温和能见度。切换日期与朝晚霞复用同一响应，不重复请求。
 - 高 / 中 / 低云、风速取所选事件前后 1 小时均值，降水概率取峰值；完整小时数组严格校验日期连续性、单位、null 和越界值。气温 / 能见度为可选字段，缺失时显示「—」，不按零计算。逐小时趋势覆盖事件附近约 7 小时，可点击时刻或用键盘激活查看明细。
-- 浏览器内存 / localStorage 使用 `reverian-observatory-v2-纬度,经度` 缓存原始响应，最多 15 分钟，跨北京时间日期失效。刷新跳过缓存发起请求；失败时沿用有效缓存，否则明显显示「模拟示例 · 非预报」。示例不生成逐小时趋势、气温或能见度，日期按钮也不把示例分数当预报展示。
-- 超时 10 秒；切换地点取消前一个请求并用序号隔离迟到结果，避免旧城市覆盖新城市。页面重新可见或跨午夜时检查更新。搜索接口超时 8 秒，失败保留常用城市入口，结果以 textContent 构造；搜索仅过滤 CN 且坐标在支持范围内，固定显示北京时间。
-- [Open-Meteo Geocoding](https://open-meteo.com/en/docs/geocoding-api) 返回城市名、行政区与坐标供选择，保留 GeoNames 来源署名。没有自动请求用户定位。
+- 浏览器内存 / localStorage 使用 `reverian-observatory-v3-纬度,经度,时区` 缓存原始响应，最多 15 分钟，跨所选城市的当地日期失效。刷新跳过缓存发起请求；失败时沿用有效缓存，否则明显显示「模拟示例 · 非预报」。示例不生成逐小时趋势、气温或能见度，日期按钮也不把示例分数当预报展示。
+- 超时 10 秒；切换地点取消前一个请求并用序号隔离迟到结果，避免旧城市覆盖新城市。页面重新可见或跨午夜时检查更新。搜索接口超时 8 秒，失败保留常用城市入口，结果以 textContent 构造；搜索取消 CN 限制，校验全球经纬度与 IANA 时区，负纬度 / 经度正确显示 S / W。纽约中文查询映射为 New York，补足 GeoNames 中文别名缺失；搜索无结果可尝试英文。
+- [Open-Meteo Geocoding](https://open-meteo.com/en/docs/geocoding-api) 返回城市名、行政区、地区、时区与坐标供选择，保留 GeoNames 来源署名。没有自动请求用户定位。
 - SunCalc **2.1.4** 的方位角是正北为零、顺时针的度数。太阳方位使用 API 日出 / 日落时刻；模拟时刻和光影窗口由天文算法估算。新增 −4° 与 −8° 高度事件，黄金时刻采用 −4°～+6°、蓝调采用 −8°～−4°；晨昏顺序相反，支持各自的到达建议。时间窗是约定的摄影参考，不保证实际色彩。
 
 ## 指数模型
@@ -39,12 +39,20 @@
 
 ## 验证
 
-完整测试 49 项通过。新增 `tests/observatory.test.ts` 验证三天六时段、冬夏太阳方位、黄金 / 蓝调顺序、跨年 / UTC+8 日期、缺失与异常气象字段、可选变量、缓存隔离 / 过期、取消 / 超时以及城市解析。旧指南、提示词及评分边界测试继续通过。
+完整测试 53 项通过。新增 `tests/observatory.test.ts` 验证三天六时段、冬夏太阳方位、黄金 / 蓝调顺序、跨年 / UTC+8 日期、缺失与异常气象字段、可选变量、缓存隔离 / 过期、取消 / 超时以及城市解析。旧指南、提示词及评分边界测试继续通过。
 
 本机 `work/sunset-redesign/verify.mjs` 用确定性 fixture 验证 320 / 390 / 768 / 1024 / 1440px 布局、六时段、无额外请求、小时选择、缓存回退、10 秒超时模拟、刷新恢复、快速城市切换竞态、城市搜索成功 / 失败、仅进入火烧云后加载。fixture 图不代表实际预报。
 
 `work/sunset-redesign/real.mjs` 无拦截实连浏览器 Open-Meteo / Geocoding：三城及搜索北京均获得有效预报、七个附近小时数据，无 CORS 或脚本异常；`real-data.json` 与 `real-*.png` 记录实际数据。正式发布后使用 --live 复核。
 
-类型检查 66 文件无错；生产构建 17 页 / 1028 本地引用 / 616 WebP 通过。首页 CSS 仍为 56,337 字节，32 张屏外延迟图与开场动画保留，无新增首屏天气请求或图表依赖。旧 `work/optical-lab/`、`work/lab-navigation/` 脚本中基于三张天气卡片的断言已过时。
+类型检查 67 文件无错；生产构建 17 页 / 1028 本地引用 / 616 WebP 通过。首页 CSS 仍为 56,337 字节，32 张屏外延迟图与开场动画保留，无新增首屏天气请求或图表依赖。旧 `work/optical-lab/`、`work/lab-navigation/` 脚本中基于三张天气卡片的断言已过时。
 
 现有与本任务无关的 `docs/deployment.md`、`docs/live-services.md` 未混入提交。
+
+### 城市搜索与当地时间更新（2026-11-23）
+
+- 快捷城市顺序为上海、香港、纽约。输入框为主要入口，选择后保留城市名；点击快捷城市、修改输入均取消旧搜索，移除过时选项。
+- 预报使用 UTC 时间戳，显示按城市 IANA 时区转换；今天 / 明天 / 后天、逐小时标签、日出日落、到达建议及光影窗口都使用当地时间。纽约夏令时与冬令时自动转换，浏览器所在时区不影响结果。日历边界遵守 API 的返回偏移约定，太阳计算使用所选日期当地正午。
+- 极昼 / 极夜没有对应太阳事件时显示无观测时段，不编造条件分；只有黄金 / 蓝调时段缺失时单独显示「—」。
+- tests/observatory.test.ts 增加纽约日期差、冬夏与夏令时切换、半小时 / 季度小时偏移、当地午夜缓存失效、全球搜索校验与极夜覆盖。
+- 当前实连浏览器复核脚本 work/city-search/browser-qa.mjs：上海 / 香港 / 纽约预报、中英文城市搜索及选择、六个观测时段复用响应、320 / 390 / 768 / 1440px 布局。此前 work/sunset-redesign 脚本中的旧城市 ID、固定 UTC+8 fixture 已不适用于新结构。

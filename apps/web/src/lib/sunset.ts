@@ -1,7 +1,8 @@
 import {getPosition, getTimes} from 'suncalc';
+import {civilNoon,dateAt,offsetMinutes} from './local-time.ts';
 
 export interface Atmosphere {high:number; mid:number; low:number; rain:number; wind:number}
-export interface City {id:string; name:string; english:string; latitude:number; longitude:number; sample:Atmosphere}
+export interface City {id:string; name:string; english:string; latitude:number; longitude:number; timezone?:string; sample:Atmosphere}
 export interface SunsetReading {
   date:string; sunset:string; bearing:number; metrics:Atmosphere; score:number; advice:string;
   samples:number; fetchedAt:number; source:'forecast'|'cache'|'sample';
@@ -66,8 +67,8 @@ export function parseForecast(payload:unknown,city:City,now=new Date()):SunsetRe
 }
 
 export function sampleReading(city:City,now=new Date()):SunsetReading {
-  const date=shanghaiDate(now);
-  const sunset=getTimes(new Date(date+'T12:00:00+08:00'),city.latitude,city.longitude,0,480).sunset;
+  const timezone=city.timezone||'Asia/Shanghai',date=dateAt(now,timezone),noon=civilNoon(date,timezone);
+  const sunset=getTimes(noon,city.latitude,city.longitude,0,offsetMinutes(noon,timezone)).sunset;
   if(!sunset)throw Error('No sunset for this city');
   return {date,sunset:sunset.toISOString(),bearing:sunsetBearing(sunset,city),metrics:{...city.sample},...scoreSunset(city.sample),samples:0,fetchedAt:now.getTime(),source:'sample'};
 }

@@ -1,3 +1,4 @@
+import {dateAt} from '../apps/web/src/lib/local-time.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
@@ -43,7 +44,7 @@ test('cache is city-specific, same-day and at most 15 minutes old',()=>{
   assert.equal(readCachedForecast(pack(),city,new Date('2026-11-23T04:00Z')),null);
 });
 test('fallbacks are explicitly samples; SunCalc uses north-clockwise degrees in both seasons',()=>{
-  for(const entry of cities){const sample=sampleReading(entry,now);assert.equal(sample.source,'sample');assert.equal(sample.samples,0);assert.equal(sample.date,'2026-11-22');assert.equal(shanghaiDate(new Date(sample.sunset)),sample.date);assert.ok(sample.bearing>240&&sample.bearing<260);}
+  for(const entry of cities){const sample=sampleReading(entry,now);assert.equal(sample.source,'sample');assert.equal(sample.samples,0);assert.equal(sample.date,dateAt(now,entry.timezone||'Asia/Shanghai'));assert.equal(dateAt(sample.sunset,entry.timezone||'Asia/Shanghai'),sample.date);assert.ok(sample.bearing>230&&sample.bearing<260);}
   const summer=sampleReading(city,new Date('2026-06-21T04:00Z'));assert.ok(summer.bearing>290&&summer.bearing<305);
   assert.equal(sunsetBearing(new Date(summer.sunset),city),summer.bearing);
   const url=new URL(forecastUrl(city));assert.equal(url.hostname,'api.open-meteo.com');assert.equal(url.searchParams.get('timezone'),'Asia/Shanghai');assert.equal(url.searchParams.get('wind_speed_unit'),'ms');assert.equal(url.searchParams.has('apikey'),false);
