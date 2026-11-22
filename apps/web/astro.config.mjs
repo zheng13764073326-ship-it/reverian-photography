@@ -1,3 +1,4 @@
+import {darkroomDev} from '../../scripts/darkroom-dev.mjs';
 import {defineConfig} from 'astro/config';
 import {loadEnv} from 'vite';
 const env = loadEnv(process.env.NODE_ENV ?? 'development', process.cwd(), '');
@@ -7,5 +8,5 @@ export default defineConfig({
   trailingSlash: 'always',
   // Built CSS must keep legacy min/max-width media queries for mobile WebViews.
   // Vite's newer default otherwise rewrites them as unsupported (width <= ...).
-  vite: {build: {cssTarget: ['chrome88', 'safari15']}},
+  vite: {plugins:[darkroomDev()],build: {cssTarget: ['chrome88', 'safari15']}},
 });

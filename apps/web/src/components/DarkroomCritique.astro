@@ -1,0 +1,40 @@
+---
+import '../styles/critique.css';
+const dimensions=[['composition','构图','COMPOSITION'],['lighting','光影','LIGHT'],['color','色彩','COLOR'],['mood','情绪张力','MOOD']];
+---
+<div class="darkroom" data-darkroom data-state="empty">
+  <div class="lab-section-line"><h2 id="lab-section-critique">让照片，慢慢显影</h2><p>LAB <span>/ 04 DARKROOM</span></p></div>
+  <p class="darkroom-intro">放下一张照片，看看画面的重心、光线的去向，以及还能再靠近一点的地方。</p>
+  <input class="lab-sr-only" type="file" accept="image/jpeg,image/png,image/webp" data-critique-file tabindex="-1" aria-label="选择待评片照片"/>
+  <div class="darkroom-workspace">
+    <section class="darkroom-contact" aria-label="上传与照片预览">
+      <button type="button" class="darkroom-drop lab-corners" data-critique-drop aria-label="点击选择或拖入一张 JPG、PNG、WebP 照片">
+        <span class="darkroom-cross" aria-hidden="true">＋</span>
+        <strong>放入一帧，开始显影</strong><span>点击选择照片，或拖拽到这里</span>
+        <small>JPG / PNG / WEBP <i>·</i> ONE FRAME AT A TIME</small>
+      </button>
+      <figure class="darkroom-preview" data-critique-preview hidden>
+        <div class="darkroom-image"><img data-critique-image width="1024" height="683" loading="lazy" alt="待评片照片的本地预览" decoding="async"/><div class="darkroom-grain" aria-hidden="true"></div><span class="darkroom-frame-label" aria-hidden="true">FRAME 01 // IN THE DARKROOM</span></div>
+        <figcaption><span data-critique-filename>UNTITLED FRAME</span><span data-critique-frame-status>DEVELOPING</span></figcaption>
+      </figure>
+      <p class="darkroom-privacy">PRIVACY // 照片仅作实时显影分析，不留存服务器</p>
+      <p class="darkroom-upload-note">照片会先在本机压缩并移除元数据，再交由 Cloudflare AI 分析。</p>
+    </section>
+    <section class="darkroom-sheet" aria-label="光学评片报告" data-critique-sheet aria-busy="false">
+      <div class="darkroom-empty" data-critique-empty><span class="darkroom-eyebrow">CONTACT SHEET // 01</span><div class="darkroom-empty-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></div><h3>一张照片，四种观看方式。</h3><p>构图 / 光影 / 色彩 / 情绪张力</p><small>你的评片报告将在这里显影。</small></div>
+      <div class="darkroom-developing" data-critique-developing hidden><span class="darkroom-eyebrow">DEVELOPING // 01</span><div class="darkroom-meter" aria-hidden="true"><i></i></div><h3>光线正在留下痕迹。</h3><p>DEVELOPING // 正在暗房测光与构图分析...</p><small>通常需要片刻，请保持页面打开。</small></div>
+      <article class="darkroom-report" data-critique-report hidden aria-labelledby="critique-report-title">
+        <header><p class="darkroom-eyebrow" id="critique-report-title">CRITIQUE REPORT // OPTICAL LAB</p><span class="darkroom-mode" data-critique-mode>AI 评片</span></header>
+        <div class="darkroom-score"><strong data-critique-score>—</strong><span>/ 10<small>综合显影分</small></span></div>
+        <p class="darkroom-verdict" data-critique-verdict></p>
+        <div class="darkroom-dimensions">{dimensions.map(([key,title,english])=><div class="darkroom-dimension"><div><span>{title}<small>{english}</small></span><b data-dimension-score={key}>—</b></div><div class="darkroom-rule" role="meter" aria-label={title} aria-valuemin="0" aria-valuemax="10" data-dimension-bar={key}><i></i></div></div>)}</div>
+        <section class="darkroom-notes"><h3>画面亮点 <span>HIGHLIGHTS</span></h3><ol data-critique-highlights></ol></section>
+        <section class="darkroom-notes"><h3>暗房建议 <span>SUGGESTIONS</span></h3><ol data-critique-suggestions></ol></section>
+        <p class="darkroom-footnote">AI 提供一种观看角度，分数不替代你的创作判断。</p>
+      </article>
+      <div class="darkroom-error" data-critique-error hidden role="alert"><span class="darkroom-eyebrow">DEVELOPMENT PAUSED</span><h3>这次显影，稍作停留。</h3><p data-critique-error-text></p><button type="button" class="darkroom-button" data-critique-retry>重新评片 ↗</button></div>
+    </section>
+  </div>
+  <div class="darkroom-actions"><p data-critique-status role="status" aria-live="polite">选择一张你想再看一遍的照片。</p><button type="button" class="darkroom-button darkroom-secondary" data-critique-reset hidden>重新上传评片 ↗</button></div>
+  <p class="darkroom-credit">AI ASSISTED <span>//</span> <a href="https://developers.cloudflare.com/workers-ai/" target="_blank" rel="noopener noreferrer">Cloudflare Workers AI</a> · Built with Llama</p>
+</div>

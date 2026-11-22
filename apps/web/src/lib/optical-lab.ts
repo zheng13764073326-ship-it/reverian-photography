@@ -9,8 +9,10 @@ export function setupOpticalLab(root:HTMLElement) {
   const filters=[...root.querySelectorAll<HTMLButtonElement>('[data-prompt-filter]')];
   const prompts=[...root.querySelectorAll<HTMLElement>('[data-prompt-category]')];
   let weather:Promise<{ensure:()=>void}>|undefined;
+  let critique:Promise<unknown>|undefined;
   function activate(id:string,write=false) {
-    const title=links.find(link=>link.dataset.labLink===id)!.textContent!.trim();
+    const activeLink=links.find(link=>link.dataset.labLink===id)!;
+    const title=activeLink.dataset.labLabel||activeLink.textContent!.trim();
     const description=introductions[id as keyof typeof introductions] || introductions.guides;
     heading.textContent=title;
     subtitle.textContent=description;
@@ -21,6 +23,10 @@ export function setupOpticalLab(root:HTMLElement) {
     links.forEach(link=>{if(link.dataset.labLink===id)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');});
     panels.forEach(panel=>{panel.hidden=panel.dataset.labPanel!==id;});
     if(write){const url=new URL(location.href);if(id==='guides')url.searchParams.delete('tab');else url.searchParams.set('tab',id);history.pushState(null,'',url);}
+    if(id==='critique'){
+      critique??=import('./lab-critique').then(module=>module.setupLabCritique(root.querySelector<HTMLElement>('[data-darkroom]')!));
+      void critique.catch(()=>{critique=undefined;root.querySelector<HTMLElement>('[data-critique-status]')!.textContent='暗房模块暂未加载，请重新选择栏目或刷新。';});
+    }
     if(id==='sunset'){
       weather??=import('./lab-weather').then(module=>module.setupLabWeather(root.querySelector<HTMLElement>('[data-lab-panel="sunset"]')!));
       void weather.then(controller=>controller.ensure()).catch(()=>{

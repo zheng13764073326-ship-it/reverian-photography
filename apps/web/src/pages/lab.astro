@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import guides from '../data/lab/guides.json';
 import prompts from '../data/lab/prompts.json';
+import DarkroomCritique from '../components/DarkroomCritique.astro';
 import SunsetObservatory from '../components/SunsetObservatory.astro';
 import introductions from '../data/lab/introductions.json';
 import '@fontsource-variable/noto-serif-sc/wght.css';
@@ -51,7 +52,8 @@ const uses=[['all','全部'],...prompts.map(prompt=>[prompt.category,prompt.titl
     <section id="lab-panel-sunset" class="lab-panel" aria-labelledby="lab-section-sunset" data-lab-panel="sunset" hidden>
       <SunsetObservatory/>
     </section>
-    <noscript><p class="lab-noscript">请开启 JavaScript，以使用栏目导航、阅读指南和获取天气数据。</p></noscript>
+    <section id="lab-panel-critique" class="lab-panel" aria-labelledby="lab-section-critique" data-lab-panel="critique" hidden><DarkroomCritique/></section>
+    <noscript><p class="lab-noscript">请开启 JavaScript，以使用栏目导航、阅读指南、天气观测和暗房评片。</p></noscript>
     <dialog id="lab-reader" class="lab-reader" aria-labelledby="lab-reader-title">
       <header><span data-reader-index>GUIDE</span><button type="button" data-reader-close autofocus aria-label="关闭指南">关闭 ×</button></header>
       <div class="lab-reader-scroll" tabindex="0"><p class="lab-eyebrow" data-reader-tag></p><h2 id="lab-reader-title"></h2><div data-reader-body></div></div>

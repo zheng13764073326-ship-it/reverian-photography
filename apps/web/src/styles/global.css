@@ -199,6 +199,7 @@ summary::-webkit-details-marker {
   font-size: 17px;
   letter-spacing: 1px;
 }
+.lab-nav .portfolio-panel [data-lab-link="critique"] small {font:400 .55em/1.5 monospace;margin-right:6px}
 .lab-nav .portfolio-panel a {
   font-family: "Noto Serif SC Variable", "Noto Serif SC", var(--serif-zh);
   font-weight: 500;
