@@ -20,6 +20,12 @@ for(const file of pages){
  for(const [target] of html.matchAll(/\/(?:_photos|images)\/[^"'<>\s,()\\]+\.webp/g))assert.ok((await stat(join(root,target)).catch(()=>null))?.isFile(),file+': missing '+target);
  for(const [,srcset] of html.matchAll(/\bsrcset="([^"]+)"/g))for(const [,src,width] of srcset.matchAll(/(\/[^\s,]+)\s+(\d+)w/g)){const meta=await imageMeta(src);assert.equal(meta.width,Number(width),file+': inaccurate srcset descriptor '+src);}
  for(const [tag] of html.matchAll(/<a\b[^>]*data-lightbox[^>]*>/g)){const src=tag.match(/\bhref="([^\"]+)"/)?.[1];if(src?.startsWith('/')){assert.ok(src.endsWith('.webp'),file+': Lightbox still points to original');const meta=await imageMeta(src);assert.ok(Math.max(meta.width,meta.height)<=2048,file+': oversized Lightbox image');}}
+ if(file===join(root,'index.html')){
+  assert.doesNotMatch(html,/<link\b[^>]*rel="stylesheet"/,'Homepage must not block on external CSS');
+  assert.match(html,/data-home-css=/);assert.match(html,/id="home-image-loader"/);
+  const scripted=html.replace(/<noscript\b[^>]*>[\s\S]*?<\/noscript>/g,'');
+  for(const [tag] of scripted.matchAll(/<img\b[^>]*>/g))if(/loading="lazy"/.test(tag)&&!/id="viewer-image"/.test(tag)){assert.match(tag,/data-deferred-image/);assert.match(tag,/data-src="\/(?:images|_photos)\//);assert.match(tag,/\ssrc="data:image\/svg\+xml,/);}
+ }
  assert.match(html,/<html lang="zh-CN"/);
  if(production){assert.doesNotMatch(html,/https:\/\/cdn\.sanity\.io\/images\//,file+': external photo dependency');assert.doesNotMatch(html,/演示版 · 照片、地点与文字为占位内容/);assert.doesNotMatch(html,/name="robots" content="noindex, nofollow"/);assert.match(html,/rel="canonical" href="https:\/\/reverian\.cc\//);}
  else assert.match(html,/name="robots" content="noindex, nofollow"/);

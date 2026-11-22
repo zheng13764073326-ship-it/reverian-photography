@@ -31,10 +31,16 @@ const result = spawnSync(process.execPath, [astro, "build"], {
 });
 if (result.error) throw result.error;
 if (result.status !== 0) process.exit(result.status ?? 1);
-if (!production) process.exit(0);
+if (!production) {
+  const {optimizeHome}=await import('./optimize-home.mjs');
+  await optimizeHome({dist:resolve(root,'apps/web/dist')});
+  process.exit(0);
+}
 const localized = spawnSync(process.execPath, [resolve(root, "scripts/localize-images.mjs")], { cwd: root, stdio: "inherit" });
 if (localized.error) throw localized.error;
 if (localized.status !== 0) process.exit(localized.status ?? 1);
+const {optimizeHome}=await import('./optimize-home.mjs');
+await optimizeHome({dist:resolve(root,'apps/web/dist')});
 const checked = spawnSync(
   process.execPath,
   [resolve(root, "scripts/check-built.mjs"), "--production"],

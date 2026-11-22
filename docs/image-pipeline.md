@@ -34,6 +34,12 @@ npm run images:optimize -- --backup "C:\Users\13764\Pictures\Reverian-originals-
 
 首页封面为 `fetchpriority="high" loading="eager" decoding="sync"`。其他图片为 `loading="lazy" decoding="async"`，相框使用 `#EAE8E0` 背景并通过尺寸 / 宽高比保留空间；灯箱在点击后加载高清文件。
 
+首页另由 `scripts/optimize-home.mjs` 在构建结束、CMS 图片本地化后处理：将首页的编译后 CSS 按原顺序内联，取消首屏阻塞样式请求，同时保留旧浏览器兼容规则。其他页面仍使用可缓存的外部 CSS。不要直接运行 `astro build` 来代替项目的 `npm run build` / `npm run build:production` 发布入口。
+
+首页非封面图片的真实地址暂存于 `data-src` / `data-srcset`，使用相同宽高比的内联 SVG 占位。封面加载期间，仅进入视窗的图片开始请求；封面加载完成或失败后，接近视窗 200 px 的图片提前请求。用户快速下滑不必等待封面，键盘聚焦图片链接也会触发加载。加载器直接内联于首页，不依赖额外脚本下载；不支持 IntersectionObserver 时回退到原生懒加载，禁用 JavaScript 时由 `noscript` 提供原始图片。开场光圈和封面对焦动画不变。
+
+构建检查也会确认首页不再引用外部样式、延迟图片带有真实地址和占位图，以及内联 / 外部 CSS 均未出现旧手机浏览器不支持的范围媒体查询。`tests/home-delivery.test.ts` 覆盖生成结果、回退内容、重复执行和异常输入。
+
 ```powershell
 npm run check
 npm test
