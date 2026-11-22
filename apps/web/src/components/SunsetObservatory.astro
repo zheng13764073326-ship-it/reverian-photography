@@ -1,0 +1,60 @@
+---
+import cities from '../data/lab/cities.json';
+import '../styles/observatory.css';
+---
+<div class="observatory" data-observatory>
+  <header class="obs-heading"><div><p class="obs-kicker">FIELD STATION // 03</p><h2 id="lab-section-sunset">追光观测台</h2></div><p>先看天空的条件，再决定往哪里出发。</p></header>
+  <div class="obs-controls">
+    <div class="obs-place-row">
+      <div class="obs-presets" role="group" aria-label="常用观测城市">{cities.map((city,index)=><button type="button" data-obs-city={city.id} aria-pressed={index===0?'true':'false'}>{city.name}</button>)}</div>
+      <form class="obs-search" data-obs-search role="search"><label class="lab-sr-only" for="obs-city-query">搜索中国大陆城市</label><input id="obs-city-query" name="city" type="search" maxlength="50" placeholder="搜索其他城市" autocomplete="off" aria-controls="obs-search-results"/><button type="submit" aria-label="搜索城市">搜索 ↗</button></form>
+    </div>
+    <p class="obs-search-status" data-obs-search-status role="status" hidden></p><div id="obs-search-results" class="obs-search-results" aria-label="城市搜索结果" hidden></div>
+    <div class="obs-days" role="group" aria-label="观测日期">{['今天','明天','后天'].map((day,index)=><button type="button" data-obs-day={index} aria-pressed={index===0?'true':'false'}><span>{day} <small data-day-date>—</small></span><span class="obs-day-index"><b data-day-score>—</b><small>条件分</small></span></button>)}</div>
+    <div class="obs-event-row"><div class="obs-events" role="group" aria-label="观测时段"><button type="button" data-obs-event="sunset" aria-pressed="true">晚霞 <span>SUNSET</span></button><button type="button" data-obs-event="sunrise" aria-pressed="false">朝霞 <span>SUNRISE</span></button></div><button type="button" class="obs-refresh" data-weather-refresh>更新预报 ↻</button></div>
+  </div>
+  <div class="obs-status-line"><span data-obs-status-date>UTC+8 / 北京时间</span><p data-weather-status role="status" aria-live="polite">选择地点与时段，等待观测数据。</p></div>
+  <div class="obs-reading" data-obs-reading aria-busy="true">
+    <div class="obs-overview">
+      <article class="obs-summary">
+        <div class="obs-summary-top"><span class="obs-kicker" data-obs-coordinates>31.23°N / 121.47°E</span><span class="obs-source" data-obs-source>等待预报</span></div>
+        <h3><span data-obs-place>上海</span><small data-obs-period>今日晚霞</small></h3>
+        <div class="obs-score-line"><strong data-obs-score>—</strong><div><span>观测条件指数</span><span class="obs-score-unit">/ 100</span></div></div>
+        <p class="obs-verdict" data-obs-verdict>正在读取天空的线索</p><p class="obs-advice" data-obs-advice>云量、降水和光线，共同决定这一刻。</p>
+        <div class="obs-score-scale" aria-hidden="true"><i data-obs-score-marker></i></div><div class="obs-scale-labels"><span>较弱</span><span>可留意</span><span>值得等待</span></div>
+        <p class="obs-score-note">条件分用于辅助判断，不是火烧云发生概率。</p>
+      </article>
+      <article class="obs-direction">
+        <div class="obs-panel-title"><h3>朝向光线</h3><span>SUN BEARING</span></div>
+        <div class="obs-compass"><svg viewBox="0 0 260 260" role="img" aria-label="太阳方位示意，等待数据" data-obs-compass>
+          <circle cx="130" cy="130" r="96" fill="none" stroke="currentColor" opacity=".18"/><circle cx="130" cy="130" r="78" fill="none" stroke="currentColor" opacity=".08"/>
+          {Array.from({length:36},(_,i)=><path d={`M130 ${i%3===0?34:39}V45`} stroke="currentColor" opacity={i%3===0?'.4':'.2'} transform={`rotate(${i*10} 130 130)`}/>)}
+          <path d="M130 57V203M57 130H203" stroke="currentColor" stroke-dasharray="2 5" opacity=".15"/>
+          <text x="130" y="20" text-anchor="middle">N</text><text x="244" y="134" text-anchor="middle">E</text><text x="130" y="250" text-anchor="middle">S</text><text x="16" y="134" text-anchor="middle">W</text>
+          <g data-obs-bearing-arrow><path d="M130 130L110 54L150 54Z" fill="var(--lab-orange)" opacity=".13"/><path d="M130 130V48m-6 9 6-9 6 9" fill="none" stroke="var(--lab-orange)" stroke-width="2"/><circle cx="130" cy="43" r="6" fill="var(--lab-orange)"/></g><circle cx="130" cy="130" r="4" fill="currentColor"/>
+        </svg><div class="obs-bearing-label"><strong data-obs-bearing>—°</strong><span data-obs-direction>太阳方位</span></div></div>
+        <div class="obs-event-time"><span data-obs-event-label>日落 / SUNSET</span><strong data-obs-event-time>--:--</strong><small data-obs-phase>北京时间</small></div>
+        <p class="obs-direction-note">面向标示方位寻找开阔地平线，留意远处云墙与建筑遮挡。</p>
+      </article>
+    </div>
+    <section class="obs-planning"><div class="obs-panel-title"><h3>把握光影窗口</h3><span>LIGHT PLANNER</span></div><div class="obs-time-grid">
+      <div><span><i class="obs-dot obs-dot-teal"></i>建议到达</span><strong data-obs-arrival>--:--</strong><small>预留构图与准备时间</small></div>
+      <div><span><i class="obs-dot obs-dot-gold"></i>黄金时刻</span><strong data-obs-golden>--:-- – --:--</strong><small>太阳高度 −4° 至 +6°</small></div>
+      <div><span><i class="obs-dot obs-dot-blue"></i>蓝调时刻</span><strong data-obs-blue>--:-- – --:--</strong><small>太阳高度 −8° 至 −4°</small></div>
+    </div><p class="obs-small-note">时段为当地天文估算，实际色彩与可见时间取决于云况和地平遮挡。</p></section>
+    <div class="obs-details-grid">
+      <section class="obs-atmosphere"><div class="obs-panel-title"><h3>读懂云层</h3><span>CLOUD LAYERS</span></div><p class="obs-small-note" data-obs-window>日出 / 日落前后 1 小时</p>
+        {([['high','高云','HIGH CLOUD'],['mid','中云','MID CLOUD'],['low','低云','LOW CLOUD']] as const).map(([id,name,label])=><div class="obs-cloud" data-obs-cloud={id}><div><span>{name}<small>{label}</small></span><strong data-cloud-value>—%</strong></div><div class="obs-cloud-bar"><i></i></div><p data-cloud-note>等待云层数据</p></div>)}
+        <div class="obs-metrics">{[['rain','降水概率','%'],['wind','风速','m/s'],['visibility','能见度','km'],['temperature','气温','°C']].map(([id,title,unit])=><div><span>{title}</span><strong><b data-obs-metric={id}>—</b><small>{unit}</small></strong></div>)}</div>
+      </section>
+      <section class="obs-trends"><div class="obs-panel-title"><h3>逐小时天空</h3><span>HOURLY OUTLOOK</span></div><div class="obs-legend"><span><i></i>高云</span><span><i></i>中云</span><span><i></i>低云</span></div>
+        <p class="obs-hour-detail" data-obs-hour-detail aria-live="polite">点选时间，查看这一小时的云量与降水。</p>
+        <div class="obs-chart-scroll" tabindex="0" role="region" aria-label="逐小时云量趋势及数据表，可横向滚动"><svg class="obs-chart" data-obs-chart viewBox="0 0 620 190" role="img" aria-label="等待逐小时数据"></svg><table class="obs-hour-table" data-obs-table><caption class="lab-sr-only">日出日落附近逐小时气象预报</caption></table></div>
+        <p class="obs-empty-chart" data-obs-empty-chart>天气数据加载后显示趋势。</p><p class="obs-small-note">小时数据来自预报网格；点选时刻只查看明细，条件分仍按日出 / 日落窗口计算。</p>
+      </section>
+    </div>
+  </div>
+  <footer class="obs-notes"><details><summary>数据来源与判断方法 <span aria-hidden="true">＋</span></summary><div><p>气象数据来自 Open-Meteo 自动选模预报，时区统一为北京时间。条件指数沿用本站的云量与降水经验评分：日出或日落前后 1 小时内，高云、中云、低云与风速取均值，降水概率取最高值。高、中云 30%–75% 区间加分，低云超过 60% 时大幅减分。能见度、气温及风速提供拍摄参考，不额外加入评分。</p><p>这不是经过概率校准的火烧云预报，也未计算远端云墙的光路遮挡或气溶胶光学厚度（AOD），不能等同于 Sunsetbot 或天文通的预测结果。日出日落方位、黄金与蓝调时段按天文算法估算。</p><p>每次获取未来三天的数据，缓存最多保留 15 分钟。刷新失败时优先使用仍有效的缓存；无有效数据时明确显示「模拟示例」，不生成虚构的逐小时趋势。城市查询支持中国大陆城市。</p></div></details>
+    <div class="obs-credits"><p>WEATHER <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo ↗</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a><br/>GEOCODING <a href="https://www.geonames.org/" target="_blank" rel="noopener noreferrer">GeoNames ↗</a> · SOLAR TIMES SunCalc</p><p>交叉参考 <a href="https://www.sunsetbot.top/" target="_blank" rel="noopener noreferrer">Sunsetbot ↗</a> <a href="https://twtapp.com/" target="_blank" rel="noopener noreferrer">天文通 ↗</a></p></div>
+  </footer>
+</div>
