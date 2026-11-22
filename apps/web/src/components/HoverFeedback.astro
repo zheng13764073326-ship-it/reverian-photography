@@ -34,6 +34,25 @@
  window.addEventListener('blur',hide);
  document.addEventListener('visibilitychange',()=>{if(document.hidden)hide();});
  enabled.addEventListener('change',hide);
+
+ // Hold touch feedback until release; scrolling cancels it without blocking gestures.
+ let pressed:HTMLElement|null=null,pressX=0,pressY=0;
+ const releasePress=()=>{pressed?.removeAttribute('data-pressing');pressed=null;};
+ document.addEventListener('pointerdown',event=>{
+  if(event.pointerType==='mouse')return;
+  releasePress();
+  const target=event.target instanceof Element?event.target.closest<HTMLElement>('a,button,summary'):null;
+  if(!target||target.matches(':disabled,[aria-disabled="true"]')||target.closest('[inert]'))return;
+  pressed=target;pressX=event.clientX;pressY=event.clientY;
+  pressed.setAttribute('data-pressing','');
+ },{passive:true});
+ document.addEventListener('pointermove',event=>{if(pressed&&Math.hypot(event.clientX-pressX,event.clientY-pressY)>8)releasePress();},{passive:true});
+ window.addEventListener('pointerup',releasePress,{passive:true});
+ window.addEventListener('pointercancel',releasePress,{passive:true});
+ window.addEventListener('blur',releasePress);
+ window.addEventListener('pagehide',releasePress);
+ document.addEventListener('contextmenu',releasePress);
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)releasePress();});
 </script>
 <style is:global>
  .focus-cursor{--frame-size:40px;--corner-size:9px;display:none;position:fixed;top:0;left:0;z-index:1000;width:var(--frame-size);height:var(--frame-size);color:#a58a4b;pointer-events:none;opacity:0;transition:width .22s ease,height .22s ease,opacity .15s ease,color .2s ease;will-change:transform}

@@ -24,7 +24,7 @@ const introduction=settings.introduction||firstParagraph?.children.map(span=>spa
       <h2 id="home-about-name" aria-label={`挽风 | ${settings.photographer}`}><svg class="about-signature" viewBox="498 840 984 407" aria-hidden="true"><image href="/images/branding/wanfeng-white.webp" width="2000" height="2000"/></svg><span class="about-name-separator" aria-hidden="true">|</span><span>{settings.photographer}</span></h2>
       {heading&&<p class="about-lead">{heading}</p>}
       {introduction&&<p class="about-excerpt">{introduction}</p>}
-      <a class="about-link" href="/about/"><i class="about-dot" aria-hidden="true"></i><span>关于我</span><span class="about-arrow" aria-hidden="true">↗</span></a>
+      <a class="about-btn" href="/about/"><span>关于我</span><span class="about-arrow" aria-hidden="true">↗</span></a>
       {!settings.portrait&&<a class="quiz-fallback" href="/about/?quiz=start#tacit">测测我们的默契度 ↗</a>}
       <SocialLinks links={settings.socialLinks} compact id="home-social-title"/>
     </div>
@@ -58,13 +58,12 @@ const introduction=settings.introduction||firstParagraph?.children.map(span=>spa
   .about-note h2{display:flex;align-items:center;gap:.22em;font-family:var(--serif);font-size:clamp(36px,4.5vw,64px);font-weight:400;line-height:1.05;letter-spacing:-.025em;margin:0 0 24px}
   .about-signature{display:block;width:1.85em;height:auto;aspect-ratio:984/407;flex:none;overflow:hidden;filter:brightness(0);opacity:.86}
   .about-name-separator{font-size:.7em;color:var(--muted)}
-  .about-lead{font:clamp(20px,1.8vw,24px)/1.65 var(--serif-zh);letter-spacing:.015em;color:var(--ink);margin:0 0 18px;text-wrap:balance}
-  .about-excerpt{font:17px/2 var(--sans);color:var(--muted);margin:0;max-width:34em}
-  .about-link{display:inline-flex;align-items:center;gap:12px;margin-top:22px;padding:11px 24px;border:1px solid #222222;border-radius:3px;color:#222222;font:400 16px/1.4 var(--sans);letter-spacing:.04em;min-height:46px}
-  .about-dot{width:5px;height:5px;flex:none;border-radius:50%;background:#B86B35}
-  .about-arrow{display:inline-block;margin-left:10px;font:18px/1 var(--sans);letter-spacing:0;transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
-  .about-link:focus-visible{outline:2px solid #1E4D54;outline-offset:4px}
-  @media(hover:hover){.about-link:hover{background:#1E4D54;border-color:#1E4D54;color:#F4F3EE}.about-link:hover .about-arrow{transform:translate(2px,-2px)}}
+  .about-lead{font:600 clamp(20px,1.8vw,24px)/1.65 'Noto Serif SC','Songti SC',Georgia,serif;letter-spacing:.015em;color:#2C2B29;font-synthesis:none;margin:0 0 18px;text-wrap:balance}
+  .about-excerpt{font:400 16px/2 'Noto Serif SC','Songti SC',Georgia,serif;color:#2C2B29;margin:0;max-width:34em;font-synthesis:none}
+  .about-btn{--press-depth:0px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 32px;background-color:#1E4D54;color:#F4F3EE;border:none;border-radius:999px;font-family:'Noto Serif SC','Songti SC',Georgia,serif;font-size:16px;font-weight:500;font-synthesis:none;letter-spacing:.08em;margin-top:8px}
+  .about-arrow{display:inline-block;letter-spacing:0;transition:transform .35s var(--press-spring)}
+  .about-btn:focus-visible{outline:2px solid #1E4D54;outline-offset:4px}
+  @media(hover:hover){.about-btn:hover{background-color:#163A40}.about-btn:hover .about-arrow{transform:translate(2px,-2px)}}
   .quiz-fallback{display:block;margin-top:16px;color:#237489;font-size:16px}
   .without-portrait{grid-template-columns:1fr;max-width:700px}
   @media(max-width:760px){
@@ -75,10 +74,9 @@ const introduction=settings.introduction||firstParagraph?.children.map(span=>spa
     .about-note{padding:0}
     .about-note h2{font-size:clamp(34px,9vw,48px);margin-bottom:18px}
     .about-lead{font-size:21px;margin-bottom:14px}
-    .about-excerpt{font-size:17px;line-height:1.9}
-    .about-link{margin-top:18px}
+    .about-excerpt{line-height:1.9}
     .portrait-caption{padding-top:12px;gap:12px}
     .portrait-invite{font-size:17px}
   }
-  @media(prefers-reduced-motion:reduce){.about-link,.about-arrow,.portrait-invite,.portrait-focus,.portrait-link :global(img){transition:none}.quiz-dot{animation:none}}
+  @media(prefers-reduced-motion:reduce){.about-btn,.about-arrow,.portrait-invite,.portrait-focus,.portrait-link :global(img){transition:none}.quiz-dot{animation:none}}
 </style>

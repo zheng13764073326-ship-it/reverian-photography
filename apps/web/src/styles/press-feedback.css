@@ -8,7 +8,7 @@ a, button, summary, [role="button"] {
 }
 /* Include dynamic quiz options. Specificity keeps component color transitions
    from replacing the transform rebound; disabled controls never depress. */
-html body :is(button, .quiz-action, .about-link, .social-buttons a, .footer-links a,
+html body :is(button, .quiz-action, .about-btn, .social-list a, .footer-links a,
   .site-header nav > a, .portfolio-nav summary, .portfolio-panel a,
   .section-heading a, .text-link, .back-link, .album-topline > a,
   .home-scroll, .quiz-fallback, .drift-begin, .pagination a, .album-pagination a,
@@ -20,20 +20,20 @@ html body :is(button, .quiz-action, .about-link, .social-buttons a, .footer-link
 /* Preserve the positional transform of map pins while pressing. */
 .map-point { --press-anchor: translate(-50%, -50%); }
 @media (prefers-reduced-motion: no-preference) {
-  html body :is(button, .quiz-action, .about-link, .social-buttons a, .footer-links a,
+  html body :is(button, .quiz-action, .about-btn, .social-list a, .footer-links a,
     .site-header nav > a, .portfolio-nav summary, .portfolio-panel a,
     .section-heading a, .text-link, .back-link, .album-topline > a,
     .home-scroll, .quiz-fallback, .drift-begin, .pagination a, .album-pagination a,
-    .quiz-review > summary):not(:disabled):not([aria-disabled="true"]):active {
-    transform: var(--press-anchor, translate(0, 0)) scale(.95) translateY(1px);
+    .quiz-review > summary):not(:disabled):not([aria-disabled="true"]):is(:active,[data-pressing]) {
+    transform: var(--press-anchor, translate(0, 0)) scale(var(--press-scale, .95)) translateY(var(--press-depth, 1px));
     transition-duration: .08s;
     transition-timing-function: ease-out;
   }
-  html body :is(.social-buttons a, .footer-links a, .site-header nav > a,
+  html body :is(.social-list a, .footer-links a, .site-header nav > a,
     .portfolio-nav summary, .portfolio-panel a, .section-heading a,
     .text-link, .back-link, .album-topline > a, .home-scroll,
     .quiz-fallback, .drift-begin, .pagination a, .album-pagination a,
-    .quiz-review > summary):not(:disabled):not([aria-disabled="true"]):active {
-    transform: scale(.96);
+    .quiz-review > summary):not(:disabled):not([aria-disabled="true"]):is(:active,[data-pressing]) {
+    transform: scale(var(--press-scale, .96));
   }
 }
