@@ -24,7 +24,7 @@ test('localizes responsive images, fallback, full-size links and absolute social
  assert.ok(calls.every(url=>new URL(url).searchParams.get('fm')==='jpg'&&!url.includes('amp;')&&!url.includes('auto=')));
  const rewritten=await readFile(join(options.dist,'index.html'),'utf8');
  assert.doesNotMatch(rewritten,/cdn\.sanity/);
- assert.match(rewritten,/content="https:\/\/reverian-photography.pages.dev\/_photos\/[^" ]+\.jpg"/);
+ assert.match(rewritten,/content="https:\/\/reverian\.cc\/_photos\/[^" ]+\.jpg"/);
  assert.match(rewritten,/srcset="\/_photos\/[^ ]+ 400w, \/_photos\/[^ ]+ 800w"/);
  for(const [path] of rewritten.matchAll(/\/_photos\/[a-f0-9]+\.jpg/g)) assert.deepEqual(await readFile(join(options.dist,path)),Buffer.from(jpeg));
  await writeFile(join(options.dist,'index.html'),html);

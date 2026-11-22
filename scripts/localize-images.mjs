@@ -32,7 +32,7 @@ function validJpeg(data) {
 }
 
 export async function localizeImages({
-  dist, cache, site = 'https://reverian-photography.pages.dev',
+  dist, cache, site = 'https://reverian.cc',
   fetchImage = fetch, concurrency = 6, attempts = 3,
   delay = ms => new Promise(r => setTimeout(r, ms)), log = console.log,
 }) {

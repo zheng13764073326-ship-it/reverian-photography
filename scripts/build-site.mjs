@@ -23,7 +23,7 @@ const result = spawnSync(process.execPath, [astro, "build"], {
           CONTENT_MODE: "sanity",
           SANITY_PROJECT_ID: "j0zkvef5",
           SANITY_DATASET: "production",
-          SITE_URL: "https://reverian-photography.pages.dev",
+          SITE_URL: "https://reverian.cc",
         }
       : {}),
   },

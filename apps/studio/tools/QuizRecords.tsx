@@ -18,7 +18,7 @@ export function QuizRecords() {
     try{
       const token=client.config().token;
       if(!token)throw Error('请退出编辑室后重新登录，再查看答题记录。');
-      const response=await fetch(`https://reverian-photography.pages.dev/api/quiz-records?page=${page}`,{headers:{Authorization:`Bearer ${token}`},signal});
+      const response=await fetch(`https://reverian.cc/api/quiz-records?page=${page}`,{headers:{Authorization:`Bearer ${token}`},signal});
       const data=await response.json();
       if(!response.ok)throw Error(data.error||'无法读取答题记录');
       setRows(data.records);setMore(data.hasMore);

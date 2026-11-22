@@ -39,7 +39,7 @@ for (const file of htmlFiles) {
     assert.doesNotMatch(html, /name="robots" content="noindex, nofollow"/);
     assert.match(
       html,
-      /rel="canonical" href="https:\/\/reverian-photography\.pages\.dev\//,
+      /rel="canonical" href="https:\/\/reverian\.cc\//,
     );
   } else {
     assert.match(html, /name="robots" content="noindex, nofollow"/);
