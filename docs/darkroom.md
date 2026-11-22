@@ -12,7 +12,7 @@
 
 ## Workers AI 与部署
 
-`wrangler.jsonc` 已配置 `"ai": {"binding":"AI"}`，Pages 读取该文件作为绑定来源，Git 自动部署会带上绑定。使用 `@cf/meta/llama-3.2-11b-vision-instruct` 的 `prompt` + `image` 字节数组输入，最多输出 1000 tokens，temperature 0.2。模型结构校验失败最多重试一次，额度/服务错误不重试；整个接口等待上限 45 秒，浏览器请求 55 秒；超时有中文重试提示。
+`wrangler.jsonc` 已配置 `"ai": {"binding":"AI"}`，Pages 读取该文件作为绑定来源，Git 自动部署会带上绑定。使用 `@cf/meta/llama-3.2-11b-vision-instruct` 的 `prompt` + `image` 字节数组输入，最多输出 1000 tokens，temperature 0.2。模型结构校验失败最多重试一次，额度/服务错误不重试；当视觉模型输出英文或总评超过25字时，调用同一 Workers AI 绑定下的 `@cf/meta/llama-3.3-70b-instruct-fp8-fast`（JSON Schema 模式，800 tokens 上限）只做中文整理，不再发送照片，不改变原有评分和画面观察；中文及字数校验不通过不展示报告。整个接口等待上限 45 秒，浏览器请求 55 秒；超时有中文重试提示。
 
 2026-11-23 已按 Cloudflare 官方 `prompt: "agree"` 流程完成 Llama 模型首次启用。更换账户时可能需要重新接受 Meta 模型许可；若未启用，正式接口返回 `MODEL_NOT_READY`，不能以示例报告掩盖。未绑定 AI 的正式域名返回 503。
 

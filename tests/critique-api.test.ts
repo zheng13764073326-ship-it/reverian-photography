@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
 import {readFileSync} from 'node:fs';
 import sharp from 'sharp';
-import {handleCritique,parseCritiqueOutput,MOCK_CRITIQUE,CRITIQUE_MODEL,modelError} from '../functions/_critique.ts';
+import {handleCritique,parseCritiqueOutput,MOCK_CRITIQUE,CRITIQUE_MODEL,REPORT_MODEL,modelError} from '../functions/_critique.ts';
 import {MAX_CRITIQUE_BYTES} from '../apps/web/src/lib/critique-contract.ts';
 import type {Statement} from '../functions/_quiz.ts';
 const photo=new Uint8Array(await sharp({create:{width:320,height:240,channels:3,background:'#8b9d96'}}).jpeg().toBuffer());
@@ -18,7 +18,7 @@ test('model JSON tolerates fences and surrounding text, validates dimensions and
  assert.throws(()=>parseCritiqueOutput({response:{...MOCK_CRITIQUE,verdict:'25字以内的克制总评'}}));
  const raw=JSON.stringify(MOCK_CRITIQUE);for(const text of [raw,'```json\n'+raw+'\n```','以下是报告：\n'+raw+'\n完毕。'])assert.equal(parseCritiqueOutput({response:text}).score,7.4);
  for(const value of ['refused','{broken}',JSON.stringify({...MOCK_CRITIQUE,score:11}),JSON.stringify({...MOCK_CRITIQUE,dimensions:{composition:5}}),JSON.stringify({...MOCK_CRITIQUE,suggestions:[]})])assert.throws(()=>parseCritiqueOutput({response:value}));
- assert.equal([...parseCritiqueOutput({...MOCK_CRITIQUE,verdict:'长'.repeat(30)}).verdict].length,25);
+ assert.throws(()=>parseCritiqueOutput({...MOCK_CRITIQUE,verdict:'长'.repeat(30)}));
 });
 test('real path sends only compressed image and fixed prompt to vision; response is non-cacheable and no images enter DB',async()=>{
  const {db,call,post}=setup(async(model,input)=>{assert.equal(model,CRITIQUE_MODEL);assert.deepEqual(input.image,Array.from(photo));assert.ok(String(input.prompt).includes('简体中文'));assert.equal(input.max_tokens,1000);return {response:'```json\n'+JSON.stringify(MOCK_CRITIQUE)+'\n```'};});
@@ -50,4 +50,14 @@ test('per-visitor and shared daily limits reserve atomically before inference wi
 test('one malformed response retries once, then uses the actual validated model report',async()=>{
  let turns=0;const {db,call,post,count}=setup(async()=>({response:++turns===1?'incomplete':JSON.stringify(MOCK_CRITIQUE)}));
  try{const response=await call(post());assert.equal(response.status,200);assert.equal((await response.json()).mode,'ai');assert.equal(count(),2);assert.equal(db.prepare('SELECT count(*) n FROM quiz_rate_limits').get()?.n,2);}finally{db.close();}
+});
+
+test('English vision output is translated without resending the photograph or changing scores',async()=>{
+ const english={...MOCK_CRITIQUE,verdict:'Light and people by the lake',highlights:['Orange leaves frame the right edge.','People gather at the lakeside pavilion.'],suggestions:['Crop 5% from the left to tighten the group.','Lower highlights by 15 to retain cloud detail.']};
+ const seen:string[]=[];const {db,call,post}=setup(async(model,input)=>{seen.push(model);if(model===CRITIQUE_MODEL)return {response:english};assert.equal(input.image,undefined);assert.equal((input.response_format as {type:string}).type,'json_schema');return {response:{...MOCK_CRITIQUE,score:9}};});
+ try{const response=await call(post());assert.equal(response.status,200);const report=await response.json();assert.equal(report.score,english.score);assert.match(report.verdict,/[\u3400-\u9fff]/);assert.deepEqual(seen,[CRITIQUE_MODEL,REPORT_MODEL]);}finally{db.close();}
+});
+test('untranslated or oversized text never reaches the public report',()=>{
+ assert.throws(()=>parseCritiqueOutput({...MOCK_CRITIQUE,verdict:'A beautiful scene'}));
+ assert.throws(()=>parseCritiqueOutput({...MOCK_CRITIQUE,highlights:['English only',MOCK_CRITIQUE.highlights[1]]}));
 });
