@@ -79,10 +79,7 @@ export function createOpticalReport(root:HTMLElement){
    if(snapshot)snapshot.analysis=analysis;
    const spectrum=get('[data-spectrum]');spectrum.replaceChildren();
    analysis.palette.forEach((color,i)=>{
-    const button=document.createElement('button');button.type='button';button.className='optical-swatch';button.style.backgroundColor=color;button.setAttribute('aria-label',`第 ${i+1} 色，${color}`);button.setAttribute('aria-pressed','false');
-    const label=document.createElement('span');label.textContent=color;button.append(label);
-    const select=()=>{get('[data-color-value]').textContent=color;spectrum.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));};
-    button.addEventListener('click',select);button.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse')select();});button.addEventListener('focus',select);spectrum.append(button);
+    const swatch=document.createElement('span');swatch.className='optical-swatch';swatch.style.backgroundColor=color;swatch.setAttribute('role','img');swatch.setAttribute('aria-label',`画面代表色 ${i+1}`);spectrum.append(swatch);
    });
    const {brightness,cool,warm,neutral,histogram,coolHistogram,warmHistogram,relativeEV}=analysis;
    get('[data-luma]').textContent=`${brightness} / 100`;
@@ -114,7 +111,7 @@ export function createOpticalReport(root:HTMLElement){
   get('[data-report-subject]').textContent=input.name?'SUBJECT / '+input.name:'';get('[data-report-id]').textContent=id;get('[data-report-time]').textContent=timestamp;get('[data-report-time]').setAttribute('datetime',now.toISOString());
   const tier=input.score>=8?2:input.score>=4?1:0,images=[...root.querySelectorAll<HTMLImageElement>('[data-match]')];
   currentImage=images.find(image=>Number(image.dataset.match)===tier)||images[0];images.forEach(image=>image.hidden=image!==currentImage);
-  get('[data-spectrum]').replaceChildren();root.querySelector('[data-histogram]')!.replaceChildren();get('[data-luma]').textContent='— / 100';get('[data-thermal]').style.removeProperty('background');delete get('[data-thermal]').dataset.ready;delete get('.relative-exposure').dataset.ready;get('[data-thermal-label]').textContent='';get('[data-color-value]').textContent='选择色条，读取 HEX';
+  get('[data-spectrum]').replaceChildren();root.querySelector('[data-histogram]')!.replaceChildren();get('[data-luma]').textContent='— / 100';get('[data-thermal]').style.removeProperty('background');delete get('[data-thermal]').dataset.ready;delete get('.relative-exposure').dataset.ready;get('[data-thermal-label]').textContent='';
   const image=currentImage,photoTitle=image?.dataset.photoTitle||'',place=[image?.dataset.city,image?.dataset.photoDate?.slice(0,10)].filter(Boolean).join(' · '),archive=`FRAME ${String(tier+1).padStart(2,'0')}A`;
   get('[data-match-title]').textContent=photoTitle;get('[data-match-place]').textContent=place;get('[data-photo-archive]').textContent=archive;
   snapshot={...input,id,timestamp,image,photoTitle,place,archive};

@@ -1,4 +1,4 @@
-import {wavePoints,wavePath,barcodeRuns,dimensionScores,radarPoints,histogramPoints} from './report-math';
+import {wavePoints,wavePath,dimensionScores,radarPoints,histogramPoints} from './report-math';
 import type {PictureAnalysis} from './report-math';
 export type ReportSnapshot={name?:string;id:string;timestamp:string;score:number;title:string;message:string;correct:boolean[];image:HTMLImageElement;analysis:PictureAnalysis;photoTitle:string;place:string;archive:string};
 
@@ -35,10 +35,10 @@ export async function renderReport(s:ReportSnapshot,element:HTMLElement):Promise
  const waveY=top+topHeight+gap,waveHeight=200,photoY=waveY+waveHeight+gap;
  const photoWidth=w-40,photoHeight=Math.round(photoWidth/(s.image.naturalWidth/s.image.naturalHeight));
  const photoBand=40,photoBoxHeight=photoHeight+photoBand*2,telemetryY=photoY+photoBoxHeight+gap,telemetryHeight=230;
- const qr:{size:number;bits:string}=JSON.parse(element.dataset.qr!),cell=2,codeSize=(qr.size+8)*cell;
- const qrX=x+w-12-codeSize,barcode=element.dataset.barcode!,barWidth=(barcode.length+20)/2,barsX=qrX-38-barWidth;
- const subjectLines=s.name?wrapLines('SUBJECT / '+s.name,barsX-x-pad-20,22,400):[],footerTextHeight=subjectLines.length*30+22;
- const footerY=telemetryY+telemetryHeight+gap,footerHeight=Math.max(106,codeSize+24,footerTextHeight+24),height=footerY+footerHeight+18;
+ const qr:{size:number;bits:string}=JSON.parse(element.dataset.qr!),cell=5,codeSize=(qr.size+8)*cell;
+ const qrX=x+w-pad-codeSize;
+ const subjectLines=s.name?wrapLines('SUBJECT / '+s.name,qrX-x-pad-28,22,400):[],footerTextHeight=subjectLines.length*30+96;
+ const footerY=telemetryY+telemetryHeight+gap,footerHeight=Math.max(codeSize+28,footerTextHeight+28),height=footerY+footerHeight+18;
  output.width=width*scale;output.height=height*scale;c.scale(scale,scale);c.fillStyle=paper;c.fillRect(0,0,width,height);
  let seed=17;c.fillStyle='#22222209';
  for(let i=0;i<Math.round(width*height/30);i++){seed=(Math.imul(seed,1664525)+1013904223)>>>0;const xx=seed%(width*2);seed=(Math.imul(seed,1664525)+1013904223)>>>0;c.fillRect(xx/2,(seed%(height*2))/2,.5,.5);}
@@ -109,7 +109,7 @@ export async function renderReport(s:ReportSnapshot,element:HTMLElement):Promise
  path(wavePath(histogramPoints(s.analysis.warmHistogram,chartWidth,chartHeight,peak))+`L${chartWidth} ${chartHeight}H0Z`,orange,1.6,'#B86B3545');c.restore();
  text('0 / SHADOW',x+pad,telemetryY+178,20);text('255 / LIGHT',x+half-pad,telemetryY+178,20,muted,mono,400,'right');text(s.place,x+pad,telemetryY+214,28,ink,serif);
  const swatchWidth=(half-2*pad)/5;
- s.analysis.palette.forEach((color,i)=>{const sx=right+pad+i*swatchWidth;c.fillStyle=color;c.fillRect(sx,telemetryY+58,swatchWidth-5,54);text(color,sx+(swatchWidth-5)/2,telemetryY+140,22,muted,mono,400,'center');});
+ s.analysis.palette.forEach((color,i)=>{const sx=right+pad+i*swatchWidth;c.fillStyle=color;c.fillRect(sx,telemetryY+58,swatchWidth-5,82);});
  const a=s.analysis,barX=right+pad,barW=half-2*pad,barY=telemetryY+167,thermal=c.createLinearGradient(barX,0,barX+barW,0);
  thermal.addColorStop(0,'#537784');thermal.addColorStop(.5,'#d6d8d1');thermal.addColorStop(1,orange);c.fillStyle=thermal;c.fillRect(barX,barY,barW,7);
  const pointer=barX+barW*(.5+(a.warm-a.cool)/200);line(pointer,barY-7,pointer,barY+15,ink,1.5);
@@ -119,12 +119,13 @@ export async function renderReport(s:ReportSnapshot,element:HTMLElement):Promise
  const domain=element.querySelector('[data-report-domain]')?.textContent||'',codeY=footerY+(footerHeight-codeSize)/2;
  const footerTextY=footerY+(footerHeight-footerTextHeight)/2+20;
  subjectLines.forEach((row,i)=>text(row,x+pad,footerTextY+i*30,22,ink,serif));
- text(domain+' · '+s.timestamp,x+pad,footerTextY+subjectLines.length*30,22,ink);
- c.fillStyle='#fff';c.fillRect(barsX,codeY,barWidth,codeSize);c.fillStyle=ink;
- for(const {start,width:runWidth} of barcodeRuns(barcode))c.fillRect(barsX+(start+10)/2,codeY+8,runWidth/2,codeSize-16);
- c.save();c.translate(qrX-16,codeY+codeSize/2);c.rotate(Math.PI/2);text('DX',0,9,30,ink,mono,700,'center');c.restore();
- // Integer modules plus four white quiet modules remain crisp at 1x and 2x export size.
- c.fillStyle='#fff';c.fillRect(qrX,codeY,codeSize,codeSize);c.fillStyle=ink;
+ const domainY=footerTextY+subjectLines.length*30+34;
+ text(domain,x+pad,domainY,48,blue,mono,700);
+ text('挽风 · 摄影作品集',x+pad,domainY+36,22,muted,serif);
+ text(s.timestamp,qrX-28,domainY+36,22,muted,mono,400,'right');
+ // Paper-colored quiet zone removes the white badge while preserving scan contrast.
+ // Five-pixel modules stay crisp in the 2× export and its resized sharing preview.
+ c.fillStyle=paper;c.fillRect(qrX,codeY,codeSize,codeSize);c.fillStyle=ink;
  [...qr.bits].forEach((v,i)=>{if(v==='1')c.fillRect(qrX+(i%qr.size+4)*cell,codeY+(Math.floor(i/qr.size)+4)*cell,cell,cell);});
  box(10,10,width-20,height-20);
  return new Promise((resolve,reject)=>output.toBlob(blob=>blob?resolve(blob):reject(Error('图片导出失败')),'image/png'));
