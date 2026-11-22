@@ -12,19 +12,21 @@ const introduction=settings.introduction||firstParagraph?.children.map(span=>spa
 <section id="about" class="container home-about" aria-labelledby="home-about-name">
   <div class="about-rule"><p class="eyebrow">ABOUT THE PHOTOGRAPHER</p><span aria-hidden="true">关于我</span></div>
   <div class:list={['about-spread',{'without-portrait':!settings.portrait}]}>
-    {settings.portrait&&<a href="/about/?quiz=start#tacit" class="portrait-link" aria-label="测测我们的默契度，点击开始">
+    {settings.portrait&&<div class="portrait-column"><a href="/about/?quiz=start#tacit" class="portrait-link" aria-label="测测我们的默契度，点击开始">
       <div class="portrait-stage">
         <Photo photo={settings.portrait.photo} caption={false} lightbox={false} sizes="(max-width: 760px) calc(100vw - 40px), (max-width: 1280px) 50vw, 640px"/>
         <span class="portrait-focus" aria-hidden="true"></span>
         <span class="portrait-invite" aria-hidden="true">测测我们的默契度<span>↗</span></span>
       </div>
       <span class="portrait-caption"><span class="quiz-label"><i class="quiz-dot" aria-hidden="true"></i>默契度</span><span class="quiz-caption-hint">十道题，看看你多懂我</span><span class="quiz-caption-arrow" aria-hidden="true">↗</span></span>
-    </a>}
+    </a>
+      <a class="about-btn about-btn-desktop" href="/about/"><span>关于我</span><span class="about-arrow" aria-hidden="true">↗</span></a>
+    </div>}
     <div class="about-note">
       <h2 id="home-about-name" aria-label={`挽风 | ${settings.photographer}`}><svg class="about-signature" viewBox="498 840 984 407" aria-hidden="true"><image href="/images/branding/wanfeng-white.webp" width="2000" height="2000"/></svg><span class="about-name-separator" aria-hidden="true">|</span><span>{settings.photographer}</span></h2>
       {heading&&<p class="about-lead">{heading}</p>}
       {introduction&&<p class="about-excerpt">{introduction}</p>}
-      <a class="about-btn" href="/about/"><span>关于我</span><span class="about-arrow" aria-hidden="true">↗</span></a>
+      <a class:list={['about-btn',{'about-btn-mobile':Boolean(settings.portrait)}]} href="/about/"><span>关于我</span><span class="about-arrow" aria-hidden="true">↗</span></a>
       {!settings.portrait&&<a class="quiz-fallback" href="/about/?quiz=start#tacit">测测我们的默契度 ↗</a>}
       <SocialLinks links={settings.socialLinks} compact id="home-social-title"/>
     </div>
@@ -36,6 +38,7 @@ const introduction=settings.introduction||firstParagraph?.children.map(span=>spa
   .about-rule .eyebrow{margin:0;font-size:13px;letter-spacing:.22em}
   .about-rule>span{font:15px var(--serif-zh);letter-spacing:.16em;white-space:nowrap}
   .about-spread{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(32px,5vw,72px);align-items:end}
+  .portrait-column{min-width:0}
   .portrait-link{display:block;min-width:0;--quiz-blue:#237489}
   .portrait-stage{position:relative;display:block;isolation:isolate}
   .portrait-link :global(figure){margin:0}
@@ -61,6 +64,8 @@ const introduction=settings.introduction||firstParagraph?.children.map(span=>spa
   .about-lead{font:600 clamp(20px,1.8vw,24px)/1.65 'Noto Serif SC','Songti SC',Georgia,serif;letter-spacing:.015em;color:#2C2B29;font-synthesis:none;margin:0 0 18px;text-wrap:balance}
   .about-excerpt{font:400 16px/2 'Noto Serif SC','Songti SC',Georgia,serif;color:#2C2B29;margin:0;max-width:34em;font-synthesis:none}
   .about-btn{--press-depth:0px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 32px;background-color:#1E4D54;color:#F4F3EE;border:none;border-radius:999px;font-family:'Noto Serif SC','Songti SC',Georgia,serif;font-size:16px;font-weight:500;font-synthesis:none;letter-spacing:.08em;margin-top:8px}
+  .about-btn-desktop{margin-top:16px}
+  .about-btn-mobile{display:none}
   .about-arrow{display:inline-block;letter-spacing:0;transition:transform .35s var(--press-spring)}
   .about-btn:focus-visible{outline:2px solid #1E4D54;outline-offset:4px}
   @media(hover:hover){.about-btn:hover{background-color:#163A40}.about-btn:hover .about-arrow{transform:translate(2px,-2px)}}
@@ -71,6 +76,8 @@ const introduction=settings.introduction||firstParagraph?.children.map(span=>spa
     .about-rule{margin-bottom:24px;padding-top:18px}
     .about-rule .eyebrow{font-size:12px;letter-spacing:.15em}
     .about-spread{grid-template-columns:1fr;gap:26px}
+    .about-btn-desktop{display:none}
+    .about-btn-mobile{display:inline-flex}
     .about-note{padding:0}
     .about-note h2{font-size:clamp(34px,9vw,48px);margin-bottom:18px}
     .about-lead{font-size:21px;margin-bottom:14px}
