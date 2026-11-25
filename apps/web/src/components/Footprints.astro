@@ -22,10 +22,6 @@ const albumCount=places.reduce((sum,place)=>sum+place.albums.length,0);
         </button>)}
       </div>
       <div class="map-previews">
-        <div class="map-city-picker" data-city-picker hidden role="group" aria-label="选择附近城市">
-          <p>选择城市</p>
-          <div class="map-city-options">{places.map(place=><button type="button" data-switch-place={place.id} aria-controls={`place-${place.id}`} aria-pressed="false" hidden>{place.city}</button>)}</div>
-        </div>
         {places.map(place=><div class="place-preview" id={`place-${place.id}`} data-preview={place.id} hidden>
           <div class="preview-heading"><span>{place.city} · {place.country}</span><button class="preview-close" type="button" aria-label="关闭影集预览">×</button></div>
           {place.albums.map(album=><a class="preview-album" href={`/albums/${album.slug}/`}>
@@ -53,19 +49,14 @@ const albumCount=places.reduce((sum,place)=>sum+place.albums.length,0);
  .map-canvas{position:relative;width:100%;aspect-ratio:10/7}
  .map-outline{display:block;width:100%;height:100%;object-fit:contain}
  .map-point{position:absolute;left:var(--point-x);top:var(--point-y);transform:translate(-50%,-50%);width:44px;height:44px;padding:0;border:0;background:none;color:var(--map-blue);display:grid;place-items:center;border-radius:50%;z-index:2}
+ /* Separate the two labels visually; keep the geographic dataset unchanged. */
+ .map-point[data-place="xiamen"]{margin-left:-24px}
  .point-dot{width:3px;height:3px;background:currentColor;border-radius:50%;box-shadow:0 0 0 1.5px #3c7e9112;transition:box-shadow .2s,transform .2s}
  .point-name{position:absolute;left:35px;top:12px;white-space:nowrap;font:14px var(--serif-zh);letter-spacing:.08em;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s,transform .2s}
  .map-point:hover .point-dot,.map-point[aria-expanded=true] .point-dot{box-shadow:0 0 0 3px #3c7e9118;transform:scale(1.15)}
  .map-point[aria-expanded=true] .point-name{opacity:1;visibility:visible;transform:translateX(3px)}
  .map-point:focus-visible{outline:2px solid var(--map-blue);outline-offset:2px}
  .map-previews{position:absolute;bottom:24px;right:24px;width:240px;z-index:3}
- .map-city-picker{border:1px solid #b5c7c9;border-bottom:0;background:var(--paper);padding:12px 14px}
- .map-city-picker[hidden]{display:none}.map-city-picker p{font:12px var(--serif-zh);color:var(--muted);letter-spacing:.1em;margin:0 0 10px}
- .map-city-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
- .map-city-options button{min-width:0;min-height:44px;padding:10px 8px;border:1px solid rgba(34,34,34,.16);border-radius:3px;background:transparent;color:var(--ink);font:16px/1.4 var(--serif-zh);cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform .35s cubic-bezier(.34,1.56,.64,1),background-color .2s,color .2s}
- .map-city-options button[hidden]{display:none}.map-city-options button:hover{background:#EAE8E0}.map-city-options button[aria-pressed=true]{background:#1E4D54;color:#F4F3EE;border-color:#1E4D54}
- .map-city-options button:active{transform:scale(.95);transition:transform .08s ease-out}.map-city-options button:focus-visible{outline:2px solid #1E4D54;outline-offset:3px}
- @media(prefers-reduced-motion:reduce){.map-city-options button{transition:none}.map-city-options button:active{transform:none}}
  .place-preview{border:1px solid #b5c7c9;background:var(--paper);padding:14px;animation:preview-in .18s ease-out;max-height:420px;overflow:auto}
  .place-preview[hidden]{display:none}
  .preview-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--muted);font:11px var(--sans);margin-bottom:8px}
@@ -87,37 +78,15 @@ const albumCount=places.reduce((sum,place)=>sum+place.albums.length,0);
   connectedCallback(){
    const points=[...this.querySelectorAll<HTMLButtonElement>('[data-place]')];
    const previews=[...this.querySelectorAll<HTMLElement>('[data-preview]')];
-   const picker=this.querySelector<HTMLElement>('[data-city-picker]')!;
-   const choices=[...picker.querySelectorAll<HTMLButtonElement>('[data-switch-place]')];
-   const canvas=this.querySelector<HTMLElement>('.map-canvas')!;
-   const previewArea=this.querySelector<HTMLElement>('.map-previews')!;
-   let pinned:string|undefined,active:string|undefined;let timer:ReturnType<typeof setTimeout>;
-   // Dots within 24 CSS pixels are difficult to distinguish by touch. Group
-   // those cities at the current zoom while preserving their real coordinates.
-   const nearby=(id:string)=>{
-    const boxes=points.map(point=>({id:point.dataset.place!,rect:point.getBoundingClientRect()}));
-    const group=new Set([id]);let grew=true;
-    while(grew){grew=false;
-     for(const box of boxes){
-      if(group.has(box.id))continue;
-      if(boxes.some(other=>group.has(other.id)&&Math.hypot(box.rect.left+box.rect.width/2-other.rect.left-other.rect.width/2,box.rect.top+box.rect.height/2-other.rect.top-other.rect.height/2)<24)){
-       group.add(box.id);grew=true;
-      }
-     }
-    }
-    return group;
-   };
+   let pinned:string|undefined;let timer:ReturnType<typeof setTimeout>;
    const show=(id?:string)=>{
-    clearTimeout(timer);active=id;
+    clearTimeout(timer);
     for(const point of points)point.setAttribute('aria-expanded',String(point.dataset.place===id));
     for(const preview of previews)preview.hidden=preview.dataset.preview!==id;
-    const group=id?nearby(id):new Set<string>();
-    picker.hidden=group.size<2;
-    for(const choice of choices){choice.hidden=!group.has(choice.dataset.switchPlace!);choice.setAttribute('aria-pressed',String(choice.dataset.switchPlace===id));}
    };
-   // A pointer may land on either overlapping button. The nearest dot opens a
-   // preview, and the large city buttons make every overlapping city reachable.
-   canvas.addEventListener('click',event=>{
+   // Nearby cities can share a 44px hit area on narrow screens.
+   // Resolve pointer clicks by the closest visible dot, preserving real positions.
+   this.querySelector('.map-canvas')?.addEventListener('click',event=>{
     const click=event as MouseEvent;
     if(click.detail===0 || !(click.target as Element).closest('.map-point'))return;
     const nearest=points.map(point=>{
@@ -136,24 +105,18 @@ const albumCount=places.reduce((sum,place)=>sum+place.albums.length,0);
     point.addEventListener('focus',()=>show(point.dataset.place));
     point.addEventListener('click',()=>{pinned=point.dataset.place;show(pinned);});
    }
-   for(const choice of choices)choice.addEventListener('click',()=>{pinned=choice.dataset.switchPlace;show(pinned);});
-   previewArea.addEventListener('pointerenter',()=>clearTimeout(timer));
-   previewArea.addEventListener('pointerleave',leave);
    for(const preview of previews){
-    preview.querySelector('.preview-close')?.addEventListener('click',()=>{
-     points.find(point=>point.dataset.place===preview.dataset.preview)?.focus({preventScroll:true});dismiss();
+    preview.addEventListener('pointerenter',()=>clearTimeout(timer));
+    preview.addEventListener('pointerleave',leave);
+    preview.querySelector('button')?.addEventListener('click',()=>{
+     points.find(point=>point.dataset.place===preview.dataset.preview)?.focus();dismiss();
     });
    }
    this.addEventListener('keydown',event=>{if(event.key==='Escape'){
-    points.find(point=>point.dataset.place===active)?.focus({preventScroll:true});dismiss();
+    const active=points.find(point=>point.getAttribute('aria-expanded')==='true');active?.focus();dismiss();
    }});
    this.addEventListener('focusout',()=>{setTimeout(()=>{if(!pinned&&!this.matches(':focus-within'))show();},0);});
    document.addEventListener('click',event=>{if(!this.contains(event.target as Node))dismiss();});
-   new ResizeObserver(()=>{
-    if(!active)return;
-    const focused=document.activeElement;show(active);
-    if(focused instanceof HTMLButtonElement&&picker.contains(focused)&&(picker.hidden||focused.hidden))points.find(point=>point.dataset.place===active)?.focus({preventScroll:true});
-   }).observe(canvas);
   }
  }
  if(!customElements.get('travel-footprints'))customElements.define('travel-footprints',TravelFootprints);
