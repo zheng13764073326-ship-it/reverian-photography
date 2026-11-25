@@ -1,12 +1,18 @@
 ---
 import type {Album} from '../lib/types';
-import {albumFootprints,mapFrame} from '../lib/footprints';
+import {albumFootprints,initialMapCamera,mapFrame,placeOnMap} from '../lib/footprints';
 import {imageUrl} from '../lib/images';
+import chinaOutline from '../../public/maps/china.svg?raw';
+import worldOutline from '../../public/maps/world.svg?raw';
 interface Props {albums:Album[]}
-const places=albumFootprints(Astro.props.albums);
-const albumCount=places.reduce((sum,place)=>sum+place.albums.length,0);
+const views=([
+  {scope:'china',label:'中国',outline:chinaOutline},
+  {scope:'world',label:'世界',outline:worldOutline},
+] as const).map(view=>({...view,places:albumFootprints(Astro.props.albums,view.scope),camera:initialMapCamera(view.scope)}));
+// Both SVGs are trusted, locally generated geometry, with no external markup.
+const geometry=(svg:string)=>svg.replace(/^.*?<svg[^>]*>/s,'').replace(/<\/svg>\s*$/,'');
 ---
-{places.length>0&&<section id="footprints" class="footprints" aria-labelledby="footprints-title">
+<section id="footprints" class="footprints" aria-labelledby="footprints-title">
   <header class="footprints-heading">
     <span class="eyebrow">PLACES & MEMORIES</span>
     <h2 id="footprints-title">足迹</h2>
@@ -14,29 +20,53 @@ const albumCount=places.reduce((sum,place)=>sum+place.albums.length,0);
   </header>
   <travel-footprints>
     <div class="map-surface">
-      <div class="map-caption"><span>中国</span><span>点击地点，翻开影集</span></div>
-      <div class="map-canvas">
-        <img class="map-outline" src="/maps/china.svg" width={mapFrame.width} height={mapFrame.height} loading="lazy" decoding="async" alt={`中国旅行地图，已收录${places.map(place=>place.city).join('、')}影集`}/>
-        {places.map(place=><button type="button" class="map-point" style={`--point-x:${place.x/mapFrame.width*100}%;--point-y:${place.y/mapFrame.height*100}%`} data-place={place.id} aria-label={`${place.city}，查看 ${place.albums.length} 本影集预览`} aria-expanded="false" aria-controls={`place-${place.id}`}>
-          <span class="point-dot" aria-hidden="true"></span><span class="point-name">{place.city}</span>
-        </button>)}
+      <div class="map-caption">
+        <div class="map-tabs" role="tablist" aria-label="足迹地图范围">
+          {views.map((view,index)=><Fragment>
+            {index>0&&<span class="tab-divider" aria-hidden="true">/</span>}
+            <button type="button" role="tab" id={`map-tab-${view.scope}`} aria-controls={`map-panel-${view.scope}`} aria-selected={index===0?'true':'false'} tabindex={index===0?0:-1} data-map-tab={view.scope}>{view.label}</button>
+          </Fragment>)}
+        </div>
+        <p>点击地点，翻开影集</p>
       </div>
-      <div class="map-previews">
-        {places.map(place=><div class="place-preview" id={`place-${place.id}`} data-preview={place.id} hidden>
-          <div class="preview-heading"><span>{place.city} · {place.country}</span><button class="preview-close" type="button" aria-label="关闭影集预览">×</button></div>
-          {place.albums.map(album=><a class="preview-album" href={`/albums/${album.slug}/`}>
-            <img src={imageUrl(album.cover.photo,480,album.cover,4/3)} width="480" height="360" loading="lazy" decoding="async" alt={album.cover.photo.alt}/>
-            <span class="preview-title">{album.title}</span>
-            <span class="preview-meta"><span>{album.date.slice(0,4)}</span><span>查看影集 ↗</span></span>
-          </a>)}
-        </div>)}
-      </div>
+      {views.map((view,index)=><div id={`map-panel-${view.scope}`} role="tabpanel" aria-labelledby={`map-tab-${view.scope}`} data-map-panel={view.scope} hidden={index!==0}>
+        <div class="map-canvas" tabindex="0" role="group" aria-label={`${view.label}足迹地图，可用加减键缩放、方向键移动，0 键全览`} data-scale={view.camera.scale}>
+          <svg class="map-outline" viewBox={`0 0 ${mapFrame.width} ${mapFrame.height}`} aria-hidden="true" focusable="false">
+            <g data-map-geometry transform={`translate(${view.camera.x} ${view.camera.y}) scale(${view.camera.scale})`} set:html={geometry(view.outline)}/>
+          </svg>
+          {view.places.map(place=>{
+            const position=placeOnMap(place,view.camera);
+            return <button type="button" class:list={['map-point',{'is-pending':place.pending}]} style={`--point-x:${position.x/mapFrame.width*100}%;--point-y:${position.y/mapFrame.height*100}%`} data-place={place.id} data-x={place.x} data-y={place.y} aria-label={`${place.city}，${place.pending?'影集整理中':`查看 ${place.albums.length} 本影集预览`}`} aria-expanded="false" aria-controls={`place-${place.id}`}>
+              <span class="point-dot" aria-hidden="true"></span><span class="point-name">{place.city}</span>
+            </button>;
+          })}
+        </div>
+        <div class="map-tools">
+          <span class="map-help">放大后可拖动地图</span>
+          <div class="map-controls" role="group" aria-label="地图缩放">
+            <button type="button" data-map-action="out" aria-label="缩小地图" disabled={view.camera.scale===1}>−</button>
+            <button type="button" data-map-action="in" aria-label="放大地图">+</button>
+            <button type="button" data-map-action="overview" class="map-overview">全览</button>
+          </div>
+        </div>
+        <div class="map-previews" aria-live="polite">
+          {view.places.map(place=><div class="place-preview" id={`place-${place.id}`} data-preview={place.id} hidden>
+            <div class="preview-heading"><span>{place.city===place.country?place.city:`${place.city} · ${place.country}`}</span><button class="preview-close" type="button" aria-label="关闭地点预览">×</button></div>
+            {place.pending?<p class="pending-message">影集整理中<span>照片还在路上，稍后与你分享。</span></p>:place.albums.map(album=><a class="preview-album" href={`/albums/${album.slug}/`}>
+              <img src={imageUrl(album.cover.photo,480,album.cover,4/3)} width="480" height="360" loading="lazy" decoding="async" alt={album.cover.photo.alt}/>
+              <span class="preview-title">{album.title}</span>
+              <span class="preview-meta"><span>{album.date.slice(0,4)}</span><span>查看影集 ↗</span></span>
+            </a>)}
+          </div>)}
+        </div>
+        <footer class="map-footer">
+          <p>{view.places.length} 个地点<span class="footer-separator">/</span>{view.places.reduce((sum,place)=>sum+place.albums.length,0)} 本影集</p>
+          <p class="map-legend"><span class="legend-dot" aria-hidden="true"></span>已有影集<span class="legend-dot is-pending" aria-hidden="true"></span>整理中</p>
+        </footer>
+      </div>)}
     </div>
-    <footer class="map-footer">
-      <p><span class="legend-dot" aria-hidden="true"></span>{places.length} 座城市<span class="footer-separator">/</span>{albumCount} 本影集</p>
-    </footer>
   </travel-footprints>
-</section>}
+</section>
 <style>
  .footprints{border-top:1px solid var(--line);padding:52px 0 12px;scroll-margin-top:calc(var(--header) + 24px)}
  .footprints-heading{text-align:center;margin-bottom:26px}.eyebrow{font:10px var(--sans);letter-spacing:.24em;color:var(--muted)}
@@ -44,78 +74,51 @@ const albumCount=places.reduce((sum,place)=>sum+place.albums.length,0);
  .footprints-heading p{font:14px var(--serif-zh);letter-spacing:.08em;color:var(--muted);margin:0}
  travel-footprints{display:block;max-width:1000px;margin:auto;--map-blue:#3c7e91}
  .map-surface{position:relative;border:1px solid var(--line);border-radius:6px}
- .map-caption{position:absolute;inset:22px 26px auto;display:flex;justify-content:space-between;gap:12px;font:11px var(--sans);color:var(--muted);letter-spacing:.08em;z-index:1;pointer-events:none}
- .map-caption>span:first-child{color:var(--accent)}
- .map-canvas{position:relative;width:100%;aspect-ratio:10/7}
- .map-outline{display:block;width:100%;height:100%;object-fit:contain}
+ .map-caption{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 26px 0;color:var(--accent)}
+ .map-tabs{display:flex;align-items:center;gap:14px;flex-shrink:0}
+ .map-tabs button{min-height:44px;border:0;padding:0 2px;font:600 26px/1.5 var(--serif-zh);letter-spacing:.12em;color:var(--quiet);transition:color .2s}
+ .map-tabs button[aria-selected=true],.map-tabs button:hover{color:var(--accent)}
+ .map-tabs button[aria-selected=true]{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:9px}
+ .tab-divider{font:italic 24px var(--serif);color:var(--quiet)}
+ .map-caption p{margin:0;font:500 22px/1.6 var(--serif-zh);letter-spacing:.06em;text-align:right}
+ .map-canvas{position:relative;width:100%;aspect-ratio:10/7;overflow:hidden;touch-action:pan-y;user-select:none}
+ .map-canvas[data-zoomed]{touch-action:none;cursor:grab}.map-canvas[data-dragging]{cursor:grabbing}
+ .map-canvas:focus-visible{outline:1px solid var(--map-blue);outline-offset:-3px}
+ .map-outline{display:block;width:100%;height:100%;pointer-events:none}
+ .map-outline :global(path){vector-effect:non-scaling-stroke;stroke-width:.7px}
  .map-point{position:absolute;left:var(--point-x);top:var(--point-y);transform:translate(-50%,-50%);width:44px;height:44px;padding:0;border:0;background:none;color:var(--map-blue);display:grid;place-items:center;border-radius:50%;z-index:2}
- .point-dot{width:3px;height:3px;background:currentColor;border-radius:50%;box-shadow:0 0 0 1.5px #3c7e9112;transition:box-shadow .2s,transform .2s}
- .point-name{position:absolute;left:35px;top:12px;white-space:nowrap;font:14px var(--serif-zh);letter-spacing:.08em;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s,transform .2s}
+ .point-dot{width:4px;height:4px;background:currentColor;border-radius:50%;box-shadow:0 0 0 1.5px #3c7e9112;transition:box-shadow .2s,transform .2s}
+ .map-point.is-pending .point-dot{width:5px;height:5px;border:1px solid currentColor;background:var(--paper);box-shadow:none}
+ .point-name{position:absolute;left:35px;top:12px;white-space:nowrap;font:14px var(--serif-zh);letter-spacing:.08em;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s;text-shadow:0 0 4px var(--paper),0 0 8px var(--paper)}
+ .map-point[data-label-left] .point-name{left:auto;right:35px}
  .map-point:hover .point-dot,.map-point[aria-expanded=true] .point-dot{box-shadow:0 0 0 3px #3c7e9118;transform:scale(1.15)}
- .map-point[aria-expanded=true] .point-name{opacity:1;visibility:visible;transform:translateX(3px)}
- .map-point:focus-visible{outline:2px solid var(--map-blue);outline-offset:2px}
- .map-previews{position:absolute;bottom:24px;right:24px;width:240px;z-index:3}
+ .map-point[aria-expanded=true] .point-name,[data-map-panel=world] .map-canvas[data-labels] .point-name{opacity:1;visibility:visible}
+ .map-point:focus-visible{outline:2px solid var(--map-blue);outline-offset:-4px}
+ .map-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 24px 12px}
+ .map-help{font:11px var(--sans);color:var(--quiet);letter-spacing:.06em}
+ .map-controls{display:flex;border:1px solid var(--line);border-radius:3px;background:var(--paper)}
+ .map-controls button{border:0;min-width:44px;min-height:44px;padding:0 10px;color:var(--muted);font:22px var(--serif)}
+ .map-controls button+button{border-left:1px solid var(--line)}.map-controls .map-overview{font:12px var(--serif-zh);letter-spacing:.08em}
+ .map-controls button:disabled{opacity:.3;cursor:default}.map-controls button:hover:enabled{color:var(--map-blue);background:#3c7e9108}
+ .map-previews{position:absolute;bottom:130px;right:24px;width:240px;z-index:3}
  .place-preview{border:1px solid #b5c7c9;background:var(--paper);padding:14px;animation:preview-in .18s ease-out;max-height:420px;overflow:auto}
- .place-preview[hidden]{display:none}
- .preview-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--muted);font:11px var(--sans);margin-bottom:8px}
- .preview-close{font:22px var(--sans);border:0;background:none;color:var(--muted);padding:0;min-width:32px;min-height:32px;margin:-8px -6px -4px 0}
+ .preview-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--muted);font:12px var(--sans);margin-bottom:8px}
+ .preview-close{font:22px var(--sans);border:0;background:none;color:var(--muted);padding:0;min-width:44px;min-height:44px;margin:-8px -6px -4px 0}
+ .pending-message{margin:8px 0 10px;font:22px/1.5 var(--serif-zh);color:var(--accent)}
+ .pending-message span{display:block;margin-top:10px;color:var(--muted);font:12px/1.8 var(--serif-zh)}
  .preview-album{display:block;color:var(--ink)}.preview-album+.preview-album{margin-top:20px}
  .preview-album img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;background:#EAE8E0}
  .preview-title{display:block;font:17px/1.6 var(--serif-zh);margin-top:12px;text-wrap:balance}
  .preview-meta{display:flex;justify-content:space-between;gap:12px;margin-top:8px;font:11px var(--sans);color:var(--map-blue)}
  .preview-album:hover .preview-title{text-decoration:underline;text-underline-offset:4px}
- .map-footer{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:16px 0;color:var(--muted);font:12px var(--sans)}
- .map-footer p{display:flex;align-items:center;gap:9px;margin:0}.legend-dot{width:5px;height:5px;border-radius:50%;background:var(--map-blue)}.footer-separator{color:var(--quiet);margin:0 2px}
+ .map-footer{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:16px 24px;border-top:1px solid var(--line);color:var(--muted);font:12px var(--sans)}
+ .map-footer p{display:flex;align-items:center;gap:9px;margin:0}.legend-dot{width:5px;height:5px;border-radius:50%;background:var(--map-blue)}
+ .legend-dot.is-pending{background:var(--paper);border:1px solid var(--map-blue);margin-left:8px}.footer-separator{color:var(--quiet);margin:0 2px}
  @keyframes preview-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
- @media(max-width:1000px){.map-previews{position:static;width:auto;margin:0 14px}.place-preview{margin:0 0 14px;max-height:none;padding:12px}.preview-album{display:grid;grid-template-columns:100px minmax(0,1fr);column-gap:14px;align-items:center}.preview-album img{grid-row:1/3}.preview-title{font-size:16px;margin:0}.preview-meta{margin:6px 0 0;align-self:start}.preview-close{min-width:44px;min-height:44px}}
- @media(max-width:700px){.footprints{padding-top:36px}.footprints-heading{margin-bottom:22px}.footprints-heading h2{font-size:30px}.footprints-heading p{font-size:13px}.map-caption{inset:14px 14px auto;font-size:10px;letter-spacing:0}.map-canvas{margin-top:28px}.point-name{font-size:12px;left:32px;top:14px}.point-dot{width:2px;height:2px}.map-previews{position:static;width:auto;margin:0 14px}.place-preview{margin:0 0 14px;max-height:none;padding:12px}.preview-album{display:grid;grid-template-columns:100px minmax(0,1fr);column-gap:14px;align-items:center}.preview-album img{grid-row:1/3}.preview-title{font-size:16px;margin:0}.preview-meta{margin:6px 0 0;align-self:start}.preview-close{min-width:44px;min-height:44px}.map-footer{padding:10px 0;gap:12px;flex-wrap:wrap;font-size:11px}}
- @media(prefers-reduced-motion:reduce){.place-preview{animation:none}.point-dot,.point-name{transition:none}}
+ @media(max-width:1000px){.map-previews{position:static;width:auto;margin:0 14px}.place-preview{margin:0 0 14px;max-height:none;padding:12px}.preview-album{display:grid;grid-template-columns:100px minmax(0,1fr);column-gap:14px;align-items:center}.preview-album img{grid-row:1/3}.preview-title{font-size:16px;margin:0}.preview-meta{margin:6px 0 0;align-self:start}}
+ @media(max-width:700px){.footprints{padding-top:36px}.footprints-heading{margin-bottom:22px}.footprints-heading h2{font-size:30px}.footprints-heading p{font-size:13px}.map-caption{padding:12px 14px 0;gap:8px}.map-tabs{gap:8px}.map-tabs button{font-size:20px;letter-spacing:.06em}.tab-divider{font-size:20px}.map-caption p{font-size:14px;letter-spacing:0}.point-name{font-size:12px;left:30px;top:14px}.map-point[data-label-left] .point-name{right:30px}.point-dot{width:3px;height:3px}.map-point.is-pending .point-dot{width:4px;height:4px}.map-tools{padding:0 14px 10px}.map-help{font-size:10px;letter-spacing:0}.map-footer{padding:12px 14px;gap:12px;flex-wrap:wrap;font-size:11px}.map-footer p{gap:6px}}
+ @media(prefers-reduced-motion:reduce){.place-preview{animation:none}.point-dot,.point-name,.map-tabs button{transition:none}}
 </style>
 <script>
- class TravelFootprints extends HTMLElement {
-  connectedCallback(){
-   const points=[...this.querySelectorAll<HTMLButtonElement>('[data-place]')];
-   const previews=[...this.querySelectorAll<HTMLElement>('[data-preview]')];
-   let pinned:string|undefined;let timer:ReturnType<typeof setTimeout>;
-   const show=(id?:string)=>{
-    clearTimeout(timer);
-    for(const point of points)point.setAttribute('aria-expanded',String(point.dataset.place===id));
-    for(const preview of previews)preview.hidden=preview.dataset.preview!==id;
-   };
-   // Nearby cities can share a 44px hit area on narrow screens.
-   // Resolve pointer clicks by the closest visible dot, preserving real positions.
-   this.querySelector('.map-canvas')?.addEventListener('click',event=>{
-    const click=event as MouseEvent;
-    if(click.detail===0 || !(click.target as Element).closest('.map-point'))return;
-    const nearest=points.map(point=>{
-     const r=point.getBoundingClientRect();
-     return {point,distance:Math.hypot(click.clientX-r.left-r.width/2,click.clientY-r.top-r.height/2)};
-    }).sort((a,b)=>a.distance-b.distance)[0]?.point;
-    if(!nearest)return;
-    event.preventDefault();event.stopPropagation();
-    pinned=nearest.dataset.place;nearest.focus({preventScroll:true});show(pinned);
-   },true);
-   const dismiss=()=>{pinned=undefined;show();};
-   const leave=()=>{timer=setTimeout(()=>{if(!pinned&&!this.matches(':focus-within'))show();},220);};
-   for(const point of points){
-    point.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse'&&!pinned)show(point.dataset.place);});
-    point.addEventListener('pointerleave',leave);
-    point.addEventListener('focus',()=>show(point.dataset.place));
-    point.addEventListener('click',()=>{pinned=point.dataset.place;show(pinned);});
-   }
-   for(const preview of previews){
-    preview.addEventListener('pointerenter',()=>clearTimeout(timer));
-    preview.addEventListener('pointerleave',leave);
-    preview.querySelector('button')?.addEventListener('click',()=>{
-     points.find(point=>point.dataset.place===preview.dataset.preview)?.focus();dismiss();
-    });
-   }
-   this.addEventListener('keydown',event=>{if(event.key==='Escape'){
-    const active=points.find(point=>point.getAttribute('aria-expanded')==='true');active?.focus();dismiss();
-   }});
-   this.addEventListener('focusout',()=>{setTimeout(()=>{if(!pinned&&!this.matches(':focus-within'))show();},0);});
-   document.addEventListener('click',event=>{if(!this.contains(event.target as Node))dismiss();});
-  }
- }
- if(!customElements.get('travel-footprints'))customElements.define('travel-footprints',TravelFootprints);
+ import '../lib/footprint-map';
 </script>
