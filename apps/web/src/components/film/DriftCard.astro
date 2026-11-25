@@ -7,7 +7,7 @@ const rows=[[35,9,22,11,34,28],[10,36,19,23,33,12]].map(ids=>ids.map(id=>issue.p
   {rows.map((photos,row)=><div class="reel-row" aria-hidden="true">
    <div class:list={['reel-track',{'reel-reverse':row===1}]}>
     {[0,1].map(()=> <div class="reel-copy">
-     {photos.map(photo=><figure class="reel-frame">
+     {photos.map(photo=><figure class:list={['reel-frame',{'reel-frame-portrait':photo.height>photo.width}]} style={`--frame-ratio:${photo.width/photo.height}`}>
       <span class="reel-image"><img src={photo.preview} srcset={photo.srcset} sizes="(max-width:600px) 240px, 340px" width={photo.width} height={photo.height} alt={photo.alt} loading="lazy" decoding="async"/></span>
       <figcaption><span>{String(photo.number).padStart(2,'0')}A</span><span>SILVER HALIDE <span class="reel-arrow">▸</span></span></figcaption>
      </figure>)}
@@ -30,11 +30,14 @@ const rows=[[35,9,22,11,34,28],[10,36,19,23,33,12]].map(ids=>ids.map(id=>issue.p
  .reel-track{display:flex;width:max-content;animation:film-travel 72s linear infinite;animation-play-state:paused;will-change:transform}
  .reel-reverse{animation-direction:reverse;animation-duration:80s}
  .reel-copy{display:flex;gap:var(--reel-gap);padding-right:var(--reel-gap);flex-shrink:0}
- .reel-frame{margin:0;flex:none}
- .reel-image{display:block;overflow:hidden;background:#EAE8E0}
- .reel-frame img{display:block;width:auto;height:var(--reel-height);max-width:none;object-fit:contain;background:#EAE8E0}
+ /* Caption text must not widen portrait frames beyond the photograph. */
+ .reel-frame{margin:0;flex:none;width:calc(var(--reel-height)*var(--frame-ratio))}
+ .reel-image{display:block;height:var(--reel-height);overflow:hidden;background:#1c1b18}
+ .reel-frame img{display:block;width:100%;height:100%;max-width:none;object-fit:contain;background:#1c1b18}
  .reel-frame figcaption{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:6px 2px 0;font:10px/1.2 'Courier New',monospace;letter-spacing:.13em;color:var(--reel-gold)}
  .reel-frame figcaption>span:first-child{font-size:12px}.reel-arrow{padding-left:8px}
+ .reel-frame.reel-frame-portrait figcaption{gap:6px;font-size:8px;letter-spacing:.04em;white-space:nowrap}
+ .reel-frame.reel-frame-portrait figcaption>span:first-child{font-size:10px}.reel-frame-portrait .reel-arrow{display:none}
  [data-visible="true"][data-paused="false"] .reel-track{animation-play-state:running}
  .drift-card:focus-visible .reel-track{animation-play-state:paused}
  .reel-toggle{position:absolute;right:12px;bottom:40px;z-index:2;display:grid;place-items:center;width:36px;height:36px;border:1px solid #c7a06580;border-radius:50%;background:#1c1b18e8;color:#e8d6b4;cursor:pointer}
