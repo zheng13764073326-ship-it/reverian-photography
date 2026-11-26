@@ -36,6 +36,6 @@ const shareImage=Astro.props.shareImage || (settings.seo.shareImage?imageUrl(set
  {home && <ApertureIntro name={settings.photographer}/>}
  <a class="skip-link" href="#main">跳到正文</a><Header home={home}/>
  <main id="main" tabindex="-1"><slot/></main>
- <Footer home={home} demo={mode==='demo'}/>
+ <Footer demo={mode==='demo'}/>
  <PhotoOptics/><Lightbox/><ImageLoading/><HoverFeedback/><ScrollReveal/>
  </body></html>
