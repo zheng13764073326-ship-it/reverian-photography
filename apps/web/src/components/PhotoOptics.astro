@@ -16,7 +16,7 @@
 <style is:global>
   .photo-optics-defs { position: absolute; pointer-events: none; overflow: hidden; }
   @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-    .image-frame:hover img,
+    .image-frame:not([data-cover-reflection]):hover img,
     .reel-image:hover img,
     .drift-photo-link:hover img {
       --photo-optics-filter: url('#photo-edge-optics');

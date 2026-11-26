@@ -3,6 +3,9 @@
  <span class="pointer-center"></span>
 </div>
 <script>
+ import {setupSurfaceFeedback} from '../lib/surface-feedback';
+ import '../styles/surface-feedback.css';
+ setupSurfaceFeedback();
  const ring=document.querySelector<HTMLElement>('.focus-cursor')!;
  const enabled=matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
  let x=0,y=0,frame=0,visible=false;
@@ -79,7 +82,7 @@
   .album-meta h3,.journal-row h3{transform-origin:left center;transition:transform .25s ease}
   .album-card a:hover h3,.journal-row:hover h3{transform:scale(1.025)}
   .album-card img,.photograph a img,.next-story img,.reel-frame img,.drift-photo-link img{transition:transform .5s ease}
-  .album-card a:hover img,.photograph a:hover img,.next-story:hover img,.reel-frame:hover img,.drift-photo-link:hover img{transform:scale(1.018);animation:photo-exposure .48s ease-out 1}
+  .photograph a:hover img,.reel-frame:hover img,.drift-photo-link:hover img{transform:scale(1.018);animation:photo-exposure .48s ease-out 1}
  }
  @keyframes photo-exposure{0%,100%{filter:var(--photo-optics-filter, brightness(1)) brightness(1)}40%{filter:var(--photo-optics-filter, brightness(1)) brightness(var(--photo-exposure-peak, 1.12))}}
  .section-heading a:focus-visible,.album-card a:focus-visible,.photograph a:focus-visible,.journal-row:focus-visible{outline:2px solid var(--accent);outline-offset:5px}
