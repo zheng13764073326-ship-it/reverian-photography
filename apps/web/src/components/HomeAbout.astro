@@ -20,13 +20,13 @@ const introduction=settings.introduction||firstParagraph?.children.map(span=>spa
       </div>
       <span class="portrait-caption"><span class="quiz-label"><i class="quiz-dot" aria-hidden="true"></i>默契度</span><span class="quiz-caption-hint">十道题，看看你多懂我</span><span class="quiz-caption-arrow" aria-hidden="true">↗</span></span>
     </a>
-      <a class="about-btn about-btn-desktop" href="/about/"><span>关于我</span><span class="about-arrow" aria-hidden="true">↗</span></a>
+      <a class="about-btn about-btn-desktop" href="/about/" data-elastic-button><span class="elastic-button-face"><span class="elastic-button-label">关于我</span><span class="about-arrow" aria-hidden="true">↗</span></span></a>
     </div>}
     <div class="about-note">
       <h2 id="home-about-name" aria-label={`挽风 | ${settings.photographer}`}><svg class="about-signature" viewBox="498 840 984 407" aria-hidden="true"><image href="/images/branding/wanfeng-white.webp" width="2000" height="2000"/></svg><span class="about-name-separator" aria-hidden="true">|</span><span>{settings.photographer}</span></h2>
       {heading&&<p class="about-lead">{heading}</p>}
       {introduction&&<p class="about-excerpt">{introduction}</p>}
-      <a class:list={['about-btn',{'about-btn-mobile':Boolean(settings.portrait)}]} href="/about/"><span>关于我</span><span class="about-arrow" aria-hidden="true">↗</span></a>
+      <a class:list={['about-btn',{'about-btn-mobile':Boolean(settings.portrait)}]} href="/about/" data-elastic-button><span class="elastic-button-face"><span class="elastic-button-label">关于我</span><span class="about-arrow" aria-hidden="true">↗</span></span></a>
       {!settings.portrait&&<a class="quiz-fallback" href="/about/?quiz=start#tacit">测测我们的默契度 ↗</a>}
       <SocialLinks links={settings.socialLinks} compact id="home-social-title"/>
     </div>
@@ -63,12 +63,13 @@ const introduction=settings.introduction||firstParagraph?.children.map(span=>spa
   .about-name-separator{font-size:.7em;color:var(--muted)}
   .about-lead{font:600 clamp(20px,1.8vw,24px)/1.65 'Noto Serif SC','Songti SC',Georgia,serif;letter-spacing:.015em;color:#2C2B29;font-synthesis:none;margin:0 0 18px;text-wrap:balance}
   .about-excerpt{font:400 16px/2 'Noto Serif SC','Songti SC',Georgia,serif;color:#2C2B29;margin:0;max-width:34em;font-synthesis:none}
-  .about-btn{--press-depth:0px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 32px;background-color:#1E4D54;color:#F4F3EE;border:none;border-radius:999px;font-family:'Noto Serif SC','Songti SC',Georgia,serif;font-size:16px;font-weight:500;font-synthesis:none;letter-spacing:.08em;margin-top:8px}
+  .about-btn{--press-depth:0px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0;background:transparent;color:#F4F3EE;border:none;border-radius:999px;font-family:'Noto Serif SC','Songti SC',Georgia,serif;font-size:16px;font-weight:500;font-synthesis:none;letter-spacing:.08em;margin-top:8px}
+  .about-btn .elastic-button-face{padding:12px 32px;background-color:var(--elastic-face-bg,#1E4D54)}
   .about-btn-desktop{margin-top:16px}
   .about-btn-mobile{display:none}
   .about-arrow{display:inline-block;letter-spacing:0;transition:transform .35s var(--press-spring)}
   .about-btn:focus-visible{outline:2px solid #1E4D54;outline-offset:4px}
-  @media(hover:hover){.about-btn:hover{background-color:#163A40}.about-btn:hover .about-arrow{transform:translate(2px,-2px)}}
+  @media(hover:hover){.about-btn:hover .elastic-button-face{background-color:var(--elastic-face-bg,#163A40)}}
   .quiz-fallback{display:block;margin-top:16px;color:#237489;font-size:16px}
   .without-portrait{grid-template-columns:1fr;max-width:700px}
   @media(max-width:760px){

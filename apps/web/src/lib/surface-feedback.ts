@@ -57,7 +57,8 @@ export function setupSurfaceFeedback(){
  function flash(element:HTMLElement,x?:number,y?:number){
   if(reduced.matches||!Element.prototype.animate)return;
   clearFlash(element);
-  const rect=element.getBoundingClientRect();if(!rect.width||!rect.height)return;
+  const surface=element.querySelector<HTMLElement>('.elastic-button-face')??element;
+  const rect=surface.getBoundingClientRect();if(!rect.width||!rect.height)return;
   const px=x===undefined?rect.width/2:Math.max(0,Math.min(rect.width,x-rect.left));
   const py=y===undefined?rect.height/2:Math.max(0,Math.min(rect.height,y-rect.top));
   const size=Math.max(rect.width,rect.height)*2.2;
@@ -65,7 +66,7 @@ export function setupSurfaceFeedback(){
   layer.className='button-glint';layer.setAttribute('aria-hidden','true');layer.inert=true;
   light.className='button-glint-light';Object.assign(light.style,{width:`${size}px`,height:`${size}px`,left:`${px-size/2}px`,top:`${py-size/2}px`});
   if(getComputedStyle(element).position==='static')element.setAttribute('data-feedback-positioned','');
-  layer.append(light);element.append(layer);
+  layer.append(light);surface.append(layer);
   const animation=light.animate([{transform:'scale(.12)',opacity:.65},{transform:'scale(.7)',opacity:.4,offset:.38},{transform:'scale(1)',opacity:0}],{duration:520,easing:'cubic-bezier(.18,.7,.25,1)'});
   flashes.set(element,{layer,animation});
   void animation.finished.then(()=>{if(flashes.get(element)?.animation===animation)clearFlash(element);}).catch(()=>{});

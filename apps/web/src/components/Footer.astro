@@ -9,7 +9,7 @@ const {demo=false}=Astro.props;
     <span class="footer-copyright">© {new Date().getFullYear()} REVERIAN · PHOTOGRAPHY</span>
   </div>
   <nav class="footer-links" aria-label="页脚导航">
-    <a href="#top" class="back-to-top" data-back-to-top aria-label="回到顶部" title="回到顶部"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 20V4M4 12l8-8 8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <a href="#top" class="back-to-top" data-elastic-button data-back-to-top aria-label="回到顶部" title="回到顶部"><span class="elastic-button-face"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 20V4M4 12l8-8 8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
   </nav>
 </footer>
 <script>
@@ -39,11 +39,12 @@ const {demo=false}=Astro.props;
  .footer-copyright{font-style:normal;font-weight:400;white-space:nowrap}
  .footer-demo{color:var(--muted);font-size:12px}
  .footer-links{display:flex;align-items:flex-end;justify-content:flex-end}
- .footer-links .back-to-top{--press-scale:.95;position:relative;display:grid;place-items:center;width:56px;height:56px;min-height:56px;padding:0;border:1px solid rgba(34,34,34,.28);border-radius:50%;color:#4A4A4A;background:transparent;text-decoration:none}
+ .footer-links .back-to-top{--press-scale:.95;position:relative;display:grid;place-items:center;width:56px;height:56px;min-height:56px;padding:0;border:0;border-radius:50%;color:#4A4A4A;background:transparent;text-decoration:none}
+ .back-to-top .elastic-button-face{width:100%;height:100%;border:1px solid var(--elastic-face-border,rgba(34,34,34,.28));box-sizing:border-box}
  .back-to-top svg{display:block}
- .footer-links .back-to-top:is(:active,[data-pressing],.is-activated){background-color:#BFA462;border-color:#BFA462;color:#111111}
+ .footer-links .back-to-top.is-activated .elastic-button-face{background-color:#BFA462;border-color:#BFA462;color:#111111}
  .footer-links a:focus-visible{outline:2px solid #1E4D54;outline-offset:4px}
- @media(hover:hover){.footer-links .back-to-top:hover:not(:active):not([data-pressing]):not(.is-activated){border-color:#4A4A4A}}
+ @media(hover:hover){.footer-links .back-to-top:hover:not(:active):not([data-pressing]):not(.is-activated) .elastic-button-face{border-color:var(--elastic-face-border,#4A4A4A)}}
  @media(max-width:760px){.site-footer{column-gap:16px;padding:20px 0}}
  @media(max-width:480px){.site-footer{column-gap:12px}.footer-motto{font-size:18px}.footer-copyright{font-size:11px;letter-spacing:0}}
 </style>
