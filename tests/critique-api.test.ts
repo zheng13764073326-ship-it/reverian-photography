@@ -76,7 +76,7 @@ test('overall score is always the rounded four-dimension mean, including copy ou
 
 test('four grounded notes are mandatory, and stiff or oversized Chinese needs editorial repair',()=>{
  assert.throws(()=>parseCritiqueOutput({...MOCK_CRITIQUE,analysis:{composition:'主体位置清楚。'}}));
- for(const value of ['图像右侧增添了色彩和深度感','自然与人文和谐融合','岁月静好','社区感很强','长'.repeat(36)]){
+ for(const value of ['图像右侧增添了色彩和深度感','自然与人文和谐融合','岁月静好','相映成趣','层次分明','传递出一种安静的沉思感','社区感很强','长'.repeat(36)]){
   const candidate={...MOCK_CRITIQUE,analysis:{...MOCK_CRITIQUE.analysis,color:value}};
   assert.doesNotThrow(()=>parseCritiqueOutput(candidate,false));
   assert.throws(()=>parseCritiqueOutput(candidate));

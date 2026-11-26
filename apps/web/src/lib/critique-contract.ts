@@ -11,7 +11,7 @@ export interface CritiqueReport {
  highlights:[string,string];suggestions:[string,string];
 }
 export function meanCritiqueScore(dimensions:Record<Dimension,number>){return Math.round(CRITIQUE_DIMENSIONS.reduce((sum,key)=>sum+dimensions[key],0)/CRITIQUE_DIMENSIONS.length*10)/10;}
-export const STIFF_CRITIQUE_COPY=/整体很好|光线很好|颜色很好|色彩很好|提高深度感|增加深度感|提高情绪感|图像|该照片|营造出一种|增添了色彩和深度感|社区感|自然与人文(?:和谐)?融合|和谐统一|令人印象深刻|岁月静好|光影交错/;
+export const STIFF_CRITIQUE_COPY=/整体很好|光线很好|颜色很好|色彩很好|提高深度感|增加深度感|提高情绪感|图像|该照片|营造出一种|增添了色彩和深度感|社区感|自然与人文(?:和谐)?融合|和谐统一|令人印象深刻|岁月静好|光影交错|相映成趣|层次分明|传递出一种/;
 export function validateCritique(value:unknown,requireChinese=true):CritiqueReport {
  const p=value as Record<string,unknown>;
  const score=(v:unknown)=>{const n=typeof v==='number'?v:typeof v==='string'&&/^\d+(\.\d+)?$/.test(v)?Number(v):NaN;if(!Number.isFinite(n)||n<0||n>10)throw Error('Invalid score');return Math.round(n*10)/10;};
