@@ -19,7 +19,7 @@ export function validateCritique(value:unknown,requireChinese=true):CritiqueRepo
  if(!p||typeof p!=='object'||!p.dimensions||typeof p.dimensions!=='object'||!p.analysis||typeof p.analysis!=='object')throw Error('Invalid report');
  const dims=p.dimensions as Record<string,unknown>,notes=p.analysis as Record<string,unknown>;
  const dimensions={} as Record<Dimension,number>,analysis={} as Record<Dimension,string>;
- for(const key of CRITIQUE_DIMENSIONS){dimensions[key]=score(dims[key]);analysis[key]=text(notes[key],requireChinese?25:600);if(requireChinese&&[...analysis[key]].length<15)throw Error('Dimension note is too short');}
+ for(const key of CRITIQUE_DIMENSIONS){dimensions[key]=score(dims[key]);analysis[key]=text(notes[key],requireChinese?45:600);if(requireChinese&&[...analysis[key]].length<10)throw Error('Dimension note is too short');}
  const list=(v:unknown,max:number):[string,string]=>{if(!Array.isArray(v)||v.length!==2)throw Error('Invalid report list');return [text(v[0],requireChinese?max:600),text(v[1],requireChinese?max:600)];};
  return {score:meanCritiqueScore(dimensions),verdict:text(p.verdict,requireChinese?45:300),dimensions,analysis,highlights:list(p.highlights,40),suggestions:list(p.suggestions,50)};
 }

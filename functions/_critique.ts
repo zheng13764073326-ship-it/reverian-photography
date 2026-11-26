@@ -26,14 +26,19 @@ export function parseEditedCritiqueOutput(output:unknown):CritiqueReport {
  const value=wrapped&&typeof wrapped==='object'?(wrapped.response??wrapped.choices?.[0]?.message?.content??output):output;
  const raw=typeof value==='string'?JSON.parse(value.match(/\{[\s\S]*\}/)?.[0]??'null'):value;
  if(!raw||typeof raw!=='object'||!raw.analysis)throw Error('Invalid edited report');
+ // These wording substitutions preserve the model's judgment and add no visual facts.
+ const plain=(text:unknown)=>typeof text==='string'?text.replaceAll('相映成趣','搭配自然').replaceAll('层次分明','层次清楚').replaceAll('传递出一种安静的沉思感','看着安静').replaceAll('传递出一种','带来'):text;
  const analysis:Record<string,string>={};
  for(const key of ['composition','lighting','color','mood']){
-  const note=raw.analysis[key];if(typeof note!=='string'||note.length>600)throw Error('Invalid edited note');
-  // Keep a complete model-written sentence; never cut text at a character limit.
-  const sentence=(note.match(/[^。！？]+[。！？]/gu)??[]).map((text:string)=>text.trim()).find((text:string)=>[...text].length>=15&&[...text].length<=25);
-  if(!sentence)throw Error('A complete 15–25 character note is required');analysis[key]=sentence;
+  const note=plain(raw.analysis[key]);if(typeof note!=='string'||note.length>600)throw Error('Invalid edited note');
+  // Prefer a complete 15–25 character sentence. Small length variations must not
+  // turn a useful report into a service error; never truncate at a character limit.
+  const sentences=(note.match(/[^。！？]+[。！？]/gu)??[]).map((text:string)=>text.trim());
+  const sentence=sentences.find((text:string)=>[...text].length>=15&&[...text].length<=25)
+   ??sentences.find((text:string)=>[...text].length>=10&&[...text].length<=45);
+  if(!sentence)throw Error('A complete concise note is required');analysis[key]=sentence;
  }
- return validateCritique({...raw,analysis});
+ return validateCritique({...raw,verdict:plain(raw.verdict),analysis,highlights:Array.isArray(raw.highlights)?raw.highlights.map(plain):raw.highlights,suggestions:Array.isArray(raw.suggestions)?raw.suggestions.map(plain):raw.suggestions});
 }
 
 type VisionObservations={score:number;dimensions:CritiqueReport['dimensions'];evidence:string};

@@ -76,7 +76,7 @@ test('overall score is always the rounded four-dimension mean, including copy ou
 
 test('four grounded notes are mandatory, and stiff or oversized Chinese needs editorial repair',()=>{
  assert.throws(()=>parseCritiqueOutput({...MOCK_CRITIQUE,analysis:{composition:'主体位置清楚。'}}));
- for(const value of ['图像右侧增添了色彩和深度感','自然与人文和谐融合','岁月静好','相映成趣','层次分明','传递出一种安静的沉思感','社区感很强','长'.repeat(36)]){
+ for(const value of ['图像右侧增添了色彩和深度感','自然与人文和谐融合','岁月静好','相映成趣','层次分明','传递出一种安静的沉思感','社区感很强','长'.repeat(46)]){
   const candidate={...MOCK_CRITIQUE,analysis:{...MOCK_CRITIQUE.analysis,color:value}};
   assert.doesNotThrow(()=>parseCritiqueOutput(candidate,false));
   assert.throws(()=>parseCritiqueOutput(candidate));
@@ -103,7 +103,7 @@ test('format placeholders are never accepted as a real critique',()=>{
 });
 
 test('empty praise and short notes require grounded editorial repair',()=>{
- for(const note of ['色彩丰富，冷暖均衡。','光线很好，高光和暗部都很自然。']){
+ for(const note of ['色彩丰富。','光线很好，高光和暗部都很自然。']){
  const candidate={...MOCK_CRITIQUE,analysis:{...MOCK_CRITIQUE.analysis,lighting:note}};
  assert.doesNotThrow(()=>parseCritiqueOutput(candidate,false));assert.throws(()=>parseCritiqueOutput(candidate));
  }
@@ -134,3 +134,10 @@ test('one textual repair handles incomplete notes without re-uploading or re-sco
  });
  try{const response=await call(post());assert.equal(response.status,200);const result=await response.json();assert.deepEqual(result.dimensions,MOCK_CRITIQUE.dimensions);assert.deepEqual(models,[CRITIQUE_MODEL,REPORT_MODEL,REPORT_MODEL]);}finally{db.close();}
 });
+
+test('minor length and wording variations preserve real feedback without chopping a sentence',()=>{
+ const report=parseEditedCritiqueOutput({...MOCK_CRITIQUE,verdict:'石拱桥与橙叶相映成趣，右侧树梢稍显抢镜，整体氛围宁静。',analysis:{...MOCK_CRITIQUE.analysis,composition:'白亭子居中很稳，但背景人群太密，分散了对主体建筑的注意。'}});
+ assert.equal(report.analysis.composition,'白亭子居中很稳，但背景人群太密，分散了对主体建筑的注意。');
+ assert.ok(report.verdict.includes('搭配自然'));assert.deepEqual(report.dimensions,MOCK_CRITIQUE.dimensions);
+});
+
