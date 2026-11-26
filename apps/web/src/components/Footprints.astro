@@ -2,6 +2,7 @@
 import type {Album} from '../lib/types';
 import {albumFootprints,initialMapCamera,mapFrame,placeOnMap} from '../lib/footprints';
 import {imageUrl} from '../lib/images';
+import {getArchiveStats} from '../lib/archive-stats';
 import chinaOutline from '../../public/maps/china.svg?raw';
 import worldOutline from '../../public/maps/world.svg?raw';
 interface Props {albums:Album[]}
@@ -55,7 +56,7 @@ const geometry=(svg:string)=>svg.replace(/^.*?<svg[^>]*>/s,'').replace(/<\/svg>\
             {place.pending?<p class="pending-message">影集整理中<span>照片还在路上，稍后与你分享。</span></p>:place.albums.map(album=><a class="preview-album" href={`/albums/${album.slug}/`}>
               <img src={imageUrl(album.cover.photo,480,album.cover,4/3)} width="480" height="360" loading="lazy" decoding="async" alt={album.cover.photo.alt}/>
               <span class="preview-title">{album.title}</span>
-              <span class="preview-meta"><span>{album.date.slice(0,4)}</span><span>查看影集 ↗</span></span>
+              <span class="preview-meta"><span class="preview-facts"><time datetime={album.date.slice(0,7)}>{album.date.slice(0,7).replace('-','.')}</time><span aria-hidden="true">·</span><span>{getArchiveStats([album]).frames} 张照片</span></span><span class="preview-open">查看影集 ↗</span></span>
             </a>)}
           </div>)}
         </div>
@@ -95,10 +96,10 @@ const geometry=(svg:string)=>svg.replace(/^.*?<svg[^>]*>/s,'').replace(/<\/svg>\
  .map-point[aria-expanded=true] .point-name,[data-map-panel=world] .map-canvas[data-labels] .point-name{opacity:1;visibility:visible}
  .map-point:focus-visible{outline:2px solid var(--map-blue);outline-offset:-4px}
  .map-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 24px 12px}
- .map-help{font:11px var(--sans);color:var(--quiet);letter-spacing:.06em}
+ .map-help{font:15px/1.6 var(--serif-zh);color:var(--muted);letter-spacing:.06em}
  .map-controls{display:flex;border:1px solid var(--line);border-radius:3px;background:var(--paper)}
- .map-controls button{border:0;min-width:44px;min-height:44px;padding:0 10px;color:var(--muted);font:22px var(--serif)}
- .map-controls button+button{border-left:1px solid var(--line)}.map-controls .map-overview{font:12px var(--serif-zh);letter-spacing:.08em}
+ .map-controls button{border:0;min-width:32px;min-height:32px;padding:0 7px;color:var(--muted);font:18px var(--serif)}
+ .map-controls button+button{border-left:1px solid var(--line)}.map-controls .map-overview{font:11px var(--serif-zh);letter-spacing:.08em}
  .map-controls button:disabled{opacity:.3;cursor:default}.map-controls button:hover:enabled{color:var(--map-blue);background:#3c7e9108}
  .map-previews{position:absolute;bottom:130px;right:24px;width:240px;z-index:3}
  .place-preview{border:1px solid #b5c7c9;background:var(--paper);padding:14px;animation:preview-in .18s ease-out;max-height:420px;overflow:auto}
@@ -109,14 +110,16 @@ const geometry=(svg:string)=>svg.replace(/^.*?<svg[^>]*>/s,'').replace(/<\/svg>\
  .preview-album{display:block;color:var(--ink)}.preview-album+.preview-album{margin-top:20px}
  .preview-album img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;background:#EAE8E0}
  .preview-title{display:block;font:17px/1.6 var(--serif-zh);margin-top:12px;text-wrap:balance}
- .preview-meta{display:flex;justify-content:space-between;gap:12px;margin-top:8px;font:11px var(--sans);color:var(--map-blue)}
+ .preview-meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 12px;margin-top:8px;font:11px/1.6 var(--sans);color:var(--map-blue)}
+ .preview-facts{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font-variant-numeric:tabular-nums}.preview-open{white-space:nowrap;margin-left:auto}
+ @media(min-width:1001px){[data-map-panel=china] .map-previews{left:24px;right:auto}}
  .preview-album:hover .preview-title{text-decoration:underline;text-underline-offset:4px}
  .map-footer{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:16px 24px;border-top:1px solid var(--line);color:var(--muted);font:12px var(--sans)}
  .map-footer p{display:flex;align-items:center;gap:9px;margin:0}.legend-dot{width:5px;height:5px;border-radius:50%;background:var(--map-blue)}
  .legend-dot.is-pending{background:var(--paper);border:1px solid var(--map-blue);margin-left:8px}.footer-separator{color:var(--quiet);margin:0 2px}
  @keyframes preview-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
  @media(max-width:1000px){.map-previews{position:static;width:auto;margin:0 14px}.place-preview{margin:0 0 14px;max-height:none;padding:12px}.preview-album{display:grid;grid-template-columns:100px minmax(0,1fr);column-gap:14px;align-items:center}.preview-album img{grid-row:1/3}.preview-title{font-size:16px;margin:0}.preview-meta{margin:6px 0 0;align-self:start}}
- @media(max-width:700px){.footprints{padding-top:36px}.footprints-heading{margin-bottom:22px}.footprints-heading h2{font-size:30px}.footprints-heading p{font-size:13px}.map-caption{padding:12px 14px 0;gap:8px}.map-tabs{gap:8px}.map-tabs button{font-size:20px;letter-spacing:.06em}.tab-divider{font-size:20px}.map-caption p{font-size:14px;letter-spacing:0}.point-name{font-size:12px;left:30px;top:14px}.map-point[data-label-left] .point-name{right:30px}.point-dot{width:3px;height:3px}.map-point.is-pending .point-dot{width:4px;height:4px}.map-tools{padding:0 14px 10px}.map-help{font-size:10px;letter-spacing:0}.map-footer{padding:12px 14px;gap:12px;flex-wrap:wrap;font-size:11px}.map-footer p{gap:6px}}
+ @media(max-width:700px){.footprints{padding-top:36px}.footprints-heading{margin-bottom:22px}.footprints-heading h2{font-size:30px}.footprints-heading p{font-size:13px}.map-caption{padding:12px 14px 0;gap:8px}.map-tabs{gap:8px}.map-tabs button{font-size:20px;letter-spacing:.06em}.tab-divider{font-size:20px}.map-caption p{font-size:14px;letter-spacing:0}.point-name{font-size:12px;left:30px;top:14px}.map-point[data-label-left] .point-name{right:30px}.point-dot{width:3px;height:3px}.map-point.is-pending .point-dot{width:4px;height:4px}.map-tools{padding:0 14px 10px}.map-help{font-size:14px;letter-spacing:0}.map-footer{padding:12px 14px;gap:12px;flex-wrap:wrap;font-size:11px}.map-footer p{gap:6px}}
  @media(prefers-reduced-motion:reduce){.place-preview{animation:none}.point-dot,.point-name,.map-tabs button{transition:none}}
 </style>
 <script>

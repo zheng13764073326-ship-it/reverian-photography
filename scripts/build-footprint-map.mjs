@@ -1,5 +1,6 @@
 import {readFile,writeFile} from 'node:fs/promises';
 import {projectChina,mapFrame} from '../apps/web/src/lib/footprints.ts';
+import {southChinaSeaInset} from './south-china-sea.mjs';
 
 // Derived from Apache ECharts 4.9.0 china.json; see public/maps/SOURCES.md.
 const geo=JSON.parse(await readFile(new URL('./data/china.echarts.json',import.meta.url),'utf8'));
@@ -19,5 +20,6 @@ const paths=geo.features.map(feature=>{
   const d=rings.map(ring=>ring.map((p,i)=>`${i?'L':'M'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join('')+'Z').join('');
   return `<path d="${d}"/>`;
 }).join('\n');
-await writeFile(new URL('../apps/web/public/maps/china.svg',import.meta.url),`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${mapFrame.width} ${mapFrame.height}"><!-- Derived from Apache ECharts 4.9.0; Apache-2.0; projected and restyled for Reverian. --><g fill="#eeeae0" stroke="#c7c2b6" stroke-width=".8" stroke-linejoin="round">${paths}</g></svg>\n`);
+const inset=southChinaSeaInset(JSON.parse(await readFile(new URL('./data/south-china-sea.datav.json',import.meta.url),'utf8')));
+await writeFile(new URL('../apps/web/public/maps/china.svg',import.meta.url),`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${mapFrame.width} ${mapFrame.height}"><!-- Derived from Apache ECharts 4.9.0; Apache-2.0; projected and restyled for Reverian. --><g fill="#eeeae0" stroke="#c7c2b6" stroke-width=".8" stroke-linejoin="round">${paths}</g>${inset}</svg>\n`);
 console.log(`Generated China map: ${geo.features.length} regions.`);
