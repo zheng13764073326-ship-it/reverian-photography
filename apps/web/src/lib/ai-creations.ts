@@ -1,4 +1,5 @@
 export function setupAICreations(root:HTMLElement) {
+  root.querySelectorAll<HTMLElement>('[data-new-until]').forEach(badge=>{badge.hidden=Date.now()>Number(badge.dataset.newUntil);});
   const grid=root.querySelector<HTMLElement>('#lab-prompt-grid')!;
   const cards=[...grid.querySelectorAll<HTMLElement>('.lab-prompt-card')];
   const desktop=matchMedia('(min-width:801px)'),reduced=matchMedia('(prefers-reduced-motion:reduce)');
@@ -88,7 +89,7 @@ export function setupAICreations(root:HTMLElement) {
     }catch{
       if(token!==session||!dialog.open)return;
       copy.textContent='一键复制提示词';status.textContent='未能复制，请长按或选中文字复制。';
-      body.focus({preventScroll:true});const range=document.createRange(),selection=getSelection();range.selectNodeContents(body);selection?.removeAllRanges();selection?.addRange(range);
+      body.focus({preventScroll:true});const range=document.createRange(),selection=getSelection();range.selectNodeContents(body.querySelector('[data-prompt-text]')||body);selection?.removeAllRanges();selection?.addRange(range);
     }finally{if(token===session)copy.disabled=false;}
   });
   return {layout,close:()=>close(true)};

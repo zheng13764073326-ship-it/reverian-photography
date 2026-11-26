@@ -1,0 +1,59 @@
+---
+import Base from '../layouts/Base.astro';
+import guides from '../data/lab/guides.json';
+import AICreations from '../components/AICreations.astro';
+import DarkroomCritique from '../components/DarkroomCritique.astro';
+import SunsetObservatory from '../components/SunsetObservatory.astro';
+import introductions from '../data/lab/introductions.json';
+import creations from '../data/lab/prompts.json';
+interface Props {initialTab?:'guides'|'ai'}
+const {initialTab='guides'}=Astro.props;
+const isAI=initialTab==='ai';
+import '@fontsource-variable/noto-serif-sc/wght.css';
+import '@fontsource/jetbrains-mono/latin-400.css';
+import '../styles/lab.css';
+import '../styles/ai-creations.css';
+---
+<Base title={isAI?'AI 造境':'摄影入门'} description={introductions[initialTab]} lab>
+  <div class="lab-page container" data-optical-lab data-active-tab={initialTab}>
+    <header class="lab-heading">
+      <p class="lab-eyebrow">OPTICAL LAB <span data-lab-guide-number>// 01</span><span data-lab-count hidden={!isAI}>· 已收录 {creations.length} 组</span></p>
+      <h1 data-lab-title>{isAI?'AI 造境':'摄影入门'}</h1>
+      <p class="lab-subtitle" data-lab-subtitle>{introductions[initialTab]}</p>
+    </header>
+    <section id="lab-panel-guides" class="lab-panel" aria-labelledby="lab-section-guides" data-lab-panel="guides" hidden={isAI}>
+      <div class="lab-section-line"><h2 id="lab-section-guides">入门指南</h2><p>FIELD NOTES <span>/ 04 GUIDES</span></p></div>
+      <div class="lab-guide-grid">
+        {guides.map(guide=><button type="button" class="lab-guide-card lab-corners" data-guide={guide.id} aria-haspopup="dialog" aria-controls="lab-reader">
+          <span class="lab-card-index">GUIDE {guide.index}<span>{guide.tag}</span></span>
+          <strong>{guide.title}</strong><span class="lab-guide-summary">{guide.summary}</span>
+          <span class="lab-card-bottom"><span>大纲 · 预计 {guide.readTime}</span><span aria-hidden="true">↗</span></span>
+        </button>)}
+      </div>
+      {guides.map(guide=><template data-guide-template={guide.id} data-title={guide.title} data-index={guide.index} data-tag={guide.tag}>
+        <p class="lab-reader-intro">{guide.summary}</p><p class="lab-outline-label">指南大纲 · 内容与实拍对照持续补充</p>
+        {guide.content.map(section=><section><h3>{section.heading}</h3><ul>{section.points.map(point=><li>{point}</li>)}</ul></section>)}
+      </template>)}
+    </section>
+
+    <section id="lab-panel-ai" class="lab-panel" aria-labelledby="lab-section-ai" data-lab-panel="ai" hidden={!isAI}>
+      <AICreations/>
+    </section>
+
+    <section id="lab-panel-sunset" class="lab-panel" aria-labelledby="lab-section-sunset" data-lab-panel="sunset" hidden>
+      <SunsetObservatory/>
+    </section>
+    <section id="lab-panel-critique" class="lab-panel" aria-labelledby="lab-section-critique" data-lab-panel="critique" hidden><DarkroomCritique/></section>
+    <noscript><p class="lab-noscript">请开启 JavaScript，以使用栏目导航、阅读指南、天气观测和暗房评片。</p></noscript>
+    <dialog id="lab-reader" class="lab-reader" aria-labelledby="lab-reader-title">
+      <header><span data-reader-index>GUIDE</span><button type="button" data-reader-close autofocus aria-label="关闭指南">关闭 ×</button></header>
+      <div class="lab-reader-scroll" tabindex="0"><p class="lab-eyebrow" data-reader-tag></p><h2 id="lab-reader-title"></h2><div data-reader-body></div></div>
+      <footer>REVERIAN // OPTICAL LAB</footer>
+    </dialog>
+  </div>
+</Base>
+<script>
+  import {setupOpticalLab} from '../lib/optical-lab';
+  const root=document.querySelector<HTMLElement>('[data-optical-lab]');
+  if(root)setupOpticalLab(root);
+</script>

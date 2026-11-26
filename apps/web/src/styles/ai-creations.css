@@ -1,11 +1,12 @@
 .lab-page[data-active-tab='ai']{padding-top:calc(var(--header) + 32px)}
 .lab-page[data-active-tab='ai'] .lab-heading{padding-bottom:0;margin-bottom:24px;border:0}
 .lab-page[data-active-tab='ai'] .lab-eyebrow{margin-bottom:10px}
-.lab-page[data-active-tab='ai'] .lab-eyebrow>span{display:none}
+.lab-page[data-active-tab='ai'] [data-lab-guide-number]{display:none}
+.lab-page .lab-eyebrow [data-lab-count]{margin-left:4px;color:#68716b;font:400 12px/1.8 var(--sans);letter-spacing:.03em}
 .lab-page[data-active-tab='ai'] h1{margin-bottom:12px;font-size:clamp(36px,4vw,54px)}
-.lab-page[data-active-tab='ai'] .lab-subtitle{max-width:42em;font-size:16px;line-height:1.9}
+.lab-page[data-active-tab='ai'] .lab-subtitle{max-width:58em;font:400 15px/1.9 var(--sans);color:#6a6d67}
 #lab-panel-ai .lab-use-filters{gap:8px;flex-wrap:nowrap;max-width:100%;margin-bottom:24px;padding:2px 0 8px;scrollbar-width:thin;scrollbar-color:#b9b9ad transparent;overscroll-behavior-x:contain}
-#lab-panel-ai .lab-use-filters button{min-height:44px;padding:8px 18px;border-radius:999px;font:400 14px/1.8 var(--lab-serif);white-space:nowrap;flex-shrink:0}
+#lab-panel-ai .lab-use-filters button{min-height:36px;padding:5px 13px;border-radius:18px;font:400 13px/1.8 var(--sans);white-space:nowrap;flex-shrink:0}
 .lab-prompt-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:32px;align-items:start}
 .lab-prompt-grid[data-masonry]{grid-auto-rows:8px}
 .lab-prompt-card{min-width:0}
@@ -58,7 +59,7 @@
  .lab-page[data-active-tab='ai'] .lab-eyebrow{margin-bottom:6px;font-size:11px}
  .lab-page[data-active-tab='ai'] h1{margin-bottom:8px}
  #lab-panel-ai .lab-use-filters{margin-bottom:16px}
- #lab-panel-ai .lab-use-filters button{padding-inline:15px}
+ #lab-panel-ai .lab-use-filters button{padding-inline:11px}
  .lab-prompt-grid,.lab-prompt-grid[data-masonry]{display:block}
  .lab-creation-card-body{padding-bottom:32px}
  .lab-creation-notes{padding-top:16px}
@@ -75,3 +76,24 @@
  .lab-art-link,.lab-prompt-open{transition:none}
  .lab-prompt-drawer[open],.lab-prompt-drawer[open].is-closing,.lab-prompt-drawer::backdrop,.lab-prompt-drawer.is-closing::backdrop{animation:none}
 }
+
+/* A growing prompt library keeps navigation compact and sample images complete. */
+.lab-filter-toolbar{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.lab-filter-toolbar .lab-use-filters{flex:1;min-width:0}
+.lab-search-toggle{flex:none;display:grid;place-items:center;width:38px;height:38px;margin-top:2px;border:1px solid var(--lab-line);border-radius:50%;color:var(--accent)}
+.lab-search-toggle[aria-expanded='true']{background:var(--lab-soft)}
+.lab-prompt-search-panel{display:flex;gap:8px;align-items:center;margin:0 0 24px;padding:5px 12px;border:1px solid var(--lab-line);border-radius:8px}
+.lab-prompt-search-panel input{min-width:0;flex:1;border:0;background:transparent;padding:9px 0;color:var(--ink);font:400 16px/1.5 var(--sans)}
+.lab-prompt-search-panel button,.lab-prompt-empty button{min-height:38px;padding:6px 10px;color:var(--accent);font:400 14px/1.6 var(--sans)}
+.lab-prompt-empty{font:400 15px/1.8 var(--sans);color:#6a6d67;padding:20px 0}
+.lab-creation-notes h3>.lab-prompt-new{display:inline-flex;align-items:center;gap:4px;font:400 10px/1.5 var(--lab-mono);color:#8a764b;white-space:nowrap}
+.lab-prompt-new i{width:4px;height:4px;border-radius:50%;background:currentColor}
+.lab-prompt-meta{margin:0 0 24px;padding-bottom:18px;border-bottom:1px solid var(--lab-line);color:#70746e;font:400 13px/1.75 var(--sans)}
+.lab-prompt-meta dl{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 16px;margin:0}
+.lab-prompt-meta dl>div{display:flex;gap:8px;align-items:baseline}
+.lab-prompt-meta dt{flex:none;color:#777c75}
+.lab-prompt-meta dd{margin:0}
+.lab-prompt-meta .lab-prompt-models{grid-column:1/-1}
+.lab-prompt-scroll .lab-prompt-meta p{margin:8px 0 0;color:#70746e}
+@media(min-width:1200px){.lab-prompt-grid{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:24px}.lab-creation-notes h3{font-size:25px}}
+@media(max-width:800px){.lab-page[data-active-tab='ai'] .lab-subtitle{font-size:14px}.lab-prompt-meta dl{grid-template-columns:1fr}.lab-prompt-meta .lab-prompt-models{grid-column:auto}}

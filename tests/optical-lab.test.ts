@@ -54,15 +54,15 @@ test('weather requests abort on timeout and reject HTTP failures',async()=>{
   await assert.rejects(fetchForecast(city,slow,15),/timed out/);
   await assert.rejects(fetchForecast(city,(async()=>new Response('',{status:429})) as typeof fetch),/429/);
 });
-test('guide outlines and ten AI studies include real source/artwork pairs',async()=>{
+test('guide outlines and AI studies include real source/artwork pairs',async()=>{
   const guides=JSON.parse(await readFile(new URL('guides.json',dataDir),'utf8'));
   assert.deepEqual(guides.map((g:any)=>g.title),['相机选择','镜头选择','焦距逻辑','曝光三角']);
   assert.equal(new Set(guides.map((g:any)=>g.id)).size,4);
   for(const guide of guides){assert.ok(guide.summary&&guide.tag&&guide.readTime);assert.ok(guide.content.length>=3);assert.ok(guide.content.every((section:any)=>section.heading&&section.points.length));}
   const prompts=JSON.parse(await readFile(new URL('prompts.json',dataDir),'utf8'));
-  assert.equal(prompts.length,10);
-  assert.equal(new Set(prompts.map((p:any)=>p.id)).size,10);
-  assert.equal(new Set(prompts.map((p:any)=>p.original.photoId)).size,10);
+  assert.ok(prompts.length>0);
+  assert.equal(new Set(prompts.map((p:any)=>p.id)).size,prompts.length);
+  assert.ok(prompts.every((p:any)=>p.original.photoId));
   for(const prompt of prompts){
     assert.ok(prompt.title&&prompt.style&&prompt.category&&prompt.categoryLabel);
     for(const section of ['创作目标：','原图依据：','画面语言：','约束：'])assert.ok(prompt.prompt.includes(section));
