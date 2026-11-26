@@ -50,7 +50,7 @@ export function setupOpticalLab(root:HTMLElement) {
     if(write){if(id!=='ai'){query='';search.value='';filter('all');}writeLocation();}
     if(id==='critique'){
       critique??=import('./lab-critique').then(module=>module.setupLabCritique(root.querySelector<HTMLElement>('[data-darkroom]')!));
-      void critique.catch(()=>{critique=undefined;root.querySelector<HTMLElement>('[data-critique-status]')!.textContent='暗房模块暂未加载，请重新选择栏目或刷新。';});
+      void critique.catch(()=>{critique=undefined;root.querySelector<HTMLElement>('[data-critique-status]')!.textContent='评片模块暂未加载，请重新选择栏目或刷新。';});
     }
     if(id==='sunset'){
       weather??=import('./lab-weather').then(module=>module.setupLabWeather(root.querySelector<HTMLElement>('[data-lab-panel="sunset"]')!));
