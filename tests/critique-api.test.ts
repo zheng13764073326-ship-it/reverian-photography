@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
 import {readFileSync} from 'node:fs';
 import sharp from 'sharp';
-import {handleCritique,parseCritiqueOutput,MOCK_CRITIQUE,CRITIQUE_MODEL,REPORT_MODEL,modelError,parseVisionObservations} from '../functions/_critique.ts';
+import {handleCritique,parseCritiqueOutput,MOCK_CRITIQUE,CRITIQUE_MODEL,REPORT_MODEL,modelError,parseVisionObservations,parseEditedCritiqueOutput} from '../functions/_critique.ts';
 import {MAX_CRITIQUE_BYTES,validateCritique,formatCritiqueText} from '../apps/web/src/lib/critique-contract.ts';
 import type {Statement} from '../functions/_quiz.ts';
 const photo=new Uint8Array(await sharp({create:{width:320,height:240,channels:3,background:'#8b9d96'}}).jpeg().toBuffer());
@@ -119,4 +119,18 @@ test('real-world Markdown observations normalize without inventing or editing sc
 test('native chat completions parse only final content, never reasoning',()=>{
  const response={choices:[{message:{content:JSON.stringify(MOCK_CRITIQUE),reasoning:'private internal notes'}}]};
  assert.deepEqual(parseCritiqueOutput(response),MOCK_CRITIQUE);assert.throws(()=>parseCritiqueOutput({choices:[{message:{content:null,reasoning:JSON.stringify(MOCK_CRITIQUE)}}]}));
+});
+
+test('editor keeps complete sentences instead of decoder-truncated fragments',()=>{
+ const edited={...MOCK_CRITIQUE,analysis:{...MOCK_CRITIQUE.analysis,composition:'拱门居中但被游客遮挡，视线受阻。人群密集，主体不够突出。'}};
+ assert.equal(parseEditedCritiqueOutput({choices:[{message:{content:JSON.stringify(edited)}}]}).analysis.composition,'拱门居中但被游客遮挡，视线受阻。');
+ assert.throws(()=>parseEditedCritiqueOutput({...MOCK_CRITIQUE,analysis:{...MOCK_CRITIQUE.analysis,composition:'白亭子居中很稳，但背景人群太密，分散了对主体建筑的'}}));
+});
+test('one textual repair handles incomplete notes without re-uploading or re-scoring',async()=>{
+ let editCalls=0;const models:string[]=[];
+ const {db,post,call}=setup(async(model,input)=>{models.push(model);if(model===CRITIQUE_MODEL)return {response:{...MOCK_CRITIQUE,verdict:'A lake and a pavilion'}};
+ assert.equal(input.image,undefined);assert.ok(!JSON.stringify(input.response_format).includes('maxLength'));editCalls++;
+ return {response:editCalls===1?{...MOCK_CRITIQUE,analysis:{...MOCK_CRITIQUE.analysis,composition:'主体被挡住了'}}:{...MOCK_CRITIQUE,dimensions:{composition:1,lighting:1,color:1,mood:1}}};
+ });
+ try{const response=await call(post());assert.equal(response.status,200);const result=await response.json();assert.deepEqual(result.dimensions,MOCK_CRITIQUE.dimensions);assert.deepEqual(models,[CRITIQUE_MODEL,REPORT_MODEL,REPORT_MODEL]);}finally{db.close();}
 });
