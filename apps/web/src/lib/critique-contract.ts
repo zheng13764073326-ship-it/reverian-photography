@@ -15,7 +15,7 @@ export const STIFF_CRITIQUE_COPY=/图像|该照片|营造出一种|增添了色�
 export function validateCritique(value:unknown,requireChinese=true):CritiqueReport {
  const p=value as Record<string,unknown>;
  const score=(v:unknown)=>{const n=typeof v==='number'?v:typeof v==='string'&&/^\d+(\.\d+)?$/.test(v)?Number(v):NaN;if(!Number.isFinite(n)||n<0||n>10)throw Error('Invalid score');return Math.round(n*10)/10;};
- const text=(v:unknown,max:number)=>{if(typeof v!=='string'||!v.trim()||[...v.trim()].length>max||/25字以内的|一句话克制总评|具体画面亮点[12]|具体可执行建议[12]/.test(v))throw Error('Invalid report text');if(requireChinese&&(!/[\u3400-\u9fff]/.test(v)||STIFF_CRITIQUE_COPY.test(v)))throw Error('Natural Chinese report required');return v.trim();};
+ const text=(v:unknown,max:number)=>{if(typeof v!=='string'||!v.trim()||[...v.trim()].length>max||/根据当前照片写|25字以内的|一句话克制总评|具体画面亮点[12]|具体可执行建议[12]/.test(v))throw Error('Invalid report text');if(requireChinese&&(!/[\u3400-\u9fff]/.test(v)||STIFF_CRITIQUE_COPY.test(v)))throw Error('Natural Chinese report required');return v.trim();};
  if(!p||typeof p!=='object'||!p.dimensions||typeof p.dimensions!=='object'||!p.analysis||typeof p.analysis!=='object')throw Error('Invalid report');
  const dims=p.dimensions as Record<string,unknown>,notes=p.analysis as Record<string,unknown>;
  const dimensions={} as Record<Dimension,number>,analysis={} as Record<Dimension,string>;

@@ -97,3 +97,7 @@ test('stiff Chinese is rewritten without another image call and model totals can
  const seen:string[]=[];const {db,post,call}=setup(async(model,input)=>{seen.push(model);if(model===CRITIQUE_MODEL)return {response:original};assert.equal(input.image,undefined);return {response:{...MOCK_CRITIQUE,score:10,dimensions:{composition:1,lighting:1,color:1,mood:1}}};});
  try{const response=await call(post());assert.equal(response.status,200);const result=await response.json();assert.equal(result.score,8);assert.deepEqual(result.dimensions,original.dimensions);assert.deepEqual(seen,[CRITIQUE_MODEL,REPORT_MODEL]);}finally{db.close();}
 });
+
+test('format placeholders are never accepted as a real critique',()=>{
+ assert.throws(()=>parseCritiqueOutput({...MOCK_CRITIQUE,analysis:{...MOCK_CRITIQUE.analysis,composition:'根据当前照片写构图短评'}},false));
+});
