@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
 import {readFileSync} from 'node:fs';
 import sharp from 'sharp';
-import {handleCritique,parseCritiqueOutput,MOCK_CRITIQUE,CRITIQUE_MODEL,REPORT_MODEL,modelError} from '../functions/_critique.ts';
+import {handleCritique,parseCritiqueOutput,MOCK_CRITIQUE,CRITIQUE_MODEL,REPORT_MODEL,modelError,parseVisionObservations} from '../functions/_critique.ts';
 import {MAX_CRITIQUE_BYTES,validateCritique,formatCritiqueText} from '../apps/web/src/lib/critique-contract.ts';
 import type {Statement} from '../functions/_quiz.ts';
 const photo=new Uint8Array(await sharp({create:{width:320,height:240,channels:3,background:'#8b9d96'}}).jpeg().toBuffer());
@@ -107,4 +107,11 @@ test('empty praise and short notes require grounded editorial repair',()=>{
  const candidate={...MOCK_CRITIQUE,analysis:{...MOCK_CRITIQUE.analysis,lighting:note}};
  assert.doesNotThrow(()=>parseCritiqueOutput(candidate,false));assert.throws(()=>parseCritiqueOutput(candidate));
  }
+});
+
+test('real-world Markdown observations normalize without inventing or editing scores',async()=>{
+ const raw='People gather beside a white pavilion at the lake. Orange leaves frame the right edge.\n* **Composition**: 8.5\n* **Lighting**: 7.0\n* **Color**: 8.0\n* **Mood**: 7.5';
+ assert.equal(parseVisionObservations({response:raw}).score,7.8);assert.throws(()=>parseVisionObservations(raw.replace('7.0','17.0')));assert.throws(()=>parseVisionObservations(raw.replace('Mood','other')));
+ const seen:string[]=[];const {db,call,post}=setup(async(model,input)=>{seen.push(model);if(model===CRITIQUE_MODEL)return {response:raw};assert.equal(input.image,undefined);assert.ok(JSON.stringify(input.messages).includes('Orange leaves'));return {response:MOCK_CRITIQUE};});
+ try{const response=await call(post());assert.equal(response.status,200);const body=await response.json();assert.equal(body.score,7.8);assert.deepEqual(body.dimensions,{composition:8.5,lighting:7,color:8,mood:7.5});assert.deepEqual(seen,[CRITIQUE_MODEL,REPORT_MODEL]);}finally{db.close();}
 });
