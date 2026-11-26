@@ -14,11 +14,11 @@ import '@fontsource/jetbrains-mono/latin-400.css';
 import '../styles/lab.css';
 import '../styles/ai-creations.css';
 ---
-<Base title={isAI?'AI 造境':'摄影入门'} description={introductions[initialTab]} lab>
+<Base title={isAI?'AI 提示词库':'摄影入门'} description={introductions[initialTab]} lab>
   <div class="lab-page container" data-optical-lab data-active-tab={initialTab}>
     <header class="lab-heading">
       <p class="lab-eyebrow">OPTICAL LAB <span data-lab-guide-number>// 01</span><span data-lab-count hidden={!isAI}>· 已收录 {creations.length} 组</span></p>
-      <h1 data-lab-title>{isAI?'AI 造境':'摄影入门'}</h1>
+      <h1 data-lab-title>{isAI?'AI 提示词库':'摄影入门'}</h1>
       <p class="lab-subtitle" data-lab-subtitle>{introductions[initialTab]}</p>
     </header>
     <section id="lab-panel-guides" class="lab-panel" aria-labelledby="lab-section-guides" data-lab-panel="guides" hidden={isAI}>

@@ -1,4 +1,4 @@
-> 当前 AI 造境入口为 `/lab/ai-prompts/`，数据与维护方式见 [AI 提示词库](ai-creations.md)。以下早期 AI 影像条目记录为历史实现。
+> 当前 AI 提示词库入口为 `/lab/ai-prompts/`，数据与维护方式见 [AI 提示词库](ai-creations.md)。以下早期 AI 影像条目记录为历史实现。
 
 # 光学实验室
 

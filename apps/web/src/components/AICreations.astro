@@ -6,7 +6,7 @@ const recent=new Set(recentPrompts(creations));
 const categories=[['all','全部'],['objects','周边物件'],['paper','平面设计'],['worlds','游戏电影'],['forms','艺术画风']];
 const sections=(prompt:string)=>prompt.split('\n').filter(Boolean).map(line=>{const colon=line.indexOf('：');return {title:line.slice(0,colon),text:line.slice(colon+1)};});
 ---
-<h2 id="lab-section-ai" class="lab-sr-only">AI 造境作品</h2>
+<h2 id="lab-section-ai" class="lab-sr-only">AI 提示词库作品</h2>
 <div class="lab-filter-toolbar">
 <div class="lab-use-filters" role="group" aria-label="创作类型筛选">
   {categories.map(([id,label])=><button type="button" data-prompt-filter={id} aria-pressed={id==='all'?'true':'false'} aria-controls="lab-prompt-grid">{label}</button>)}
