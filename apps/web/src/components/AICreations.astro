@@ -1,44 +1,49 @@
 ---
 import creations from '../data/lab/prompts.json';
-const categories=[['all','全部'],...Array.from(new Map(creations.map(work=>[work.category,work.categoryLabel])).entries())];
+const categories=[['all','全部'],['objects','周边物件'],['paper','平面设计'],['worlds','游戏电影'],['forms','艺术画风']];
+const sections=(prompt:string)=>prompt.split('\n').filter(Boolean).map(line=>{const colon=line.indexOf('：');return {title:line.slice(0,colon),text:line.slice(colon+1)};});
 ---
-<div class="lab-section-line"><h2 id="lab-section-ai">照片之外，还有想象</h2><p>REIMAGINED <span>/ {String(creations.length).padStart(2,'0')} STUDIES</span></p></div>
+<h2 id="lab-section-ai" class="lab-sr-only">AI 造境作品</h2>
 <div class="lab-use-filters" role="group" aria-label="创作类型筛选">
   {categories.map(([id,label])=><button type="button" data-prompt-filter={id} aria-pressed={id==='all'?'true':'false'} aria-controls="lab-prompt-grid">{label}</button>)}
 </div>
-<div class="lab-creation-intro"><p>十张原片，十次想象。由我的摄影出发，借助 AI 创作另一种画面。点开图片，可在原片与作品之间切换。</p><output data-prompt-count aria-live="polite">{creations.length} 组创作</output></div>
+<output class="lab-sr-only" data-prompt-count aria-live="polite">{creations.length} 组创作</output>
 <div class="lab-prompt-grid" id="lab-prompt-grid">
-  {creations.map(work=><article class="lab-prompt-card" id={work.id} data-prompt-category={work.category}>
-    <header class="lab-creation-heading">
-      <div><p class="lab-creation-index">STUDY {work.index}<span>{work.style}</span></p><h3>{work.title}</h3></div>
-      <span class="lab-creation-edition">AI 创作 · {work.createdAt.slice(0,7).replace('-','.')}</span>
-    </header>
-    <div class="lab-creation-layout">
-      <figure class:list={['lab-creation-figure','lab-creation-source',{'is-portrait':work.original.height>work.original.width}]}>
-        <div class="lab-figure-label"><span>01 / 原始摄影</span><span>ORIGINAL</span></div>
-        <a class="lab-art-link" href={work.original.src} data-lightbox data-group={`study-${work.id}`} data-title={`原始摄影 · ${work.original.title}`} data-alt={work.original.alt} data-caption={[work.original.city,work.original.dateLabel,work.original.albumTitle].filter(Boolean).join(' · ')} data-photo-width={work.original.width} data-photo-height={work.original.height} data-fallback-src={work.original.preview} aria-label={`放大原始摄影：${work.original.title}`}>
-          <img src={work.original.preview} srcset={work.original.srcset} sizes="(max-width: 700px) calc(100vw - 72px), 42vw" alt={work.original.alt} width={work.original.width} height={work.original.height} loading="lazy" decoding="async"/>
-          <span class="lab-art-zoom" aria-hidden="true">↗</span>
-        </a>
-        <figcaption><span>{work.original.title}</span><span>{[work.original.city,work.original.dateLabel].filter(Boolean).join(' · ')}</span></figcaption>
-      </figure>
-      <figure class="lab-creation-figure lab-creation-artwork">
-        <div class="lab-figure-label"><span>02 / AI 创作</span><span>REIMAGINED</span></div>
-        <a class="lab-art-link" href={work.artwork.src} data-lightbox data-group={`study-${work.id}`} data-title={`AI 创作 · ${work.title}`} data-alt={work.artwork.alt} data-caption={`${work.style} · 由《${work.original.title}》衍生的 AI 创作`} data-photo-width={work.artwork.width} data-photo-height={work.artwork.height} data-fallback-src={work.artwork.preview} aria-label={`放大 AI 创作：${work.title}`}>
-          <img src={work.artwork.preview} srcset={work.artwork.srcset} sizes="(max-width: 700px) calc(100vw - 72px), 56vw" alt={work.artwork.alt} width={work.artwork.width} height={work.artwork.height} loading="lazy" decoding="async"/>
-          <span class="lab-art-zoom" aria-hidden="true">↗</span>
-        </a>
-        <figcaption><span>{work.style}</span><span>AI GENERATED</span></figcaption>
-      </figure>
+  {creations.map(work=><article class="lab-prompt-card" id={work.id} data-prompt-category={work.category} aria-labelledby={`${work.id}-title`}>
+    <div class="lab-creation-card-body">
+      <div class="lab-art-stage" style={`aspect-ratio:${work.artwork.width}/${work.artwork.height}`} aria-label={`${work.title}原片对照`}>
+        {(['artwork','original'] as const).map(kind=>{
+          const image=work[kind],active=kind==='artwork',label=active?'成品':'原片';
+          return <a class="lab-art-link" id={`${work.id}-${kind}`} data-creation-image={kind} data-active={String(active)} aria-hidden={active?undefined:'true'} inert={!active} tabindex={active?0:-1} href={image.src} data-lightbox data-group={`study-${work.id}`} data-title={`${label} · ${active?work.title:work.original.title}`} data-alt={image.alt} data-caption={active?work.description:work.sourceLabel} data-photo-width={image.width} data-photo-height={image.height} data-fallback-src={image.preview} aria-label={`放大${label}：${work.title}`}>
+            <img src={image.preview} srcset={image.srcset} sizes="(max-width: 800px) calc(100vw - 40px), (max-width: 1280px) calc((100vw - 112px) / 2), 584px" alt={image.alt} width={image.width} height={image.height} loading="lazy" decoding="async"/>
+          </a>;
+        })}
+        <div class="lab-art-switch" role="group" aria-label={`${work.title}显示版本`}>
+          <button type="button" data-creation-view="artwork" aria-pressed="true" aria-controls={`${work.id}-artwork`}>成品</button>
+          <span aria-hidden="true">/</span>
+          <button type="button" data-creation-view="original" aria-pressed="false" aria-controls={`${work.id}-original`}>原片</button>
+        </div>
+        <span class="lab-art-status" role="status" hidden></span>
+      </div>
       <div class="lab-creation-notes">
+        <h3 id={`${work.id}-title`}><span>{work.index}</span>{work.title}</h3>
         <p>{work.description}</p>
-        <a class="lab-creation-origin" href={work.original.albumHref}>{work.original.albumTitle}<span aria-hidden="true">↗</span></a>
-        <details class="lab-creation-prompt">
-          <summary><span>查看创作提示词</span><span class="lab-prompt-toggle" aria-hidden="true">＋</span></summary>
-          <pre tabindex="0" aria-label={`${work.title}创作提示词`}><code lang="zh-CN">{work.prompt}</code></pre>
-          <div class="lab-prompt-actions"><span class="lab-copy-status" role="status" aria-live="polite"></span><button type="button" class="lab-copy" data-copy-prompt aria-label={`复制${work.title}提示词`}><i aria-hidden="true" hidden></i><span>复制提示词</span></button></div>
-        </details>
+        <div class="lab-creation-actions">
+          <a class="lab-creation-origin" href={work.sourceHref}>原片：{work.sourceLabel}<span aria-hidden="true"> ↗</span></a>
+          <button type="button" class="lab-prompt-open" data-open-prompt={work.id} aria-haspopup="dialog" aria-controls="lab-prompt-drawer" aria-label={`查看${work.title}提示词`}>提示词</button>
+        </div>
       </div>
     </div>
+    <template data-prompt-template={work.id} data-title={`${work.index} ${work.title}`} data-prompt={work.prompt}>
+      {sections(work.prompt).map(section=><section><h3>{section.title}</h3><p>{section.text}</p></section>)}
+    </template>
   </article>)}
 </div>
+<dialog id="lab-prompt-drawer" class="lab-prompt-drawer" aria-labelledby="lab-prompt-title">
+  <header>
+    <div class="lab-prompt-heading"><h2 id="lab-prompt-title"></h2><button type="button" class="lab-prompt-close" data-prompt-close aria-label="关闭提示词">×</button></div>
+    <button type="button" class="lab-prompt-copy" data-copy-prompt autofocus>一键复制提示词</button>
+    <p class="lab-prompt-status" role="status" aria-live="polite"></p>
+  </header>
+  <div class="lab-prompt-scroll" data-prompt-body tabindex="0" aria-label="完整提示词"></div>
+</dialog>

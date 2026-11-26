@@ -2,9 +2,9 @@
 
 生成日期：2026-11-27。生成方式：内置 OpenAI image_gen，逐张以网站原片为参考生成。
 
-原片与作品由网页分别呈现；原有上下对比拼图和原图小窗不再交给 AI 重绘。示例学校、专业与城市日期已按照片调整；没有记录拍摄日期的条目使用所属影集月份。地图为海岸视觉示意，角色场景为虚构创作。
+网页以成品为主，支持卡片内切换原片与两张灯箱对照；原有上下对比拼图和原图小窗不再交给 AI 重绘。示例学校、专业与城市日期已按照片调整；没有记录拍摄日期的条目使用所属影集月份。地图为海岸视觉示意，角色场景为虚构创作。
 
-## 01 · 把岛屿带回家（旅行磁贴）
+## 01 · 立体冰箱贴（周边物件）
 
 原提示词组：冰箱贴。
 
@@ -12,7 +12,7 @@
 来源影集：https://reverian.cc/albums/xiamen-2026/
 Sanity photoId：`xiamen-2026-09647`。
 
-把厦门的石像、岩壁与黄色引航艇，收进一枚有厚度的旅行纪念。
+提取石像、礁石与引航艇，做成带金属包边的微浮雕冰箱贴，背景取自原片海水色。
 
 ```text
 创作目标：以参考照片为唯一视觉来源，创作一张 3:4 竖版旅行纪念磁贴海报，作为摄影网站“AI 造境”的独立生成作品。只输出完整作品，不做原图/效果对比拼版。
@@ -24,7 +24,7 @@ Sanity photoId：`xiamen-2026-09647`。
 原片资源：`/images/ai-creations/travel-magnet-original.webp`
 作品资源：`/images/ai-creations/travel-magnet-artwork.webp`
 
-## 02 · 沿着海岸读一页（地理图志）
+## 02 · 地图设计（平面设计）
 
 原提示词组：地理图标。
 
@@ -32,7 +32,7 @@ Sanity photoId：`xiamen-2026-09647`。
 来源影集：https://reverian.cc/albums/xiamen-2026/
 Sanity photoId：`xiamen-2026-09928`。
 
-礁石与浪线之间，叠上一页轻薄的海岸笔记。细线只描摹画面中的地形，不标注未经确认的坐标。
+保留原片海岸，只在左上角海面留白处叠加低对比度的地形线稿与极简注记。
 
 ```text
 创作目标：以参考照片创作一幅横向 3:2 的旅行地理图志，把真实海岸摄影与克制的地图笔记融合成一页独立作品。
@@ -44,7 +44,7 @@ Sanity photoId：`xiamen-2026-09928`。
 原片资源：`/images/ai-creations/coastal-atlas-original.webp`
 作品资源：`/images/ai-creations/coastal-atlas-artwork.webp`
 
-## 03 · 双塔的纸上档案（建筑档案）
+## 03 · 建筑档案（平面设计）
 
 原提示词组：建筑档案。
 
@@ -52,7 +52,7 @@ Sanity photoId：`xiamen-2026-09928`。
 来源影集：https://reverian.cc/albums/guangzhou-deep-alleys-2026/
 Sanity photoId：`guangzhou-2026-05790`。
 
-将广州教堂的双尖塔与玫瑰窗转成细密线描，再留下石材的一小块暖色。
+去掉游客，把双塔转为旧纸钢笔线描，右侧补上局部细节拆解与编号排版。
 
 ```text
 创作目标：以参考照片创作一张横向 4:3 的建筑档案海报，呈现博物馆标本册与手工建筑速写的质感。
@@ -64,7 +64,7 @@ Sanity photoId：`guangzhou-2026-05790`。
 原片资源：`/images/ai-creations/architecture-archive-original.webp`
 作品资源：`/images/ai-creations/architecture-archive-artwork.webp`
 
-## 04 · 把海装进取景框（人物叙事海报）
+## 04 · 水彩双曝（艺术画风）
 
 原提示词组：人物海报。
 
@@ -72,7 +72,7 @@ Sanity photoId：`guangzhou-2026-05790`。
 来源影集：https://reverian.cc/about/
 Sanity photoId：`about-reverian-seaside`。
 
-从海边蹲下拍摄的动作出发，让摄影师的轮廓成为容纳潮汐与相遇的画布。
+保留蹲姿与小狗，用双重曝光把海景融进人物轮廓，整体转水彩纸质感。
 
 ```text
 创作目标：根据参考照片创作一张 3:4 竖版电影感水彩叙事海报，以摄影师的轮廓承载一场海边相遇。
@@ -84,7 +84,7 @@ Sanity photoId：`about-reverian-seaside`。
 原片资源：`/images/ai-creations/photographer-poster-original.webp`
 作品资源：`/images/ai-creations/photographer-poster-artwork.webp`
 
-## 05 · 风经过的存档点（塞尔达风格场景）
+## 05 · 塞尔达（游戏电影）
 
 原提示词组：塞尔达传说。
 
@@ -92,7 +92,7 @@ Sanity photoId：`about-reverian-seaside`。
 来源影集：https://reverian.cc/albums/dali-2025/
 Sanity photoId：`dali-2025-6278`。
 
-大理的树、草地和张开的双臂，成为一帧明亮的开放世界冒险。
+保持原构图与动作，转为《旷野之息》赛璐璐画风，加上血条与小地图 UI。
 
 ```text
 创作目标：把参考照片转换成《塞尔达传说：旷野之息 / 王国之泪》视觉语言的游戏场景，输出横向 3:2 的独立游戏截图式作品。
@@ -104,7 +104,7 @@ Sanity photoId：`dali-2025-6278`。
 原片资源：`/images/ai-creations/hyrule-journey-original.webp`
 作品资源：`/images/ai-creations/hyrule-journey-artwork.webp`
 
-## 06 · 雨雾里的港口（冷雨电影场景）
+## 06 · 阴雨电影感（游戏电影）
 
 原提示词组：赛博朋克。
 
@@ -112,7 +112,7 @@ Sanity photoId：`dali-2025-6278`。
 来源影集：https://reverian.cc/albums/xiamen-2026/
 Sanity photoId：`xiamen-2026-harbor-sunset`。
 
-将港口的晚霞改写成冷雨将歇的清晨，以原有灯火留下少量温度。
+不改船只与吊机位置，把晴天晚霞重绘成冷雨清晨，只留码头暖光做焦点。
 
 ```text
 创作目标：将参考照片中的落日港口重构为雨后清晨的电影场景，输出与原图一致的横向 3:2 画面，气氛冷静、潮湿、有叙事感。
@@ -124,7 +124,7 @@ Sanity photoId：`xiamen-2026-harbor-sunset`。
 原片资源：`/images/ai-creations/rainy-harbor-original.webp`
 作品资源：`/images/ai-creations/rainy-harbor-artwork.webp`
 
-## 07 · 一尾由光组成的鲸（自然视觉转译）
+## 07 · 光影化鲸（艺术画风）
 
 原提示词组：视觉设计。
 
@@ -132,7 +132,7 @@ Sanity photoId：`xiamen-2026-harbor-sunset`。
 来源影集：https://reverian.cc/albums/dali-2025/
 Sanity photoId：`dali-2025-6145`。
 
-只取湖水的深蓝、碎金色反光与远山起伏，重新组成一尾安静的鲸。
+抽取湖面水纹、金色逆光与远山起伏，重组成一条带纸雕层次的鲸。
 
 ```text
 创作目标：以参考照片为视觉素材，设计一张 3:4 竖版现代艺术海报，让湖面光影转译为一尾漂浮的鲸。
@@ -144,7 +144,7 @@ Sanity photoId：`dali-2025-6145`。
 原片资源：`/images/ai-creations/water-whale-original.webp`
 作品资源：`/images/ai-creations/water-whale-artwork.webp`
 
-## 08 · 秋天停在这一页（撕纸旅行手账）
+## 08 · 撕纸手账（平面设计）
 
 原提示词组：手账。
 
@@ -152,7 +152,7 @@ Sanity photoId：`dali-2025-6145`。
 来源影集：https://reverian.cc/albums/dali-2025/
 Sanity photoId：`dali-2025-6298`。
 
-水中的秋色被拆成有纤维、有厚度的纸片，拼回一页温柔的旅行手账。
+把秋景拆成带毛边的彩色撕纸拼贴，四周留出纸边，底部配两行手写字。
 
 ```text
 创作目标：将参考照片重构成一张 3:4 竖版的手工撕纸旅行手账作品，风格温暖、真实、有纸张触感。
@@ -164,7 +164,7 @@ Sanity photoId：`dali-2025-6298`。
 原片资源：`/images/ai-creations/autumn-journal-original.webp`
 作品资源：`/images/ai-creations/autumn-journal-artwork.webp`
 
-## 09 · 寄一枚海上的邮票（立体邮票）
+## 09 · 破框邮票（周边物件）
 
 原提示词组：邮票。
 
@@ -172,7 +172,7 @@ Sanity photoId：`dali-2025-6298`。
 来源影集：https://reverian.cc/albums/dalian-2025/
 Sanity photoId：`dalian-2025-0857`。
 
-让大连的灯塔与游船越过邮票的齿孔，在旧纸边缘接上一小片海。
+先做成复古雕版邮票，再让游船和海水冲破下方齿孔，延伸成 3D 微缩场景。
 
 ```text
 创作目标：以参考照片创作一幅 3:4 竖版的立体邮票艺术作品：一枚复古邮票中的海港，向外生长成连续的微缩世界。
@@ -184,7 +184,7 @@ Sanity photoId：`dalian-2025-0857`。
 原片资源：`/images/ai-creations/lighthouse-stamp-original.webp`
 作品资源：`/images/ai-creations/lighthouse-stamp-artwork.webp`
 
-## 10 · 落日中的另一幕（GTA 风格角色插画）
+## 10 · GTA 封面（游戏电影）
 
 原提示词组：GTA头像。
 
@@ -192,7 +192,7 @@ Sanity photoId：`dalian-2025-0857`。
 来源影集：https://reverian.cc/albums/kunming-2025/
 Sanity photoId：`kunming-2025-feeding-gulls`。
 
-保留翠湖照片里的侧身动作与眼镜，把人物置入棕榈、晚霞和海滨城市组成的虚构片场。
+保留喂鸥动作与侧脸特征，换穿夏威夷衬衫，转成 GTA 美漫风迈阿密日落。
 
 ```text
 创作目标：以参考照片中的成年人为主角，绘制一张 1:1 方形、GTA VI 宣传插画视觉语言的角色海报，作为虚构的海滨城市故事。
@@ -203,3 +203,11 @@ Sanity photoId：`kunming-2025-feeding-gulls`。
 
 原片资源：`/images/ai-creations/sunset-avatar-original.webp`
 作品资源：`/images/ai-creations/sunset-avatar-artwork.webp`
+
+## 2026-11-27：画廊与提示词交互
+
+- 桌面双列自适应排布、手机单列；成品完整显示，切换原片保留画框尺寸。解码完成后淡入，新请求取消迟到响应，失败保留原图并提供重试提示。
+- 分类：全部 / 周边物件 / 平面设计 / 游戏电影 / 艺术画风；旧 objects / paper / worlds / forms 参数保留。手机胶囊横向滚动，不折行。
+- 卡片仅展示编号标题、一句话说明、原片文字链接和提示词按钮。来源链接带照片锚点直接定位影集原片。
+- 提示词使用原生模态 dialog：桌面右侧抽屉、手机 62dvh 底部面板，固定复制按钮与四段正文。支持 Escape、遮罩关闭、焦点返回、滚动锁定、复制失败选取原文和减弱动态效果。
+- 完整提示词和全部图像文件未改动；不重新生成图片。

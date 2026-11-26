@@ -1,3 +1,4 @@
+import {setupAICreations} from './ai-creations';
 import introductions from '../data/lab/introductions.json';
 
 export function setupOpticalLab(root:HTMLElement) {
@@ -8,12 +9,15 @@ export function setupOpticalLab(root:HTMLElement) {
   const titleSuffix=document.title.slice(document.title.indexOf(' — '));
   const filters=[...root.querySelectorAll<HTMLButtonElement>('[data-prompt-filter]')];
   const prompts=[...root.querySelectorAll<HTMLElement>('[data-prompt-category]')];
+  const aiGallery=setupAICreations(root);
   let weather:Promise<{ensure:()=>void}>|undefined;
   let critique:Promise<unknown>|undefined;
   function activate(id:string,write=false) {
     const activeLink=links.find(link=>link.dataset.labLink===id)!;
     const title=activeLink.dataset.labLabel||activeLink.textContent!.trim();
     const description=introductions[id as keyof typeof introductions] || introductions.guides;
+    root.dataset.activeTab=id;
+    if(id!=='ai')aiGallery.close();
     heading.textContent=title;
     subtitle.textContent=description;
     document.querySelector<HTMLMetaElement>('meta[name="description"]')?.setAttribute('content',description);
@@ -22,6 +26,7 @@ export function setupOpticalLab(root:HTMLElement) {
     document.querySelector<HTMLMetaElement>('meta[property="og:title"]')?.setAttribute('content',document.title);
     links.forEach(link=>{if(link.dataset.labLink===id)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');});
     panels.forEach(panel=>{panel.hidden=panel.dataset.labPanel!==id;});
+    aiGallery.layout();
     if(write){const url=new URL(location.href);if(id==='guides')url.searchParams.delete('tab');else url.searchParams.set('tab',id);history.pushState(null,'',url);}
     if(id==='critique'){
       critique??=import('./lab-critique').then(module=>module.setupLabCritique(root.querySelector<HTMLElement>('[data-darkroom]')!));
@@ -38,6 +43,7 @@ export function setupOpticalLab(root:HTMLElement) {
     filters.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.promptFilter===id)));
     prompts.forEach(card=>{card.hidden=id!=='all'&&card.dataset.promptCategory!==id;});
     root.querySelector<HTMLElement>('[data-prompt-count]')!.textContent=`${prompts.filter(card=>!card.hidden).length} 组创作`;
+    aiGallery.layout();
     if(write){const url=new URL(location.href);if(id==='all')url.searchParams.delete('use');else url.searchParams.set('use',id);history.pushState(null,'',url);}
   }
   function restore() {
@@ -75,25 +81,7 @@ export function setupOpticalLab(root:HTMLElement) {
   reader.addEventListener('pointerdown',event=>{outsideDown=outside(event);});
   reader.addEventListener('click',event=>{if(outsideDown&&outside(event))reader.close();outsideDown=false;});
   reader.addEventListener('close',()=>{document.body.style.overflow=overflow;if(returnFocus&&!returnFocus.closest('[hidden]'))returnFocus.focus({preventScroll:true});});
-  window.addEventListener('popstate',()=>{if(reader.open)reader.close();restore();});
+  window.addEventListener('popstate',()=>{if(reader.open)reader.close();aiGallery.close();restore();});
 
-  root.querySelectorAll<HTMLButtonElement>('[data-copy-prompt]').forEach(button=>{
-    const card=button.closest('.lab-prompt-card')!,code=card.querySelector<HTMLElement>('code')!;
-    const label=button.querySelector('span')!,dot=button.querySelector('i')!,status=card.querySelector<HTMLElement>('.lab-copy-status')!;
-    let reset:ReturnType<typeof setTimeout>|undefined;
-    button.addEventListener('click',async()=>{
-      clearTimeout(reset);button.disabled=true;label.textContent='正在复制…';status.textContent='';delete button.dataset.copied;dot.hidden=true;
-      try {
-        if(!navigator.clipboard?.writeText)throw Error('Clipboard unavailable');
-        await navigator.clipboard.writeText(code.textContent||'');
-        button.dataset.copied='true';label.textContent='已复制 ✓';dot.hidden=false;status.textContent='提示词已复制。';
-        reset=setTimeout(()=>{delete button.dataset.copied;label.textContent='复制提示词';dot.hidden=true;status.textContent='';},1500);
-      } catch {
-        label.textContent='复制提示词';status.textContent='未能复制，请长按或选中文字复制。';
-        const selection=window.getSelection(),range=document.createRange();range.selectNodeContents(code);selection?.removeAllRanges();selection?.addRange(range);
-        card.querySelector<HTMLElement>('pre')!.focus({preventScroll:true});
-      } finally {button.disabled=false;}
-    });
-  });
   restore();
 }
