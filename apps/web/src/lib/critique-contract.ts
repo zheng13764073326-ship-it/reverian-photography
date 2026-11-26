@@ -11,7 +11,7 @@ export interface CritiqueReport {
  highlights:[string,string];suggestions:[string,string];
 }
 export function meanCritiqueScore(dimensions:Record<Dimension,number>){return Math.round(CRITIQUE_DIMENSIONS.reduce((sum,key)=>sum+dimensions[key],0)/CRITIQUE_DIMENSIONS.length*10)/10;}
-export const STIFF_CRITIQUE_COPY=/图像|该照片|营造出一种|增添了色彩和深度感|社区感|自然与人文(?:和谐)?融合|和谐统一|令人印象深刻|岁月静好|光影交错/;
+export const STIFF_CRITIQUE_COPY=/整体很好|光线很好|颜色很好|色彩很好|提高深度感|增加深度感|提高情绪感|图像|该照片|营造出一种|增添了色彩和深度感|社区感|自然与人文(?:和谐)?融合|和谐统一|令人印象深刻|岁月静好|光影交错/;
 export function validateCritique(value:unknown,requireChinese=true):CritiqueReport {
  const p=value as Record<string,unknown>;
  const score=(v:unknown)=>{const n=typeof v==='number'?v:typeof v==='string'&&/^\d+(\.\d+)?$/.test(v)?Number(v):NaN;if(!Number.isFinite(n)||n<0||n>10)throw Error('Invalid score');return Math.round(n*10)/10;};
@@ -19,7 +19,7 @@ export function validateCritique(value:unknown,requireChinese=true):CritiqueRepo
  if(!p||typeof p!=='object'||!p.dimensions||typeof p.dimensions!=='object'||!p.analysis||typeof p.analysis!=='object')throw Error('Invalid report');
  const dims=p.dimensions as Record<string,unknown>,notes=p.analysis as Record<string,unknown>;
  const dimensions={} as Record<Dimension,number>,analysis={} as Record<Dimension,string>;
- for(const key of CRITIQUE_DIMENSIONS){dimensions[key]=score(dims[key]);analysis[key]=text(notes[key],requireChinese?35:600);}
+ for(const key of CRITIQUE_DIMENSIONS){dimensions[key]=score(dims[key]);analysis[key]=text(notes[key],requireChinese?25:600);if(requireChinese&&[...analysis[key]].length<15)throw Error('Dimension note is too short');}
  const list=(v:unknown,max:number):[string,string]=>{if(!Array.isArray(v)||v.length!==2)throw Error('Invalid report list');return [text(v[0],requireChinese?max:600),text(v[1],requireChinese?max:600)];};
  return {score:meanCritiqueScore(dimensions),verdict:text(p.verdict,requireChinese?45:300),dimensions,analysis,highlights:list(p.highlights,40),suggestions:list(p.suggestions,50)};
 }

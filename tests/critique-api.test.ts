@@ -101,3 +101,10 @@ test('stiff Chinese is rewritten without another image call and model totals can
 test('format placeholders are never accepted as a real critique',()=>{
  assert.throws(()=>parseCritiqueOutput({...MOCK_CRITIQUE,analysis:{...MOCK_CRITIQUE.analysis,composition:'根据当前照片写构图短评'}},false));
 });
+
+test('empty praise and short notes require grounded editorial repair',()=>{
+ for(const note of ['色彩丰富，冷暖均衡。','光线很好，高光和暗部都很自然。']){
+ const candidate={...MOCK_CRITIQUE,analysis:{...MOCK_CRITIQUE.analysis,lighting:note}};
+ assert.doesNotThrow(()=>parseCritiqueOutput(candidate,false));assert.throws(()=>parseCritiqueOutput(candidate));
+ }
+});
