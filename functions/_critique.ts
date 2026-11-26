@@ -34,8 +34,17 @@ export function parseEditedCritiqueOutput(output:unknown):CritiqueReport {
   // Prefer a complete 15–25 character sentence. Small length variations must not
   // turn a useful report into a service error; never truncate at a character limit.
   const sentences=(note.match(/[^。！？]+[。！？]/gu)??[]).map((text:string)=>text.trim());
+  const concise:string[]=[];
+  for(const complete of sentences){
+   const clauses=complete.replace(/[。！？]$/u,'').split(/[，；]/u).map((part:string)=>part.trim()).filter(Boolean);
+   for(let count=clauses.length;count>=1;count--)for(let start=0;start+count<=clauses.length;start++){
+    const text=clauses.slice(start,start+count).join('，')+'。';
+    // Only remove whole clauses. Avoid standalone subordinate fragments.
+    if([ ...text].length>=15&&[...text].length<=25&&!/^(但|不过|可是|然而|因为|由于|虽然|如果|当|为了|随着|让|使|从而|唯独)/u.test(text)&&!/[的和与但让使，]。$/u.test(text))concise.push(text);
+   }
+  }
   const sentence=sentences.find((text:string)=>[...text].length>=15&&[...text].length<=25)
-   ??sentences.find((text:string)=>[...text].length>=10&&[...text].length<=45);
+   ??concise[0]??sentences.find((text:string)=>[...text].length>=10&&[...text].length<=45);
   if(!sentence)throw Error('A complete concise note is required');analysis[key]=sentence;
  }
  return validateCritique({...raw,verdict:plain(raw.verdict),analysis,highlights:Array.isArray(raw.highlights)?raw.highlights.map(plain):raw.highlights,suggestions:Array.isArray(raw.suggestions)?raw.suggestions.map(plain):raw.suggestions});

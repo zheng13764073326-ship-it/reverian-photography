@@ -137,7 +137,12 @@ test('one textual repair handles incomplete notes without re-uploading or re-sco
 
 test('minor length and wording variations preserve real feedback without chopping a sentence',()=>{
  const report=parseEditedCritiqueOutput({...MOCK_CRITIQUE,verdict:'石拱桥与橙叶相映成趣，右侧树梢稍显抢镜，整体氛围宁静。',analysis:{...MOCK_CRITIQUE.analysis,composition:'白亭子居中很稳，但背景人群太密，分散了对主体建筑的注意。'}});
- assert.equal(report.analysis.composition,'白亭子居中很稳，但背景人群太密，分散了对主体建筑的注意。');
+ assert.equal(report.analysis.composition,'白亭子居中很稳，但背景人群太密。');
  assert.ok(report.verdict.includes('搭配自然'));assert.deepEqual(report.dimensions,MOCK_CRITIQUE.dimensions);
 });
 
+
+test('real long notes are shortened at complete clause boundaries',()=>{
+ const source={...MOCK_CRITIQUE,analysis:{composition:'石堤和树构成天然画框，视线被引向中心，但人群分布稍显拥挤。',lighting:'夕阳给场景镀上暖金色，阴影轮廓清晰，让石堤和树叶更有立体感。',color:'橙色树叶在蓝灰水面衬托下很抢眼，唯独天空部分曝光略过，稍显平淡。',mood:'整体氛围宁静舒适，但中心人物轻微模糊，削弱了画面的清晰聚焦感。'}};
+ const result=parseEditedCritiqueOutput(source);for(const key of ['composition','lighting','color','mood'] as const){assert.ok(result.analysis[key].length>=15&&result.analysis[key].length<=25);assert.ok(source.analysis[key].includes(result.analysis[key].slice(0,-1)));assert.ok(result.analysis[key].endsWith('。'));}
+});
