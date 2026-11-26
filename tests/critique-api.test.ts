@@ -115,3 +115,8 @@ test('real-world Markdown observations normalize without inventing or editing sc
  const seen:string[]=[];const {db,call,post}=setup(async(model,input)=>{seen.push(model);if(model===CRITIQUE_MODEL)return {response:raw};assert.equal(input.image,undefined);assert.ok(JSON.stringify(input.messages).includes('Orange leaves'));return {response:MOCK_CRITIQUE};});
  try{const response=await call(post());assert.equal(response.status,200);const body=await response.json();assert.equal(body.score,7.8);assert.deepEqual(body.dimensions,{composition:8.5,lighting:7,color:8,mood:7.5});assert.deepEqual(seen,[CRITIQUE_MODEL,REPORT_MODEL]);}finally{db.close();}
 });
+
+test('native chat completions parse only final content, never reasoning',()=>{
+ const response={choices:[{message:{content:JSON.stringify(MOCK_CRITIQUE),reasoning:'private internal notes'}}]};
+ assert.deepEqual(parseCritiqueOutput(response),MOCK_CRITIQUE);assert.throws(()=>parseCritiqueOutput({choices:[{message:{content:null,reasoning:JSON.stringify(MOCK_CRITIQUE)}}]}));
+});
