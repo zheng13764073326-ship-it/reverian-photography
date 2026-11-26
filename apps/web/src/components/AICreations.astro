@@ -1,0 +1,44 @@
+---
+import creations from '../data/lab/prompts.json';
+const categories=[['all','全部'],...Array.from(new Map(creations.map(work=>[work.category,work.categoryLabel])).entries())];
+---
+<div class="lab-section-line"><h2 id="lab-section-ai">照片之外，还有想象</h2><p>REIMAGINED <span>/ {String(creations.length).padStart(2,'0')} STUDIES</span></p></div>
+<div class="lab-use-filters" role="group" aria-label="创作类型筛选">
+  {categories.map(([id,label])=><button type="button" data-prompt-filter={id} aria-pressed={id==='all'?'true':'false'} aria-controls="lab-prompt-grid">{label}</button>)}
+</div>
+<div class="lab-creation-intro"><p>十张原片，十次想象。由我的摄影出发，借助 AI 创作另一种画面。点开图片，可在原片与作品之间切换。</p><output data-prompt-count aria-live="polite">{creations.length} 组创作</output></div>
+<div class="lab-prompt-grid" id="lab-prompt-grid">
+  {creations.map(work=><article class="lab-prompt-card" id={work.id} data-prompt-category={work.category}>
+    <header class="lab-creation-heading">
+      <div><p class="lab-creation-index">STUDY {work.index}<span>{work.style}</span></p><h3>{work.title}</h3></div>
+      <span class="lab-creation-edition">AI 创作 · {work.createdAt.slice(0,7).replace('-','.')}</span>
+    </header>
+    <div class="lab-creation-layout">
+      <figure class:list={['lab-creation-figure','lab-creation-source',{'is-portrait':work.original.height>work.original.width}]}>
+        <div class="lab-figure-label"><span>01 / 原始摄影</span><span>ORIGINAL</span></div>
+        <a class="lab-art-link" href={work.original.src} data-lightbox data-group={`study-${work.id}`} data-title={`原始摄影 · ${work.original.title}`} data-alt={work.original.alt} data-caption={[work.original.city,work.original.dateLabel,work.original.albumTitle].filter(Boolean).join(' · ')} data-photo-width={work.original.width} data-photo-height={work.original.height} data-fallback-src={work.original.preview} aria-label={`放大原始摄影：${work.original.title}`}>
+          <img src={work.original.preview} srcset={work.original.srcset} sizes="(max-width: 700px) calc(100vw - 72px), 42vw" alt={work.original.alt} width={work.original.width} height={work.original.height} loading="lazy" decoding="async"/>
+          <span class="lab-art-zoom" aria-hidden="true">↗</span>
+        </a>
+        <figcaption><span>{work.original.title}</span><span>{[work.original.city,work.original.dateLabel].filter(Boolean).join(' · ')}</span></figcaption>
+      </figure>
+      <figure class="lab-creation-figure lab-creation-artwork">
+        <div class="lab-figure-label"><span>02 / AI 创作</span><span>REIMAGINED</span></div>
+        <a class="lab-art-link" href={work.artwork.src} data-lightbox data-group={`study-${work.id}`} data-title={`AI 创作 · ${work.title}`} data-alt={work.artwork.alt} data-caption={`${work.style} · 由《${work.original.title}》衍生的 AI 创作`} data-photo-width={work.artwork.width} data-photo-height={work.artwork.height} data-fallback-src={work.artwork.preview} aria-label={`放大 AI 创作：${work.title}`}>
+          <img src={work.artwork.preview} srcset={work.artwork.srcset} sizes="(max-width: 700px) calc(100vw - 72px), 56vw" alt={work.artwork.alt} width={work.artwork.width} height={work.artwork.height} loading="lazy" decoding="async"/>
+          <span class="lab-art-zoom" aria-hidden="true">↗</span>
+        </a>
+        <figcaption><span>{work.style}</span><span>AI GENERATED</span></figcaption>
+      </figure>
+      <div class="lab-creation-notes">
+        <p>{work.description}</p>
+        <a class="lab-creation-origin" href={work.original.albumHref}>{work.original.albumTitle}<span aria-hidden="true">↗</span></a>
+        <details class="lab-creation-prompt">
+          <summary><span>查看创作提示词</span><span class="lab-prompt-toggle" aria-hidden="true">＋</span></summary>
+          <pre tabindex="0" aria-label={`${work.title}创作提示词`}><code lang="zh-CN">{work.prompt}</code></pre>
+          <div class="lab-prompt-actions"><span class="lab-copy-status" role="status" aria-live="polite"></span><button type="button" class="lab-copy" data-copy-prompt aria-label={`复制${work.title}提示词`}><i aria-hidden="true" hidden></i><span>复制提示词</span></button></div>
+        </details>
+      </div>
+    </div>
+  </article>)}
+</div>

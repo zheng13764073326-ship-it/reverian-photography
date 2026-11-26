@@ -1,7 +1,7 @@
 import {dateAt} from '../apps/web/src/lib/local-time.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFile} from 'node:fs/promises';
+import {readFile,stat} from 'node:fs/promises';
 import {scoreSunset,parseForecast,sampleReading,sunsetBearing,forecastUrl,readCachedForecast,fetchForecast,shanghaiDate,CACHE_AGE,type City} from '../apps/web/src/lib/sunset.ts';
 const dataDir=new URL('../apps/web/src/data/lab/',import.meta.url);
 const cities:City[]=JSON.parse(await readFile(new URL('cities.json',dataDir),'utf8'));
@@ -54,12 +54,27 @@ test('weather requests abort on timeout and reject HTTP failures',async()=>{
   await assert.rejects(fetchForecast(city,slow,15),/timed out/);
   await assert.rejects(fetchForecast(city,(async()=>new Response('',{status:429})) as typeof fetch),/429/);
 });
-test('guide outlines and six prompt categories have complete independent content',async()=>{
+test('guide outlines and ten AI studies include real source/artwork pairs',async()=>{
   const guides=JSON.parse(await readFile(new URL('guides.json',dataDir),'utf8'));
   assert.deepEqual(guides.map((g:any)=>g.title),['相机选择','镜头选择','焦距逻辑','曝光三角']);
   assert.equal(new Set(guides.map((g:any)=>g.id)).size,4);
   for(const guide of guides){assert.ok(guide.summary&&guide.tag&&guide.readTime);assert.ok(guide.content.length>=3);assert.ok(guide.content.every((section:any)=>section.heading&&section.points.length));}
   const prompts=JSON.parse(await readFile(new URL('prompts.json',dataDir),'utf8'));
-  assert.equal(new Set(prompts.map((p:any)=>p.category)).size,6);
-  for(const prompt of prompts){assert.ok(prompt.id&&prompt.index&&prompt.title&&prompt.style);assert.ok(prompt.prompt.length>350);assert.equal(typeof prompt.src,'string');}
+  assert.equal(prompts.length,10);
+  assert.equal(new Set(prompts.map((p:any)=>p.id)).size,10);
+  assert.equal(new Set(prompts.map((p:any)=>p.original.photoId)).size,10);
+  for(const prompt of prompts){
+    assert.ok(prompt.title&&prompt.style&&prompt.category&&prompt.categoryLabel);
+    for(const section of ['创作目标：','原图依据：','画面语言：','约束：'])assert.ok(prompt.prompt.includes(section));
+    assert.notEqual(prompt.original.src,prompt.artwork.src);
+    assert.match(prompt.original.albumHref,/^\/(?:albums\/[^/]+|about)\/$/);
+    assert.equal(prompt.generator,'OpenAI image_gen');
+    for(const image of [prompt.original,prompt.artwork]){
+      assert.ok(image.alt&&image.width>0&&image.height>0);
+      for(const source of [image.src,image.preview]){
+        assert.match(source,/^\/images\/ai-creations\/[a-z0-9_-]+\.webp$/);
+        assert.ok((await stat(new URL('../apps/web/public'+source,import.meta.url))).size>1000);
+      }
+    }
+  }
 });

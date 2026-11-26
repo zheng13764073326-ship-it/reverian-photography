@@ -37,7 +37,7 @@ export function setupOpticalLab(root:HTMLElement) {
   function filter(id:string,write=false) {
     filters.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.promptFilter===id)));
     prompts.forEach(card=>{card.hidden=id!=='all'&&card.dataset.promptCategory!==id;});
-    root.querySelector<HTMLElement>('[data-prompt-count]')!.textContent=`${prompts.filter(card=>!card.hidden).length} 条提示词`;
+    root.querySelector<HTMLElement>('[data-prompt-count]')!.textContent=`${prompts.filter(card=>!card.hidden).length} 组创作`;
     if(write){const url=new URL(location.href);if(id==='all')url.searchParams.delete('use');else url.searchParams.set('use',id);history.pushState(null,'',url);}
   }
   function restore() {
