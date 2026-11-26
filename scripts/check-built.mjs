@@ -31,6 +31,8 @@ for(const file of pages){
  else assert.match(html,/name="robots" content="noindex, nofollow"/);
  for(const [tag] of html.matchAll(/<img\b[^>]*>/g)){
   if(tag.includes('class="hero-photo"')){assert.match(tag,/fetchpriority="high"/);assert.match(tag,/decoding="sync"/);assert.match(tag,/loading="eager"/);}
+  // The empty dialog image has no request until a visitor opens a photo.
+  else if(tag.includes('id="viewer-image"')){assert.match(tag,/loading="eager"/);assert.match(tag,/decoding="async"/);assert.doesNotMatch(tag,/\s(?:src|srcset)=/);}
   else{assert.match(tag,/loading="lazy"/,file+': non-cover image must be lazy');assert.match(tag,/decoding="async"/,file+': non-cover image must decode asynchronously');}
   if(tag.includes('id="viewer-image"'))continue;
   assert.match(tag,/alt="[^"]+"/,file+': missing alt');assert.match(tag,/width="\d+"/,file+': missing width');assert.match(tag,/height="\d+"/,file+': missing height');

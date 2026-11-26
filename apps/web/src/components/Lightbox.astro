@@ -3,7 +3,7 @@
  <button id="viewer-prev" aria-label="上一张照片">←</button>
  <div id="paper-stage">
   <div id="photo-paper">
-   <div id="paper-front"><img id="viewer-image" alt="" loading="lazy" decoding="async"/></div>
+   <div id="paper-front"><img id="viewer-image" alt="" loading="eager" decoding="async"/></div>
    <section id="paper-back" aria-label="相纸背面的拍摄手记" aria-hidden="true" inert>
     <div id="paper-ghost" aria-hidden="true"></div>
     <div id="paper-stamp" aria-hidden="true">
@@ -20,10 +20,12 @@
   </div>
  </div>
  <button id="viewer-next" aria-label="下一张照片">→</button>
+ <p id="viewer-status" role="status" hidden></p>
  <footer><span id="viewer-info"></span><button id="paper-flip" aria-controls="photo-paper" aria-pressed="false" hidden>翻至背面 ↻</button><span id="viewer-count" aria-live="polite"></span></footer>
 </dialog>
 <script>
 import {resetImageRecovery} from '../lib/image-loading';
+import {DecodedPhotos} from '../lib/decoded-photos';
 const dialog=document.querySelector<HTMLDialogElement>('#lightbox')!;
 const image=document.querySelector<HTMLImageElement>('#viewer-image')!;
 const title=document.querySelector('#viewer-title')!,info=document.querySelector<HTMLElement>('#viewer-info')!,count=document.querySelector('#viewer-count')!;
@@ -33,6 +35,37 @@ const ghost=document.querySelector<HTMLElement>('#paper-ghost')!,story=document.
 const signature=document.querySelector('#paper-signature')!,flip=document.querySelector<HTMLButtonElement>('#paper-flip')!;
 const close=document.querySelector<HTMLButtonElement>('#viewer-close')!,footer=dialog.querySelector('footer')!;
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+const photos=new DecodedPhotos(6),status=document.querySelector<HTMLElement>('#viewer-status')!;
+let targetIndex=0,navigation=0,loadingNotice:ReturnType<typeof setTimeout>|undefined;
+let departure:HTMLElement|undefined,departureAnimation:Animation|undefined;
+function clearNotice(){clearTimeout(loadingNotice);status.hidden=true;status.textContent='';dialog.removeAttribute('aria-busy');}
+function cancelNavigation(){navigation++;targetIndex=index;clearNotice();}
+function previewSource(a:HTMLAnchorElement){
+ const thumbnail=a.querySelector('img'),shown=thumbnail?.currentSrc||thumbnail?.src;
+ if(thumbnail?.complete&&thumbnail.naturalWidth&&shown&&!shown.startsWith('data:'))return shown;
+ // Homepage images outside the viewport may still contain an SVG placeholder.
+ const candidates=thumbnail?.dataset.srcset||thumbnail?.srcset;
+ return candidates?.split(',')[0]?.trim().split(/\s+/)[0]||a.dataset.fallbackSrc||thumbnail?.dataset.src||a.href;
+}
+function warmNeighbours(){
+ if(links.length<2)return;
+ for(const offset of [1,-1])void photos.load(links[(index+offset+links.length)%links.length].href,'low').catch(()=>{});
+}
+function snapshotPaper(){
+ if(reduced.matches)return;
+ const rect=stage.getBoundingClientRect(),face=flipped?back:front;
+ const layer=document.createElement('div');layer.className='paper-departure';layer.setAttribute('aria-hidden','true');layer.inert=true;
+ Object.assign(layer.style,{left:rect.left+'px',top:rect.top+'px',width:rect.width+'px',height:rect.height+'px'});
+ const copy=face.cloneNode(true) as HTMLElement;
+ // Capture the visible face before resetting it. Inline computed styles keep
+ // the note back faithful without inserting duplicate IDs or focus targets.
+ const originals=[face,...face.querySelectorAll<HTMLElement|SVGElement>('*')],clones=[copy,...copy.querySelectorAll<HTMLElement|SVGElement>('*')];
+ originals.forEach((node,i)=>{const clone=clones[i],style=getComputedStyle(node);clone.removeAttribute('id');clone.removeAttribute('tabindex');for(const property of style)clone.style.setProperty(property,style.getPropertyValue(property));});
+ Object.assign(copy.style,{position:'absolute',inset:'0',width:'100%',height:'100%',transform:'none',backfaceVisibility:'visible',transition:'none'});
+ const originalStory=face.querySelector('#paper-story'),copiedStory=copy.querySelector('[aria-label="拍摄手记，可滚动阅读"]');
+ layer.append(copy);dialog.append(layer);if(originalStory&&copiedStory)copiedStory.scrollTop=originalStory.scrollTop;
+ return layer;
+}
 let links:HTMLAnchorElement[]=[],index=0,returnFocus:HTMLElement|null=null,overflow='',locked=false;
 let generation=0,autoFlip:ReturnType<typeof setTimeout>|undefined,entrance:Animation|undefined,flipped=false,isStory=false;
 let frontHeight=0,backHeight=0,frontWidth=0,backWidth=0;
@@ -49,7 +82,7 @@ function writeStory(caption:string){
  const parts=caption.trim().split(/\r?\n\s*\r?\n/);
  parts.forEach((part,i)=>{const p=document.createElement('p');writeCaption(p,part);if(i===0&&parts.length>1&&part.length<70)p.className='story-opening';story.append(p);});
 }
-function cancelSequence(){generation++;clearTimeout(autoFlip);autoFlip=undefined;entrance?.cancel();entrance=undefined;}
+function cancelSequence(){generation++;clearTimeout(autoFlip);autoFlip=undefined;entrance?.cancel();entrance=undefined;departureAnimation?.cancel();departureAnimation=undefined;departure?.remove();departure=undefined;}
 function setFace(value:boolean){
  flipped=value;paper.classList.toggle('is-flipped',value);
  if(!value&&back.contains(document.activeElement))(isStory?flip:close).focus({preventScroll:true});
@@ -73,40 +106,44 @@ function sizePaper(){
  frontWidth=w;backWidth=short?availableWidth:w;
  stage.style.width=`${flipped?backWidth:frontWidth}px`;stage.style.height=`${flipped?backHeight:frontHeight}px`;
 }
-async function present(source?:DOMRect,turnToStory=isStory){
+async function present(source?:DOMRect,turnToStory=isStory,direction=0,previous?:HTMLElement){
  if(!dialog.open)return;
  const token=generation;
  sizePaper();
  if(!reduced.matches){
   const rect=stage.getBoundingClientRect();
-  const from=source?`translate(${source.x+source.width/2-rect.x-rect.width/2}px,${source.y+source.height/2-rect.y-rect.height/2}px) scale(${source.width/rect.width},${source.height/rect.height})`:'scale(.96)';
-  entrance=stage.animate([{transform:from,opacity:source?1:0},{transform:'none',opacity:1}],{duration:source?480:260,easing:'cubic-bezier(.22,1,.36,1)'});
+  const from=source?`translate(${source.x+source.width/2-rect.x-rect.width/2}px,${source.y+source.height/2-rect.y-rect.height/2}px) scale(${source.width/rect.width},${source.height/rect.height})`:direction?`translateX(${direction*28}px) scale(.985)`:'scale(.96)';
+  if(previous){departure=previous;departureAnimation=previous.animate([{opacity:1,transform:'none'},{opacity:0,transform:`translateX(${-direction*24}px) scale(.985)`}],{duration:280,easing:'cubic-bezier(.22,1,.36,1)',fill:'forwards'});void departureAnimation.finished.then(()=>{previous.remove();if(departure===previous)departure=undefined;}).catch(()=>{});}
+  entrance=stage.animate([{transform:from,opacity:source?1:0},{transform:'none',opacity:1}],{duration:source?480:direction?340:260,easing:'cubic-bezier(.22,1,.36,1)'});
   try{await entrance.finished;}catch{return;}
  }
  if(token!==generation||!dialog.open)return;
  // Hold the enlarged photograph before turning the paper over.
  if(isStory&&turnToStory)autoFlip=setTimeout(()=>{if(token===generation&&dialog.open&&isStory)setFace(true);},300);
 }
-function update(){
+function update(ready?:HTMLImageElement){
  cancelSequence();const a=links[index];
  const isFilm=a.dataset.film==='true';dialog.classList.toggle('film-view',isFilm);
- isStory=a.dataset.story==='true';dialog.classList.toggle('story-view',isStory);flip.hidden=!isStory;
+ isStory=a.dataset.story==='true';dialog.classList.toggle('story-view',isStory);
+ // A hidden flip button otherwise drops keyboard focus outside the dialog.
+ if(!isStory&&document.activeElement===flip)close.focus({preventScroll:true});
+ flip.hidden=!isStory;
  dialog.style.removeProperty('--viewer-footer-space');
  // Disable transitions while replacing a different photo, avoiding a flash of the previous back.
  stage.classList.add('paper-reset');setFace(false);
  image.width=Number(a.dataset.photoWidth)||a.querySelector('img')?.naturalWidth||1200;image.height=Number(a.dataset.photoHeight)||a.querySelector('img')?.naturalHeight||800;
  resetImageRecovery(image);image.dataset.fallbackSrc=a.dataset.fallbackSrc||a.href;
- const filmPreview=isFilm?(a.querySelector('img')?.currentSrc||a.dataset.fallbackSrc):undefined;
- image.src=filmPreview||a.href;image.alt=a.dataset.alt||a.dataset.title||'';
- // Enlarge the already-visible scan immediately, then replace it with the original.
- if(isFilm&&image.src!==a.href){
-  const token=generation,original=new Image();original.decoding='async';original.src=a.href;
-  void original.decode().then(()=>{if(token===generation&&dialog.open&&links[index]===a)image.src=a.href;}).catch(()=>{});
- }
+ const prepared=ready||photos.peek(a.href),preview=previewSource(a);
+ image.src=prepared?.src||preview;image.alt=a.dataset.alt||a.dataset.title||'';
+ // Keep the decoded preview visible until the full photo is ready. Late
+ // responses from previous selections or a closed dialog cannot replace it.
+ // Flipping the same photograph must not cancel its resolution upgrade.
+ void photos.load(a.href).then(original=>{if(dialog.open&&links[index]===a)image.src=original.src;}).catch(()=>{});
+ warmNeighbours();
  title.textContent=a.dataset.title||'';
  const caption=a.dataset.caption||'';writeCaption(info,caption);info.toggleAttribute('tabindex',Boolean(caption.trim()));if(caption.trim())info.tabIndex=0;
  info.toggleAttribute('data-paragraphs',/\r?\n\s*\r?\n/.test(caption));
- const preview=a.querySelector('img')?.currentSrc||a.dataset.fallbackSrc||a.href;
+
  front.style.backgroundImage=`url(${JSON.stringify(preview)})`;
  if(isStory){
   writeStory(a.dataset.storyText||caption);
@@ -120,29 +157,43 @@ function update(){
  void stage.offsetHeight;stage.classList.remove('paper-reset');
  requestAnimationFrame(()=>{info.scrollTop=0;story.scrollTop=0;});
 }
-function step(delta:number){
- // Continue browsing fronts when navigation starts on a photograph.
- const turnToStory=flipped;
- index=(index+delta+links.length)%links.length;update();void present(undefined,turnToStory);
+async function step(delta:number){
+ if(!dialog.open||links.length<2)return;
+ const turnToStory=flipped,request=++navigation;
+ clearNotice();clearTimeout(autoFlip);autoFlip=undefined;
+ targetIndex=(targetIndex+delta+links.length)%links.length;
+ const nextIndex=targetIndex,a=links[nextIndex];
+ dialog.setAttribute('aria-busy','true');
+ loadingNotice=setTimeout(()=>{if(request===navigation&&dialog.open){status.textContent='照片载入中…';status.hidden=false;}},450);
+ try{
+  const ready=photos.peek(a.href)||await Promise.any([photos.load(a.href),photos.load(previewSource(a))]);
+  if(request!==navigation||!dialog.open)return;
+  clearNotice();cancelSequence();const previous=snapshotPaper();
+  index=nextIndex;update(ready);void present(undefined,turnToStory,Math.sign(delta),previous);
+ }catch{
+  if(request!==navigation||!dialog.open)return;
+  clearNotice();status.textContent='照片暂未载入，请重新切换重试。';status.hidden=false;
+ }
 }
+
 document.addEventListener('click',event=>{
  const link=event.target instanceof Element?event.target.closest<HTMLAnchorElement>('a[data-lightbox]'):null;
  if(!link)return;
  event.preventDefault();const source=link.querySelector('img')?.getBoundingClientRect();
  links=[...document.querySelectorAll<HTMLAnchorElement>('a[data-lightbox]')].filter(a=>a.dataset.group===link.dataset.group);index=links.indexOf(link);returnFocus=link;
  if(!locked){overflow=document.body.style.overflow;document.body.style.overflow='hidden';locked=true;}
- update();dialog.showModal();close.focus();void present(source);
+ cancelNavigation();update();dialog.showModal();close.focus();void present(source);
 });
 close.addEventListener('click',()=>dialog.close());
 dialog.addEventListener('close',()=>{
  // A queued close event must not clear a newly reopened dialog.
  if(dialog.open)return;
- cancelSequence();document.body.style.overflow=overflow;locked=false;resetImageRecovery(image);image.removeAttribute('src');delete image.dataset.fallbackSrc;ghost.removeAttribute('style');front.style.removeProperty('background-image');returnFocus?.focus({preventScroll:true});
+ cancelNavigation();cancelSequence();photos.clear();document.body.style.overflow=overflow;locked=false;resetImageRecovery(image);image.removeAttribute('src');delete image.dataset.fallbackSrc;ghost.removeAttribute('style');front.style.removeProperty('background-image');returnFocus?.focus({preventScroll:true});
 });
 document.querySelector('#viewer-prev')!.addEventListener('click',()=>step(-1));document.querySelector('#viewer-next')!.addEventListener('click',()=>step(1));
 dialog.addEventListener('click',event=>{if(event.target===dialog)dialog.close();});
 dialog.addEventListener('keydown',event=>{if(event.key==='ArrowLeft'){event.preventDefault();step(-1);}if(event.key==='ArrowRight'){event.preventDefault();step(1);}});
-function toggle(){if(!isStory)return;cancelSequence();setFace(!flipped);}
+function toggle(){if(!isStory)return;cancelNavigation();cancelSequence();setFace(!flipped);}
 flip.addEventListener('click',toggle);
 let pointer:{x:number;y:number;scroll:number}|null=null,moved=false;
 paper.addEventListener('pointerdown',event=>{pointer={x:event.clientX,y:event.clientY,scroll:story.scrollTop};moved=false;});
@@ -152,7 +203,7 @@ paper.addEventListener('click',()=>{
  if(moved||(pointer&&Math.abs(story.scrollTop-pointer.scroll)>3)||window.getSelection()?.toString())return;
  toggle();pointer=null;
 });
-window.addEventListener('resize',sizePaper);
+window.addEventListener('resize',()=>{departure?.remove();departure=undefined;sizePaper();});
 reduced.addEventListener('change',()=>{if(dialog.open)cancelSequence();});
 let start:{x:number;y:number}|null=null;
 image.addEventListener('touchstart',event=>{start=event.touches.length===1?{x:event.touches[0].clientX,y:event.touches[0].clientY}:null;},{passive:true});
@@ -164,6 +215,8 @@ image.addEventListener('touchend',event=>{if(!start)return;const t=event.changed
  #lightbox.film-view footer{color:#786b57}
  #lightbox.film-view #viewer-count{font-family:'Courier New',monospace;font-size:13px;letter-spacing:.05em}
  @media(max-width:600px){#lightbox.film-view footer{gap:12px}#lightbox.film-view #viewer-info{font-size:13px}}
+ #lightbox .paper-departure{position:fixed;pointer-events:none;z-index:1;will-change:transform,opacity}
+ #viewer-status{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);margin:0;color:#786b57;font:12px var(--sans);z-index:3;pointer-events:none;white-space:nowrap}
  #paper-stage,#photo-paper,#paper-front{display:contents}
  #paper-back{display:none}
  #paper-flip[hidden]{display:none}
