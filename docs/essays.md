@@ -9,8 +9,8 @@
 - `apps/web/src/lib/essay-catalog.ts`：数据校验、排序、日期与 URL。
 - `apps/web/src/lib/essays.ts`：自动发现文章和图片。
 - `apps/web/src/layouts/EssayLayout.astro`：独立页面文档、SEO 与共享网页字体。
-- `apps/web/src/styles/essays.css`：只在随笔页面加载，全部选择器限制于 `.essay-site` 或 `.essay-document`。不导入全站 global.css、照片灯箱、光圈转场、弹性按钮或自定义鼠标。
-- `apps/web/src/components/essays/`：图片与缺图占位、行内斜体、阅读导航和进度。
+- `apps/web/src/styles/essays.css`：只在随笔页面加载，全部选择器限制于 `.essay-site` 或 `.essay-document`。不导入全站 global.css、照片灯箱、光圈转场、全局按钮样式或自定义鼠标。文末向上箭头单独复用 elastic-buttons.ts 的弹性逻辑，样式仍限定在随笔作用域内。
+- `apps/web/src/components/essays/`：图片与缺图占位、行内斜体、阅读导航和进度，以及共用细线箭头和文末操作栏。
 - `apps/web/src/pages/essays/index.astro`、`[id].astro`：目录和文章模板。
 - 原站 `Header.astro` 只增加同级入口和窄桌面导航间距；移动菜单复用原有交互。`sitemap.xml.ts` 加入自动生成的文章 URL。
 
@@ -68,6 +68,10 @@ git push origin codex/astro-foundation
 
 桌面正文 640px / 17px / 1.95，手机左右 24px / 16px / 1.85。标题与正文使用本站 Noto Serif SC Variable，继续按字符分片加载；元数据使用同源无衬线/等宽字体。字体显示策略为 swap，不阻塞阅读。
 
-所有文章都由静态 HTML 直接输出，关闭 JavaScript 也能阅读和跳转；脚本仅控制导航显隐、阅读进度和失败图片占位。浏览器原生前进/后退与直接访问无需客户端路由。减少动态效果设置会关闭平滑滚动与过渡。
+所有文章都由静态 HTML 直接输出，关闭 JavaScript 也能阅读和跳转；脚本控制导航显隐、阅读进度、失败图片占位和文末箭头反馈。浏览器原生前进/后退与直接访问无需客户端路由。减少动态效果设置会关闭平滑滚动与过渡。
 
 验证入口：`npm test` 中的 essay-catalog 测试、生产构建检查，以及本地工作区 `work/essays/` 的浏览器检查与截图。首篇正文按用户提供原文录入，未改写其观点或事实陈述。
+
+阅读页标题区仅显示刊号与年份、28px 细横线、主标题和副标题；日期、地点与阅读时长保留在数据及目录中，文章头部不再重复显示。主标题桌面 36px、手机 28px，500 字重；副标题 16px、400 字重；章节 600 字重。本站自托管的 Noto Serif SC 可变字体涵盖 200–900 字重，包含上述 400 / 500 / 600。
+
+顶部导航使用半透明纸色与 8px 背景模糊，初始无底线，向下隐藏后向上滚动显示极淡底线。左侧为细线箭头和“随笔”，右侧 ESSAYS。文末“随笔目录”与向上箭头均为 38px 高直角按钮；向上箭头支持金色悬停、按压与回弹，减弱动态效果设置下关闭位移动效。

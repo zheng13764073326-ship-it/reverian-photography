@@ -1,0 +1,21 @@
+---
+import EssayArrow from './EssayArrow.astro';
+---
+<nav class="essay-actions" aria-label="文章结尾导航">
+ <a href="/essays/" class="essay-directory-button essay-return-link"><EssayArrow/><span>随笔目录</span></a>
+ <a href="#top" class="essay-top-control back-to-top" data-elastic-button data-elastic-gold data-essay-back-to-top aria-label="回到顶部" title="回到顶部"><span class="elastic-button-face"><EssayArrow direction="up"/></span></a>
+</nav>
+<script>
+ import {setupElasticButtons} from '../../lib/elastic-buttons';
+ setupElasticButtons();
+ const topLink=document.querySelector<HTMLAnchorElement>('[data-essay-back-to-top]');
+ let resetTop:number|undefined;
+ topLink?.addEventListener('click',event=>{
+  if(event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+  event.preventDefault();window.clearTimeout(resetTop);
+  topLink.classList.add('is-activated');
+  resetTop=window.setTimeout(()=>topLink.classList.remove('is-activated'),900);
+  document.querySelector<HTMLElement>('#essay-title')?.focus({preventScroll:true});
+  window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+ });
+</script>

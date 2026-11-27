@@ -4,6 +4,7 @@ import EssayLayout from '../../layouts/EssayLayout.astro';
 import EssayImage from '../../components/essays/EssayImage.astro';
 import EssayInline from '../../components/essays/EssayInline.astro';
 import EssayReaderNav from '../../components/essays/EssayReaderNav.astro';
+import EssayActions from '../../components/essays/EssayActions.astro';
 import {essays,essayImage} from '../../lib/essays';
 import {essayDate,type Essay} from '../../lib/essay-catalog';
 export function getStaticPaths(){return essays.map(essay=>({params:{id:essay.id},props:{essay}}));}
@@ -13,15 +14,15 @@ const cover=essayImage(essay.coverImage.src);
 const share=cover?await getImage({src:cover,width:Math.max(1,Math.min(cover.width,1200,Math.floor(2400*cover.width/cover.height))),format:'webp',quality:82}):undefined;
 ---
 <EssayLayout title={essay.title} description={essay.excerpt} article date={essay.date} shareImage={share?.src}>
- <EssayReaderNav issueNumber={essay.issueNumber} year={essay.date.slice(0,4)}/>
+ <EssayReaderNav/>
  <main id="essay-main" class="essay-reader" tabindex="-1">
   <article aria-labelledby="essay-title">
-   <header class="essay-article-head"><h1 id="essay-title">{essay.title}</h1><p class="essay-subtitle">{essay.subtitle}</p><p class="essay-article-meta"><time datetime={essay.date}>{essayDate(essay.date)}</time><span aria-hidden="true"> · </span>{essay.location}<span aria-hidden="true"> · </span>约 {essay.readTime} 分钟</p></header>
+   <header class="essay-article-head"><p class="essay-issue-eyebrow">{essay.issueNumber} — {essay.date.slice(0,4)}</p><span class="essay-hero-rule" aria-hidden="true"></span><h1 id="essay-title" tabindex="-1">{essay.title}</h1><p class="essay-subtitle">{essay.subtitle}</p></header>
    <EssayImage image={essay.coverImage}/>
    <div class="essay-content">
     {essay.content.map(block=>block.type==='image'?<EssayImage image={block}/>:block.type==='heading'?<h2 class="essay-chapter essay-text-block"><EssayInline text={block.text}/></h2>:block.type==='quote'?<blockquote class="essay-quote essay-text-block"><p><EssayInline text={block.text}/></p></blockquote>:<p class="essay-paragraph essay-text-block"><EssayInline text={block.text}/></p>)}
    </div>
-   <footer class="essay-colophon essay-text-block"><p>{essay.closingNote||`写于${essay.location} · ${essayDate(essay.date)}`}</p><nav aria-label="文章结尾导航"><a href="/essays/">← 返回随笔目录</a><a href="#top">回到顶部 ↑</a></nav></footer>
+   <footer class="essay-colophon essay-text-block"><p>{essay.closingNote||`写于${essay.location} · ${essayDate(essay.date)}`}</p><EssayActions/></footer>
   </article>
  </main>
 </EssayLayout>
