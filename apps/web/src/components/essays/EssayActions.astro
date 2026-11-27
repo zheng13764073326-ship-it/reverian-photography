@@ -2,7 +2,7 @@
 import EssayArrow from './EssayArrow.astro';
 ---
 <nav class="essay-actions" aria-label="文章结尾导航">
- <a href="/essays/" class="essay-directory-button essay-return-link"><EssayArrow/><span>随笔目录</span></a>
+ <a href="/essays/" class="essay-directory-button" data-elastic-button><span class="elastic-button-face"><EssayArrow/><span class="elastic-button-label">随笔目录</span></span></a>
  <a href="#top" class="essay-top-control back-to-top" data-elastic-button data-elastic-gold data-essay-back-to-top aria-label="回到顶部" title="回到顶部"><span class="elastic-button-face"><EssayArrow direction="up"/></span></a>
 </nav>
 <script>
