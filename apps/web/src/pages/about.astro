@@ -12,11 +12,12 @@ const {settings,mode,albums}=await getContent();
 const aboutHeading=settings.about.find(block=>block.style==='h2')?.children.map(span=>span.text).join('');
 ---
 <Base title="关于我" description={aboutHeading||settings.introduction||settings.seo.description} shareImage={settings.portrait?imageUrl(settings.portrait.photo,1200):undefined}><div class="container page"><SectionHeading title="关于我" english="ABOUT REVERIAN" page/><section class:list={['about-layout',{'about-without-photo':!settings.portrait}]}>
- {settings.portrait&&<div class="about-portrait"><Photo anchorId="photo-about-reverian-seaside" photo={settings.portrait.photo} caption={false} lightbox={false} sizes="(max-width: 600px) calc(100vw - 40px), (max-width: 800px) calc(100vw - 48px), 560px"/></div>}<div class="about-copy">{settings.about.length?<RichText value={settings.about}/>:<><h2>{settings.photographer}</h2><p>{settings.introduction}</p></>}</div>
+ {settings.portrait&&<div class="about-portrait"><Photo anchorId="photo-about-reverian-seaside" photo={{...settings.portrait.photo,alt:settings.portrait.photo.alt.replace("，底部写着 A moment, held in light.","")}} ratio={1} caption={false} lightbox={false} sizes="(max-width: 600px) calc(100vw - 40px), (max-width: 800px) calc(100vw - 48px), 560px"/></div>}<div class="about-copy">{settings.about.length?<RichText value={settings.about}/>:<><h2>{settings.photographer}</h2><p>{settings.introduction}</p></>}</div>
  </section><TacitQuiz/><SocialLinks links={settings.socialLinks}/>{mode==='sanity'&&<Footprints albums={albums}/>} {mode==='demo'&&<p class="demo-note">当前使用原型中的 Unsplash 占位照片和生成式封面场景。地点、日期与故事为演示内容，不代表 Reverian 的实际作品或经历。<a href="/images/sources.json">查看图片来源</a></p>}</div></Base>
 <style>
  .about-layout{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(32px,5vw,72px);padding-top:12px}
  .about-portrait{position:sticky;top:calc(var(--header) + 28px)}
+ .about-portrait :global(img){display:block;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
  .about-copy{min-width:0}
  .about-copy :global(.prose){font-size:18px;line-height:2.05;color:var(--ink)}
  .about-copy :global(.prose>p:first-child){font-family:var(--sans);font-size:14px;line-height:1.8;letter-spacing:.12em;color:var(--muted);margin:0 0 18px}
