@@ -56,7 +56,7 @@
 .essay-site #essay-title:focus{outline:0}
 .essay-site .essay-subtitle{font:400 16px/1.85 var(--essay-serif);margin:14px 0 0;color:#55544F}
 
-.essay-site .essay-reader .essay-figure{width:min(920px,calc(100% - 48px));margin:0 auto 50px}
+.essay-site .essay-reader .essay-figure{width:min(640px,calc(100% - 48px));margin:0 auto 50px}
 .essay-site .essay-content>.essay-figure{margin-block:48px 0}
 .essay-site .essay-text-block{width:min(640px,calc(100% - 48px));margin-inline:auto;text-indent:0;text-align:left}
 .essay-site .essay-paragraph{font-size:17px;line-height:1.95;margin-top:0;margin-bottom:1.6em;white-space:pre-line;overflow-wrap:break-word}
@@ -79,11 +79,11 @@
 @media(hover:hover){.essay-site .essay-issue:hover h2{color:var(--essay-ink)}.essay-site .essay-issue:hover .essay-thumbnail img{transform:scale(1.03)}}
 @media(max-width:1000px){.essay-site .essay-shell{width:calc(100% - 64px)}.essay-site .essay-issue{grid-template-columns:96px minmax(0,1fr) 220px;gap:24px}.essay-site .essay-issue-copy h2{font-size:25px}}
 @media(max-width:760px){.essay-site .essay-shell{width:calc(100% - 48px)}.essay-site .essay-index-nav{padding-block:16px;min-height:72px}.essay-site .essay-masthead{padding:54px 0 44px}.essay-site .essay-masthead h1{font-size:72px;margin-bottom:20px}.essay-site .essay-introduction{font-size:15px;margin-top:28px}.essay-site .essay-issue{grid-template-columns:1fr;gap:24px;padding:32px 0}.essay-site .essay-issue-meta{display:grid;grid-template-columns:1fr auto;gap:7px 16px;padding:0}.essay-site .essay-issue-meta>span:first-child{margin:0}.essay-site .essay-issue-meta>span:last-child{grid-column:1/-1}.essay-site .essay-issue-copy h2{font-size:27px;margin-bottom:10px}.essay-site .essay-issue-subtitle{margin-bottom:16px}.essay-site .essay-index-footnote{padding:40px 0 48px}}
-@media(max-width:700px){.essay-site{font-size:16px;line-height:1.85}.essay-site .essay-article-head{padding:112px 0 44px}.essay-site .essay-article-head h1{font-size:28px}.essay-site .essay-reader .essay-figure{width:100%;margin-bottom:40px}.essay-site .essay-content>.essay-figure{margin:44px 0 0}.essay-site .essay-paragraph{font-size:16px;line-height:1.85}.essay-site .essay-quote{font-size:19px;padding-left:20px}.essay-site .essay-colophon{padding-bottom:40px}}
-.essay-site .essay-reader .essay-annotated{width:min(780px,calc(100% - 48px));display:grid;grid-template-columns:54% 40%;column-gap:6%;align-items:end}
+@media(max-width:700px){.essay-site{font-size:16px;line-height:1.85}.essay-site .essay-article-head{padding:112px 0 44px}.essay-site .essay-article-head h1{font-size:28px}.essay-site .essay-reader .essay-figure{margin-bottom:40px}.essay-site .essay-content>.essay-figure{margin:44px auto 0}.essay-site .essay-paragraph{font-size:16px;line-height:1.85}.essay-site .essay-quote{font-size:19px;padding-left:20px}.essay-site .essay-colophon{padding-bottom:40px}}
+.essay-site .essay-reader .essay-annotated{display:grid;grid-template-columns:54% 40%;column-gap:6%;align-items:end}
 .essay-site .essay-annotated .essay-image-note{min-width:0;margin:0;padding:0;color:#55544F;text-align:left;text-indent:0;font:italic 400 14px/1.85 var(--essay-serif);overflow-wrap:break-word}
 .essay-site .essay-image-note p{margin:0}
 .essay-site .essay-image-note p+p{margin-top:1.2em}
-@media(max-width:767px){.essay-site .essay-reader .essay-annotated{width:100%;grid-template-columns:minmax(0,1fr);gap:24px}.essay-site .essay-annotated .essay-image-note{padding-inline:24px}}
+@media(max-width:767px){.essay-site .essay-reader .essay-annotated{grid-template-columns:minmax(0,1fr);gap:24px}.essay-site .essay-annotated .essay-image-note{padding-inline:0}}
 @media(prefers-reduced-motion:reduce){.essay-document{scroll-behavior:auto}.essay-site *{transition:none!important}}
 @media print{.essay-site .essay-reader-nav,.essay-site .essay-progress,.essay-site .essay-skip,.essay-site .essay-colophon nav{display:none}.essay-site .essay-article-head{padding-top:24px}.essay-site .essay-text-block{width:100%;max-width:640px}.essay-site .essay-figure{break-inside:avoid}}
