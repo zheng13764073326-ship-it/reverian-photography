@@ -12,7 +12,7 @@ const volume=essays[0]?.date.slice(0,4)||String(new Date().getUTCFullYear());
   <header class="essay-masthead"><h1>随笔</h1><p class="essay-kicker">ESSAYS</p><p class="essay-introduction">{introduction}</p></header>
   <ol class="essay-issues" aria-label="随笔目录">
    {essays.map(essay=><li><a class="essay-issue" href={essayHref(essay)} aria-labelledby={`title-${essay.id}`}>
-    <div class="essay-issue-meta"><span>{essay.issueNumber}</span><time datetime={essay.date}>{essayDate(essay.date,true)}</time><span>{essay.location} · {essay.readTime} min</span></div>
+    <div class="essay-issue-meta"><span>{essay.issueNumber}</span><time datetime={essay.date}>{essayDate(essay.date,true)}</time></div>
     <div class="essay-issue-copy"><h2 id={`title-${essay.id}`}>{essay.title}</h2><p class="essay-issue-subtitle">{essay.subtitle}</p><p class="essay-issue-excerpt">{essay.excerpt}</p></div>
     <EssayImage image={essay.coverImage} thumbnail/>
    </a></li>)}
