@@ -2,25 +2,62 @@
 import Base from '../layouts/Base.astro';
 import HomeCover from '../components/HomeCover.astro';
 import SectionHeading from '../components/SectionHeading.astro';
-import Photo from '../components/Photo.astro';
-import AlbumCard from '../components/AlbumCard.astro';
+import HomeAlbumCard from '../components/HomeAlbumCard.astro';
 import HomeAbout from '../components/HomeAbout.astro';
 import FilmFrame from '../components/film/FilmFrame.astro';
 import DriftCard from '../components/film/DriftCard.astro';
 import {getContent} from '../lib/content';
+import {homepageAlbums} from '../data/homepage';
 const content=await getContent();
 const filmPhotos=content.photos.filter(photo=>photo.sections.includes('film'));
+const eligible=content.albums.filter(album=>album.showOnHome!==false);
+const chosen=homepageAlbums.flatMap(slug=>eligible.find(album=>album.slug===slug)??[]);
+// Demo datasets and withdrawn albums still produce a small, complete invitation.
+const albums=[...chosen,...eligible.filter(album=>!chosen.includes(album))].slice(0,3);
 ---
 <Base home><HomeCover settings={content.settings}/>
- <section class="container section" id="selected"><SectionHeading title="精选作品" english="SELECTED PHOTOGRAPHS" href="/works/"/><div class="selected-grid">{content.featured.slice(0,6).map(p=><Photo photo={p} group="selected"/>)}</div></section>
- <section class="container section" id="albums"><SectionHeading title="光影存档" english="PHOTO ARCHIVE" href="/albums/"/><div class="album-grid">{content.albums.filter(album=>album.showOnHome!==false).map(album=><AlbumCard album={album} showExcerpt={false}/>)}</div></section>
- <section class="container section" id="film"><SectionHeading title="胶片来信" english="SILVER HALIDE" href="/film/spring-drift-2026/" label="进入暗房"/><p class="film-home-intro">脱离数码屏幕的即时预览，把决定权交给塑料镜头、过片齿轮与未知的时间。</p><DriftCard/>{filmPhotos.length>0&&<div class="film-home-grid">{filmPhotos.slice(0,2).map((photo,index)=><FilmFrame photo={photo} index={index} preview/>)}</div>}</section>
- <HomeAbout settings={content.settings}/>
+ <div class="home-editorial">
+  {albums.length>0&&<section class="container section home-archive" id="albums" aria-label="光影存档">
+   <SectionHeading title="光影存档" english="PHOTO ARCHIVE" href="/albums/" label="全部影集"/>
+   <div class="home-album-grid">{albums.map((album,index)=><HomeAlbumCard album={album} lead={index===0}/>)}</div>
+   <div class="home-archive-end"><p>走过的地方，留下的照片。</p><a href="/albums/">翻阅全部 {content.albums.length} 本影集<span aria-hidden="true">↗</span></a></div>
+  </section>}
+  <section class="container section home-film" id="film">
+   <SectionHeading title="胶片来信" english="SILVER HALIDE" href="/film/spring-drift-2026/" label="翻阅胶片"/>
+   <p class="film-home-intro">脱离数码屏幕的即时预览，把决定权交给塑料镜头、过片齿轮与未知的时间。</p>
+   <DriftCard/>
+   {filmPhotos.length>0&&<div class="film-home-grid">{filmPhotos.slice(0,2).map((photo,index)=><FilmFrame photo={photo} index={index} preview/>)}</div>}
+  </section>
+  <HomeAbout settings={content.settings}/>
+ </div>
 </Base>
-
 <style>
- #film :global(.eyebrow){letter-spacing:.15em;color:#8c8881} #film :global(.section-heading h2){color:#1c1c1a}
- .film-home-intro{max-width:720px;margin:0 0 20px;font:18px/2 var(--serif-zh);color:var(--muted)}
- .film-home-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:48px}
- @media(max-width:800px){.film-home-grid{grid-template-columns:1fr;gap:48px}.film-home-intro{font-size:17px}}
+ .home-editorial .section{padding-block:80px}
+ .home-editorial :global(.section-heading){margin-bottom:32px;padding-bottom:22px}
+ .home-editorial :global(.section-heading .eyebrow){font-size:12px;letter-spacing:.22em;margin-bottom:10px}
+ .home-editorial :global(.section-heading h2){font-family:var(--serif-zh);font-weight:500;font-size:clamp(30px,3vw,40px);letter-spacing:.06em}
+ .home-editorial :global(.section-heading>a){font:400 14px/1.8 var(--sans)}
+ .home-album-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 32px}
+ .home-archive-end{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:32px;padding-top:22px;border-top:1px solid var(--line)}
+ .home-archive-end p{margin:0;font:400 15px/1.8 var(--serif-zh);color:var(--muted)}
+ .home-archive-end a{display:inline-flex;align-items:center;gap:18px;min-height:44px;font:400 14px/1.6 var(--sans);color:#294f55}
+ .home-archive-end a span{transition:transform .25s}
+ .home-archive-end a:hover span{transform:translate(2px,-2px)}
+ .home-editorial .home-film{padding-top:0;padding-bottom:64px}
+ .film-home-intro{max-width:640px;margin:0 0 26px;font:400 16px/1.9 var(--sans);color:var(--muted)}
+ .film-home-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px}
+ .home-film :global(.film-reel){--reel-height:clamp(154px,14vw,192px);margin-bottom:0}
+ @media(max-width:760px){
+  .home-editorial .section{padding-block:48px}
+  .home-editorial :global(.section-heading){margin-bottom:24px;padding-bottom:20px;gap:12px}
+  .home-editorial :global(.section-heading h2){font-size:30px}
+  .home-album-grid{grid-template-columns:1fr;gap:32px}
+  .home-archive-end{margin-top:28px;padding-top:16px;align-items:flex-start;flex-direction:column;gap:2px}
+  .home-archive-end p{font-size:14px}
+  .home-editorial .home-film{padding-top:8px;padding-bottom:40px}
+  .film-home-intro{font-size:16px;margin-bottom:22px}
+  .film-home-grid{grid-template-columns:1fr;gap:32px}
+  .home-film :global(.film-reel){--reel-height:154px}
+ }
+ @media(prefers-reduced-motion:reduce){.home-archive-end a span{transition:none;transform:none}}
 </style>

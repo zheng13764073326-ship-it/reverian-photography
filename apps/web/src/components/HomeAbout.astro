@@ -20,13 +20,12 @@ const introduction=settings.introduction||firstParagraph?.children.map(span=>spa
       </div>
       <span class="portrait-caption"><span class="quiz-label"><i class="quiz-dot" aria-hidden="true"></i>默契度</span><span class="quiz-caption-hint">十道题，看看你多懂我</span><span class="quiz-caption-arrow" aria-hidden="true">↗</span></span>
     </a>
-      <a class="about-btn about-btn-desktop" href="/about/" data-elastic-button><span class="elastic-button-face"><span class="elastic-button-label">关于我</span><span class="about-arrow" aria-hidden="true">↗</span></span></a>
     </div>}
     <div class="about-note">
       <h2 id="home-about-name" aria-label={`挽风 | ${settings.photographer}`}><svg class="about-signature" viewBox="498 840 984 407" aria-hidden="true"><image href="/images/branding/wanfeng-white.webp" width="2000" height="2000"/></svg><span class="about-name-separator" aria-hidden="true">|</span><span>{settings.photographer}</span></h2>
       {heading&&<p class="about-lead">{heading}</p>}
       {introduction&&<p class="about-excerpt">{introduction}</p>}
-      <a class:list={['about-btn',{'about-btn-mobile':Boolean(settings.portrait)}]} href="/about/" data-elastic-button><span class="elastic-button-face"><span class="elastic-button-label">关于我</span><span class="about-arrow" aria-hidden="true">↗</span></span></a>
+      <a class="about-btn" href="/about/" data-elastic-button><span class="elastic-button-face"><span class="elastic-button-label">关于我</span><span class="about-arrow" aria-hidden="true">↗</span></span></a>
       {!settings.portrait&&<a class="quiz-fallback" href="/about/?quiz=start#tacit">测测我们的默契度 ↗</a>}
       <SocialLinks links={settings.socialLinks} compact id="home-social-title"/>
     </div>
@@ -37,8 +36,8 @@ const introduction=settings.introduction||firstParagraph?.children.map(span=>spa
   .about-rule{display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid var(--line);padding-top:22px;margin-bottom:38px;color:var(--muted)}
   .about-rule .eyebrow{margin:0;font-size:13px;letter-spacing:.22em}
   .about-rule>span{font:15px var(--serif-zh);letter-spacing:.16em;white-space:nowrap}
-  .about-spread{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(32px,5vw,72px);align-items:end}
-  .portrait-column{min-width:0}
+  .about-spread{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1fr);gap:clamp(40px,7vw,96px);align-items:center}
+  .portrait-column{min-width:0;max-width:460px}
   .portrait-link{display:block;min-width:0;--quiz-blue:#237489}
   .portrait-stage{position:relative;display:block;isolation:isolate}
   .portrait-link :global(figure){margin:0}
@@ -58,15 +57,13 @@ const introduction=settings.introduction||firstParagraph?.children.map(span=>spa
   @media(hover:hover){.portrait-link:hover .portrait-invite{opacity:1;transform:translate(-50%,-50%)}.portrait-link:hover .portrait-focus{opacity:1}.portrait-link:hover :global(img){filter:brightness(.83)}}
   @keyframes quiz-beacon{0%,100%{opacity:1;box-shadow:0 0 0 0 #328ea926}50%{opacity:.45;box-shadow:0 0 0 4px #328ea900}}
   .about-note{min-width:0;padding-block:8px 0}
-  .about-note h2{display:flex;align-items:center;gap:.22em;font-family:var(--serif);font-size:clamp(36px,4.5vw,64px);font-weight:400;line-height:1.05;letter-spacing:-.025em;margin:0 0 24px}
+  .about-note h2{display:flex;align-items:center;gap:.22em;font-family:var(--serif);font-size:clamp(34px,3.6vw,50px);font-weight:400;line-height:1.05;letter-spacing:-.025em;margin:0 0 24px}
   .about-signature{display:block;width:1.85em;height:auto;aspect-ratio:984/407;flex:none;overflow:hidden;filter:brightness(0);opacity:.86}
   .about-name-separator{font-size:.7em;color:var(--muted)}
   .about-lead{font:600 clamp(20px,1.8vw,24px)/1.65 var(--serif-zh);letter-spacing:.015em;color:#2C2B29;font-synthesis:none;margin:0 0 18px;text-wrap:balance}
-  .about-excerpt{font:400 16px/2 var(--serif-zh);color:#2C2B29;margin:0;max-width:34em;font-synthesis:none}
-  .about-btn{--press-depth:0px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0;background:transparent;color:#F4F3EE;border:none;border-radius:999px;font-family:var(--serif-zh);font-size:16px;font-weight:500;font-synthesis:none;letter-spacing:.08em;margin-top:8px}
+  .about-excerpt{font:400 16px/1.95 var(--sans);color:#2C2B29;margin:0;max-width:34em;font-synthesis:none}
+  .about-btn{--press-depth:0px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0;background:transparent;color:#F4F3EE;border:none;border-radius:999px;font-family:var(--serif-zh);font-size:16px;font-weight:500;font-synthesis:none;letter-spacing:.08em;margin-top:24px}
   .about-btn .elastic-button-face{padding:12px 32px;background-color:var(--elastic-face-bg,#1E4D54)}
-  .about-btn-desktop{margin-top:16px}
-  .about-btn-mobile{display:none}
   .about-arrow{display:inline-block;letter-spacing:0;transition:transform .35s var(--press-spring)}
   .about-btn:focus-visible{outline:2px solid #1E4D54;outline-offset:4px}
   @media(hover:hover){.about-btn:hover .elastic-button-face{background-color:var(--elastic-face-bg,#163A40)}}
@@ -77,8 +74,7 @@ const introduction=settings.introduction||firstParagraph?.children.map(span=>spa
     .about-rule{margin-bottom:24px;padding-top:18px}
     .about-rule .eyebrow{font-size:12px;letter-spacing:.15em}
     .about-spread{grid-template-columns:1fr;gap:26px}
-    .about-btn-desktop{display:none}
-    .about-btn-mobile{display:inline-flex}
+    .portrait-column{max-width:none}
     .about-note{padding:0}
     .about-note h2{font-size:clamp(34px,9vw,48px);margin-bottom:18px}
     .about-lead{font-size:21px;margin-bottom:14px}
