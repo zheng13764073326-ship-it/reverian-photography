@@ -13,7 +13,7 @@ const lost=!ending&&[3,6].includes(index);
 </section>
 <style>
  .drift-interlude{margin:64px 0 104px}
- .drift-strip-caption{font:12px/1.8 'Courier New',monospace;letter-spacing:.1em;color:#8c8881;margin:0 0 16px}
+ .drift-strip-caption{font:12px/1.8 var(--typewriter);letter-spacing:.1em;color:#8c8881;margin:0 0 16px}
  .drift-filmstrip{position:relative;width:fit-content;max-width:100%;margin-inline:auto;background:#161615;padding:30px 22px 28px;--drift-frame-height:190px}
  .drift-filmstrip::before,.drift-filmstrip::after{content:'';position:absolute;left:22px;right:22px;height:6px;background:repeating-linear-gradient(90deg,#eee9dd 0 9px,transparent 9px 23px);opacity:.65}
  .drift-filmstrip::before{top:8px}.drift-filmstrip::after{bottom:8px}
@@ -21,8 +21,8 @@ const lost=!ending&&[3,6].includes(index);
  .drift-strip-track:focus-visible{outline:1px solid #d2a365;outline-offset:6px}
  .drift-strip-cell{flex:0 0 auto;min-width:0;scroll-snap-align:start}
  .lost-frame{display:flex;flex-direction:column;width:220px;color:#a59a88}
- .lost-frame>div{height:var(--drift-frame-height);border:1px dashed #74634b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:15px;padding:16px;background:radial-gradient(ellipse at top right,#7c44241c,transparent 70%),repeating-linear-gradient(115deg,#ffffff02 0 1px,transparent 1px 4px);text-align:center;font:11px/1.8 'Courier New',monospace}
- .lost-frame-number{margin-top:10px;font:11px/1.7 'Courier New',monospace;letter-spacing:.1em}
+ .lost-frame>div{height:var(--drift-frame-height);border:1px dashed #74634b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:15px;padding:16px;background:radial-gradient(ellipse at top right,#7c44241c,transparent 70%),repeating-linear-gradient(115deg,#ffffff02 0 1px,transparent 1px 4px);text-align:center;font:11px/1.8 var(--typewriter)}
+ .lost-frame-number{margin-top:10px;font:11px/1.7 var(--typewriter);letter-spacing:.1em}
  .drift-last-frames{max-width:780px;margin:80px auto 0}
  @media(max-width:600px){.drift-interlude{margin:44px 0 64px}.drift-filmstrip{padding-inline:16px;--drift-frame-height:174px}.drift-strip-track{gap:14px}.drift-strip-caption{font-size:11px;letter-spacing:.02em}.drift-last-frames{margin-top:48px}}
 </style>

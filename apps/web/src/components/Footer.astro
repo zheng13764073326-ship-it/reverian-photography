@@ -24,13 +24,6 @@ const {demo=false}=Astro.props;
     document.querySelector<HTMLElement>('.site-header .brand')?.focus({preventScroll:true});
     window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
   });
-  const fontTargets=document.querySelectorAll('.home-about,.social-section');
-  let fontLoad:Promise<void>|undefined;
-  const loadFonts=()=>fontLoad??=import('../lib/footer-font').then(module=>module.loadFooterSerif()).then(()=>{document.documentElement.dataset.footerFonts='ready';}).catch(()=>{document.documentElement.dataset.footerFonts='fallback';});
-  if('IntersectionObserver' in window){
-    const observer=new IntersectionObserver(entries=>{if(entries.some(entry=>entry.isIntersecting)){observer.disconnect();void loadFonts();}},{rootMargin:'300px'});
-    fontTargets.forEach(target=>observer.observe(target));
-  }else if(fontTargets.length){void loadFonts();}
 </script>
 <style>
  .site-footer{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:16px 28px;border-top:1px solid var(--line);padding:20px 0 24px;margin-top:36px;color:#4A4A4A;font:400 13px/1.6 var(--sans);letter-spacing:.025em}

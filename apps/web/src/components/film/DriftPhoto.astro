@@ -14,7 +14,7 @@ const photo=issue.photos.find(photo=>photo.id===id)!;
  .drift-photo{margin:0;min-width:0;width:100%}
  .drift-photo-link{display:block;overflow:hidden;background:#EAE8E0;border:10px solid #fffcf7;box-shadow:0 5px 18px #201d1610,0 1px 3px #201d1612}
  .drift-photo-link img{display:block;width:100%;height:auto;max-width:100%;background:#EAE8E0}
- .drift-photo figcaption{display:flex;justify-content:space-between;gap:12px;margin-top:12px;color:#8c8881;font:12px/1.7 'Courier New',monospace;letter-spacing:.1em}
+ .drift-photo figcaption{display:flex;justify-content:space-between;gap:12px;margin-top:12px;color:#8c8881;font:12px/1.7 var(--typewriter);letter-spacing:.1em}
  .drift-photo-link:focus-visible{outline:2px solid #9d713b;outline-offset:5px}
  /* Compact frames follow the photograph; fixed-width cells create letterboxing. */
  .drift-photo-compact{width:calc(var(--drift-frame-height)*var(--drift-photo-ratio))}

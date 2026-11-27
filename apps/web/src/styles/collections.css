@@ -3,8 +3,8 @@ body.is-collection {
   --paper: #F4F3EE;
   --ink: #222222;
   --accent: #1E4D54;
-  --collection-serif: 'Noto Serif SC Variable', 'Noto Serif SC', 'Songti SC', Georgia, serif;
-  --collection-mono: 'JetBrains Mono', 'Noto Serif SC Variable', monospace;
+  --collection-serif: var(--serif-zh);
+  --collection-mono: var(--mono);
   background: var(--paper);
   color: var(--ink);
 }

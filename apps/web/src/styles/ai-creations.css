@@ -38,7 +38,7 @@
 .lab-prompt-drawer>header{flex:none;padding:22px 28px 14px;border-bottom:1px solid var(--lab-line);background:var(--paper)}
 .lab-prompt-heading{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:12px}
 .lab-prompt-heading h2{margin:0;font:500 24px/1.5 var(--lab-serif)}
-.lab-prompt-close{flex:none;width:44px;height:44px;border:1px solid var(--lab-line);border-radius:50%;font:400 28px/1 Arial,sans-serif;color:var(--accent)}
+.lab-prompt-close{flex:none;width:44px;height:44px;border:1px solid var(--lab-line);border-radius:50%;font:400 28px/1 var(--sans);color:var(--accent)}
 .lab-prompt-copy{width:100%;min-height:46px;padding:10px 18px;border:1px solid var(--accent);border-radius:999px;background:var(--accent);color:var(--paper);font:400 16px/1.5 var(--lab-serif)}
 .lab-prompt-copy[data-copied]{background:#cfb678;border-color:#cfb678;color:#253f3c}
 .lab-prompt-status{min-height:20px;margin:8px 0 0;font:400 13px/1.5 var(--lab-serif);color:var(--accent)}

@@ -7,6 +7,8 @@ export async function renderReport(s:ReportSnapshot,element:HTMLElement):Promise
  const mono=css.getPropertyValue('--quiz-mono').trim(),serif=css.getPropertyValue('--serif-zh').trim();
  const signature='挽风 · 摄影作品集';
  await Promise.all([
+  document.fonts.load(`400 24px ${mono}`,'REVERIAN OPTICAL LAB 0123456789 / .'),
+  document.fonts.load(`700 130px ${mono}`,'0123456789'),
   document.fonts.load(`400 28px ${serif}`,s.photoTitle+s.place+(s.name||'')+signature+'合焦光影偏爱直觉'),
   document.fonts.load(`600 30px ${serif}`,s.message),
   document.fonts.load(`700 56px ${serif}`,s.title),

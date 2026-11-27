@@ -1,8 +1,8 @@
 body.is-lab {
   --paper:#F4F3EE; --ink:#222222; --accent:#1E4D54;
   --lab-soft:#EAE8E0; --lab-orange:#B86B35; --lab-line:rgba(34,34,34,.12);
-  --lab-serif:'Noto Serif SC Variable','Noto Serif SC','Songti SC',Georgia,serif;
-  --lab-mono:'JetBrains Mono','Noto Serif SC Variable',monospace;
+  --lab-serif:var(--serif-zh);
+  --lab-mono:var(--mono);
   background:var(--paper);color:var(--ink);
 }
 .lab-page {padding-top:calc(var(--header) + 54px);padding-bottom:36px;font:400 16px/1.9 var(--lab-serif);font-synthesis:none}

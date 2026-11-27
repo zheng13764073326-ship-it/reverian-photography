@@ -69,7 +69,7 @@ const leaves = Array.from({ length: 6 }, (_, i) => {
   .aperture-leaves g { fill: #f4f1e9; stroke: #907b69; stroke-width: 1.2; stroke-linejoin: round; }
   .aperture-leaves polygon { vector-effect: non-scaling-stroke; }
   .aperture-signature { position: absolute; inset-inline: 24px; bottom: 15%; text-align: center; color: #262722; animation: signature 2.1s ease-out both; }
-  .aperture-signature p { margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(32px, 4vw, 50px); font-weight: 400; letter-spacing: .08em; }
+  .aperture-signature p { margin: 0; font-family: var(--serif); font-size: clamp(32px, 4vw, 50px); font-weight: 400; letter-spacing: .08em; }
   .aperture-signature span { display: block; margin-top: 10px; padding-left: .38em; font-size: 10px; letter-spacing: .38em; color: #907b69; }
   @keyframes curtain { 0%, 48% { opacity: 1; } 79%, 100% { opacity: 0; } }
   @keyframes aperture {

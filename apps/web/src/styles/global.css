@@ -5,19 +5,19 @@
   --quiet: #a2a196;
   --accent: #907b69;
   --line: #d9d4c9;
-  --serif:
-    "Cormorant Garamond", "Source Han Serif SC", "Noto Serif CJK SC",
-    "Songti SC", "SimSun", serif;
-  --serif-zh: "Source Han Serif SC", "Noto Serif CJK SC", "Songti SC", "SimSun", serif;
-  --sans:
-    "Source Han Sans SC", "Noto Sans CJK SC", "PingFang SC", "Microsoft YaHei",
-    sans-serif;
+  --serif-zh: "Noto Serif SC Variable", serif;
+  --serif: "Cormorant Garamond", var(--serif-zh);
+  --sans: "Noto Sans SC Variable", sans-serif;
+  --mono: "JetBrains Mono", "Noto Serif SC Variable", monospace;
+  --typewriter: "Courier Prime", "Noto Serif SC Variable", monospace;
   --header: 96px;
 }
 * {
   box-sizing: border-box;
 }
 html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   scroll-padding-top: calc(var(--header) + 20px);
 }
 body {
@@ -32,6 +32,11 @@ a {
   color: inherit;
   text-decoration: none;
 }
+input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+input::placeholder, textarea::placeholder { font: inherit; }
 button {
   font: inherit;
   color: inherit;
@@ -153,7 +158,7 @@ summary::-webkit-details-marker {
   line-height: 1;
 }
 .brand strong {
-  font-family: Georgia, serif;
+  font-family: var(--serif);
   font-size: 16px;
   font-weight: 400;
   letter-spacing: 0.48em;
@@ -199,9 +204,9 @@ summary::-webkit-details-marker {
   font-size: 17px;
   letter-spacing: 1px;
 }
-.lab-nav .portfolio-panel [data-lab-link="critique"] small {font:400 .55em/1.5 monospace;margin-right:6px}
+.lab-nav .portfolio-panel [data-lab-link="critique"] small {font:400 .55em/1.5 var(--mono);margin-right:6px}
 .lab-nav .portfolio-panel a {
-  font-family: "Noto Serif SC Variable", "Noto Serif SC", var(--serif-zh);
+  font-family: var(--serif-zh);
   font-weight: 500;
   font-synthesis: none;
 }
@@ -261,7 +266,7 @@ summary::-webkit-details-marker {
   font-size: clamp(76px, 8.5vw, 150px);
   line-height: 0.95;
   margin: 0 0 22px;
-  font-family: "Cormorant Garamond", Georgia, serif;
+  font-family: var(--serif);
   letter-spacing: -0.025em;
 }
 .home-identity p {

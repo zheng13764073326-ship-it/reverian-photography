@@ -282,10 +282,10 @@ import OpticalReport from './OpticalReport.astro';
 </script>
 
 <style>
- .tacit{--focus-color:#237489;--miss-color:#9a601f;--quiz-mono:ui-monospace,Consolas,monospace;margin:44px 0;scroll-margin-top:calc(var(--header) + 24px)}
+ .tacit{--focus-color:#237489;--miss-color:#9a601f;--quiz-mono:var(--mono);margin:44px 0;scroll-margin-top:calc(var(--header) + 24px)}
  .tacit-intro{display:flex;justify-content:center}.quiz-entry{display:flex;max-width:100%;padding:0;border:0;border-radius:999px;line-height:1.6;background:transparent}.quiz-entry .elastic-button-face{display:flex;align-items:center;gap:20px;max-width:100%;padding:18px 30px;border:1px solid var(--elastic-face-border,#aabebc);background:var(--elastic-face-bg,transparent)}.quiz-entry strong{font-size:17px;font-weight:500;color:var(--elastic-face-ink,var(--focus-color))}.quiz-entry-caption{font-size:14px;color:var(--elastic-face-muted,var(--muted))}.quiz-entry .elastic-button-icon{display:inline-block;font-size:23px;color:var(--elastic-face-ink,var(--focus-color))}.quiz-entry:focus-visible{outline:2px solid var(--focus-color);outline-offset:4px}
  .tacit h2,.tacit h3{font-family:var(--serif-zh)}.tacit h2{font-size:clamp(25px,3vw,34px);margin-bottom:28px}
- .quiz-name-card{--checkin-ink:#1E4D54;--serif-zh:'Noto Serif SC Variable','Songti SC','SimSun',serif;--quiz-mono:'Courier New',monospace;position:relative;max-width:760px;margin:auto;padding:0;border:1px solid rgba(34,34,34,.16);border-radius:2px;background:#F4F3EE;color:#222;line-break:strict}
+ .quiz-name-card{--checkin-ink:#1E4D54;--quiz-mono:var(--typewriter);position:relative;max-width:760px;margin:auto;padding:0;border:1px solid rgba(34,34,34,.16);border-radius:2px;background:#F4F3EE;color:#222;line-break:strict}
  .checkin-meta{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:56px;padding:16px 26px;border-bottom:1px solid rgba(34,34,34,.12);font:11px/1.6 var(--quiz-mono);letter-spacing:.02em;color:#6c706b}
  .checkin-meta span{white-space:nowrap}
  .checkin-corner{position:absolute;width:10px;height:10px;border-style:solid;border-color:#1E4D5459;pointer-events:none}.checkin-corner.tl{top:8px;left:8px;border-width:1px 0 0 1px}.checkin-corner.tr{top:8px;right:8px;border-width:1px 1px 0 0}.checkin-corner.bl{bottom:8px;left:8px;border-width:0 0 1px 1px}.checkin-corner.br{bottom:8px;right:8px;border-width:0 1px 1px 0}

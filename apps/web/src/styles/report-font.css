@@ -1,3 +1,2 @@
-/* One variable family for fixed copy and visitor names; unicode-range loads only needed WOFF2 shards. */
-@import '@fontsource-variable/noto-serif-sc/wght.css';
+/* Font faces are shared by Base.astro; forms and reports use the same family. */
 .optical-report,.quiz-name-card{font-synthesis:none}
