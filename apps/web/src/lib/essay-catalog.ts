@@ -1,11 +1,12 @@
-export interface EssayImage {src:string;alt:string;caption:string}
+export interface EssayImage {src:string;alt:string;caption?:string;sideNote?:{heading:string;paragraphs:string[]}}
 export type EssayBlock={type:'paragraph'|'heading'|'quote';text:string}|({type:'image'}&EssayImage);
 export interface Essay {id:string;issueNumber:string;title:string;subtitle:string;date:string;location:string;readTime:number;excerpt:string;coverImage:EssayImage;content:EssayBlock[];closingNote?:string}
 
 const record=(v:unknown):v is Record<string,unknown>=>typeof v==='object'&&v!==null&&!Array.isArray(v);
 const text=(v:unknown):v is string=>typeof v==='string'&&v.trim().length>0;
 function image(v:unknown):v is EssayImage{
- return record(v)&&text(v.src)&&/^[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\.(jpg|jpeg|png|webp|avif)$/i.test(v.src)&&text(v.alt)&&text(v.caption);
+ return record(v)&&text(v.src)&&/^[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\.(jpg|jpeg|png|webp|avif)$/i.test(v.src)&&text(v.alt)&&(v.caption===undefined||text(v.caption))
+  &&(v.sideNote===undefined||(record(v.sideNote)&&text(v.sideNote.heading)&&Array.isArray(v.sideNote.paragraphs)&&v.sideNote.paragraphs.length>0&&v.sideNote.paragraphs.every(text)));
 }
 export function validateEssay(value:unknown):Essay{
  if(!record(value))throw Error('Essay must be an object');

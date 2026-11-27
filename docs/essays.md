@@ -19,14 +19,14 @@
 把图片放在以下实际源码位置：
 
 ```text
-apps/web/src/assets/essays/01/cover.jpg
+apps/web/src/assets/essays/01/cover.png
 apps/web/src/assets/essays/01/photo-1.jpg
 apps/web/src/assets/essays/01/photo-2.jpg
 ```
 
-对应题图、第三节与第四节之间、第五节之前。没有文件时，服务端直接输出纸灰色占位与文件名，不发送不存在的图片请求。已有图片加载失败时同样退回占位。
+当前三张原图均已接入：cover.png 用作目录封面和开篇题图；photo-1.jpg 放在第三节与第四节之间，配左图右斜体旁注；photo-2.jpg 放在全文最后一段之后、文末日期之前。第五节之前的旧占位已移除，首篇不再显示 Fig. 图注。没有文件时，服务端直接输出纸灰色占位与文件名，不发送不存在的图片请求。已有图片加载失败时同样退回占位。
 
-保持以上文件名即可，无须修改模板。可以使用其他文件名或 JPG/PNG/WebP/AVIF，但须同步修改文章数据的 `src`。`src` 是相对 `assets/essays/` 的路径，如 `01/cover.jpg`。图注在 `caption`，图片说明在 `alt`。
+保持以上文件名即可，无须修改模板。可以使用其他文件名或 JPG/PNG/WebP/AVIF，但须同步修改文章数据的 `src`。`src` 是相对 `assets/essays/` 的路径，如 `01/cover.jpg`。图片说明在 `alt`。`caption` 为可选图注，不需要时直接省略；不输出空图注或额外图注间距。
 
 Astro 自动输出最大长边受限的响应式 WebP；目录缩略图为 3:2，阅读页显示原图比例。黑白和微对比来自 CSS，不修改源照片颜色。不要把源 JPG 放到 `public/`，否则会违反原站仅发布优化图的构建检查。
 
@@ -47,6 +47,8 @@ git push origin codex/astro-foundation
 3. 修改 `coverImage`，在 `assets/essays/02/` 放照片。暂时没有照片可先只填写路径，会自动占位。
 4. 按顺序编辑 `content`。支持 `paragraph`（段落）、`heading`（章节）、`quote`（独立引文）、`image`（图片及图注）。把 image 对象放在哪个位置，插图就出现在哪里。段落中 `\n` 保留换行，`*斜体文字*` 会渲染为斜体；其余文字按纯文本转义，不执行 HTML。
 5. 构建并发布。新文章会自动出现在目录、`/essays/a-walk-after-rain/` 和 sitemap，不用改路由或模板。
+
+图片可增加 `sideNote: {"heading":"拍摄于澳门 / 发财树","paragraphs":["旁注正文"]}`。带旁注的图片自动使用左图右注：桌面最大 780px、54% 图片 / 6% 间距 / 40% 旁注，底部对齐；小于 768px 改为上下排列，图片通栏、文字两侧 24px。旁注为 14px / 1.85 的中文衬线斜体、#55544F。旁注代替常规 caption，不影响目录缩略图。
 
 内容块示例：
 

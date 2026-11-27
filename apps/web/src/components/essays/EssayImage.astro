@@ -4,16 +4,18 @@ import {essayImage} from '../../lib/essays';
 import type {EssayImage as ImageData} from '../../lib/essay-catalog';
 interface Props {image:ImageData;thumbnail?:boolean}
 const {image,thumbnail=false}=Astro.props,asset=essayImage(image.src);
-const maxWidth=asset?Math.max(1,Math.min(asset.width,thumbnail?640:1840,Math.floor(2400*asset.width/asset.height))):0;
-const widths=[...new Set([...(thumbnail?[320]:[480,920]).filter(w=>w<maxWidth),maxWidth])];
+const annotated=!thumbnail&&Boolean(image.sideNote);
+const maxWidth=asset?Math.max(1,Math.min(asset.width,thumbnail?640:annotated?1200:1840,Math.floor(2400*asset.width/asset.height))):0;
+const widths=[...new Set([...(thumbnail?[320]:annotated?[480,800]:[480,920]).filter(w=>w<maxWidth),maxWidth])];
+const sizes=thumbnail?'(max-width: 760px) calc(100vw - 48px), 280px':annotated?'(max-width: 767px) 100vw, (max-width: 828px) calc(54vw - 25.92px), 422px':'(max-width: 700px) 100vw, (max-width: 968px) calc(100vw - 48px), 920px';
 const filename=image.src.split('/').at(-1);
 ---
-<figure class:list={['essay-figure',{'essay-thumbnail':thumbnail}]}>
+<figure class:list={['essay-figure',{'essay-thumbnail':thumbnail,'essay-annotated':annotated}]}>
  <div class="essay-image-media" data-essay-image-frame>
-  {asset&&<Image src={asset} alt={image.alt} width={maxWidth} widths={widths} sizes={thumbnail?'(max-width: 760px) calc(100vw - 48px), 280px':'(max-width: 700px) 100vw, (max-width: 968px) calc(100vw - 48px), 920px'} format="webp" quality={82} loading="lazy" decoding="async" data-essay-image/>}
+  {asset&&<Image src={asset} alt={image.alt} width={maxWidth} widths={widths} sizes={sizes} format="webp" quality={82} loading="lazy" decoding="async" data-essay-image/>}
   <div class="essay-image-fallback" hidden={Boolean(asset)} role="img" aria-label={`${image.alt}，图片待补充：${filename}`}><span>{filename}</span></div>
  </div>
- {!thumbnail&&<figcaption>{image.caption}</figcaption>}
+ {!thumbnail&&(image.sideNote?<figcaption class="essay-image-note"><p>{image.sideNote.heading}</p>{image.sideNote.paragraphs.map(paragraph=><p>{paragraph}</p>)}</figcaption>:image.caption&&<figcaption>{image.caption}</figcaption>)}
 </figure>
 <script>
  document.querySelectorAll<HTMLImageElement>('[data-essay-image]').forEach(image=>{
