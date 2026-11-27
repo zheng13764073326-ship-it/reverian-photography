@@ -33,6 +33,7 @@ const albums=[...chosen,...eligible.filter(album=>!chosen.includes(album))].slic
 </Base>
 <style>
  .home-editorial .section{padding-block:80px}
+ .home-editorial .home-archive{padding-top:32px}
  .home-editorial :global(.section-heading){margin-bottom:32px;padding-bottom:22px}
  .home-editorial :global(.section-heading .eyebrow){font-size:12px;letter-spacing:.22em;margin-bottom:10px}
  .home-editorial :global(.section-heading h2){font-family:var(--serif-zh);font-weight:500;font-size:clamp(30px,3vw,40px);letter-spacing:.06em}
@@ -49,6 +50,7 @@ const albums=[...chosen,...eligible.filter(album=>!chosen.includes(album))].slic
  .home-film :global(.film-reel){--reel-height:clamp(154px,14vw,192px);margin-bottom:0}
  @media(max-width:760px){
   .home-editorial .section{padding-block:48px}
+  .home-editorial .home-archive{padding-top:24px}
   .home-editorial :global(.section-heading){margin-bottom:24px;padding-bottom:20px;gap:12px}
   .home-editorial :global(.section-heading h2){font-size:30px}
   .home-album-grid{grid-template-columns:1fr;gap:32px}

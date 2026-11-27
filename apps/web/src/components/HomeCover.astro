@@ -78,8 +78,8 @@ const mobileStyle=fullRoadMobile?`--mobile-aspect:${portraitAsset.width}/${portr
 
 
  .editorial-cover{height:100vh;height:100svh;min-height:620px;background:#1e302a;color:#f5f0df;isolation:isolate}
- .editorial-cover::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:72px;z-index:0;pointer-events:none;background:linear-gradient(to bottom,transparent,var(--paper))}
- .editorial-cover .home-identity{z-index:1;inset:auto 40px 128px max(40px,calc((100vw - 1200px)/2));max-width:720px;text-align:left;text-shadow:none;pointer-events:none}
+ .editorial-cover::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:48px;z-index:0;pointer-events:none;background:linear-gradient(to bottom,transparent,var(--paper))}
+ .editorial-cover .home-identity{z-index:1;inset:auto 40px 96px max(40px,calc((100vw - 1200px)/2));max-width:720px;text-align:left;text-shadow:none;pointer-events:none}
  .editorial-cover .cover-picture{position:absolute;inset:0}
  .cover-shade{position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(8,20,14,.58),rgba(8,20,14,.1) 65%,transparent),linear-gradient(180deg,rgba(7,17,11,.22),transparent 38%,rgba(7,17,11,.38))}
  .cover-title-focus{transform-origin:left bottom}
@@ -95,7 +95,7 @@ const mobileStyle=fullRoadMobile?`--mobile-aspect:${portraitAsset.width}/${portr
  @media(hover:hover){.cover-browse:hover{background:#f5f0df;color:#243d35;border-color:#f5f0df}.cover-browse:hover svg{transform:translateX(3px)}}
  @media(max-width:800px) and (orientation:portrait){
   .editorial-cover{min-height:600px}
-  .editorial-cover::after{height:56px}
+  .editorial-cover::after{height:36px}
   .editorial-cover .hero-photo{object-position:var(--focus-mobile,center)}
   /* Retain the complete road frame and its existing responsive canopy. */
   .editorial-cover[data-full-road] .cover-focus{background-image:var(--mobile-canopy),var(--mobile-placeholder);background-size:100% auto;background-position:center -20vw;background-repeat:no-repeat}
