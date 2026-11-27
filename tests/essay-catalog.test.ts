@@ -25,6 +25,6 @@ test('first issue preserves the requested image placements, independent quote an
  assert.deepEqual(blocks[firstImage+1],{type:'heading',text:'四、时代的断层'});
  assert.deepEqual(blocks[secondImage+1],{type:'heading',text:'五、算法之外'});
  assert.deepEqual(blocks.filter(b=>b.type==='quote'),[{type:'quote',text:'人工智能可以生成一场完美的日落，却无法替我度过那个黄昏。'}]);
- assert.equal(blocks[0].type,'paragraph');assert.equal('text' in blocks[0]?blocks[0].text:'','2026 年 11 月 27 日，凌晨 1:24，上海。');
+ assert.equal(blocks[0].type,'paragraph');assert.equal('text' in blocks[0]?blocks[0].text:'','2026 年 11 月 28 日，凌晨 1:35，上海。');
  assert.deepEqual(blocks.at(-1),{type:'paragraph',text:'而我还生活在那个熟悉的时代里。'});
 });
