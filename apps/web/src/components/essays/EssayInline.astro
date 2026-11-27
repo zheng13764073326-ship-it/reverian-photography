@@ -1,0 +1,6 @@
+---
+interface Props {text:string}
+// Only the supplied italic notation is interpreted. All text stays HTML-escaped.
+const parts=Astro.props.text.split(/(\*[^*\n]+\*)/g);
+---
+{parts.map(part=>part.startsWith('*')&&part.endsWith('*')?<em>{part.slice(1,-1)}</em>:part)}

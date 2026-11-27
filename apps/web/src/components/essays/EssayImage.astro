@@ -1,0 +1,24 @@
+---
+import {Image} from 'astro:assets';
+import {essayImage} from '../../lib/essays';
+import type {EssayImage as ImageData} from '../../lib/essay-catalog';
+interface Props {image:ImageData;thumbnail?:boolean}
+const {image,thumbnail=false}=Astro.props,asset=essayImage(image.src);
+const maxWidth=asset?Math.max(1,Math.min(asset.width,thumbnail?640:1840,Math.floor(2400*asset.width/asset.height))):0;
+const widths=[...new Set([...(thumbnail?[320]:[480,920]).filter(w=>w<maxWidth),maxWidth])];
+const filename=image.src.split('/').at(-1);
+---
+<figure class:list={['essay-figure',{'essay-thumbnail':thumbnail}]}>
+ <div class="essay-image-media" data-essay-image-frame>
+  {asset&&<Image src={asset} alt={image.alt} width={maxWidth} widths={widths} sizes={thumbnail?'(max-width: 760px) calc(100vw - 48px), 280px':'(max-width: 700px) 100vw, (max-width: 968px) calc(100vw - 48px), 920px'} format="webp" quality={82} loading="lazy" decoding="async" data-essay-image/>}
+  <div class="essay-image-fallback" hidden={Boolean(asset)} role="img" aria-label={`${image.alt}，图片待补充：${filename}`}><span>{filename}</span></div>
+ </div>
+ {!thumbnail&&<figcaption>{image.caption}</figcaption>}
+</figure>
+<script>
+ document.querySelectorAll<HTMLImageElement>('[data-essay-image]').forEach(image=>{
+  const fallback=()=>{image.hidden=true;const placeholder=image.closest('[data-essay-image-frame]')?.querySelector<HTMLElement>('.essay-image-fallback');if(placeholder)placeholder.hidden=false;};
+  image.addEventListener('error',fallback,{once:true});
+  if(image.complete&&!image.naturalWidth)fallback();
+ });
+</script>

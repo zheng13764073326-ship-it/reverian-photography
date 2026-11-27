@@ -1,0 +1,19 @@
+---
+import {getContent} from '../lib/content';
+import '../styles/fonts.css';
+import '../styles/essays.css';
+interface Props {title:string;description:string;article?:boolean;date?:string;shareImage?:string}
+const {title,description,article=false,date,shareImage}=Astro.props;
+const {settings,mode}=await getContent();
+const canonical=new URL(Astro.url.pathname,Astro.site);
+const fullTitle=`${title} — 随笔 · Reverian`;
+---
+<!doctype html><html lang="zh-CN" class="essay-document"><head>
+ <meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+ <title>{fullTitle}</title><meta name="description" content={description}/><meta name="theme-color" content="#F8F7F4"/>
+ <link rel="canonical" href={canonical}/><link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+ <meta property="og:title" content={fullTitle}/><meta property="og:description" content={description}/><meta property="og:type" content={article?'article':'website'}/><meta property="og:url" content={canonical}/>
+ {shareImage&&<meta property="og:image" content={new URL(shareImage,Astro.site)}/>}
+ {article&&<><meta name="author" content={settings.photographer}/><meta property="article:published_time" content={date}/></>}
+ {mode==='demo'&&<meta name="robots" content="noindex, nofollow"/>}
+ </head><body id="top" class="essay-site"><a class="essay-skip" href="#essay-main">跳到正文</a><slot/></body></html>

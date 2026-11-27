@@ -18,6 +18,7 @@ const portfolios=[['/works/','精选作品'],['/albums/','光影存档'],['/wild
    <a href="/lab/?tab=sunset" data-lab-link="sunset">火烧云</a>
    <a href="/lab/?tab=critique" data-lab-link="critique" data-lab-label="AI 评片">AI 评片</a>
   </div></details>
+  <a href="/essays/" aria-current={path.startsWith('/essays/')?'page':undefined}>随笔</a>
   <a href="/about/" aria-current={path==='/about/'?'page':undefined}>关于我</a>
  </nav>
 </header>
@@ -69,3 +70,7 @@ if(hero)new IntersectionObserver(([entry])=>header.classList.toggle('over-cover'
 const legacy:Record<string,string>={'#/home':'/','#/selected':'/works/','#/collections':'/albums/','#/street':'/works/','#/wild':'/wild/','#/above':'/above/','#/film':'/film/','#/about':'/about/','#/lab':'/lab/'};
 if(location.hash in legacy)location.replace(legacy[location.hash]);
 </script>
+
+<style>
+ @media(min-width:801px) and (max-width:1100px){.site-header nav{gap:clamp(18px,2.5vw,30px);font-size:20px;letter-spacing:1px}}
+</style>

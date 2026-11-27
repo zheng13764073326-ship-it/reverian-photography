@@ -1,0 +1,29 @@
+---
+interface Props {issueNumber:string;year:string}
+const {issueNumber,year}=Astro.props;
+---
+<div class="essay-progress" aria-hidden="true"><span data-reading-progress></span></div>
+<nav class="essay-reader-nav" aria-label="随笔阅读导航" data-reader-nav><a href="/essays/">← 返回随笔</a><span>{issueNumber} / {year}</span></nav>
+<script>
+ const nav=document.querySelector<HTMLElement>('[data-reader-nav]');
+ const progress=document.querySelector<HTMLElement>('[data-reading-progress]');
+ if(nav&&progress){
+  let previous=window.scrollY,directionStart=previous,direction=0,frame=0;
+  const show=()=>nav.classList.remove('is-hidden');
+  const update=()=>{
+   frame=0;
+   const y=Math.max(0,window.scrollY),max=document.documentElement.scrollHeight-window.innerHeight;
+   progress.style.transform=`scaleX(${max>0?Math.min(1,y/max):0})`;
+   const nextDirection=Math.sign(y-previous);
+   if(nextDirection&&nextDirection!==direction){directionStart=previous;direction=nextDirection;}
+   if(y<80||nav.contains(document.activeElement))show();
+   else if(Math.abs(y-directionStart)>=10)nav.classList.toggle('is-hidden',direction>0);
+   previous=y;
+  };
+  const schedule=()=>{if(!frame)frame=requestAnimationFrame(update);};
+  addEventListener('scroll',schedule,{passive:true});addEventListener('resize',schedule);addEventListener('pageshow',()=>{show();schedule();});
+  nav.addEventListener('focusin',show);
+  new ResizeObserver(schedule).observe(document.body);
+  update();
+ }
+</script>

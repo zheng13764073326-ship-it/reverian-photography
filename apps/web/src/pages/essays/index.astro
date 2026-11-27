@@ -1,0 +1,22 @@
+---
+import EssayLayout from '../../layouts/EssayLayout.astro';
+import EssayImage from '../../components/essays/EssayImage.astro';
+import {essays} from '../../lib/essays';
+import {essayDate,essayHref} from '../../lib/essay-catalog';
+const introduction='不定期更新。记录快门之外的思考、漫游碎片，以及某些睡不着的凌晨。';
+const volume=essays[0]?.date.slice(0,4)||String(new Date().getUTCFullYear());
+---
+<EssayLayout title="随笔 / ESSAYS" description={introduction}>
+ <nav class="essay-index-nav essay-shell" aria-label="随笔导航"><a href="/">← 返回主页</a><span>ESSAYS</span></nav>
+ <main id="essay-main" class="essay-index essay-shell" tabindex="-1">
+  <header class="essay-masthead"><h1>随笔</h1><p class="essay-kicker">ESSAYS</p><p class="essay-introduction">{introduction}</p></header>
+  <ol class="essay-issues" aria-label="随笔目录">
+   {essays.map(essay=><li><a class="essay-issue" href={essayHref(essay)} aria-labelledby={`title-${essay.id}`}>
+    <div class="essay-issue-meta"><span>{essay.issueNumber}</span><time datetime={essay.date}>{essayDate(essay.date,true)}</time><span>{essay.location} · {essay.readTime} min</span></div>
+    <div class="essay-issue-copy"><h2 id={`title-${essay.id}`}>{essay.title}</h2><p class="essay-issue-subtitle">{essay.subtitle}</p><p class="essay-issue-excerpt">{essay.excerpt}</p></div>
+    <EssayImage image={essay.coverImage} thumbnail/>
+   </a></li>)}
+  </ol>
+  <footer class="essay-index-footnote">Vol. {volume} — 更新随缘</footer>
+ </main>
+</EssayLayout>

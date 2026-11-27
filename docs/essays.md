@@ -1,0 +1,71 @@
+# 随笔 / ESSAYS
+
+入口：`/essays/`。首篇：`/essays/a-generation-without-meaning/`。
+
+## 文件与职责
+
+- `apps/web/src/data/essays/*.json`：每篇一个数据文件。目录、独立文章 URL、sitemap 从这个目录自动生成，最新日期在前，同日按期号倒序。
+- `apps/web/src/assets/essays/`：照片源文件，不直接发布原始 JPG。
+- `apps/web/src/lib/essay-catalog.ts`：数据校验、排序、日期与 URL。
+- `apps/web/src/lib/essays.ts`：自动发现文章和图片。
+- `apps/web/src/layouts/EssayLayout.astro`：独立页面文档、SEO 与共享网页字体。
+- `apps/web/src/styles/essays.css`：只在随笔页面加载，全部选择器限制于 `.essay-site` 或 `.essay-document`。不导入全站 global.css、照片灯箱、光圈转场、弹性按钮或自定义鼠标。
+- `apps/web/src/components/essays/`：图片与缺图占位、行内斜体、阅读导航和进度。
+- `apps/web/src/pages/essays/index.astro`、`[id].astro`：目录和文章模板。
+- 原站 `Header.astro` 只增加同级入口和窄桌面导航间距；移动菜单复用原有交互。`sitemap.xml.ts` 加入自动生成的文章 URL。
+
+## 替换 NO. 01 的三张照片
+
+把图片放在以下实际源码位置：
+
+```text
+apps/web/src/assets/essays/01/cover.jpg
+apps/web/src/assets/essays/01/photo-1.jpg
+apps/web/src/assets/essays/01/photo-2.jpg
+```
+
+对应题图、第三节与第四节之间、第五节之前。没有文件时，服务端直接输出纸灰色占位与文件名，不发送不存在的图片请求。已有图片加载失败时同样退回占位。
+
+保持以上文件名即可，无须修改模板。可以使用其他文件名或 JPG/PNG/WebP/AVIF，但须同步修改文章数据的 `src`。`src` 是相对 `assets/essays/` 的路径，如 `01/cover.jpg`。图注在 `caption`，图片说明在 `alt`。
+
+Astro 自动输出最大长边受限的响应式 WebP；目录缩略图为 3:2，阅读页显示原图比例。黑白和微对比来自 CSS，不修改源照片颜色。不要把源 JPG 放到 `public/`，否则会违反原站仅发布优化图的构建检查。
+
+源文件在构建时读取；添加或替换后需要重新构建、提交并推送生产分支（不是上传后热更新）：
+
+```powershell
+D:/npm.cmd run check
+D:/npm.cmd run build:production
+git add -- apps/web/src/data/essays apps/web/src/assets/essays
+git commit -m "content: update essays"
+git push origin codex/astro-foundation
+```
+
+## 新增 NO. 02
+
+1. 复制 `apps/web/src/data/essays/01-a-generation-without-meaning.json` 为 `02-your-essay.json`。
+2. 修改 `id`（唯一英文短横线标识，例如 `a-walk-after-rain`）、`issueNumber`（`NO. 02`）、标题、副标题、日期（`YYYY-MM-DD`）、地点、阅读分钟数、摘要和文末 `closingNote`。
+3. 修改 `coverImage`，在 `assets/essays/02/` 放照片。暂时没有照片可先只填写路径，会自动占位。
+4. 按顺序编辑 `content`。支持 `paragraph`（段落）、`heading`（章节）、`quote`（独立引文）、`image`（图片及图注）。把 image 对象放在哪个位置，插图就出现在哪里。段落中 `\n` 保留换行，`*斜体文字*` 会渲染为斜体；其余文字按纯文本转义，不执行 HTML。
+5. 构建并发布。新文章会自动出现在目录、`/essays/a-walk-after-rain/` 和 sitemap，不用改路由或模板。
+
+内容块示例：
+
+```json
+[
+  {"type":"paragraph","text":"第一段正文。"},
+  {"type":"heading","text":"一、雨停以后"},
+  {"type":"paragraph","text":"这里可以写 *斜体书名*。"},
+  {"type":"image","src":"02/photo-1.jpg","alt":"照片中实际出现的内容","caption":"Fig. 02 — 图注"},
+  {"type":"quote","text":"单独呈现的一句话。"}
+]
+```
+
+编号与 id 不能重复，非法日期、空正文或目录穿越路径会使构建失败，避免错误内容悄悄上线。尚未准备好的文章不要放入 `src/data/essays/`；放在目录外整理完毕后再移入。
+
+## 排版与验证
+
+桌面正文 640px / 17px / 1.95，手机左右 24px / 16px / 1.85。标题与正文使用本站 Noto Serif SC Variable，继续按字符分片加载；元数据使用同源无衬线/等宽字体。字体显示策略为 swap，不阻塞阅读。
+
+所有文章都由静态 HTML 直接输出，关闭 JavaScript 也能阅读和跳转；脚本仅控制导航显隐、阅读进度和失败图片占位。浏览器原生前进/后退与直接访问无需客户端路由。减少动态效果设置会关闭平滑滚动与过渡。
+
+验证入口：`npm test` 中的 essay-catalog 测试、生产构建检查，以及本地工作区 `work/essays/` 的浏览器检查与截图。首篇正文按用户提供原文录入，未改写其观点或事实陈述。
