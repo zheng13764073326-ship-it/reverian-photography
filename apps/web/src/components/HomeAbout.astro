@@ -25,6 +25,12 @@ const introduction=settings.introduction||firstParagraph?.children.map(span=>spa
       <h2 id="home-about-name" aria-label={`挽风 | ${settings.photographer}`}><svg class="about-signature" viewBox="498 840 984 407" aria-hidden="true"><image href="/images/branding/wanfeng-white.webp" width="2000" height="2000"/></svg><span class="about-name-separator" aria-hidden="true">|</span><span>{settings.photographer}</span></h2>
       {heading&&<p class="about-lead">{heading}</p>}
       {introduction&&<p class="about-excerpt">{introduction}</p>}
+      <dl class="about-colophon" aria-label="摄影师信息">
+        <div><dt>BASE</dt><dd>上海</dd></div>
+        <div><dt>CREDIT</dt><dd>视觉中国签约摄影师</dd></div>
+        <div><dt>FOCUS</dt><dd>街头 / 风光 / 胶片</dd></div>
+        <div><dt>GEAR</dt><dd>Sony α7C II</dd></div>
+      </dl>
       <a class="about-btn" href="/about/" data-elastic-button><span class="elastic-button-face"><span class="elastic-button-label">关于我</span><span class="about-arrow" aria-hidden="true">↗</span></span></a>
       {!settings.portrait&&<a class="quiz-fallback" href="/about/?quiz=start#tacit">测测我们的默契度 ↗</a>}
       <SocialLinks links={settings.socialLinks} compact id="home-social-title"/>
@@ -62,6 +68,11 @@ const introduction=settings.introduction||firstParagraph?.children.map(span=>spa
   .about-name-separator{font-size:.7em;color:var(--muted)}
   .about-lead{font:600 clamp(20px,1.8vw,24px)/1.65 var(--serif-zh);letter-spacing:.015em;color:#2C2B29;font-synthesis:none;margin:0 0 18px;text-wrap:balance}
   .about-excerpt{font:400 16px/1.95 var(--sans);color:#2C2B29;margin:0;max-width:34em;font-synthesis:none}
+  .about-colophon{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:10px 18px;margin:24px 0 0;padding:15px 18px;border:1px solid var(--line);border-radius:0;background:transparent;color:#55544f}
+  .about-colophon>div{display:grid;grid-template-columns:58px minmax(0,1fr);align-items:baseline;gap:10px;min-width:0}
+  .about-colophon dt{margin:0;font:400 12px/1.8 var(--mono);letter-spacing:.1em;color:#6e6b63}
+  .about-colophon dd{margin:0;font:400 13px/1.8 var(--mono);overflow-wrap:anywhere}
+  @media(max-width:480px){.about-colophon{padding:14px 16px;gap:9px;margin-top:22px}}
   .about-btn{--press-depth:0px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0;background:transparent;color:#F4F3EE;border:none;border-radius:999px;font-family:var(--serif-zh);font-size:16px;font-weight:500;font-synthesis:none;letter-spacing:.08em;margin-top:24px}
   .about-btn .elastic-button-face{padding:12px 32px;background-color:var(--elastic-face-bg,#1E4D54)}
   .about-arrow{display:inline-block;letter-spacing:0;transition:transform .35s var(--press-spring)}
