@@ -24,6 +24,7 @@ export function setupOpticalLab(root:HTMLElement) {
   function writeLocation(replace=false){
     const url=new URL(location.href);
     url.pathname=activeTab==='ai'?AI_PROMPTS_PATH:'/lab/';
+    url.searchParams.delete('guide');url.hash='';
     if(activeTab==='ai'||activeTab==='guides')url.searchParams.delete('tab');else url.searchParams.set('tab',activeTab);
     if(activeTab==='ai'&&category!=='all')url.searchParams.set('use',category);else url.searchParams.delete('use');
     if(activeTab==='ai'&&query)url.searchParams.set('q',query);else url.searchParams.delete('q');
@@ -35,6 +36,7 @@ export function setupOpticalLab(root:HTMLElement) {
     const title=activeLink.dataset.labLabel||activeLink.textContent!.trim();
     const description=introductions[id as keyof typeof introductions] || introductions.guides;
     root.dataset.activeTab=id;total.hidden=id!=='ai';
+    heading.closest<HTMLElement>('.lab-heading')!.hidden=id==='guides';
     if(id!=='ai')aiGallery.close();
     heading.textContent=title;subtitle.textContent=description;
     document.querySelector<HTMLMetaElement>('meta[name="description"]')?.setAttribute('content',description);
@@ -85,7 +87,7 @@ export function setupOpticalLab(root:HTMLElement) {
     const link=event.target instanceof Element?event.target.closest<HTMLAnchorElement>('a[data-lab-link]'):null;
     if(!link||link.origin!==location.origin||!['/lab/',AI_PROMPTS_PATH].includes(link.pathname))return;
     event.preventDefault();activate(link.dataset.labLink!,true);
-    const panelHeading=panels.find(panel=>!panel.hidden)?.querySelector<HTMLElement>('h2');
+    const panelHeading=panels.find(panel=>!panel.hidden)?.querySelector<HTMLElement>('h1,h2');
     if(panelHeading){panelHeading.tabIndex=-1;panelHeading.focus({preventScroll:true});}
     window.scrollTo({top:0,behavior:'auto'});
   });
@@ -96,22 +98,58 @@ export function setupOpticalLab(root:HTMLElement) {
   root.querySelector('[data-prompt-reset]')!.addEventListener('click',()=>{query='';search.value='';filter('all',true);});
 
   const reader=root.querySelector<HTMLDialogElement>('#lab-reader')!;
-  let returnFocus:HTMLElement|null=null,overflow='';
-  root.querySelectorAll<HTMLButtonElement>('[data-guide]').forEach(button=>button.addEventListener('click',()=>{
-    const template=root.querySelector<HTMLTemplateElement>(`[data-guide-template="${button.dataset.guide}"]`)!;
+  const templates=[...root.querySelectorAll<HTMLTemplateElement>('[data-guide-template]')];
+  let returnFocus:HTMLElement|null=null,overflow='',readerGuide:string|null=null;
+  function openGuide(id:string,trigger:HTMLElement|null=null){
+    const template=templates.find(item=>item.dataset.guideTemplate===id);
+    if(!template)return;
     root.querySelector('[data-reader-index]')!.textContent='GUIDE '+template.dataset.index;
     root.querySelector('[data-reader-tag]')!.textContent=template.dataset.tag!;
     root.querySelector('#lab-reader-title')!.textContent=template.dataset.title!;
     root.querySelector('[data-reader-body]')!.replaceChildren(template.content.cloneNode(true));
-    returnFocus=button;overflow=document.body.style.overflow;document.body.style.overflow='hidden';
-    reader.showModal();root.querySelector('.lab-reader-scroll')!.scrollTop=0;
+    readerGuide=id;
+    if(!reader.open){
+      returnFocus=trigger||root.querySelector<HTMLElement>(`#guide-card-${id}`);
+      overflow=document.body.style.overflow;document.body.style.overflow='hidden';
+      reader.showModal();
+    }
+    root.querySelector('.lab-reader-scroll')!.scrollTop=0;
+  }
+  function syncGuideReader(){
+    const id=new URL(location.href).searchParams.get('guide');
+    if(activeTab==='guides'&&templates.some(item=>item.dataset.guideTemplate===id))openGuide(id!);
+    else if(reader.open){readerGuide=null;reader.close();}
+  }
+  function requestReaderClose(){
+    // An in-page open adds one history entry; closing returns to the exact prior URL.
+    if(history.state?.labGuide===readerGuide)history.back();
+    else reader.close();
+  }
+  root.querySelectorAll<HTMLAnchorElement>('[data-guide]').forEach(link=>link.addEventListener('click',event=>{
+    if(event.defaultPrevented||event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
+    const id=link.dataset.guide!;
+    if(!templates.some(item=>item.dataset.guideTemplate===id))return;
+    event.preventDefault();
+    const url=new URL(link.href,location.href);
+    history.pushState({labGuide:id},'',url);
+    openGuide(id,link);
   }));
-  root.querySelector('[data-reader-close]')!.addEventListener('click',()=>reader.close());
+  root.querySelector('[data-reader-close]')!.addEventListener('click',requestReaderClose);
+  reader.addEventListener('cancel',event=>{event.preventDefault();requestReaderClose();});
   let outsideDown=false;
   const outside=(event:MouseEvent)=>{const rect=reader.getBoundingClientRect();return event.target===reader&&(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom);};
   reader.addEventListener('pointerdown',event=>{outsideDown=outside(event);});
-  reader.addEventListener('click',event=>{if(outsideDown&&outside(event))reader.close();outsideDown=false;});
-  reader.addEventListener('close',()=>{document.body.style.overflow=overflow;if(returnFocus&&!returnFocus.closest('[hidden]'))returnFocus.focus({preventScroll:true});});
-  window.addEventListener('popstate',()=>{if(reader.open)reader.close();aiGallery.close();restore();});
-  restore();
+  reader.addEventListener('click',event=>{if(outsideDown&&outside(event))requestReaderClose();outsideDown=false;});
+  reader.addEventListener('close',()=>{
+    if(reader.open)return;
+    document.body.style.overflow=overflow;
+    const url=new URL(location.href);
+    if(readerGuide&&url.searchParams.get('guide')===readerGuide){
+      url.searchParams.delete('guide');history.replaceState(null,'',url);
+    }
+    readerGuide=null;
+    if(returnFocus&&!returnFocus.closest('[hidden]'))returnFocus.focus({preventScroll:true});
+  });
+  window.addEventListener('popstate',()=>{aiGallery.close();restore();syncGuideReader();});
+  restore();syncGuideReader();
 }

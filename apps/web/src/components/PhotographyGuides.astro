@@ -1,0 +1,59 @@
+---
+import guides from '../data/lab/guides.json';
+import ApertureViewfinderDemo from './ApertureViewfinderDemo.astro';
+import GuideIllustration from './GuideIllustration.astro';
+import '../styles/photography-guides.css';
+const href=(id:string)=>id==='camera'?'/lab/guides/camera/':`/lab/?guide=${id}`;
+const tools=[
+  {index:'02',title:'AI 提示词库',description:'以摄影师的视角，把画面拆解成一眼可见的生成词。',action:'进入',href:'/lab/ai-prompts/',tab:'ai'},
+  {index:'03',title:'火烧云预报',description:'输入城市，查看未来几天的朝霞与晚霞出现概率。',action:'查看',href:'/lab/?tab=sunset',tab:'sunset'},
+  {index:'04',title:'AI 评片',description:'上传一张照片，从构图、光线、色彩与叙事获取专业反馈。',action:'试一试',href:'/lab/?tab=critique',tab:'critique'}
+];
+---
+<div class="photography-guides" data-photography-guides>
+  <div class="pg-hero">
+    <header class="pg-introduction">
+      <p class="pg-kicker">OPTICAL LAB // 01 <span>· FIELD NOTES</span></p>
+      <h1>摄影指南</h1>
+      <p class="pg-subtitle">按下快门之前，<br/>先学会<span>看见光</span>。</p>
+      <p class="pg-intro">从相机、镜头到焦距与曝光，理清拍摄的基本逻辑。不堆砌枯燥参数表，只讲每一次按下快门前，你真正需要知道的事。</p>
+      <p class="pg-meta">04 篇系统指南 · 涵盖器材与曝光 · 附交互演示与验机清单</p>
+      <div class="pg-actions"><a class="pg-button pg-button-primary" href="/lab/guides/camera/">从第一篇开始 <span aria-hidden="true">→</span></a><a class="pg-button" href="#guide-reading-path" data-guide-scroll>按顺序浏览</a></div>
+    </header>
+    <ApertureViewfinderDemo/>
+  </div>
+  <nav class="pg-learning-path" id="guide-reading-path" aria-label="摄影指南阅读顺序">
+    <span class="pg-path-label">阅读顺序</span>
+    <ol>{guides.map(guide=><li><a href={`#guide-card-${guide.id}`} data-guide-scroll><span>STEP {guide.index}</span><span>· {guide.title}</span></a></li>)}</ol>
+  </nav>
+  <section class="pg-catalog" aria-labelledby="lab-section-guides">
+    <div class="pg-section-heading"><h2 id="lab-section-guides">专题目录</h2><p>FIELD NOTES / 04 GUIDES</p></div>
+    <div class="pg-guide-grid">
+      {guides.map(guide=><a class="pg-card" id={`guide-card-${guide.id}`} href={href(guide.id)} data-guide={guide.id==='camera'?undefined:guide.id} aria-haspopup={guide.id==='camera'?undefined:'dialog'} aria-controls={guide.id==='camera'?undefined:'lab-reader'} aria-labelledby={`guide-title-${guide.id}`}>
+        <div class="pg-stage">
+          <div class="pg-stage-labels"><span>{guide.tag}</span>{guide.id==='camera'&&<span class="pg-start-badge"><span>START HERE · </span>从这里开始</span>}</div>
+          <span class="pg-stage-number" aria-hidden="true">{guide.index}</span>
+          <GuideIllustration id={guide.id}/>
+          {guide.id==='camera'&&<span class="pg-shutter-flash" aria-hidden="true"></span>}
+        </div>
+        <div class="pg-card-copy">
+          <span class="pg-card-index">GUIDE {guide.index}</span>
+          <h3 id={`guide-title-${guide.id}`}>{guide.title}</h3>
+          <p class="pg-card-summary">{guide.summary}</p>
+          <ul>{guide.benefits.map(benefit=><li>{benefit}</li>)}</ul>
+          <div class="pg-card-footer"><span>{guide.value}</span><span class="pg-read-link">开始阅读 <span aria-hidden="true">↗</span></span></div>
+        </div>
+      </a>)}
+    </div>
+  </section>
+  <section class="pg-tools" aria-labelledby="pg-tools-title">
+    <div class="pg-section-heading"><h2 id="pg-tools-title">实验室里的其他工具</h2><p>看完原理，去用工具拍出下一张好照片。</p></div>
+    <div class="pg-tools-grid">{tools.map(tool=><a class="pg-tool-card" href={tool.href} data-lab-link={tool.tab} data-lab-label={tool.title}>
+      <span class="pg-tool-index">OPTICAL LAB // {tool.index}</span><h3>{tool.title}</h3><p>{tool.description}</p><span class="pg-tool-action">{tool.action} <span aria-hidden="true">↗</span></span>
+    </a>)}</div>
+  </section>
+</div>
+<script>
+  import {setupPhotographyGuides} from '../lib/photography-guides';
+  document.querySelectorAll<HTMLElement>('[data-photography-guides]').forEach(setupPhotographyGuides);
+</script>
