@@ -1,5 +1,15 @@
 export function setupCameraGuide(root:HTMLElement){
  const all=<T extends Element=HTMLElement>(selector:string)=>[...root.querySelectorAll<T>(selector)];
+ all<HTMLImageElement>('[data-camera-image]').forEach(img=>{
+  const wrapper=img.closest<HTMLElement>('[data-product-image]')!;
+  const message=wrapper.querySelector<HTMLElement>('[data-product-error]')!;
+  const retry=wrapper.querySelector<HTMLButtonElement>('[data-image-retry]')!;
+  const failed=()=>{img.hidden=true;message.hidden=false;retry.disabled=false;retry.textContent='重新加载照片'};
+  img.addEventListener('error',failed);
+  img.addEventListener('load',()=>{img.hidden=false;message.hidden=true;retry.disabled=false;retry.textContent='重新加载照片'});
+  retry.addEventListener('click',()=>{retry.disabled=true;retry.textContent='正在加载…';img.loading='eager';img.src=img.dataset.photoSrc+'&retry='+Date.now()});
+  if(img.complete&&img.naturalWidth===0)failed();
+ });
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  function revealInStrip(item:HTMLElement,strip:HTMLElement){const left=item.getBoundingClientRect().left-strip.getBoundingClientRect().left;if(left<0)strip.scrollLeft+=left-8;else if(left+item.offsetWidth>strip.clientWidth)strip.scrollLeft+=left+item.offsetWidth-strip.clientWidth+8;}
  const sensorControls=all<HTMLElement>('[data-sensor]');

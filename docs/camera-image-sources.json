@@ -1,18 +1,38 @@
 [
   {
     "id": "canon-200d-ii",
+    "page": "https://global.canon/en/c-museum/product/dslr883.html",
+    "image": "https://global.canon/ja/c-museum/wp-content/uploads/2020/04/dslr883-3_b.jpg",
+    "depictedModel": "EOS Kiss X10（200D II 日版）",
+    "bytes": 49156,
+    "status": "downloaded",
     "name": "Canon EOS 200D II",
-    "status": "fallback"
+    "local": "/images/cameras/canon-200d-ii.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "canon-800d",
+    "page": "https://global.canon/en/c-museum/product/dslr853.html",
+    "image": "https://global.canon/ja/c-museum/wp-content/uploads/2017/05/dslr853_b.jpg",
+    "depictedModel": "EOS Kiss X9i（800D 日版）",
+    "bytes": 56244,
+    "status": "downloaded",
     "name": "Canon EOS 800D",
-    "status": "fallback"
+    "local": "/images/cameras/canon-800d.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "canon-m50-ii",
+    "page": "https://global.canon/en/c-museum/product/dslr897.html",
+    "image": "https://global.canon/ja/c-museum/wp-content/uploads/2021/10/dslr897-2_b.jpg",
+    "bytes": 50510,
+    "status": "downloaded",
     "name": "Canon EOS M50 Mark II",
-    "status": "fallback"
+    "local": "/images/cameras/canon-m50-ii.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "canon-r10",
@@ -52,8 +72,14 @@
   },
   {
     "id": "canon-r6",
+    "page": "https://global.canon/en/c-museum/product/dslr895.html",
+    "image": "https://global.canon/ja/c-museum/wp-content/uploads/2021/10/dslr895_b.jpg",
+    "bytes": 54792,
+    "status": "downloaded",
     "name": "Canon EOS R6",
-    "status": "fallback"
+    "local": "/images/cameras/canon-r6.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "canon-r6-ii",
@@ -84,8 +110,14 @@
   },
   {
     "id": "canon-rp",
+    "page": "https://global.canon/en/c-museum/product/dslr880.html",
+    "image": "https://global.canon/ja/c-museum/wp-content/uploads/2020/03/dslr880_b.jpg",
+    "bytes": 62824,
+    "status": "downloaded",
     "name": "Canon EOS RP",
-    "status": "fallback"
+    "local": "/images/cameras/canon-rp.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "fuji-x100vi",
@@ -98,8 +130,15 @@
   },
   {
     "id": "fuji-xa-series",
+    "page": "https://www.fujifilm-x.com/en-us/products/cameras/x-a5/",
+    "image": "https://fujifilm-x.b-cdn.net/wp-content/uploads/2018/01/8_thum_x-a5.jpg",
+    "depictedModel": "Fujifilm X-A5",
+    "bytes": 39548,
+    "status": "downloaded",
     "name": "Fujifilm X-A 系列",
-    "status": "fallback"
+    "local": "/images/cameras/fuji-xa-series.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "fuji-xh2",
@@ -148,8 +187,14 @@
   },
   {
     "id": "fuji-xt10",
+    "page": "https://www.fujifilm-x.com/en-us/products/cameras/x-t10/",
+    "image": "https://fujifilm-x.b-cdn.net/wp-content/uploads/2015/05/480xcom_MH0409_X_T10.jpg",
+    "bytes": 32760,
+    "status": "downloaded",
     "name": "Fujifilm X-T10",
-    "status": "fallback"
+    "local": "/images/cameras/fuji-xt10.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "fuji-xt20",
@@ -162,11 +207,14 @@
   },
   {
     "id": "fuji-xt30-ii",
+    "page": "https://www.fujifilm-x.com/ja-jp/products/cameras/x-t30-ii/",
+    "image": "https://fujifilm-x.b-cdn.net/wp-content/uploads/2021/09/x-t30-ii_thum_bxyg.jpg",
+    "bytes": 39824,
+    "status": "downloaded",
     "name": "Fujifilm X-T30 II",
-    "page": "https://www.fujifilm-x.com/en-us/products/cameras/x-t30-ii/",
-    "image": "https://fujifilm-x.b-cdn.net/wp-content/uploads/2025/10/thum_x-t30-iii-004c6e21.webp",
-    "bytes": 38774,
-    "status": "fallback"
+    "local": "/images/cameras/fuji-xt30-ii.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "fuji-xt30-iii",
@@ -206,23 +254,48 @@
   },
   {
     "id": "leica-q-series",
+    "page": "https://leicastoremiami.com/collections/leica-q-system/products/leica-q-typ-116-black-anodized",
+    "image": "https://leicastoremiami.com/cdn/shop/products/Leica_Q_front.jpg?v=1571438623",
+    "sourceType": "retailer",
+    "depictedModel": "Leica Q（Typ 116）",
+    "bytes": 69678,
+    "status": "downloaded",
     "name": "Leica Q（早期代际）",
-    "status": "fallback"
+    "local": "/images/cameras/leica-q-series.webp",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "nikon-d5300",
+    "page": "https://nij.nikon.com/products/lineup/slr/d5300/",
+    "image": "https://nij.nikon.com/cms/products/slr/lineup/D5300/img/index/product_01.jpg",
+    "bytes": 53912,
+    "status": "downloaded",
     "name": "Nikon D5300",
-    "status": "fallback"
+    "local": "/images/cameras/nikon-d5300.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "nikon-d5500",
+    "page": "https://nij.nikon.com/products/lineup/slr/d5500/",
+    "image": "https://nij.nikon.com/cms/products/slr/lineup/d5500/img/index/product_01.jpg",
+    "bytes": 62926,
+    "status": "downloaded",
     "name": "Nikon D5500",
-    "status": "fallback"
+    "local": "/images/cameras/nikon-d5500.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "nikon-d7200",
+    "page": "https://nij.nikon.com/products/lineup/slr/d7200/",
+    "image": "https://nij.nikon.com/cms/products/slr/lineup/d7200/img/index/product_01.jpg",
+    "bytes": 69266,
+    "status": "downloaded",
     "name": "Nikon D7200",
-    "status": "fallback"
+    "local": "/images/cameras/nikon-d7200.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "nikon-z30",
@@ -307,42 +380,80 @@
   },
   {
     "id": "nikon-zf",
+    "page": "https://imaging.nikon.com/imaging/lineup/mirrorless/z_f/",
+    "image": "https://imaging.nikon.com/imaging/lineup/mirrorless/z_f/img/product_01_01.jpg",
+    "bytes": 56462,
+    "status": "downloaded",
     "name": "Nikon Zf",
-    "status": "fallback"
+    "local": "/images/cameras/nikon-zf.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "olympus-em1-ii",
+    "page": "https://jp.omsystem.com/product/dslr/record/index.html",
+    "image": "https://jp.omsystem.com/cms/content/000085014.jpg",
+    "bytes": 44426,
+    "status": "downloaded",
     "name": "Olympus OM-D E-M1 Mark II",
-    "status": "fallback"
+    "local": "/images/cameras/olympus-em1-ii.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "olympus-em1-iii",
+    "page": "https://jp.omsystem.com/product/dslr/om-omd/omd/em1mk3/index.html",
+    "image": "https://jp.omsystem.com/cms/content/000107317.jpg",
+    "bytes": 30166,
+    "status": "downloaded",
     "name": "Olympus OM-D E-M1 Mark III",
-    "status": "fallback"
+    "local": "/images/cameras/olympus-em1-iii.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "olympus-em10-ii",
+    "page": "https://jp.omsystem.com/product/dslr/record/index.html",
+    "image": "https://jp.omsystem.com/cms/content/000072569.jpg",
+    "bytes": 41802,
+    "status": "downloaded",
     "name": "Olympus OM-D E-M10 Mark II",
-    "status": "fallback"
+    "local": "/images/cameras/olympus-em10-ii.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "olympus-em10-iii",
+    "page": "https://jp.omsystem.com/product/dslr/record/index.html",
+    "image": "https://jp.omsystem.com/cms/content/000092190.jpg",
+    "bytes": 55522,
+    "status": "downloaded",
     "name": "Olympus OM-D E-M10 Mark III",
-    "status": "fallback"
+    "local": "/images/cameras/olympus-em10-iii.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "olympus-em5-ii",
+    "page": "https://jp.omsystem.com/product/dslr/record/index.html",
+    "image": "https://jp.omsystem.com/cms/content/000058175.jpg",
+    "bytes": 37788,
+    "status": "downloaded",
     "name": "Olympus OM-D E-M5 Mark II",
-    "status": "fallback"
+    "local": "/images/cameras/olympus-em5-ii.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "om-system-om1",
+    "page": "https://jp.omsystem.com/product/dslr/om-omd/om/om1/index.html",
+    "image": "https://jp.omsystem.com/cms/content/000117258.jpg",
+    "bytes": 27922,
+    "status": "downloaded",
     "name": "OM SYSTEM OM-1",
-    "page": "https://explore.omsystem.com/us/en/om-1",
-    "image": "https://nala.explore.omsystem.com/media/catalog/product/o/m/om-1-mark-ii-kit-hero-02.webp?width=800&height=&optimize=medium&fit=bounds",
     "local": "/images/cameras/om-system-om1.webp",
-    "bytes": 61266,
-    "status": "downloaded"
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "om-system-om5-ii",
@@ -364,33 +475,70 @@
   },
   {
     "id": "panasonic-g85",
+    "page": "https://shop.panasonic.com/products/g85-mirrorless-camera-12-60mm-f3-5-5-6-lens",
+    "image": "https://cdn.shopify.com/s/files/1/0724/5371/8324/products/dr8pyldsud9hherm863s.jpg?v=1779299591",
+    "bytes": 57656,
+    "status": "downloaded",
     "name": "Panasonic LUMIX G8",
-    "status": "fallback"
+    "local": "/images/cameras/panasonic-g85.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "panasonic-g9",
+    "page": "https://shop.panasonic.com/products/g9-mirrorless-camera-body",
+    "image": "https://cdn.shopify.com/s/files/1/0724/5371/8324/products/iewzz32agdcxxq7xq0n7.jpg?v=1779299656",
+    "bytes": 57766,
+    "status": "downloaded",
     "name": "Panasonic LUMIX G9（一代）",
-    "status": "fallback"
+    "local": "/images/cameras/panasonic-g9.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "panasonic-gx85",
+    "page": "https://shop.panasonic.com/products/gx85-mirrorless-camera-12-32mm-f3-5-5-6-lens",
+    "image": "https://cdn.shopify.com/s/files/1/0724/5371/8324/products/muzc3nvmkky8vhpnlhtc.jpg?v=1779299587",
+    "bytes": 60974,
+    "status": "downloaded",
     "name": "Panasonic LUMIX GX7 Mark II",
-    "status": "fallback"
+    "local": "/images/cameras/panasonic-gx85.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "panasonic-lx10",
+    "page": "https://bccamera.com/panasonic-dmc-lx10-black/",
+    "image": "https://cdn11.bigcommerce.com/s-745x53acpn/images/stencil/1280x1280/products/6537/9550/panasonic-lumix-dmc-lx10-front__53345.1474324631.jpg?c=2",
+    "sourceType": "retailer",
+    "bytes": 24662,
+    "status": "downloaded",
     "name": "Panasonic LUMIX LX10",
-    "status": "fallback"
+    "local": "/images/cameras/panasonic-lx10.webp",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "panasonic-s1-series",
+    "page": "https://shop.panasonic.com/products/s1-full-frame-mirrorless-camera-body",
+    "image": "https://cdn.shopify.com/s/files/1/0724/5371/8324/products/qbubpsr8vitulsbiizpf.jpg?v=1779299637",
+    "depictedModel": "Panasonic LUMIX S1",
+    "bytes": 63328,
+    "status": "downloaded",
     "name": "Panasonic LUMIX S1 / S1R 系列",
-    "status": "fallback"
+    "local": "/images/cameras/panasonic-s1-series.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "panasonic-s5",
+    "page": "https://shop.panasonic.com/products/s5-full-frame-mirrorless-camera-body",
+    "image": "https://cdn.shopify.com/s/files/1/0724/5371/8324/products/fohuwai75xq6203fpdc5.jpg?v=1779299627",
+    "bytes": 64240,
+    "status": "downloaded",
     "name": "Panasonic LUMIX S5",
-    "status": "fallback"
+    "local": "/images/cameras/panasonic-s5.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "panasonic-s5-ii",
@@ -421,19 +569,25 @@
   },
   {
     "id": "ricoh-gr-ii",
+    "page": "https://www.ricoh-imaging.co.jp/english/products/gr-2/",
+    "image": "https://www.ricoh-imaging.co.jp/english/products/gr-2/top/img/main_img_01.jpg",
+    "bytes": 40358,
+    "status": "downloaded",
     "name": "Ricoh GR II",
-    "page": "https://us.ricoh-imaging.com/product/gr-ii/",
-    "image": "https://us.ricoh-imaging.com/cdn/shop/files/GR_IV_front_on.jpg?v=1793382813&width=900",
-    "bytes": 66854,
-    "status": "fallback"
+    "local": "/images/cameras/ricoh-gr-ii.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "ricoh-gr-iii",
+    "page": "https://www.ricoh-imaging.co.jp/english/products/gr-3/",
+    "image": "https://www.ricoh-imaging.co.jp/english/products/gr-3/top/img/product-gr3.png",
+    "bytes": 30218,
+    "status": "downloaded",
     "name": "Ricoh GR III",
-    "page": "https://us.ricoh-imaging.com/product/gr-iii/",
-    "image": "https://us.ricoh-imaging.com/cdn/shop/files/GR_IV_front_on.jpg?v=1793382813&width=900",
-    "bytes": 66854,
-    "status": "fallback"
+    "local": "/images/cameras/ricoh-gr-iii.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "ricoh-gr-iv",
@@ -545,8 +699,14 @@
   },
   {
     "id": "sony-rx100-iii",
+    "page": "https://www.sony.com/electronics/support/compact-cameras-dsc-rx-series/dsc-rx100m3",
+    "image": "https://www.sony.com/image/154029ec758014dbfbe5c675f9422180?fmt=png-alpha&wid=1000",
+    "bytes": 32136,
+    "status": "downloaded",
     "name": "Sony RX100 III",
-    "status": "fallback"
+    "local": "/images/cameras/sony-rx100-iii.webp",
+    "sourceType": "official",
+    "verifiedDate": "2026-11-28"
   },
   {
     "id": "sony-zv-e10",

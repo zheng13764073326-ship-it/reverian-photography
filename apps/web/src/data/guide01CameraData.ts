@@ -3,7 +3,7 @@ export type BrandName = 'Sony'|'Canon'|'Nikon'|'Fujifilm'|'Panasonic'|'OM SYSTEM
 export type SensorFormat='1-inch'|'M43'|'APS-C'|'FullFrame'|'MediumFormat';
 export type BudgetTier='1k-3k'|'3k-5k'|'5k-8k'|'8k-12k'|'12k+';
 export interface CameraPlacement {budgetTier:BudgetTier;condition:'new'|'used';summary:string;caution:string}
-export interface CameraItem {id:string;brand:BrandName;name:string;alias?:string;sensor:SensorFormat;lensType:'fixed'|'interchangeable';bodyType:'mirrorless'|'dslr'|'compact';hasEVF:boolean;hasMechanicalShutter:boolean;image:string;placements:CameraPlacement[]}
+export interface CameraItem {id:string;brand:BrandName;name:string;alias?:string;sensor:SensorFormat;lensType:'fixed'|'interchangeable';bodyType:'mirrorless'|'dslr'|'compact';hasEVF:boolean;hasMechanicalShutter:boolean;image:string;depictedModel?:string;placements:CameraPlacement[]}
 export const guide=data;
 export const cameras=data.cameras as CameraItem[];
 export const sensorNames:Record<SensorFormat,string>={'1-inch':'1 英寸',M43:'M4/3','APS-C':'APS-C',FullFrame:'全画幅',MediumFormat:'中画幅'};

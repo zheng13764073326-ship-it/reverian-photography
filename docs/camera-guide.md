@@ -9,7 +9,7 @@
 - apps/web/src/data/guide-data.json：画幅、品牌、题材、预算策略、验机方法、决策表和 74 条独立机型记录。
 - apps/web/src/data/guide01CameraData.ts：机型字段类型、中文画幅名与章节目录。
 - apps/web/src/pages/lab/guides/camera.astro：六章页面模板。
-- apps/web/src/components/guides/CameraImage.astro：官方产品图与线稿回退。
+- apps/web/src/components/guides/CameraImage.astro：本地真实产品照片、文件版本与缺图检查。
 - apps/web/src/lib/camera-guide.ts：画幅选择、题材切换、预算与 EVF 联动、阅读进度、目录跟随、验机保存。
 - apps/web/src/styles/camera-guide.css：所有选择器限定在 .camera-guide 内，不修改整站变量或首页样式。
 
@@ -17,9 +17,11 @@
 
 ## 图片
 
-本次接入 47 张品牌官方产品图，均为透明背景 800 × 600 WebP，单张不超过 80 KB。尽量采用官方正面或斜侧展示照；不伪造硬件视角。来源逐张记录于 docs/camera-image-sources.json。
+已配齐 74 条机型记录的真实产品照片，覆盖 96 个预算卡片位置。统一为 800 × 600 WebP，每张不超过 80 KB。优先采用品牌产品档案，LX10 与早期 Leica Q 分别补自 Broadway Camera 和 Leica Store Miami。来源逐张记录于 docs/camera-image-sources.json。图片保存在本站，不依赖外部图片加载。
 
-另有 27 个型号没有取得能确认型号的官方产品图，显示带品牌与画幅说明的线稿，不用相邻代产品替代。高预算的系列方向仍用对照表，不强行指定单一机身。图片不存在时构建自动使用线稿；图片网络加载失败也切回线稿。日后补入对应图片并重新构建即可。
+不再渲染线稿。图片文件缺失会令构建失败；网络加载失败提供重新加载按钮。图片地址带内容指纹，替换机身照片后不会继续显示旧缓存。OM-1 已更正为第一代机身。系列记录标注实际图示型号；佳能日版机身标注对应名称，避免把地区名称差异误认为不同代际。
+
+新增机型时必须同时提交对应产品图与来源记录，再执行生产构建。不要用相邻代机型代替缺图型号。
 
 ## 交互与内容核对
 
@@ -31,4 +33,4 @@
 
 ## 验证
 
-使用项目 build:production 与 Astro check。浏览器检查桌面与手机：锚点位置、横向目录、画幅 SVG、题材键盘切换、预算/成色/EVF 联动、空结果、图片失败回退、14 项勾选保存/恢复/重置、存储异常和原有镜头指南弹窗。截图与运行记录保存在当前工作区 work/camera-guide/。
+使用项目 build:production 与 Astro check。浏览器检查桌面与手机：锚点位置、横向目录、画幅 SVG、题材键盘切换、预算/成色/EVF 联动、空结果、全部机型图片加载与失败重试、14 项勾选保存/恢复/重置、存储异常和原有镜头指南弹窗。截图与运行记录保存在当前工作区 work/camera-guide/；本次配图验证位于 work/camera-images-complete/。

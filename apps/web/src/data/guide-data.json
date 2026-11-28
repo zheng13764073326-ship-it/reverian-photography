@@ -677,7 +677,8 @@
           "summary": "菜单直观、入门镜头便宜易找",
           "caution": "单反系统已停止更新，适合低成本打基础。"
         }
-      ]
+      ],
+      "depictedModel": "EOS Kiss X10（200D II 日版）"
     },
     {
       "id": "canon-800d",
@@ -696,7 +697,8 @@
           "summary": "菜单直观、入门镜头便宜易找",
           "caution": "单反系统已停止更新，适合低成本打基础。"
         }
-      ]
+      ],
+      "depictedModel": "EOS Kiss X9i（800D 日版）"
     },
     {
       "id": "canon-m50-ii",
@@ -1592,7 +1594,8 @@
           "summary": "扎实做工与专业视频工作流，入手前评估 L 卡口镜头与配件生态。",
           "caution": "核对具体代际、成色与配套镜头，先试握再决定。"
         }
-      ]
+      ],
+      "depictedModel": "Panasonic LUMIX S1"
     },
     {
       "id": "olympus-em10-iii",
@@ -1769,7 +1772,8 @@
           "summary": "高端全画幅 28mm 随身创作机",
           "caution": "入手前务必核验镜头状态，并评估高昂的官方维修与售后成本。"
         }
-      ]
+      ],
+      "depictedModel": "Leica Q（Typ 116）"
     },
     {
       "id": "fuji-xt10",
@@ -1807,7 +1811,8 @@
           "summary": "低成本体验富士胶片模拟与轻便操控",
           "caution": "无内置电子取景器；不同代际规格有差别，购买前核对具体型号。 老机身重点验按键、拨盘灵敏度与屏幕排线。"
         }
-      ]
+      ],
+      "depictedModel": "Fujifilm X-A5"
     },
     {
       "id": "fuji-xt30-ii",
