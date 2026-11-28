@@ -13,20 +13,23 @@ const tools=[
 <div class="photography-guides" data-photography-guides>
   <div class="pg-hero">
     <header class="pg-introduction">
-      <p class="pg-kicker">OPTICAL LAB // 01 <span>· FIELD NOTES</span></p>
+      <p class="pg-kicker">OPTICAL LAB // 01</p>
       <h1>摄影指南</h1>
-      <p class="pg-subtitle">按下快门之前，<br/>先学会<span>看见光</span>。</p>
-      <p class="pg-intro">从相机、镜头到焦距与曝光，理清拍摄的基本逻辑。不堆砌枯燥参数表，只讲每一次按下快门前，你真正需要知道的事。</p>
-      <p class="pg-meta">04 篇系统指南 · 涵盖器材与曝光 · 附交互演示与验机清单</p>
-      <div class="pg-actions"><a class="pg-button pg-button-primary" href="/lab/guides/camera/">从第一篇开始 <span aria-hidden="true">→</span></a><a class="pg-button" href="#guide-reading-path" data-guide-scroll>按顺序浏览</a></div>
+      <p class="pg-intro">从相机、镜头到焦距与曝光，理清拍摄的基本逻辑，让每一次按下快门更有把握。</p>
+      <div class="pg-actions">
+        <a class="pg-button" href="/lab/guides/camera/">从第一篇开始 <span aria-hidden="true">→</span></a>
+        <a class="pg-directory-link" href="#guide-catalog" data-guide-scroll>浏览目录 <span aria-hidden="true">↓</span></a>
+      </div>
     </header>
     <ApertureViewfinderDemo/>
   </div>
   <nav class="pg-learning-path" id="guide-reading-path" aria-label="摄影指南阅读顺序">
     <span class="pg-path-label">阅读顺序</span>
-    <ol>{guides.map(guide=><li><a href={`#guide-card-${guide.id}`} data-guide-scroll><span>STEP {guide.index}</span><span>· {guide.title}</span></a></li>)}</ol>
+    <ol>{guides.map(guide => <li>
+      <a href={`#guide-card-${guide.id}`} data-guide-scroll><span>{guide.index}</span> <span>{guide.title}</span></a>
+    </li>)}</ol>
   </nav>
-  <section class="pg-catalog" aria-labelledby="lab-section-guides">
+  <section class="pg-catalog" id="guide-catalog" aria-labelledby="lab-section-guides" tabindex="-1">
     <div class="pg-section-heading"><h2 id="lab-section-guides">专题目录</h2><p>FIELD NOTES / 04 GUIDES</p></div>
     <div class="pg-guide-grid">
       {guides.map(guide=><a class="pg-card" id={`guide-card-${guide.id}`} href={href(guide.id)} data-guide={guide.id==='camera'?undefined:guide.id} aria-haspopup={guide.id==='camera'?undefined:'dialog'} aria-controls={guide.id==='camera'?undefined:'lab-reader'} aria-labelledby={`guide-title-${guide.id}`}>

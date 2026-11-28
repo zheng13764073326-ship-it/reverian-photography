@@ -1,57 +1,93 @@
 ---
+import { apertureStops, apertureDescription, bokehRadius, defaultStop, lastStop, sceneStyle } from '../lib/photography-guides';
+
 interface Props { foregroundSrc?: string; backgroundSrc?: string }
-const {foregroundSrc, backgroundSrc}=Astro.props;
-const stops=['1.4','2.0','2.8','4.0','5.6','8.0','11','16'];
+const {foregroundSrc, backgroundSrc} = Astro.props;
+const initial = apertureStops[defaultStop];
+// The distant lamps converge near the horizon. Nearby lamps are larger and overlap.
+const lights = [
+  [46, 130, 30, 'cool', .27], [64, 243, 42, 'warm', .47],
+  [102, 225, 33, 'warm', .63], [118, 217, 18, 'paper', .52],
+  [157, 175, 13, 'cool', .45], [172, 170, 11, 'paper', .48],
+  [210, 199, 16, 'warm', .53], [231, 193, 9, 'warm', .62],
+  [270, 181, 7, 'cool', .44], [288, 184, 7, 'paper', .50],
+  [345, 171, 14, 'warm', .43], [362, 164, 18, 'warm', .60],
+  [421, 185, 25, 'paper', .51], [448, 176, 24, 'cool', .37],
+  [520, 113, 42, 'warm', .47], [562, 102, 33, 'paper', .32],
+  [8, 269, 46, 'cool', .38], [163, 264, 24, 'warm', .32],
+  [407, 226, 14, 'cool', .33], [545, 245, 36, 'warm', .36],
+] as const;
+const points = lights.map(([x, y, open, color, opacity]) => ({
+  x, y, open, closed: 1.1 + open * .035, color, opacity,
+}));
+const sceneDescription = backgroundSrc || foregroundSrc
+  ? '调整光圈可观察背景清晰程度的变化，前景始终清晰'
+  : '收小光圈时，夜景散景渐渐缩成清晰的光点，底部焦点标尺始终清晰';
 ---
 <div class="pg-demo" data-aperture-demo>
   <div class="pg-viewfinder">
-    <div class="pg-viewfinder-top"><span>A MODE · EV 0</span><span class="pg-demo-badge">可交互演示</span></div>
-    <div class="pg-scene" role="img" aria-label="山崖上的摄影师保持清晰，远山随光圈调整逐渐模糊或清晰">
-      <div class="pg-scene-background" data-aperture-background style="--aperture-blur:7px">
-        {backgroundSrc ? <img src={backgroundSrc} alt="" decoding="async"/> : <svg viewBox="0 0 600 350" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <defs>
-            <linearGradient id="pg-sky" x2="0" y2="1"><stop stop-color="#789599"/><stop offset=".65" stop-color="#c1c7b8"/><stop offset="1" stop-color="#e0cfaa"/></linearGradient>
-            <linearGradient id="pg-mist" x2="0" y2="1"><stop stop-color="#c3d1c4" stop-opacity="0"/><stop offset="1" stop-color="#c3d1c4" stop-opacity=".65"/></linearGradient>
-            <radialGradient id="pg-haze"><stop stop-color="#e6d9ae" stop-opacity=".75"/><stop offset="1" stop-color="#d5cfaf" stop-opacity="0"/></radialGradient>
-          </defs>
-          <path fill="url(#pg-sky)" d="M0 0H600V350H0z"/>
-          <circle cx="450" cy="78" r="95" fill="url(#pg-haze)"/><circle cx="450" cy="78" r="16" fill="#ecdfbc" opacity=".8"/>
-          <path fill="#81999b" d="M-20 201 44 140 77 159 146 84 175 116 204 101 260 159 300 124 360 175 420 122 490 169 554 127 625 188V350H-20z"/>
-          <path fill="#607d83" d="M-20 253 61 204 97 215 180 159 208 186 259 178 325 219 374 193 445 211 503 171 622 241V350H-20z"/>
-          <path fill="url(#pg-mist)" d="M0 150H600V280H0z"/>
-          <path fill="#405f67" d="m-20 306 78-58 65 21 87-49 64 42 56-22 64 39 61-32 82 17 85-61v147H-20z"/>
-          <path fill="#a9b9ae" opacity=".22" d="M300 350c40-53 98-41 128-74-11 32-61 44-56 74z"/>
-          <g fill="#dccb9d" opacity=".48"><circle cx="520" cy="238" r="3"/><circle cx="542" cy="246" r="2"/><circle cx="494" cy="243" r="2"/><circle cx="470" cy="255" r="2.5"/></g>
-        </svg>}
+    <div class="pg-scene" role="img" aria-label={sceneDescription}>
+      <div class:list={['pg-scene-background', {'pg-scene-photo': backgroundSrc}]} data-aperture-background style={sceneStyle(defaultStop)}>
+        {backgroundSrc ? <img src={backgroundSrc} alt="" decoding="async"/> : (
+          <svg class="pg-bokeh-scene" viewBox="0 0 600 375" aria-hidden="true">
+            <g class="pg-bokeh-lights">
+              {points.map(({x, y, open, closed, color, opacity}) =>
+                <circle class={`pg-bokeh-light pg-light-${color}`} cx={x} cy={y} r={bokehRadius(open, closed, defaultStop)}
+                  opacity={opacity} data-bokeh-light data-open-radius={open} data-closed-radius={closed}/>
+              )}
+            </g>
+            <g class="pg-bokeh-stars" fill="currentColor">
+              {points.map(({x, y, open, color}) =>
+                <g class={`pg-light-${color}`} transform={`translate(${x} ${y})`}>
+                  {[0, 60, 120].map(angle =>
+                    <path d={`M${-open * .30} 0 0 -.65 ${open * .30} 0 0 .65Z`} transform={`rotate(${angle})`}/>
+                  )}
+                </g>
+              )}
+            </g>
+          </svg>
+        )}
       </div>
       <div class="pg-scene-foreground">
-        {foregroundSrc ? <img src={foregroundSrc} alt="" decoding="async"/> : <svg viewBox="0 0 600 350" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <path fill="#172b30" d="M0 236 42 247 89 238 131 255 176 251 222 271 269 279 294 293 281 303 307 309 290 324 316 350H0z"/>
-          <path fill="none" stroke="#628080" stroke-width="1" opacity=".45" d="m0 237 42 11 47-9 42 17 45-4 45 20 48 8 24 14M52 251l23 34-8 20 29 45m84-95-18 32 13 15-9 48m85-71-24 20 9 25-10 26"/>
-          <g fill="#13252a" stroke="#13252a" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="222" cy="198" r="8" stroke="none"/>
-            <path d="m217 209 13 1 6 29-9 5-13-7z"/>
-            <path d="m221 237-5 34m14-31 10 34m-20-58 15 7 11-15m-17 4 13-9 3 3" fill="none" stroke-width="7"/>
-            <path d="m209 216 4 21" fill="none" stroke-width="9"/>
-            <rect x="241" y="196" width="12" height="9" rx="1" stroke="none"/><path d="M253 198h5v5h-5z" stroke="none"/>
-          </g>
-          <g fill="none" stroke="#567475" stroke-width="1" opacity=".55"><path d="m216 211 9 5-1 18m-5 9-4 25m16-25 8 28"/></g>
-        </svg>}
+        {foregroundSrc ? <img src={foregroundSrc} alt="" decoding="async"/> : (
+          <svg viewBox="0 0 600 375" aria-hidden="true">
+            <g class="pg-focus-ruler" fill="none" stroke-width="1" shape-rendering="crispEdges">
+              <path d="M212 333H388" vector-effect="non-scaling-stroke"/>
+              {Array.from({length: 17}, (_, i) =>
+                <path d={`M${220 + i * 10} 333v${i === 8 ? -9 : i % 4 === 0 ? -5 : -2}`} vector-effect="non-scaling-stroke"/>
+              )}
+            </g>
+          </svg>
+        )}
       </div>
+      <span class="pg-viewfinder-top" aria-hidden="true">A MODE · EV 0</span>
       <div class="pg-viewfinder-corners" aria-hidden="true"></div>
       <span class="pg-focus-mark" aria-hidden="true"></span>
     </div>
-    <div class="pg-hud" aria-live="off">
-      <div><span>APERTURE</span><strong data-aperture-value>f/2.8</strong></div>
-      <div><span>SHUTTER</span><strong data-shutter-value>1/1000s</strong></div>
+    <div class="pg-hud">
+      <div><span>APERTURE</span><strong data-aperture-value>f/{initial.aperture}</strong></div>
+      <div><span>SHUTTER</span><strong data-shutter-value>{initial.shutter}s</strong></div>
       <div><span>ISO</span><strong>100</strong></div>
-      <div><span>景深状态</span><strong data-depth-value>浅</strong></div>
+      <div><span>景深</span><strong data-depth-value>{initial.depth}</strong></div>
     </div>
     <div class="pg-aperture-control">
-      <label class="lab-sr-only" for="pg-aperture">调整光圈，观察景深与快门速度</label>
-      <input id="pg-aperture" type="range" min="0" max="7" step="1" value="2" data-aperture-input aria-valuetext="f/2.8，快门 1/1000 秒，景深浅"/>
-      <div class="pg-aperture-ticks" aria-hidden="true">{stops.map((stop,index)=><span class:list={{'is-active':index===2}}>{stop}</span>)}</div>
+      <label class="lab-sr-only" for="pg-aperture">调整光圈，观察散景虚化与快门联动</label>
+      <div class="pg-aperture-rail">
+        <input id="pg-aperture" type="range" min="0" max={lastStop} step="1" value={defaultStop}
+          data-aperture-input aria-valuetext={apertureDescription(defaultStop)}/>
+        <div class="pg-aperture-marks" aria-hidden="true">
+          {apertureStops.map((_, i) => <span style={`left:${i / lastStop * 100}%`}/>)}
+        </div>
+      </div>
+      <div class="pg-aperture-ticks" role="group" aria-label="直接选择光圈">
+        {apertureStops.map(({aperture}, i) =>
+          <button type="button" data-aperture-stop={i} aria-label={`光圈 f/${aperture}`} aria-pressed={i === defaultStop}>{aperture}</button>
+        )}
+      </div>
     </div>
   </div>
-  <div class="pg-demo-guide"><p>拖动滑块调节光圈，观察背景虚化与快门速度联动</p><a href="/lab/?guide=exposure" data-guide="exposure" data-demo-guide aria-haspopup="dialog" aria-controls="lab-reader">这就是 Guide 04 要讲的事 <span aria-hidden="true">→</span></a></div>
+  <div class="pg-demo-guide">
+    <p>拖动光圈刻度，观察散景虚化与快门联动</p>
+    <a href="/lab/?guide=exposure" data-guide="exposure" data-demo-guide aria-haspopup="dialog" aria-controls="lab-reader">原理详见 GUIDE 04 <span aria-hidden="true">→</span></a>
+  </div>
 </div>
