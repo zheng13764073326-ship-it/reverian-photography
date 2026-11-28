@@ -39,13 +39,60 @@ export function setupCameraGuide(root:HTMLElement){
  function save(){try{localStorage.setItem(key,JSON.stringify(checks.filter(c=>c.checked).map(c=>c.dataset.checkId)));}catch{storageStatus.textContent='当前浏览器无法保存进度，本次勾选仍然有效。';}updateChecks();}
  try{const saved:unknown=JSON.parse(localStorage.getItem(key)||'[]');if(Array.isArray(saved))checks.forEach(c=>c.checked=saved.includes(c.dataset.checkId));}catch{storageStatus.textContent='未读取到保存的进度，可以从头开始检查。';}
  checks.forEach(c=>c.addEventListener('change',save));root.querySelector('[data-check-reset]')!.addEventListener('click',()=>{checks.forEach(c=>c.checked=false);save()});updateChecks();
- // Keep anchors below the existing navigation at every screen size.
- const header=document.querySelector<HTMLElement>('.site-header');
- const resize=()=>{if(header)root.style.setProperty('--guide-header',`${Math.round(header.getBoundingClientRect().height)}px`)};
- if(header)new ResizeObserver(resize).observe(header);resize();
- const chapters=all<HTMLElement>('.cg-section'),links=all<HTMLAnchorElement>('[data-chapter-link]');
- let queued=false,lastChapter='';
- function scroll(){queued=false;const top=window.scrollY,end=Math.max(1,root.offsetTop+root.offsetHeight-innerHeight);root.querySelector<HTMLElement>('[data-reading-progress]')!.style.transform=`scaleX(${Math.min(1,Math.max(0,top/end))})`;const offset=(header?.getBoundingClientRect().height||80)+(innerWidth<1024?100:40);let active=chapters[0].id;for(const c of chapters){if(c.getBoundingClientRect().top<=offset)active=c.id;}links.forEach(link=>{if(link.dataset.chapterLink===active){link.setAttribute('aria-current','location');if(active!==lastChapter&&innerWidth<1024)revealInStrip(link,root.querySelector<HTMLElement>('.cg-toc')!);}else link.removeAttribute('aria-current')});lastChapter=active;}
- const schedule=()=>{if(!queued){queued=true;requestAnimationFrame(scroll)}};
- window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);scroll();
+ const header = document.querySelector<HTMLElement>('.site-header');
+ const toc = root.querySelector<HTMLElement>('.cg-toc')!;
+ const chapters = all<HTMLElement>('.cg-section');
+ const links = all<HTMLAnchorElement>('[data-chapter-link]');
+ const progress = root.querySelector<HTMLElement>('[data-reading-progress]')!;
+ let activationLine = 0;
+ let lastChapter = '';
+ let queued = false;
+
+ function updateChapter() {
+  queued = false;
+  const end = Math.max(1, root.offsetTop + root.offsetHeight - innerHeight);
+  progress.style.transform = `scaleX(${Math.min(1, Math.max(0, scrollY / end))})`;
+
+  let active = chapters[0];
+  for (const chapter of chapters) {
+   if (chapter.getBoundingClientRect().top > activationLine) break;
+   active = chapter;
+  }
+  if (active.id === lastChapter) return;
+  lastChapter = active.id;
+  for (const link of links) {
+   if (link.dataset.chapterLink === active.id) {
+    link.setAttribute('aria-current', 'location');
+    if (toc.scrollWidth > toc.clientWidth) revealInStrip(link, toc);
+   } else {
+    link.removeAttribute('aria-current');
+   }
+  }
+ }
+
+ function schedule() {
+  if (!queued) {
+   queued = true;
+   requestAnimationFrame(updateChapter);
+  }
+ }
+
+ function measureNavigation() {
+  if (header) root.style.setProperty('--guide-header', `${header.getBoundingClientRect().height}px`);
+  root.style.setProperty('--guide-toc-height', `${toc.getBoundingClientRect().height}px`);
+  // Native fragment jumps include both the scrollport padding and the target margin.
+  // Allow one CSS pixel for fractional landing positions at non-integer zoom levels.
+  const padding = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+  const margin = parseFloat(getComputedStyle(chapters[0]).scrollMarginTop) || 0;
+  activationLine = padding + margin + 1;
+  lastChapter = '';
+  schedule();
+ }
+
+ measureNavigation();
+ const observer = new ResizeObserver(measureNavigation);
+ if (header) observer.observe(header);
+ observer.observe(toc);
+ window.addEventListener('resize', measureNavigation);
+ window.addEventListener('scroll', schedule, {passive:true});
 }

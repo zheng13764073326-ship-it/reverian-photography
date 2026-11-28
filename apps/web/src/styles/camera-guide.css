@@ -31,7 +31,7 @@
 .camera-guide .cg-deck{font:400 clamp(19px,1.9vw,24px)/1.85 var(--serif-zh);max-width:27em;margin-bottom:24px}
 .camera-guide .cg-intro{color:var(--cg-muted);max-width:42em}
 .camera-guide .cg-hero-note{display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--cg-line);padding-top:22px;margin-top:36px;color:var(--cg-muted);font:11px/1.8 var(--mono)}
-.camera-guide .cg-section{padding-top:38px;margin-bottom:108px;border-top:1px solid var(--cg-line);scroll-margin-top:calc(var(--guide-header) + 24px)}
+.camera-guide .cg-section{padding-top:38px;margin-bottom:108px;border-top:1px solid var(--cg-line)}
 .camera-guide .cg-section>p:not(.cg-kicker){max-width:48em}
 .camera-guide .cg-sensor-layout{display:grid;grid-template-columns:1.12fr 1fr;align-items:center;gap:32px;margin:34px 0 18px}
 .camera-guide .cg-sensor-stage{background:var(--cg-soft);padding:20px 16px 10px;min-width:0;border:1px solid var(--cg-line)}
@@ -87,7 +87,8 @@
 .camera-guide .cg-evf{display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer}
 .camera-guide input[type=checkbox]{appearance:auto;width:16px;height:16px;accent-color:var(--cg-gold);flex:none;cursor:pointer}
 .camera-guide .cg-result-count{font:11px/1.8 var(--mono);color:var(--cg-muted);margin:16px 0 26px;min-height:20px}
-.camera-guide [data-budget-panel],.camera-guide .cg-budget-tabs{scroll-margin-top:calc(var(--guide-header) + 24px)}
+/* The document's scroll padding already clears the site header. */
+.camera-guide :is(.cg-section,[data-budget-panel],.cg-budget-tabs){scroll-margin-top:4px}
 .camera-guide .cg-budget-intro{margin-bottom:26px;max-width:48em}
 .camera-guide .cg-budget-intro h3{font-size:24px;margin-bottom:14px}
 .camera-guide .cg-budget-intro .cg-kicker{margin-bottom:10px}
@@ -164,7 +165,7 @@
  .camera-guide .cg-toc-group{flex:none}
  .camera-guide .cg-toc-group>a{white-space:nowrap;padding:6px 10px;border:1px solid transparent;border-radius:3px;font-size:12px;gap:6px}
  .camera-guide .cg-toc-group>a[aria-current]{border-color:var(--cg-line);background:var(--cg-soft)}
- .camera-guide :is(.cg-section,[data-budget-panel],.cg-budget-tabs){scroll-margin-top:calc(var(--guide-header) + 86px)}
+ .camera-guide :is(.cg-section,[data-budget-panel],.cg-budget-tabs){scroll-margin-top:calc(var(--guide-toc-height,56px) + 4px)}
 }
 @media(max-width:600px){
  .camera-guide{width:100%;max-width:none;box-sizing:border-box;font-size:14px;padding-inline:24px}
