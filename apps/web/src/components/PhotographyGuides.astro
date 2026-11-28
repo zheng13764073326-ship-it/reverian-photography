@@ -32,9 +32,7 @@ const tools=[
       {guides.map(guide=><a class="pg-card" id={`guide-card-${guide.id}`} href={href(guide.id)} data-guide={guide.id==='camera'?undefined:guide.id} aria-haspopup={guide.id==='camera'?undefined:'dialog'} aria-controls={guide.id==='camera'?undefined:'lab-reader'} aria-labelledby={`guide-title-${guide.id}`}>
         <div class="pg-stage">
           <div class="pg-stage-labels"><span>{guide.tag}</span>{guide.id==='camera'&&<span class="pg-start-badge"><span>START HERE · </span>从这里开始</span>}</div>
-          <span class="pg-stage-number" aria-hidden="true">{guide.index}</span>
           <GuideIllustration id={guide.id}/>
-          {guide.id==='camera'&&<span class="pg-shutter-flash" aria-hidden="true"></span>}
         </div>
         <div class="pg-card-copy">
           <span class="pg-card-index">GUIDE {guide.index}</span>

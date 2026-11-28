@@ -1,51 +1,72 @@
 ---
 interface Props {id:string}
 const {id}=Astro.props;
+// SVG geometry uses millimetre-derived dimensions; strokes stay one CSS pixel at every size.
+const fine={'vector-effect':'non-scaling-stroke','shape-rendering':'crispEdges','stroke-width':1} as const;
+const formats=[
+  {name:'FF 36×24',width:162,height:108,labelX:280,labelY:49,anchor:'end'},
+  {name:'APS-C',width:105.75,height:70.2,labelX:223.75,labelY:89,anchor:'end'},
+  {name:'M4/3',width:77.85,height:58.5,labelX:232,labelY:119,anchor:'start'},
+  {name:'1"',width:59.4,height:39.6,labelX:169.4,labelY:143,anchor:'end'}
+];
+const focalLengths=[20,28,35,50,70,85,200];
+const apertures=['f/1.4','f/2','f/2.8','f/4','f/5.6','f/8'];
+const focalX=(index:number)=>52+296*index/6;
+const frames=[{focal:28,width:216,height:144},{focal:35,width:173,height:115},{focal:50,width:121,height:81},{focal:85,width:71,height:47}];
+function framePath(width:number,height:number){
+  const l=200-width/2,r=200+width/2,t=108-height/2,b=108+height/2,c=10;
+  return `M${l} ${t+c}V${t}H${l+c} M${r-c} ${t}H${r}V${t+c} M${r} ${b-c}V${b}H${r-c} M${l+c} ${b}H${l}V${b-c} M200 ${t-2}v4 M200 ${b-2}v4 M${l-2} 108h4 M${r-2} 108h4`;
+}
+const meterX=(index:number)=>64+272*index/12;
 ---
-<svg class="pg-illustration" viewBox="0 0 600 319" fill="none" aria-hidden="true">
+<svg class="pg-illustration pg-scale-illustration" viewBox="0 0 400 210" fill="none" aria-hidden="true">
   {id==='camera' && <>
-    <g class="pg-optical-lines">
-      <path d="M166 105h47l14-25h111l18 25h70v122H166z"/><path d="M177 113v105h27M394 113h22v105h-23M244 87h77M176 99v-7h27v7"/>
-      <rect x="370" y="119" width="27" height="16" rx="2"/><circle cx="300" cy="161" r="65"/><circle cx="300" cy="161" r="56"/><circle cx="300" cy="161" r="44" stroke-dasharray="1 5"/>
-      <path d="M146 151h-18m9-9v18M447 151h18m-9-9v18" opacity=".4"/>
+    <g class="pg-scale-faint">
+      <path {...fine} d="M110 58V174H280"/>
+      {Array.from({length:37},(_,i)=><path {...fine} d={`M${118+i*4.5} 174v${i%5===0?2:1}`}/>)}
+      {Array.from({length:25},(_,i)=><path {...fine} d={`M110 ${166-i*4.5}h-${i%5===0?2:1}`}/>)}
     </g>
-    <g class="pg-aperture-leaves" stroke="currentColor" stroke-width="1.2">
-      {[0,60,120,180,240,300].map(angle=><path transform={`rotate(${angle} 300 161)`} d="m300 132 25 14 16-12-19-16-22 3z" fill="currentColor" fill-opacity=".1"/>)}
-      <path d="m300 132 25 14v29l-25 15-25-15v-29z"/>
-    </g>
-    <g class="pg-format-labels" text-anchor="middle"><text x="208" y="267">FULL FRAME</text><text x="316" y="267">APS-C</text><text x="400" y="267">M4/3</text></g>
+    {formats.map((format,index)=><g class="pg-sensor-format" style={`--format-delay:${index*60}ms`}>
+      <rect {...fine} class:list={['pg-sensor-frame',{'pg-sensor-full':index===0}]} x="118" y={166-format.height} width={format.width} height={format.height}/>
+      {index===2&&<path {...fine} class="pg-sensor-leader" d="M195.85 107.5h8l22 8"/>}
+      <text class="pg-sensor-label" x={format.labelX} y={format.labelY} text-anchor={format.anchor}>{format.name}</text>
+    </g>)}
+    <text class="pg-scale-unit" x="284" y="177">MM</text>
   </>}
   {id==='lens' && <>
-    <path class="pg-optical-lines" d="M106 226h388" stroke-dasharray="2 6" opacity=".35"/>
-    <g class="pg-lens pg-lens-wide">
-      <g class="pg-optical-lines"><path d="M157 141v70q36 16 72 0v-70M157 183q36 16 72 0m-72 6q36 16 72 0m-72 7q36 16 72 0"/><ellipse cx="193" cy="141" rx="36" ry="10"/><ellipse cx="193" cy="141" rx="27" ry="6"/><path d="M176 152q-8 24 0 31m34-31q8 24 0 31" stroke="currentColor"/></g>
-      <text x="193" y="249">24mm</text><text class="pg-lens-aperture" x="193" y="274">f/2.8</text>
+    <path {...fine} class="pg-scale-faint" d="M52 112H348"/>
+    {focalLengths.map((focal,index)=><g>
+      <path {...fine} class="pg-scale-strong" d={`M${focalX(index)} 94v18`}/>
+      <text class:list={['pg-focal-label',{'pg-focal-35':focal===35,'pg-focal-85':focal===85}]} x={focalX(index)} y="84" text-anchor="middle">{focal}</text>
+      {index<6&&[1,2,3].map(step=><path {...fine} class="pg-scale-faint" d={`M${focalX(index)+296/24*step} ${step===2?103:106}V112`}/>)}
+    </g>)}
+    <text class="pg-scale-unit" x="369" y="84">MM</text>
+    <g class="pg-focal-pointer">
+      <path d={`M${focalX(2)-4} 58h8l-4 6z`} fill="currentColor"/>
+      <path {...fine} d={`M${focalX(2)} 92v32`} stroke="currentColor"/>
     </g>
-    <g class="pg-lens">
-      <g class="pg-optical-lines"><path d="M267 113v96q44 19 88 0v-96M267 176q44 19 88 0m-88 7q44 19 88 0m-88 7q44 19 88 0"/><ellipse cx="311" cy="113" rx="44" ry="13"/><ellipse cx="311" cy="113" rx="33" ry="9"/><path d="M289 128q-10 26 0 48m44-48q10 26 0 48" stroke="currentColor"/></g>
-      <text x="311" y="249">50mm</text><text class="pg-lens-aperture" x="311" y="274">f/1.8</text>
-    </g>
-    <g class="pg-lens pg-lens-tele">
-      <g class="pg-optical-lines"><path d="M386 90v79l8 12v26q45 20 90 0v-26l8-12V90M394 182q45 19 90 0m-90 7q45 19 90 0m-90 7q45 19 90 0"/><ellipse cx="439" cy="90" rx="53" ry="17"/><ellipse cx="439" cy="90" rx="42" ry="12"/><path d="M410 108q-17 33 0 65m58-65q17 33 0 65m-49-60q9 25 0 48m40-48q-9 25 0 48" stroke="currentColor"/></g>
-      <text x="439" y="249">85mm</text><text class="pg-lens-aperture" x="439" y="274">f/1.4</text>
-    </g>
+    {apertures.map((aperture,index)=><text class:list={['pg-ring-aperture',{'pg-ring-fast':index===0}]} x={52+296*index/5} y="154" text-anchor="middle">{aperture}</text>)}
   </>}
   {id==='focal-length' && <>
-    <defs><clipPath id="pg-fov-clip"><rect x="345" y="74" width="154" height="165"/></clipPath></defs>
-    <g class="pg-optical-lines"><path d="M96 160h232" stroke-dasharray="3 6" opacity=".5"/><circle cx="110" cy="160" r="5" fill="currentColor"/><path d="M151 123a55 55 0 0 1 0 74" opacity=".6"/><path d="M345 89V74h15m124 0h15v15m0 135v15h-15m-124 0h-15v-15"/>
-      <path class="pg-ray pg-ray-top" d="M110 160h175"/><path class="pg-ray pg-ray-bottom" d="M110 160h175"/>
-      <rect x="338" y="67" width="168" height="179" rx="2" opacity=".3"/>
-    </g>
-    <g clip-path="url(#pg-fov-clip)">
-      <path d="M345 211h154" stroke="#7c969e" opacity=".35"/>
-      <g class="pg-fov-subject pg-optical-lines"><path d="m392 208 14-50 15-19 15 19 14 50z"/><path d="M421 139v69m-29 0h58M406 158h30"/><circle cx="462" cy="111" r="10" opacity=".55"/></g>
-    </g>
-    <g class="pg-fov-readout" text-anchor="middle"><text class="pg-fov-wide" x="207" y="279">24MM · 84°</text><text class="pg-fov-tele" x="207" y="279">85MM · 28°</text><text x="422" y="279">FIELD OF VIEW</text></g>
+    {frames.map((frame,index)=><g class:list={['pg-frameline',index<2?'pg-frameline-outer':'pg-frameline-inner']}>
+      <path {...fine} class="pg-frame-outline" d={framePath(frame.width,frame.height)}/>
+      <text x={200-frame.width/2+18} y={108-frame.height/2+10}>{frame.focal}</text>
+    </g>)}
+    <path {...fine} class="pg-frame-cross" d="M196 108h8m-4-4v8"/>
+    <text class="pg-angle-reading" x="348" y="196" text-anchor="end">84° → 28°</text>
   </>}
   {id==='exposure' && <>
-    <g class="pg-optical-lines"><path d="M300 87 210 243H390Z"/><path d="M300 87v104m-90 52 90-52 90 52" stroke-dasharray="2 6" opacity=".35"/><circle cx="300" cy="87" r="3"/><circle cx="390" cy="243" r="3"/><circle cx="210" cy="243" r="3"/></g>
-    <g text-anchor="middle" class="pg-triangle-labels"><text class="pg-vertex-a" x="300" y="61">APERTURE · 光圈</text><text class="pg-vertex-s" x="413" y="278">SHUTTER · 快门</text><text class="pg-vertex-i" x="193" y="278">ISO · 感光度</text></g>
-    <text class="pg-ev" x="300" y="199" text-anchor="middle">EV 0</text>
-    <circle class="pg-exposure-dot" cx="300" cy="87" r="4" fill="currentColor"/>
+    <path {...fine} class="pg-scale-faint" d="M64 96H336"/>
+    {Array.from({length:13},(_,index)=><g>
+      <path {...fine} class:list={[index%3===0?'pg-scale-strong':'pg-scale-faint',{'pg-meter-zero':index===6}]} d={`M${meterX(index)} 96v${index%3===0?16:7}`}/>
+      {index%3===0&&<text class:list={['pg-meter-number',{'pg-meter-zero':index===6}]} x={meterX(index)} y="82" text-anchor="middle">{index===6?'0':index<6?String(index/3-2):`+${index/3-2}`}</text>}
+    </g>)}
+    <path class="pg-meter-pointer" d={`M${meterX(4)} 116v12`} stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" shape-rendering="crispEdges"/>
+    <g class="pg-meter-telemetry">
+      <text x="64" y="150">f/2.8</text>
+      <text class="pg-meter-rest" x="145" y="150">1/1000</text><text class="pg-meter-active" x="145" y="150">1/500</text>
+      <text x="224" y="150">ISO 100</text>
+      <text class="pg-meter-status pg-meter-rest" x="336" y="150" text-anchor="end">EV -0.7</text><text class="pg-meter-status pg-meter-active" x="336" y="150" text-anchor="end">EV 0.0</text>
+    </g>
   </>}
 </svg>

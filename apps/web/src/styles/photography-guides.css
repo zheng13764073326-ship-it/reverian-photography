@@ -59,33 +59,9 @@
 .photography-guides .pg-section-heading h2{font:500 27px/1.5 var(--serif-zh);margin:0}
 .photography-guides .pg-section-heading p{font:400 10px/1.8 var(--mono);letter-spacing:.06em;color:var(--muted);margin:0}
 .photography-guides .pg-guide-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
-.photography-guides .pg-card{position:relative;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:3px;min-width:0;scroll-margin-top:calc(var(--header) + 24px);transition:border-color .3s;--press-scale:1;--press-depth:0px}
-.photography-guides .pg-card::after{content:'';position:absolute;pointer-events:none;inset:6px;opacity:.45;background:linear-gradient(var(--pg-light-gold),var(--pg-light-gold)) left top/9px 1px no-repeat,linear-gradient(var(--pg-light-gold),var(--pg-light-gold)) left top/1px 9px no-repeat,linear-gradient(var(--pg-light-gold),var(--pg-light-gold)) right top/9px 1px no-repeat,linear-gradient(var(--pg-light-gold),var(--pg-light-gold)) right top/1px 9px no-repeat,linear-gradient(var(--pg-gold),var(--pg-gold)) left bottom/9px 1px no-repeat,linear-gradient(var(--pg-gold),var(--pg-gold)) left bottom/1px 9px no-repeat,linear-gradient(var(--pg-gold),var(--pg-gold)) right bottom/9px 1px no-repeat,linear-gradient(var(--pg-gold),var(--pg-gold)) right bottom/1px 9px no-repeat}
+.photography-guides .pg-card{background:#FAF8F5;position:relative;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:3px;min-width:0;scroll-margin-top:calc(var(--header) + 24px);transition:border-color .3s;--press-scale:1;--press-depth:0px}
 .photography-guides .pg-card:is(:hover,:focus-visible){border-color:var(--pg-gold)}
 .photography-guides .pg-card.is-highlighted{animation:pg-card-pulse 1.2s ease-out}
-.photography-guides .pg-stage{position:relative;isolation:isolate;aspect-ratio:16/8.5;background:var(--pg-dark);color:var(--pg-light-gold);border-radius:2px 2px 0 0;overflow:hidden}
-.photography-guides .pg-stage-labels{position:absolute;inset:19px 22px auto;display:flex;align-items:center;justify-content:space-between;gap:10px;z-index:2;font:400 10px/1.6 var(--mono);letter-spacing:.1em;color:#bac6c4}
-.photography-guides .pg-start-badge{padding:4px 7px;color:var(--pg-light-gold);border:1px solid #c5b27d66;border-radius:3px;font-size:9px;letter-spacing:.02em}
-.photography-guides .pg-stage-number{position:absolute;bottom:-24px;right:15px;font:400 155px/1 var(--serif);opacity:.055;pointer-events:none}
-.photography-guides .pg-illustration{position:absolute;width:100%;height:100%;inset:0;display:block}
-.photography-guides .pg-illustration text{font:400 11px var(--mono);fill:#9eafaf;letter-spacing:.06em}
-.photography-guides .pg-optical-lines{stroke:#a1b3b4;stroke-width:1.2;stroke-linejoin:round;stroke-linecap:round}
-.photography-guides .pg-aperture-leaves{transform-origin:300px 161px;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
-.photography-guides .pg-format-labels text{transition:fill .3s}
-.photography-guides .pg-format-labels text:nth-child(2){transition-delay:.12s}
-.photography-guides .pg-format-labels text:nth-child(3){transition-delay:.24s}
-.photography-guides .pg-shutter-flash{position:absolute;inset:0;background:white;opacity:0;pointer-events:none}
-.photography-guides .pg-lens{transition:transform .65s cubic-bezier(.2,.7,.2,1)}
-.photography-guides .pg-lens text{text-anchor:middle}
-.photography-guides .pg-lens-aperture{opacity:0;transition:opacity .4s .12s;fill:var(--pg-light-gold)}
-.photography-guides .pg-ray{transform-origin:110px 160px;transition:transform .7s ease;stroke:var(--pg-light-gold)}
-.photography-guides .pg-ray-top{transform:rotate(-42deg)}
-.photography-guides .pg-ray-bottom{transform:rotate(42deg);stroke:#a1b3b4}
-.photography-guides .pg-fov-subject{transform-origin:421px 208px;transition:transform .7s ease}
-.photography-guides .pg-fov-readout text{transition:opacity .35s}
-.photography-guides .pg-fov-tele{opacity:0}
-.photography-guides .pg-illustration .pg-ev{font-size:23px;fill:var(--pg-light-gold);opacity:.8}
-.photography-guides .pg-exposure-dot{opacity:.65}
 .photography-guides .pg-card-copy{padding:27px 30px 23px;flex:1;display:flex;flex-direction:column}
 .photography-guides .pg-card-index{font:400 11px/1.8 var(--mono);letter-spacing:.12em;color:var(--muted)}
 .photography-guides .pg-card h3{font:500 30px/1.45 var(--serif-zh);letter-spacing:.035em;margin:10px 0 15px}
@@ -107,33 +83,11 @@
 .photography-guides .pg-tool-action{display:flex;justify-content:space-between;align-items:center;color:var(--pg-light-gold);font:400 12px/1.8 var(--sans);margin-top:auto}
 .photography-guides .pg-tool-action>span{font-size:20px}
 @media(hover:hover) and (pointer:fine){
-  .photography-guides .pg-card:hover .pg-aperture-leaves{transform:scale(.72) rotate(12deg)}
-  .photography-guides .pg-card:hover .pg-shutter-flash{animation:pg-shutter 120ms ease-out .28s 1}
-  .photography-guides .pg-card:hover .pg-format-labels text{fill:var(--pg-light-gold)}
-  .photography-guides .pg-card:hover .pg-lens-wide{transform:translateX(-18px)}
-  .photography-guides .pg-card:hover .pg-lens-tele{transform:translateX(18px)}
-  .photography-guides .pg-card:hover .pg-lens-aperture{opacity:1}
-  .photography-guides .pg-card:hover .pg-ray-top{transform:rotate(-14deg)}
-  .photography-guides .pg-card:hover .pg-ray-bottom{transform:rotate(14deg)}
-  .photography-guides .pg-card:hover .pg-fov-subject{transform:scale(2.2)}
-  .photography-guides .pg-card:hover .pg-fov-wide{opacity:0}
-  .photography-guides .pg-card:hover .pg-fov-tele{opacity:1}
-  .photography-guides .pg-card:hover .pg-exposure-dot{animation:pg-triangle-orbit 4.8s linear infinite;opacity:1}
-  .photography-guides .pg-card:hover .pg-vertex-a{animation:pg-vertex-top 4.8s linear infinite}
-  .photography-guides .pg-card:hover .pg-vertex-s{animation:pg-vertex-right 4.8s linear infinite}
-  .photography-guides .pg-card:hover .pg-vertex-i{animation:pg-vertex-left 4.8s linear infinite}
-  .photography-guides .pg-card:hover .pg-ev{animation:pg-ev-breathe 2.4s ease-in-out infinite}
   .photography-guides .pg-card:hover .pg-read-link>span{transform:translate(2px,-2px)}
   .photography-guides .pg-tool-card:hover{border-color:var(--pg-light-gold);transform:translateY(-3px)}
 }
-@keyframes pg-shutter{0%,100%{opacity:0}50%{opacity:.14}}
 @keyframes pg-guide-breathe{0%,100%{opacity:1}45%{opacity:.5}}
 @keyframes pg-card-pulse{0%,100%{border-color:var(--line)}25%,65%{border-color:var(--pg-gold)}}
-@keyframes pg-triangle-orbit{0%,100%{transform:translate(0,0)}33.333%{transform:translate(90px,156px)}66.667%{transform:translate(-90px,156px)}}
-@keyframes pg-vertex-top{0%,5%,95%,100%{fill:var(--pg-light-gold)}14%,86%{fill:#9eafaf}}
-@keyframes pg-vertex-right{0%,20%,48%,100%{fill:#9eafaf}29%,38%{fill:var(--pg-light-gold)}}
-@keyframes pg-vertex-left{0%,53%,81%,100%{fill:#9eafaf}62%,71%{fill:var(--pg-light-gold)}}
-@keyframes pg-ev-breathe{0%,100%{opacity:.65}50%{opacity:1}}
 @media(min-width:768px) and (max-width:1100px){
   .photography-guides .pg-hero{gap:30px;align-items:start}
   .photography-guides .pg-intro{font-size:16px}
@@ -141,9 +95,6 @@
   .photography-guides .pg-learning-path :is(ol,li){gap:12px}
   .photography-guides .pg-learning-path a{flex-direction:column;align-items:flex-start;justify-content:center;gap:0}
   .photography-guides .pg-card-copy{padding:24px}
-  .photography-guides .pg-stage-labels{inset:14px 16px auto;font-size:9px}
-  .photography-guides .pg-start-badge{font-size:8px}
-  .photography-guides .pg-start-badge>span{display:none}
   .photography-guides .pg-tool-card{padding:22px}
 }
 @media(max-width:767px){
@@ -174,14 +125,10 @@
   .photography-guides .pg-section-heading h2{font-size:24px}
   .photography-guides .pg-section-heading p{font-size:8px;letter-spacing:.02em}
   .photography-guides .pg-guide-grid{grid-template-columns:1fr;gap:24px}
-  .photography-guides .pg-stage-labels{inset:13px 15px auto;font-size:9px;letter-spacing:.04em}
-  .photography-guides .pg-start-badge{font-size:8px;padding:3px 5px}
-  .photography-guides .pg-stage-number{font-size:110px;bottom:-18px}
   .photography-guides .pg-card-copy{padding:23px 22px 20px}
   .photography-guides .pg-card h3{font-size:28px;margin:8px 0 12px}
   .photography-guides .pg-card-summary{font-size:16px;margin-bottom:16px}
   .photography-guides .pg-card ul{font-size:14px;margin-bottom:20px}
-  .photography-guides .pg-illustration text{font-size:16px;letter-spacing:.01em}
   .photography-guides .pg-card-footer{font-size:9px;gap:8px;padding-top:16px}
   .photography-guides .pg-read-link{font-size:11px;gap:8px}
   .photography-guides .pg-tools{padding:40px 0 44px}
@@ -192,7 +139,6 @@
   .photography-guides .pg-tool-card h3{font-size:25px;margin-top:16px}
 }
 @media(max-width:360px){
-  .photography-guides .pg-start-badge>span{display:none}
   .photography-guides .pg-hud{gap:5px}
   .photography-guides .pg-hud>div+div{padding-left:6px}
   .photography-guides .pg-hud strong{font-size:12px}
@@ -200,11 +146,71 @@
 }
 @media(prefers-reduced-motion:reduce){
   .photography-guides *, .photography-guides *::before, .photography-guides *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-  .photography-guides .pg-card:is(:hover,:focus-visible) :is(.pg-aperture-leaves,.pg-lens,.pg-fov-subject,.pg-exposure-dot,.pg-read-link>span),.photography-guides .pg-tool-card:hover{transform:none}
-  .photography-guides .pg-card:hover .pg-ray-top{transform:rotate(-42deg)}
-  .photography-guides .pg-card:hover .pg-ray-bottom{transform:rotate(42deg)}
-  .photography-guides .pg-card:hover .pg-fov-wide{opacity:1}
-  .photography-guides .pg-card:hover .pg-fov-tele{opacity:0}
-  .photography-guides .pg-lens-aperture{opacity:1}
   .photography-guides .pg-card.is-highlighted{border-color:var(--pg-gold)}
+}
+
+@media(prefers-reduced-motion:reduce){.photography-guides .pg-card:hover .pg-read-link>span,.photography-guides .pg-tool-card:hover{transform:none}}
+
+/* Paper optical scales: confined to the four guide-card stages. */
+.photography-guides .pg-stage{--scale-paper:#EFECE6;--scale-line:rgba(24,38,58,.24);--scale-strong:rgba(24,38,58,.58);--scale-ink:#18263A;--scale-muted:#5C6B7F;--scale-gold:#B39359;position:relative;isolation:isolate;aspect-ratio:16/8.5;background:var(--scale-paper);color:var(--scale-ink);border-radius:2px 2px 0 0;border-bottom:1px solid #E2DED6;overflow:hidden}
+.photography-guides .pg-stage-labels{position:absolute;inset:19px 22px auto;display:flex;align-items:center;justify-content:space-between;gap:10px;z-index:2;font:400 10px/1.6 var(--mono);letter-spacing:.1em;color:var(--scale-muted)}
+.photography-guides .pg-start-badge{padding:4px 7px;color:var(--scale-ink);border:1px solid #B3935980;border-radius:2px;font-size:9px;letter-spacing:.02em;white-space:nowrap}
+.photography-guides .pg-scale-illustration{position:absolute;width:100%;height:100%;inset:0;display:block}
+.photography-guides .pg-scale-illustration text{font:400 11.5px var(--mono);fill:var(--scale-muted);letter-spacing:.02em;stroke:none;transition:fill .35s,opacity .35s}
+.photography-guides .pg-scale-illustration :is(path,rect){stroke-width:1px;vector-effect:non-scaling-stroke}
+.photography-guides .pg-scale-faint{stroke:var(--scale-line)}
+.photography-guides .pg-scale-strong{stroke:var(--scale-strong)}
+.photography-guides .pg-scale-illustration .pg-scale-unit{font-size:9px;letter-spacing:.08em}
+.photography-guides .pg-sensor-frame{stroke:var(--scale-strong);fill:transparent;transition:stroke .4s var(--format-delay),fill .4s var(--format-delay)}
+.photography-guides .pg-sensor-leader{stroke:var(--scale-line)}
+.photography-guides .pg-scale-illustration .pg-sensor-label{fill:var(--scale-ink);opacity:.55;transition:opacity .4s var(--format-delay)}
+.photography-guides .pg-scale-illustration .pg-focal-label{fill:var(--scale-ink);font-size:13px}
+.photography-guides .pg-scale-illustration .pg-focal-35{fill:var(--scale-gold)}
+.photography-guides .pg-focal-pointer{color:var(--scale-gold);transition:transform 650ms cubic-bezier(.22,1,.36,1)}
+.photography-guides .pg-scale-illustration .pg-ring-aperture{fill:var(--scale-muted);opacity:.7}
+.photography-guides .pg-frameline{transform-origin:200px 108px;transition:opacity .55s,transform .65s cubic-bezier(.22,1,.36,1)}
+.photography-guides .pg-frame-outline{stroke:var(--scale-strong);transition:stroke .4s}
+.photography-guides .pg-frame-cross{stroke:var(--scale-strong);transform-origin:200px 108px;transition:stroke .4s,transform .65s cubic-bezier(.22,1,.36,1)}
+.photography-guides .pg-scale-illustration .pg-angle-reading{font-size:10px;fill:var(--scale-muted);opacity:.65}
+.photography-guides .pg-meter-zero{transition:stroke .4s,fill .4s}
+.photography-guides .pg-scale-illustration .pg-meter-number{fill:var(--scale-ink);font-size:13px}
+.photography-guides .pg-scale-illustration .pg-meter-pointer{color:var(--scale-gold);stroke-width:2px;transition:transform 650ms cubic-bezier(.22,1,.36,1)}
+.photography-guides .pg-meter-telemetry text{fill:var(--scale-ink);letter-spacing:.04em}
+.photography-guides .pg-meter-telemetry .pg-meter-status{font-size:10px;fill:var(--scale-muted);letter-spacing:0}
+.photography-guides .pg-meter-telemetry .pg-meter-rest{opacity:1;transition:opacity .18s .18s}
+.photography-guides .pg-meter-telemetry .pg-meter-active{opacity:0;transition:opacity .18s}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+  .photography-guides .pg-card:is(:hover,:focus-visible) .pg-sensor-frame{stroke:var(--scale-gold)}
+  .photography-guides .pg-card:is(:hover,:focus-visible) .pg-sensor-full{fill:rgba(179,147,89,.07)}
+  .photography-guides .pg-card:is(:hover,:focus-visible) .pg-sensor-label{opacity:1}
+  .photography-guides .pg-card:is(:hover,:focus-visible) .pg-focal-pointer{transform:translateX(148px)}
+  .photography-guides .pg-card:is(:hover,:focus-visible) .pg-focal-35{fill:var(--scale-ink)}
+  .photography-guides .pg-card:is(:hover,:focus-visible) :is(.pg-focal-85,.pg-ring-fast){fill:var(--scale-gold);opacity:1}
+  .photography-guides .pg-card:is(:hover,:focus-visible) .pg-frameline-outer{opacity:.2}
+  .photography-guides .pg-card:is(:hover,:focus-visible) :is(.pg-frameline-inner,.pg-frame-cross){transform:scale(.985)}
+  .photography-guides .pg-card:is(:hover,:focus-visible) :is(.pg-frameline-inner .pg-frame-outline,.pg-frame-cross){stroke:var(--scale-gold)}
+  .photography-guides .pg-card:is(:hover,:focus-visible) .pg-frameline-inner text{fill:var(--scale-gold)}
+  .photography-guides .pg-card:is(:hover,:focus-visible) .pg-meter-pointer{transform:translateX(45.333333px)}
+  .photography-guides .pg-card:is(:hover,:focus-visible) path.pg-meter-zero{stroke:var(--scale-gold)}
+  .photography-guides .pg-card:is(:hover,:focus-visible) text.pg-meter-zero{fill:var(--scale-gold)}
+  .photography-guides .pg-card:is(:hover,:focus-visible) .pg-meter-rest{opacity:0;transition-delay:0s}
+  .photography-guides .pg-card:is(:hover,:focus-visible) .pg-meter-active{opacity:1;transition-delay:.18s}
+}
+@media(min-width:768px) and (max-width:1100px){
+  .photography-guides .pg-stage-labels{inset:14px 16px auto;font-size:9px}
+  .photography-guides .pg-start-badge{font-size:9px}
+  .photography-guides .pg-start-badge>span{display:none}
+}
+@media(max-width:767px){
+  .photography-guides .pg-stage-labels{inset:13px 15px auto;font-size:9px;letter-spacing:.04em}
+  .photography-guides .pg-start-badge{font-size:9px;padding:3px 5px}
+  .photography-guides .pg-scale-illustration text{font-size:13px;letter-spacing:0}
+  .photography-guides .pg-scale-illustration .pg-scale-unit{font-size:10px}
+  .photography-guides .pg-scale-illustration .pg-angle-reading{font-size:11px}
+  .photography-guides .pg-meter-telemetry .pg-meter-status{font-size:11px}
+}
+@media(max-width:360px){.photography-guides .pg-start-badge>span{display:none}}
+@media(prefers-reduced-motion:reduce){
+  .photography-guides .pg-scale-illustration *{transition:none!important;animation:none!important}
+  .photography-guides .pg-scale-illustration .pg-sensor-label{opacity:1}
 }
