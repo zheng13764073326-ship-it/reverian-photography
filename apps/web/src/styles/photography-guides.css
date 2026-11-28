@@ -4,27 +4,30 @@
 .photography-guides :is(a,button,input):focus-visible{outline:2px solid var(--pg-gold);outline-offset:5px}
 /* Guide introduction, viewfinder and reading order. */
 .photography-guides .pg-hero{display:grid;grid-template-columns:1fr;align-items:stretch;gap:36px;padding:0 0 36px}
-.photography-guides .pg-introduction{min-width:0;display:flex;flex-direction:column;justify-content:space-between;gap:22px}
-.photography-guides .pg-kicker{margin:0;font:400 11px/1 var(--mono);letter-spacing:.18em;color:#6B7682;text-box:trim-both cap alphabetic}
-.photography-guides .pg-introduction h1{margin:12px 0 0;font:400 clamp(44px,3.75vw,48px)/1.15 var(--serif-zh);letter-spacing:.08em;color:#18263A}
-.photography-guides .pg-intro{max-width:34em;margin:20px 0 0;font:400 14.5px/1.9 var(--sans);color:#4A5562;text-wrap:pretty}
-.photography-guides .pg-guide-info{display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;margin:0;padding:16px 0;border-block:1px solid #E2DED6}
-.photography-guides .pg-guide-info dt{font:400 12px/1.8 var(--sans);color:#7A8591}
-.photography-guides .pg-guide-info dd{margin:0;font:400 13.5px/1.65 var(--sans);color:#2C3A47;text-wrap:pretty}
+.photography-guides .pg-introduction{min-width:0;display:flex;flex-direction:column}
+.photography-guides .pg-kicker{margin:0;font:400 12px/1 var(--mono);letter-spacing:.18em;color:#6B7682;text-box:trim-both cap alphabetic}
+.photography-guides .pg-introduction h1{margin:12px 0 0;font:400 clamp(2.75rem,4vw,3.35rem)/1.12 var(--serif-zh);letter-spacing:.08em;color:#18263A}
+/* Measure the line in mono digits and use the site's sans face for Chinese prose. */
+.photography-guides .pg-intro{max-width:46ch;margin:24px 0 0;font:400 1rem/1.95 "JetBrains Mono",var(--sans);font-feature-settings:"palt";letter-spacing:.02em;color:#36424F;text-wrap:pretty}
+.photography-guides .pg-guide-info{display:grid;grid-template-columns:76px minmax(0,1fr);align-items:start;gap:12px;margin:28px 0 24px;padding:18px 0;border-block:1px solid #E2DED6}
+.photography-guides .pg-guide-info dt{font:400 12.5px/1.75 var(--sans);letter-spacing:.06em;color:#7A8591}
+.photography-guides .pg-guide-info dd{margin:0;font:400 14px/1.75 var(--sans);color:#2C3A47;text-wrap:pretty}
 .photography-guides .pg-chapter-pair{display:inline-block;max-width:100%}
-.photography-guides .pg-start-reading{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 4px;border-bottom:1px solid #18263A;text-decoration:none;color:#18263A;transition:padding .25s ease,background-color .25s ease,border-color .25s ease}
-.photography-guides .pg-start-copy{display:grid;gap:4px;font:400 15px/1.6 var(--serif-zh)}
-.photography-guides .pg-start-label{color:#B39359;font:400 10px/1.4 var(--mono);letter-spacing:.12em}
-.photography-guides .pg-start-arrow{flex:none;font:400 20px/1 var(--serif-zh);transition:color .25s ease,transform .25s ease}
+.photography-guides .pg-start-reading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:auto;padding:28px 4px 14px;border-bottom:1px solid #18263A;text-decoration:none;color:#18263A;transition:padding .25s ease,background-color .25s ease,border-color .25s ease,color .25s ease}
+.photography-guides .pg-start-copy{display:grid;gap:4px;font:400 16px/1.6 var(--serif-zh);letter-spacing:.04em}
+.photography-guides .pg-start-label{color:#B39359;font:400 11px/1.4 var(--mono);letter-spacing:.16em}
+.photography-guides .pg-start-arrow{flex:none;font:400 17px/1 var(--serif-zh);transition:transform .25s ease}
 @media(hover:hover){
-  .photography-guides .pg-start-reading:hover{padding-inline:12px;background:#EFECE6;border-color:#B39359}
-  .photography-guides .pg-start-reading:hover .pg-start-arrow{color:#B39359;transform:translateX(4px)}
+  .photography-guides .pg-start-reading:hover{padding-inline:12px;background:#EFECE6;color:#B39359;border-color:#B39359}
+  .photography-guides .pg-start-reading:hover .pg-start-arrow{transform:translateX(4px)}
 }
 .photography-guides .pg-start-reading:focus-visible{background:#EFECE6;border-color:#B39359}
 /* The introduction shares a row with the instrument. Its caption sits in the next row. */
-@media(min-width:1024px){
+@media(1024px <= width < 1240px){
+  .photography-guides .pg-hero{max-width:52rem;margin-inline:auto}
+}
+@media(min-width:1240px){
   .photography-guides .pg-hero{grid-template-columns:1fr 1.08fr;gap:0 56px;padding:8px 0 56px}
-  .photography-guides .pg-introduction{gap:16px}
   .photography-guides .pg-hero>.pg-demo{display:contents}
   .photography-guides .pg-hero .pg-viewfinder{grid-area:1 / 2;min-width:0}
   .photography-guides .pg-hero .pg-demo-guide{grid-area:2 / 2}
