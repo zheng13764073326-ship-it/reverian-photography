@@ -12,15 +12,15 @@ const isAI=initialTab==='ai';
 import '../styles/lab.css';
 import '../styles/ai-creations.css';
 ---
-<Base title={isAI?'AI 提示词库':'摄影入门'} description={introductions[initialTab]} lab>
+<Base title={isAI?'AI 提示词库':'摄影指南'} description={introductions[initialTab]} lab>
   <div class="lab-page container" data-optical-lab data-active-tab={initialTab}>
     <header class="lab-heading">
       <p class="lab-eyebrow">OPTICAL LAB <span data-lab-guide-number>// 01</span><span data-lab-count hidden={!isAI}>· 已收录 {creations.length} 组</span></p>
-      <h1 data-lab-title>{isAI?'AI 提示词库':'摄影入门'}</h1>
+      <h1 data-lab-title>{isAI?'AI 提示词库':'摄影指南'}</h1>
       <p class="lab-subtitle" data-lab-subtitle>{introductions[initialTab]}</p>
     </header>
     <section id="lab-panel-guides" class="lab-panel" aria-labelledby="lab-section-guides" data-lab-panel="guides" hidden={isAI}>
-      <div class="lab-section-line"><h2 id="lab-section-guides">入门指南</h2><p>FIELD NOTES <span>/ 04 GUIDES</span></p></div>
+      <div class="lab-section-line"><h2 id="lab-section-guides">专题目录</h2><p>FIELD NOTES <span>/ 04 GUIDES</span></p></div>
       <div class="lab-guide-grid">
         {guides.map(guide=>guide.id==='camera'?<a class="lab-guide-card lab-corners" href="/lab/guides/camera/"><span class="lab-card-index">GUIDE {guide.index}<span>{guide.tag}</span></span><strong>{guide.title}</strong><span class="lab-guide-summary">从画幅与卡口开始，按题材和预算选机，附可勾选的二手验机清单。</span><span class="lab-card-bottom"><span>完整指南 · 6 个章节</span><span aria-hidden="true">↗</span></span></a>:<button type="button" class="lab-guide-card lab-corners" data-guide={guide.id} aria-haspopup="dialog" aria-controls="lab-reader">
           <span class="lab-card-index">GUIDE {guide.index}<span>{guide.tag}</span></span>

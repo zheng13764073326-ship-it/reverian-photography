@@ -4,13 +4,13 @@ import CameraImage from '../../../components/guides/CameraImage.astro';
 import {guide,cameras,sensorNames,chapters} from '../../../data/guide01CameraData';
 import '../../../styles/camera-guide.css';
 ---
-<Base title="相机选择 · 摄影入门" description={guide.intro} lab>
+<Base title="相机选购 · 摄影指南" description={guide.intro} lab>
  <div class="camera-guide container" data-camera-guide>
   <div class="cg-progress" aria-hidden="true"><span data-reading-progress></span></div>
-  <a class="cg-back" href="/lab/">← 摄影入门</a>
+  <a class="cg-back" href="/lab/">← 摄影指南</a>
   <div class="cg-layout">
    <aside class="cg-sidebar">
-    <nav class="cg-toc" aria-label="相机选择章节目录">
+    <nav class="cg-toc" aria-label="相机选购章节目录">
      <p class="cg-kicker">IN THIS GUIDE</p>
      {chapters.map(([id,number,title])=><div class="cg-toc-group"><a href={'#'+id} data-chapter-link={id}><span>{number}</span>{title}</a>{id==='budget'&&<div class="cg-subnav">{guide.budgets.map(t=><a href={'#budget-'+t.id} data-budget-link={t.id}>{t.label}</a>)}</div>}</div>)}
     </nav>
@@ -18,7 +18,7 @@ import '../../../styles/camera-guide.css';
    <article class="cg-article">
     <header class="cg-hero">
      <p class="cg-kicker">OPTICAL LAB <span>· GUIDE 01</span></p>
-     <h1>相机选择<span aria-hidden="true">CAMERA SYSTEM</span></h1>
+     <h1>相机选购<span aria-hidden="true">CAMERA SYSTEM</span></h1>
      <p class="cg-deck">{guide.subtitle}</p>
      <p class="cg-intro">{guide.intro}</p>
      <div class="cg-hero-note"><span>01 — 06 / 从画幅到第一台相机</span><span>2026.11</span></div>
@@ -114,7 +114,7 @@ import '../../../styles/camera-guide.css';
      <li><a href="https://help.na.panasonic.com/answers/features-and-specifications-lumix-s-series-model-dc-s9k/" target="_blank" rel="noopener">Panasonic LUMIX S9 官方规格 ↗</a></li>
      <li><a href="https://www.ricoh-imaging.co.jp/english/products/gr-4/spec/" target="_blank" rel="noopener">Ricoh GR IV 官方规格 ↗</a></li>
     </ul></details>
-    <footer class="cg-end"><a href="/lab/">← 返回摄影入门</a><span>REVERIAN / FIELD NOTES</span></footer>
+    <footer class="cg-end"><a href="/lab/">← 返回摄影指南</a><span>REVERIAN / FIELD NOTES</span></footer>
    </article>
   </div>
  </div>

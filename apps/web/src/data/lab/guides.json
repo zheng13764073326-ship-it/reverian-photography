@@ -1,6 +1,6 @@
 [
   {
-    "id":"camera","index":"01","tag":"CAMERA SYSTEM","title":"相机选择",
+    "id":"camera","index":"01","tag":"CAMERA SYSTEM","title":"相机选购",
     "summary":"先想清楚想拍什么，再决定每天愿意带出门的那一台。","readTime":"4 分钟",
     "content":[
       {"heading":"01 / 先定义你的拍摄场景","points":["记录街头、旅行、运动还是人像？列出最常遇到的三种光线和拍摄距离。","把便携、对焦、续航与操作手感排出优先级，再比较机身参数。"]},
@@ -10,7 +10,7 @@
     ]
   },
   {
-    "id":"lens","index":"02","tag":"LENS NOTES","title":"镜头选择",
+    "id":"lens","index":"02","tag":"LENS SYSTEM","title":"镜头搭配",
     "summary":"焦段决定站在哪里，光圈与重量决定你能否一直带着它。","readTime":"4 分钟",
     "content":[
       {"heading":"01 / 从常用视角开始","points":["回看自己最喜欢的照片：你习惯把环境带入画面，还是隔着距离寻找细节？","先覆盖最常用的焦段，不必一次补齐所有镜头。"]},
@@ -20,7 +20,7 @@
     ]
   },
   {
-    "id":"focal-length","index":"03","tag":"FIELD OF VIEW","title":"焦距逻辑",
+    "id":"focal-length","index":"03","tag":"FIELD OF VIEW","title":"焦距与视角",
     "summary":"分清焦距、视角与拍摄距离，理解画面里的空间关系。","readTime":"5 分钟",
     "content":[
       {"heading":"01 / 焦距如何改变视角","points":["同一画幅上，短焦距容纳更宽的视野，长焦距截取更窄的范围。","比较不同画幅时使用等效焦距描述视角，同时保留镜头实际焦距。"]},
@@ -30,7 +30,7 @@
     ]
   },
   {
-    "id":"exposure","index":"04","tag":"EXPOSURE TRIANGLE","title":"曝光三角",
+    "id":"exposure","index":"04","tag":"EXPOSURE CONTROL","title":"曝光控制",
     "summary":"用快门管理时间，用光圈管理景深，再用 ISO 配合输出亮度。","readTime":"5 分钟",
     "content":[
       {"heading":"01 / 快门：留下多少运动","points":["短曝光更容易冻结动作，长曝光会累积运动轨迹与相机晃动。","先判断主体速度与手持稳定性，再确定快门范围。"]},
