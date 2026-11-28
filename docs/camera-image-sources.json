@@ -1,0 +1,569 @@
+[
+  {
+    "id": "canon-200d-ii",
+    "name": "Canon EOS 200D II",
+    "status": "fallback"
+  },
+  {
+    "id": "canon-800d",
+    "name": "Canon EOS 800D",
+    "status": "fallback"
+  },
+  {
+    "id": "canon-m50-ii",
+    "name": "Canon EOS M50 Mark II",
+    "status": "fallback"
+  },
+  {
+    "id": "canon-r10",
+    "name": "Canon EOS R10",
+    "page": "https://sg.canon/en/consumer/eos-r10-body/product",
+    "image": "https://sg.canon/media/image/2022/05/22/3fdc4ae7f41d47fe9d1e01729527ef32_EOS%20R10%20Front%20Body.png",
+    "local": "/images/cameras/canon-r10.webp",
+    "bytes": 46712,
+    "status": "downloaded"
+  },
+  {
+    "id": "canon-r100",
+    "name": "Canon EOS R100",
+    "page": "https://sg.canon/en/consumer/eos-r100-body/product",
+    "image": "https://sg.canon/media/image/2023/05/23/cda9a70a4c7c4be5bc63fae26c14c85b_EOS%20R100%20Body%20Slant.png",
+    "local": "/images/cameras/canon-r100.webp",
+    "bytes": 53832,
+    "status": "downloaded"
+  },
+  {
+    "id": "canon-r5",
+    "name": "Canon EOS R5",
+    "page": "https://sg.canon/en/consumer/eos-r5-body/product",
+    "image": "https://sg.canon/media/image/2020/07/04/862a1f43feed4fab85897aee45b6324c_R5_Front_BODY.png",
+    "local": "/images/cameras/canon-r5.webp",
+    "bytes": 37830,
+    "status": "downloaded"
+  },
+  {
+    "id": "canon-r50",
+    "name": "Canon EOS R50",
+    "page": "https://sg.canon/en/consumer/eos-r50-body/product",
+    "image": "https://sg.canon/media/image/2023/02/06/aa40086891434857aa3e5c6465f427a0_EOS%20R50%20Black%20Front%20Slant%20Left.png",
+    "local": "/images/cameras/canon-r50.webp",
+    "bytes": 52534,
+    "status": "downloaded"
+  },
+  {
+    "id": "canon-r6",
+    "name": "Canon EOS R6",
+    "status": "fallback"
+  },
+  {
+    "id": "canon-r6-ii",
+    "name": "Canon EOS R6 Mark II",
+    "page": "https://sg.canon/en/consumer/eos-r6-mark-ii-body/product",
+    "image": "https://sg.canon/media/image/2022/11/17/2bc46e6b65a1492a86af19c43e523e99_EOS%20R6%20Mark%20II%20Body%20Front%20Slant.png",
+    "local": "/images/cameras/canon-r6-ii.webp",
+    "bytes": 48976,
+    "status": "downloaded"
+  },
+  {
+    "id": "canon-r7",
+    "name": "Canon EOS R7",
+    "page": "https://sg.canon/en/consumer/eos-r7-body/product",
+    "image": "https://sg.canon/media/image/2022/05/22/a8768dcdbc5740089d652904a0ded35b_EOS%20R7%20Front%20Body.png",
+    "local": "/images/cameras/canon-r7.webp",
+    "bytes": 49604,
+    "status": "downloaded"
+  },
+  {
+    "id": "canon-r8",
+    "name": "Canon EOS R8",
+    "page": "https://sg.canon/en/consumer/eos-r8-body/product",
+    "image": "https://sg.canon/media/image/2023/02/06/043bb05cba0443f6ac0cb8901df63274_EOS%20R8%20Body%20Front%20Slant%20Left.png",
+    "local": "/images/cameras/canon-r8.webp",
+    "bytes": 51140,
+    "status": "downloaded"
+  },
+  {
+    "id": "canon-rp",
+    "name": "Canon EOS RP",
+    "status": "fallback"
+  },
+  {
+    "id": "fuji-x100vi",
+    "name": "Fujifilm X100VI",
+    "page": "https://www.fujifilm-x.com/en-us/products/cameras/x100vi/",
+    "image": "https://fujifilm-x.b-cdn.net/wp-content/uploads/2024/02/stjw_x100vi_thum.jpg",
+    "local": "/images/cameras/fuji-x100vi.webp",
+    "bytes": 44052,
+    "status": "downloaded"
+  },
+  {
+    "id": "fuji-xa-series",
+    "name": "Fujifilm X-A 系列",
+    "status": "fallback"
+  },
+  {
+    "id": "fuji-xh2",
+    "name": "Fujifilm X-H2",
+    "page": "https://www.fujifilm-x.com/en-us/products/cameras/x-h2/",
+    "image": "https://fujifilm-x.b-cdn.net/wp-content/uploads/2022/09/ajgz_x-h2_thum.png",
+    "local": "/images/cameras/fuji-xh2.webp",
+    "bytes": 43056,
+    "status": "downloaded"
+  },
+  {
+    "id": "fuji-xh2s",
+    "name": "Fujifilm X-H2S",
+    "page": "https://www.fujifilm-x.com/en-us/products/cameras/x-h2s/",
+    "image": "https://fujifilm-x.b-cdn.net/wp-content/uploads/2022/05/sgew_x-h2s_thum-1.png",
+    "local": "/images/cameras/fuji-xh2s.webp",
+    "bytes": 44182,
+    "status": "downloaded"
+  },
+  {
+    "id": "fuji-xm5",
+    "name": "Fujifilm X-M5",
+    "page": "https://www.fujifilm-x.com/en-us/products/cameras/x-m5/",
+    "image": "https://fujifilm-x.b-cdn.net/wp-content/uploads/2024/10/product_thumb_x-m5.jpg",
+    "local": "/images/cameras/fuji-xm5.webp",
+    "bytes": 37454,
+    "status": "downloaded"
+  },
+  {
+    "id": "fuji-xs10",
+    "name": "Fujifilm X-S10",
+    "page": "https://www.fujifilm-x.com/en-us/products/cameras/x-s10/",
+    "image": "https://fujifilm-x.b-cdn.net/wp-content/uploads/2020/10/x-s10_product_list-poiu.jpg",
+    "local": "/images/cameras/fuji-xs10.webp",
+    "bytes": 35144,
+    "status": "downloaded"
+  },
+  {
+    "id": "fuji-xs20",
+    "name": "Fujifilm X-S20",
+    "page": "https://www.fujifilm-x.com/en-us/products/cameras/x-s20/",
+    "image": "https://fujifilm-x.b-cdn.net/wp-content/uploads/2023/05/dwga_x-s20_thum.jpg",
+    "local": "/images/cameras/fuji-xs20.webp",
+    "bytes": 38060,
+    "status": "downloaded"
+  },
+  {
+    "id": "fuji-xt10",
+    "name": "Fujifilm X-T10",
+    "status": "fallback"
+  },
+  {
+    "id": "fuji-xt20",
+    "name": "Fujifilm X-T20",
+    "page": "https://www.fujifilm-x.com/en-us/products/cameras/x-t20/",
+    "image": "https://fujifilm-x.b-cdn.net/wp-content/uploads/2017/01/5_thum_x-t20.jpg",
+    "local": "/images/cameras/fuji-xt20.webp",
+    "bytes": 46666,
+    "status": "downloaded"
+  },
+  {
+    "id": "fuji-xt30-ii",
+    "name": "Fujifilm X-T30 II",
+    "page": "https://www.fujifilm-x.com/en-us/products/cameras/x-t30-ii/",
+    "image": "https://fujifilm-x.b-cdn.net/wp-content/uploads/2025/10/thum_x-t30-iii-004c6e21.webp",
+    "bytes": 38774,
+    "status": "fallback"
+  },
+  {
+    "id": "fuji-xt30-iii",
+    "name": "Fujifilm X-T30 III",
+    "page": "https://www.fujifilm-x.com/en-us/products/cameras/x-t30-iii/",
+    "image": "https://fujifilm-x.b-cdn.net/wp-content/uploads/2025/10/thum_x-t30-iii-004c6e21.webp",
+    "local": "/images/cameras/fuji-xt30-iii.webp",
+    "bytes": 38774,
+    "status": "downloaded"
+  },
+  {
+    "id": "fuji-xt4",
+    "name": "Fujifilm X-T4",
+    "page": "https://www.fujifilm-x.com/en-us/products/cameras/x-t4/",
+    "image": "https://fujifilm-x.b-cdn.net/wp-content/uploads/2020/02/x-t4_thum.jpg",
+    "local": "/images/cameras/fuji-xt4.webp",
+    "bytes": 34278,
+    "status": "downloaded"
+  },
+  {
+    "id": "fuji-xt5",
+    "name": "Fujifilm X-T5",
+    "page": "https://www.fujifilm-x.com/en-us/products/cameras/x-t5/",
+    "image": "https://fujifilm-x.b-cdn.net/wp-content/uploads/2022/10/koes_x-t5_thum.jpg",
+    "local": "/images/cameras/fuji-xt5.webp",
+    "bytes": 37174,
+    "status": "downloaded"
+  },
+  {
+    "id": "fuji-xt50",
+    "name": "Fujifilm X-T50",
+    "page": "https://www.fujifilm-x.com/en-us/products/cameras/x-t50/",
+    "image": "https://fujifilm-x.b-cdn.net/wp-content/uploads/2024/05/product-list_X-T50_front_16-50_silver.jpg",
+    "local": "/images/cameras/fuji-xt50.webp",
+    "bytes": 41996,
+    "status": "downloaded"
+  },
+  {
+    "id": "leica-q-series",
+    "name": "Leica Q（早期代际）",
+    "status": "fallback"
+  },
+  {
+    "id": "nikon-d5300",
+    "name": "Nikon D5300",
+    "status": "fallback"
+  },
+  {
+    "id": "nikon-d5500",
+    "name": "Nikon D5500",
+    "status": "fallback"
+  },
+  {
+    "id": "nikon-d7200",
+    "name": "Nikon D7200",
+    "status": "fallback"
+  },
+  {
+    "id": "nikon-z30",
+    "name": "Nikon Z30",
+    "page": "https://imaging.nikon.com/imaging/lineup/mirrorless/z_30/",
+    "image": "https://imaging.nikon.com/imaging/lineup/mirrorless/z_30/img/product_01_01.jpg",
+    "local": "/images/cameras/nikon-z30.webp",
+    "bytes": 56220,
+    "status": "downloaded"
+  },
+  {
+    "id": "nikon-z5",
+    "name": "Nikon Z5",
+    "page": "https://imaging.nikon.com/imaging/lineup/mirrorless/z_5/",
+    "image": "https://imaging.nikon.com/imaging/lineup/mirrorless/z_5/img/product_01_01.jpg",
+    "local": "/images/cameras/nikon-z5.webp",
+    "bytes": 61766,
+    "status": "downloaded"
+  },
+  {
+    "id": "nikon-z5-ii",
+    "name": "Nikon Z5 II",
+    "page": "https://imaging.nikon.com/imaging/lineup/mirrorless/z5_2/",
+    "image": "https://imaging.nikon.com/imaging/lineup/mirrorless/z5_2/img/product_01_01.jpg",
+    "local": "/images/cameras/nikon-z5-ii.webp",
+    "bytes": 56254,
+    "status": "downloaded"
+  },
+  {
+    "id": "nikon-z50",
+    "name": "Nikon Z50",
+    "page": "https://imaging.nikon.com/imaging/lineup/mirrorless/z_50/",
+    "image": "https://imaging.nikon.com/imaging/lineup/mirrorless/z_50/img/product_01_01.jpg",
+    "local": "/images/cameras/nikon-z50.webp",
+    "bytes": 64766,
+    "status": "downloaded"
+  },
+  {
+    "id": "nikon-z50-ii",
+    "name": "Nikon Z50 II",
+    "page": "https://imaging.nikon.com/imaging/lineup/mirrorless/z50_2/",
+    "image": "https://imaging.nikon.com/imaging/lineup/mirrorless/z50_2/img/product_01_01.jpg",
+    "local": "/images/cameras/nikon-z50-ii.webp",
+    "bytes": 55732,
+    "status": "downloaded"
+  },
+  {
+    "id": "nikon-z6",
+    "name": "Nikon Z6",
+    "page": "https://imaging.nikon.com/imaging/lineup/mirrorless/z_6/",
+    "image": "https://imaging.nikon.com/imaging/lineup/mirrorless/z_6/img/product_01_01.jpg",
+    "local": "/images/cameras/nikon-z6.webp",
+    "bytes": 58854,
+    "status": "downloaded"
+  },
+  {
+    "id": "nikon-z6-ii",
+    "name": "Nikon Z6 II",
+    "page": "https://imaging.nikon.com/imaging/lineup/mirrorless/z_6_2/",
+    "image": "https://imaging.nikon.com/imaging/lineup/mirrorless/z_6_2/img/product_01_01.jpg",
+    "local": "/images/cameras/nikon-z6-ii.webp",
+    "bytes": 61166,
+    "status": "downloaded"
+  },
+  {
+    "id": "nikon-z6-iii",
+    "name": "Nikon Z6 III",
+    "page": "https://imaging.nikon.com/imaging/lineup/mirrorless/z6_3/",
+    "image": "https://imaging.nikon.com/imaging/lineup/mirrorless/z6_3/img/product_01_01.jpg",
+    "local": "/images/cameras/nikon-z6-iii.webp",
+    "bytes": 52524,
+    "status": "downloaded"
+  },
+  {
+    "id": "nikon-z7-ii",
+    "name": "Nikon Z7 II",
+    "page": "https://imaging.nikon.com/imaging/lineup/mirrorless/z_7_2/",
+    "image": "https://imaging.nikon.com/imaging/lineup/mirrorless/z_7_2/img/product_01_01.jpg",
+    "local": "/images/cameras/nikon-z7-ii.webp",
+    "bytes": 61324,
+    "status": "downloaded"
+  },
+  {
+    "id": "nikon-zf",
+    "name": "Nikon Zf",
+    "status": "fallback"
+  },
+  {
+    "id": "olympus-em1-ii",
+    "name": "Olympus OM-D E-M1 Mark II",
+    "status": "fallback"
+  },
+  {
+    "id": "olympus-em1-iii",
+    "name": "Olympus OM-D E-M1 Mark III",
+    "status": "fallback"
+  },
+  {
+    "id": "olympus-em10-ii",
+    "name": "Olympus OM-D E-M10 Mark II",
+    "status": "fallback"
+  },
+  {
+    "id": "olympus-em10-iii",
+    "name": "Olympus OM-D E-M10 Mark III",
+    "status": "fallback"
+  },
+  {
+    "id": "olympus-em5-ii",
+    "name": "Olympus OM-D E-M5 Mark II",
+    "status": "fallback"
+  },
+  {
+    "id": "om-system-om1",
+    "name": "OM SYSTEM OM-1",
+    "page": "https://explore.omsystem.com/us/en/om-1",
+    "image": "https://nala.explore.omsystem.com/media/catalog/product/o/m/om-1-mark-ii-kit-hero-02.webp?width=800&height=&optimize=medium&fit=bounds",
+    "local": "/images/cameras/om-system-om1.webp",
+    "bytes": 61266,
+    "status": "downloaded"
+  },
+  {
+    "id": "om-system-om5-ii",
+    "name": "OM SYSTEM OM-5 Mark II",
+    "page": "https://explore.omsystem.com/us/en/om-5-mark-ii",
+    "image": "https://nala.explore.omsystem.com/media/catalog/product/o/m/om-5-mark-ii-12-45mm-silver-hero-02.webp?width=800&height=&optimize=medium&fit=bounds",
+    "local": "/images/cameras/om-system-om5-ii.webp",
+    "bytes": 57374,
+    "status": "downloaded"
+  },
+  {
+    "id": "panasonic-g100d",
+    "name": "Panasonic LUMIX G100D",
+    "page": "https://shop.panasonic.com/products/g100d-mirrorless-camera-12-32mm-f3-5-5-6-lens",
+    "image": "https://cdn.shopify.com/s/files/1/0724/5371/8324/files/DC-G100KK_328ec85f-e92a-4ec6-94a8-154b0900b2ff.jpg?v=1779302503",
+    "local": "/images/cameras/panasonic-g100d.webp",
+    "bytes": 50796,
+    "status": "downloaded"
+  },
+  {
+    "id": "panasonic-g85",
+    "name": "Panasonic LUMIX G8",
+    "status": "fallback"
+  },
+  {
+    "id": "panasonic-g9",
+    "name": "Panasonic LUMIX G9（一代）",
+    "status": "fallback"
+  },
+  {
+    "id": "panasonic-gx85",
+    "name": "Panasonic LUMIX GX7 Mark II",
+    "status": "fallback"
+  },
+  {
+    "id": "panasonic-lx10",
+    "name": "Panasonic LUMIX LX10",
+    "status": "fallback"
+  },
+  {
+    "id": "panasonic-s1-series",
+    "name": "Panasonic LUMIX S1 / S1R 系列",
+    "status": "fallback"
+  },
+  {
+    "id": "panasonic-s5",
+    "name": "Panasonic LUMIX S5",
+    "status": "fallback"
+  },
+  {
+    "id": "panasonic-s5-ii",
+    "name": "Panasonic LUMIX S5 II",
+    "status": "downloaded",
+    "local": "/images/cameras/panasonic-s5-ii.webp",
+    "page": "https://shop.panasonic.com/products/s5m2-full-frame-mirrorless-camera-20-60mm-f3-5-5-6-lens",
+    "image": "https://cdn.shopify.com/s/files/1/0724/5371/8324/files/S5II_S-E2460_slant_K.png?v=1786695130",
+    "bytes": 42256
+  },
+  {
+    "id": "panasonic-s5-iix",
+    "name": "Panasonic LUMIX S5 IIX",
+    "status": "downloaded",
+    "local": "/images/cameras/panasonic-s5-iix.webp",
+    "page": "https://shop.panasonic.com/products/s5m2x-full-frame-mirrorless-camera-body",
+    "image": "https://cdn.shopify.com/s/files/1/0724/5371/8324/files/S5IIX_S-E2460_slant_K.png?v=1786695767",
+    "bytes": 41458
+  },
+  {
+    "id": "panasonic-s9",
+    "name": "Panasonic LUMIX S9",
+    "status": "downloaded",
+    "local": "/images/cameras/panasonic-s9.webp",
+    "page": "https://shop.panasonic.com/products/lumix-s9-full-frame-mirrorless-camera",
+    "image": "https://cdn.shopify.com/s/files/1/0724/5371/8324/files/Titanium_Gold_wBlack_Leather.jpg?v=1779315906",
+    "bytes": 58358
+  },
+  {
+    "id": "ricoh-gr-ii",
+    "name": "Ricoh GR II",
+    "page": "https://us.ricoh-imaging.com/product/gr-ii/",
+    "image": "https://us.ricoh-imaging.com/cdn/shop/files/GR_IV_front_on.jpg?v=1793382813&width=900",
+    "bytes": 66854,
+    "status": "fallback"
+  },
+  {
+    "id": "ricoh-gr-iii",
+    "name": "Ricoh GR III",
+    "page": "https://us.ricoh-imaging.com/product/gr-iii/",
+    "image": "https://us.ricoh-imaging.com/cdn/shop/files/GR_IV_front_on.jpg?v=1793382813&width=900",
+    "bytes": 66854,
+    "status": "fallback"
+  },
+  {
+    "id": "ricoh-gr-iv",
+    "name": "Ricoh GR IV",
+    "page": "https://us.ricoh-imaging.com/product/gr-iv/",
+    "image": "http://us.ricoh-imaging.com/cdn/shop/files/GR_IV_front_on.jpg?v=1793382813",
+    "local": "/images/cameras/ricoh-gr-iv.webp",
+    "bytes": 71790,
+    "status": "downloaded"
+  },
+  {
+    "id": "sony-a6000",
+    "name": "Sony α6000",
+    "page": "https://www.sony.com/electronics/support/e-mount-body-ilce-6000-series/ilce-6000",
+    "image": "https://www.sony.com/image/0b12f4acab99468d97532385ca0e813c?fmt=png-alpha&wid=1000",
+    "local": "/images/cameras/sony-a6000.webp",
+    "bytes": 40058,
+    "status": "downloaded"
+  },
+  {
+    "id": "sony-a6100",
+    "name": "Sony α6100",
+    "page": "https://www.sony.com/electronics/support/e-mount-body-ilce-6000-series/ilce-6100",
+    "image": "https://www.sony.com/image/7724b023e5b7563538a19dc7ec96a37b?fmt=png-alpha&wid=1000",
+    "local": "/images/cameras/sony-a6100.webp",
+    "bytes": 38978,
+    "status": "downloaded"
+  },
+  {
+    "id": "sony-a6400",
+    "name": "Sony α6400",
+    "page": "https://www.sony.com/electronics/support/e-mount-body-ilce-6000-series/ilce-6400",
+    "image": "https://sony.scene7.com/is/image/sonyglobalsolutions/02_Primary_image-2?fmt=png-alpha&wid=1000",
+    "local": "/images/cameras/sony-a6400.webp",
+    "bytes": 38408,
+    "status": "downloaded"
+  },
+  {
+    "id": "sony-a6600",
+    "name": "Sony α6600",
+    "page": "https://www.sony.com/electronics/support/e-mount-body-ilce-6000-series/ilce-6600",
+    "image": "https://www.sony.com/image/6dccadd4c74ff39453d6b07a5c99a7cb?fmt=png-alpha&wid=1000",
+    "local": "/images/cameras/sony-a6600.webp",
+    "bytes": 45950,
+    "status": "downloaded"
+  },
+  {
+    "id": "sony-a6700",
+    "name": "Sony α6700",
+    "page": "https://www.sony.com/electronics/support/e-mount-body-ilce-6000-series/ilce-6700",
+    "image": "https://sony.scene7.com/is/image/sonyglobalsolutions/og-4?fmt=png-alpha&wid=1000",
+    "local": "/images/cameras/sony-a6700.webp",
+    "bytes": 57476,
+    "status": "downloaded"
+  },
+  {
+    "id": "sony-a7-iii",
+    "name": "Sony α7 III",
+    "page": "https://www.sony.com/electronics/support/e-mount-body-ilce-7-series/ilce-7m3",
+    "image": "https://www.sony.com/image/6888e27aa56d3635b8f306d2550d7574?fmt=png-alpha&wid=1000",
+    "local": "/images/cameras/sony-a7-iii.webp",
+    "bytes": 60518,
+    "status": "downloaded"
+  },
+  {
+    "id": "sony-a7-iv",
+    "name": "Sony α7 IV",
+    "page": "https://www.sony.com/electronics/support/e-mount-body-ilce-7-series/ilce-7m4",
+    "image": "https://www.sony.com/image/4a5b25a67098fa2b32428a8e4e4eaca4?fmt=png-alpha&wid=1000",
+    "local": "/images/cameras/sony-a7-iv.webp",
+    "bytes": 68056,
+    "status": "downloaded"
+  },
+  {
+    "id": "sony-a7c",
+    "name": "Sony α7C",
+    "page": "https://www.sony.com/electronics/support/e-mount-body-ilce-7-series/ilce-7c",
+    "image": "https://www.sony.com/image/542c82d573e4783e8097ac6fc4c722e9?fmt=png-alpha&wid=1000",
+    "local": "/images/cameras/sony-a7c.webp",
+    "bytes": 50172,
+    "status": "downloaded"
+  },
+  {
+    "id": "sony-a7c-ii",
+    "name": "Sony α7C II",
+    "page": "https://www.sony.com/electronics/support/e-mount-body-ilce-7-series/ilce-7cm2",
+    "image": "https://sony.scene7.com/is/image/sonyglobalsolutions/og-5?fmt=png-alpha&wid=1000",
+    "local": "/images/cameras/sony-a7c-ii.webp",
+    "bytes": 59318,
+    "status": "downloaded"
+  },
+  {
+    "id": "sony-a7r-iv",
+    "name": "Sony α7R IV",
+    "page": "https://www.sony.com/electronics/support/e-mount-body-ilce-7-series/ilce-7rm4",
+    "image": "https://www.sony.com/image/c8a930c97af5746b7120d4b639cfe813?fmt=png-alpha&wid=1000",
+    "local": "/images/cameras/sony-a7r-iv.webp",
+    "bytes": 54080,
+    "status": "downloaded"
+  },
+  {
+    "id": "sony-a7r-v",
+    "name": "Sony α7R V",
+    "page": "https://www.sony.com/electronics/support/e-mount-body-ilce-7-series/ilce-7rm5",
+    "image": "https://sony.scene7.com/is/image/sonyglobalsolutions/og-2?fmt=png-alpha&wid=1000",
+    "local": "/images/cameras/sony-a7r-v.webp",
+    "bytes": 61374,
+    "status": "downloaded"
+  },
+  {
+    "id": "sony-rx100-iii",
+    "name": "Sony RX100 III",
+    "status": "fallback"
+  },
+  {
+    "id": "sony-zv-e10",
+    "name": "Sony ZV-E10（一代）",
+    "page": "https://www.sony.com/electronics/support/e-mount-body-zv-e-series/zv-e10",
+    "image": "https://www.sony.com/image/85b89b5908b5488a6f2995c04795cb71?fmt=png-alpha&wid=1000",
+    "local": "/images/cameras/sony-zv-e10.webp",
+    "bytes": 28244,
+    "status": "downloaded"
+  },
+  {
+    "id": "sony-zv-e10-ii",
+    "name": "Sony ZV-E10 II",
+    "page": "https://www.sony.com/electronics/support/e-mount-body-zv-e-series/zv-e10m2",
+    "image": "https://www.sony.com/image/e97df1e13186cfff76cc74554dbf7745?fmt=png-alpha&wid=1000",
+    "local": "/images/cameras/sony-zv-e10-ii.webp",
+    "bytes": 28168,
+    "status": "downloaded"
+  }
+]

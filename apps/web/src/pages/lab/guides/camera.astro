@@ -1,0 +1,120 @@
+---
+import Base from '../../../layouts/Base.astro';
+import CameraImage from '../../../components/guides/CameraImage.astro';
+import {guide,cameras,sensorNames,chapters} from '../../../data/guide01CameraData';
+import '../../../styles/camera-guide.css';
+---
+<Base title="相机选择 · 摄影入门" description={guide.intro} lab>
+ <div class="camera-guide container" data-camera-guide>
+  <div class="cg-progress" aria-hidden="true"><span data-reading-progress></span></div>
+  <a class="cg-back" href="/lab/">← 摄影入门</a>
+  <div class="cg-layout">
+   <aside class="cg-sidebar">
+    <nav class="cg-toc" aria-label="相机选择章节目录">
+     <p class="cg-kicker">IN THIS GUIDE</p>
+     {chapters.map(([id,number,title])=><div class="cg-toc-group"><a href={'#'+id} data-chapter-link={id}><span>{number}</span>{title}</a>{id==='budget'&&<div class="cg-subnav">{guide.budgets.map(t=><a href={'#budget-'+t.id} data-budget-link={t.id}>{t.label}</a>)}</div>}</div>)}
+    </nav>
+   </aside>
+   <article class="cg-article">
+    <header class="cg-hero">
+     <p class="cg-kicker">OPTICAL LAB <span>· GUIDE 01</span></p>
+     <h1>相机选择<span aria-hidden="true">CAMERA SYSTEM</span></h1>
+     <p class="cg-deck">{guide.subtitle}</p>
+     <p class="cg-intro">{guide.intro}</p>
+     <div class="cg-hero-note"><span>01 — 06 / 从画幅到第一台相机</span><span>2026.11</span></div>
+    </header>
+
+    <section id="sensor" class="cg-section" aria-labelledby="sensor-heading">
+     <p class="cg-kicker">01 / SENSOR FORMAT</p><h2 id="sensor-heading">先认识相机画幅</h2>
+     <p>画幅是传感器的物理尺寸。它会影响同一镜头的取景范围、景深和整套系统的体积与预算。先看差别，再决定哪些与你的拍摄有关。</p>
+     <div class="cg-sensor-layout">
+      <div class="cg-sensor-stage">
+       <div class="cg-scale-label"><span>SENSOR / TO SCALE</span><span>mm</span></div>
+       <svg class="cg-sensor-svg" viewBox="0 0 500 390" aria-label="五种传感器按实际尺寸比例比较，左下角对齐">
+        <path d="M28 8V358H480" fill="none" stroke="currentColor" stroke-width=".6" opacity=".35"/>
+        {[...guide.sensors].reverse().map(s=><g><rect x="28" y={348-s.height*10} width={s.width*10} height={s.height*10} class:list={['cg-sensor-rect',{'is-active':s.id==='APS-C'}]} data-sensor={s.id} role="button" tabindex="0" aria-label={`${s.name}，${s.width} × ${s.height} 毫米`} aria-pressed={s.id==='APS-C'}/><text x={36+s.width*10} y={354-s.height*10} font-size="11" aria-hidden="true" class="cg-sensor-number">{s.name==='中画幅'?'44':s.width}</text></g>)}
+        <text x="28" y="380" font-size="11" letter-spacing="1.4">PHYSICAL SIZE, NOT IMAGE QUALITY</text>
+       </svg>
+       <p class="cg-small">点击轮廓或下方画幅名称，查看对应说明。</p>
+      </div>
+      <div class="cg-sensor-info" aria-live="polite">{guide.sensors.map(s=><div data-sensor-panel={s.id} hidden={s.id!=='APS-C'}><p class="cg-kicker">SENSOR FORMAT</p><h3>{s.name}</h3><p class="cg-dimensions">{s.width} × {s.height} mm</p><p>{s.description}</p></div>)}</div>
+     </div>
+     <div class="cg-sensor-switch" aria-label="选择传感器画幅">{guide.sensors.map(s=><button type="button" data-sensor={s.id} aria-pressed={s.id==='APS-C'}>{s.name}</button>)}</div>
+     <p class="cg-small">示意采用常见尺寸；佳能 APS-C 通常更小。大画幅不等于每张照片都更好，镜头、曝光与输出方式同样重要。</p>
+     <div class="cg-table-wrap" tabindex="0" role="region" aria-label="画幅对照表，可横向滚动"><table><caption>五种画幅，一眼比较</caption><thead><tr><th>画幅 / 尺寸</th><th>核心优势</th><th>客观取舍</th><th>适用方向</th></tr></thead><tbody>{guide.sensors.map(s=><tr><th>{s.name}<small>{s.width} × {s.height} mm</small></th><td>{s.advantage}</td><td>{s.tradeoff}</td><td>{s.use}</td></tr>)}</tbody></table></div>
+    </section>
+
+    <section id="brands" class="cg-section" aria-labelledby="brands-heading">
+     <p class="cg-kicker">02 / CAMERA ECOSYSTEMS</p><h2 id="brands-heading">认识品牌与卡口</h2>
+     <p>买相机，也是在选择一套镜头系统。机身会换代，镜头往往陪你更久。把常用镜头的价格、体积、对焦兼容性和升级路线一起考虑。</p>
+     {guide.brandGroups.map((group,i)=><div class="cg-brand-group"><h3><span>0{i+1}</span>{group.title}</h3><div class="cg-brand-grid">{group.items.map(brand=><section class="cg-brand"><header><h4>{brand.name}<span>{brand.chinese}</span></h4><p>{brand.mount}</p></header><p>{brand.description}</p></section>)}</div></div>)}
+    </section>
+
+    <section id="genres" class="cg-section" aria-labelledby="genres-heading">
+     <p class="cg-kicker">03 / GENRE-BASED CHOICE</p><h2 id="genres-heading">先定题材，再看指标</h2>
+     <p>想一想，未来半年有七成时间会拍什么。不同题材的优先级不一样，不必为用不上的参数买单。</p>
+     <div class="cg-tabs" role="tablist" aria-label="拍摄题材">{guide.genres.map((g,i)=><button type="button" id={g.id+'-tab'} role="tab" aria-controls={g.id} aria-selected={i===0} tabindex={i===0?0:-1} data-genre={g.id}>{g.name.replace('摄影','')}</button>)}</div>
+     {guide.genres.map((g,i)=><div id={g.id} class="cg-genre-panel" role="tabpanel" aria-labelledby={g.id+'-tab'} data-genre-panel={g.id} hidden={i!==0} tabindex="0">
+      <div class="cg-priorities"><p class="cg-kicker">WHAT MATTERS</p>{g.priorities.map(p=><div class="cg-priority"><span>{p.label}</span><span class="cg-ticks" aria-label={`建议关注程度 ${p.weight} / 5`}>{Array.from({length:5},(_,n)=><i class:list={{filled:n<p.weight}}></i>)}</span></div>)}<p class="cg-small">刻度表示选购时的相对关注程度，非机型性能评分。</p></div>
+      <div><h3>{g.name}</h3><p>{g.advice}</p><p class="cg-small">重点看：{g.core}</p><p class="cg-systems"><span>可比较的系统</span>{g.systems}</p></div>
+     </div>)}
+    </section>
+
+    <section id="budget" class="cg-section" aria-labelledby="budget-heading">
+     <p class="cg-kicker">04 / BUDGET GUIDE</p><h2 id="budget-heading">按预算缩小范围</h2>
+     <p>先把镜头、存储卡和备用电池的钱留下来，再看机身。可先预留总预算的 20%–30%，长焦或大光圈镜头通常还需要更多。</p>
+     <p class="cg-small">预算分档用于缩小比较范围，不代表实时成交价或在售承诺。购买时核对京东正规渠道全新报价、闲鱼实际二手成色，以及单机身 / 套机区别。</p>
+     <div class="cg-budget-tabs" aria-label="机身预算">{guide.budgets.map((t,i)=><a href={'#budget-'+t.id} data-budget-link={t.id} aria-current={i===0?'true':undefined}>{t.label}</a>)}</div>
+     <div class="cg-filters" data-camera-filters>
+      <div class="cg-condition" aria-label="购买成色">{[['all','全部'],['new','全新'],['used','二手']].map(([id,label])=><button type="button" data-condition={id} aria-pressed={id==='all'}>{label}</button>)}</div>
+      <label class="cg-evf"><input type="checkbox" data-evf/>仅看带电子取景器</label>
+     </div>
+     <p class="cg-small" data-filter-note>电子取景器筛选不包含仅有光学取景器的单反；未勾选时显示全部机型。</p>
+     <p class="cg-result-count" data-camera-count role="status" aria-live="polite"></p>
+     {guide.budgets.map((tier,i)=><div id={'budget-'+tier.id} data-budget-panel={tier.id} hidden={i!==0}>
+      <div class="cg-budget-intro"><p class="cg-kicker">BUDGET / 0{i+1}</p><h3>{tier.title}</h3><p>{tier.strategy}</p></div>
+      {i<4?<>
+       <div class="cg-camera-grid">{cameras.flatMap(camera=>camera.placements.filter(p=>p.budgetTier===tier.id).map(placement=><article class="cg-camera-card" data-camera-card data-condition-value={placement.condition} data-has-evf={String(camera.hasEVF)} data-camera-id={camera.id}>
+        <div class="cg-camera-display"><CameraImage camera={camera}/><span class:list={['cg-condition-label',{'is-new':placement.condition==='new'}]}>{placement.condition==='new'?'全新':'二手'}</span><span class="cg-format-label">{sensorNames[camera.sensor]}</span></div>
+        <div class="cg-camera-copy"><p class="cg-camera-type">{camera.lensType==='fixed'?'固定镜头':camera.bodyType==='dslr'?'可换镜头 · 单反':'可换镜头 · 微单'}</p><h4>{camera.name}</h4>{camera.alias&&<p class="cg-alias">{camera.alias}</p>}<p class="cg-camera-summary">{placement.summary}</p><p class="cg-caution"><span>选购留意</span>{placement.caution}</p></div>
+       </article>))}</div>
+       <p class="cg-empty" data-empty hidden>这一组合没有候选机型。试试取消取景器限制，或切回“全部”。</p>
+       {i===0&&<p class="cg-small">旧款 1 英寸固定镜头卡片机也可作为轻便记录的方向；库存与成色差异大，重点检查镜头伸缩、屏幕和电池。</p>}
+       <aside class="cg-budget-caution"><span>本档留意</span><p>{tier.caution}</p></aside>
+      </>:<>
+       <div class="cg-table-wrap" tabindex="0" role="region" aria-label="高预算系统对照表，可横向滚动"><table><thead><tr><th>品牌</th><th>代表系统 / 机型方向</th><th>核心场景</th></tr></thead><tbody>{tier.flagships?.map(row=><tr>{row.map((cell,j)=>j===0?<th>{cell}</th>:<td>{cell}</td>)}</tr>)}</tbody></table></div>
+       <h4 class="cg-principles-heading">高预算，先问五个问题</h4><ol class="cg-principles">{tier.principles?.map(p=><li>{p}</li>)}</ol>
+      </>}
+     </div>)}
+    </section>
+
+    <section id="checklist" class="cg-section" aria-labelledby="checklist-heading">
+     <p class="cg-kicker">05 / SECOND-HAND CHECKLIST</p><h2 id="checklist-heading">到手之前，逐项验机</h2>
+     <p>{guide.checklistIntro}</p>
+     <div class="cg-check-progress"><div><span data-check-count role="status" aria-live="polite">已完成 0 / 14</span><button type="button" data-check-reset>重置清单 ↺</button></div><progress max="14" value="0" data-check-progress aria-label="验机完成进度"></progress></div>
+     <p class="cg-small" data-storage-status>勾选保存在当前浏览器，回来时可以接着检查。</p>
+     {['before','after'].map((group,i)=><div class="cg-check-group"><h3>{i===0?'交易前 · 筛选卖家与信息':'到手后 · 十项实测'}</h3>{guide.checklist.filter(item=>item.group===group).map((item,j)=><div class="cg-check-row"><label><input type="checkbox" data-check-id={item.id}/><span class="cg-check-number">{String(j+1).padStart(2,'0')}</span><span>{item.title}</span></label><details><summary>查看方法<span aria-hidden="true">＋</span></summary><div><p>{item.method}</p>{item.warning&&<p class="cg-check-warning"><span>留意</span>{item.warning}</p>}</div></details></div>)}</div>)}
+     <div class="cg-evidence"><h3>把证据留在平台上</h3><p>{guide.evidence}</p><p class="cg-small">按机型实际支持的功能检查，不支持直充、防抖、耳机口或电子取景器并不属于故障。</p></div>
+    </section>
+
+    <section id="decision" class="cg-section" aria-labelledby="decision-heading">
+     <p class="cg-kicker">06 / DECISION FRAMEWORK</p><h2 id="decision-heading">四步，做出最后的决定</h2>
+     <p>如果清单看完仍拿不定主意，就按这个顺序，把选择收窄。</p>
+     <ol class="cg-decision-steps">{guide.decisionSteps.map((step,i)=><li><span>0{i+1}</span><div><h3>{step.title}</h3><p>{step.body}</p></div></li>)}</ol>
+     <div class="cg-table-wrap" tabindex="0" role="region" aria-label="快速决策对照表，可横向滚动"><table><caption>从你的首要诉求出发</caption><thead><tr><th>首要诉求</th><th>优先方向</th><th>别忽略</th></tr></thead><tbody>{guide.decisionTable.map(row=><tr>{row.map((cell,j)=>j===0?<th>{cell}</th>:<td>{cell}</td>)}</tr>)}</tbody></table></div>
+     <blockquote>{guide.closing}</blockquote>
+    </section>
+    <details class="cg-sources"><summary>规格核对与图片来源</summary><p>选购内容以本文为基础整理；产品图来自品牌官方公开产品页，保留原产品外观。未配图的型号使用线稿示意，不代表实际机身外观。</p><ul>
+     <li><a href="https://helpguide.sony.net/ilc/2430/v1/en/contents/232h_specifications_ilc2430.html" target="_blank" rel="noopener">Sony ZV-E10 II 官方规格 ↗</a></li>
+     <li><a href="https://www.usa.canon.com/learning/training-articles/training-articles-list/a-look-at-the-shutter-modes-in-canon-eos-cameras" target="_blank" rel="noopener">Canon 快门模式说明 ↗</a></li>
+     <li><a href="https://imaging.nikon.com/imaging/lineup/mirrorless/z50_2/" target="_blank" rel="noopener">Nikon Z50 II 官方规格 ↗</a></li>
+     <li><a href="https://www.fujifilm-x.com/global/products/cameras/x-m5/specifications/" target="_blank" rel="noopener">Fujifilm X-M5 官方规格 ↗</a></li>
+     <li><a href="https://help.na.panasonic.com/answers/features-and-specifications-lumix-s-series-model-dc-s9k/" target="_blank" rel="noopener">Panasonic LUMIX S9 官方规格 ↗</a></li>
+     <li><a href="https://www.ricoh-imaging.co.jp/english/products/gr-4/spec/" target="_blank" rel="noopener">Ricoh GR IV 官方规格 ↗</a></li>
+    </ul></details>
+    <footer class="cg-end"><a href="/lab/">← 返回摄影入门</a><span>REVERIAN / FIELD NOTES</span></footer>
+   </article>
+  </div>
+ </div>
+</Base>
+<script>import {setupCameraGuide} from '../../../lib/camera-guide';const root=document.querySelector<HTMLElement>('[data-camera-guide]');if(root)setupCameraGuide(root);</script>

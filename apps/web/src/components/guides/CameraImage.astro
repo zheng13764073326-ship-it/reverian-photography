@@ -1,0 +1,20 @@
+---
+import {existsSync} from 'node:fs';
+import {fileURLToPath} from 'node:url';
+import type {CameraItem} from '../../data/guide01CameraData';
+import {sensorNames} from '../../data/guide01CameraData';
+interface Props {camera:CameraItem}
+const {camera}=Astro.props;
+const exists=existsSync(fileURLToPath(new URL('../../../public'+camera.image,import.meta.url)));
+---
+<div class="cg-product-image" data-product-image>
+ <div class="cg-product-fallback" data-product-fallback hidden={exists} role="img" aria-label={`${camera.name}，${sensorNames[camera.sensor]}，机身轮廓示意`}>
+  <span>{camera.brand}</span>
+  <svg viewBox="0 0 240 150" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.2">
+   {camera.bodyType==='compact'?<path d="M30 48H210V126H30ZM45 48V42H72V48M176 60H196V70H176Z"/>:<path d="M22 54H77L89 35H132L146 54H218V126H22ZM35 54V44H63V54M167 54V43H194V54M91 44H129"/>}
+   <circle cx="121" cy="88" r="32"/><circle cx="121" cy="88" r="25"/><circle cx="121" cy="88" r="17"/><path d="M42 68H60M176 113H198"/>
+  </svg>
+  <small>{sensorNames[camera.sensor]} <span>· 轮廓示意</span></small>
+ </div>
+ {exists&&<img src={camera.image} alt={camera.name+' 官方产品图'} width="800" height="600" loading="lazy" decoding="async" data-camera-image onerror="this.hidden=true;this.previousElementSibling.hidden=false"/>}
+</div>

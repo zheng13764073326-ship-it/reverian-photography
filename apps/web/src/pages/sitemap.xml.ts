@@ -5,7 +5,7 @@ import {essays} from '../lib/essays';
 import {essayHref} from '../lib/essay-catalog';
 export const GET:APIRoute=async({site})=>{
  const data=await getContent();
- const paths=['/','/works/','/albums/','/wild/','/above/','/film/','/film/spring-drift-2026/','/about/','/lab/','/lab/ai-prompts/','/essays/',...essays.map(essayHref),...data.albums.map(a=>`/albums/${a.slug}/`)];
+ const paths=['/','/works/','/albums/','/wild/','/above/','/film/','/film/spring-drift-2026/','/about/','/lab/','/lab/guides/camera/','/lab/ai-prompts/','/essays/',...essays.map(essayHref),...data.albums.map(a=>`/albums/${a.slug}/`)];
  for(const section of ['works']){
   const count=pageItems(data.photos.filter(p=>p.featured)).length;
   for(let n=2;n<=count;n++)paths.push(`/${section}/${n}/`);

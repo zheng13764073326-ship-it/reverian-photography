@@ -1,0 +1,2061 @@
+{
+  "title": "相机选择",
+  "subtitle": "从认识画幅、系统与题材开始，找到属于你的第一台相机",
+  "intro": "买相机之前，先别一头扎进参数对比表。确定预算范围、明确最常拍的题材、衡量日常携带意愿，这三个答案决定了你该走进哪个系统。",
+  "sensors": [
+    {
+      "id": "1-inch",
+      "name": "1 英寸",
+      "width": 13.2,
+      "height": 8.8,
+      "description": "多用于高端便携卡片机与轻量化视频机。机身与镜头一体化，揣进口袋即可出门，适合日常记录、轻装旅行与 Vlog。受限于传感器面积，浅景深表现与暗光画质较弱，但无需研究换镜头，上手门槛最低。",
+      "advantage": "极致小巧、开机即拍",
+      "tradeoff": "虚化与夜景控噪有限",
+      "use": "日常记录、轻旅行、Vlog"
+    },
+    {
+      "id": "M43",
+      "name": "M4/3",
+      "width": 17.3,
+      "height": 13,
+      "description": "由松下（Panasonic）与奥之心（OM SYSTEM）共同维护。核心优势在于高度轻量化的机身与长焦镜头、成熟的机身防抖以及出色的户外防护能力，适合徒步、旅行、生态打鸟与手持视频。极暗光环境下的高感纯净度与虚化强度弱于更大画幅。",
+      "advantage": "轻量长焦、防抖强劲、户外耐造",
+      "tradeoff": "暗光纯净度与虚化克制",
+      "use": "户外徒步、生态打鸟、旅行"
+    },
+    {
+      "id": "APS-C",
+      "name": "APS-C",
+      "width": 23.5,
+      "height": 15.6,
+      "description": "俗称“半画幅”，由索尼、佳能、尼康、富士共同耕耘。它在画质、机身尺寸、镜头体积与购置成本之间达成了最均衡的比例，是绝大多数初学者的第一选择。自带约 1.5 倍（佳能为 1.6 倍）的视角裁切系数，用中焦镜头即可获得更远的长焦视角，兼顾人像、街头、旅行、风光与入门生态。",
+      "advantage": "体积、画质与镜头成本高度均衡",
+      "tradeoff": "极限暗光略逊全画幅",
+      "use": "新手入门、街头、旅行、全能进阶"
+    },
+    {
+      "id": "FullFrame",
+      "name": "全画幅",
+      "width": 36,
+      "height": 24,
+      "description": "沿袭传统 135 胶片尺寸，是进阶创作与商业摄影的常见选择。相近技术条件、相同输出尺寸下，较大的传感器通常有利于弱光画质；保持同样构图和光圈值时，也更容易获得浅景深。体积、重量和价格仍取决于具体机身与镜头，不是所有全画幅都更重。",
+      "advantage": "暗光纯净、虚化出色、专业镜头最全",
+      "tradeoff": "机身偏重、系统总成本高",
+      "use": "人像、夜景、风光、商业接单"
+    },
+    {
+      "id": "MediumFormat",
+      "name": "中画幅",
+      "width": 44,
+      "height": 33,
+      "description": "以富士 GFX 与哈苏 X 系统为代表。拥有极高的解析力、细腻的色彩过渡与丰富的明暗层次，专攻商业广告、静物棚拍与顶级风光。系统昂贵、文件体积庞大、连拍与对焦节奏偏慢，通常不建议作为初学者的第一台相机。",
+      "advantage": "顶级解析力与画面立体层次",
+      "tradeoff": "昂贵、体积大、对焦连拍偏慢",
+      "use": "商业广告、静物、高端风光"
+    }
+  ],
+  "brandGroups": [
+    {
+      "title": "四大主力综合系统",
+      "items": [
+        {
+          "name": "Sony",
+          "chinese": "索尼",
+          "mount": "E 卡口 · E / FE 镜头",
+          "description": "微单时代镜头生态最庞大的系统，原厂镜头素质扎实，适马、腾龙及国产副厂平价镜头极其丰富。AI 主体识别与连续追焦处于行业第一梯队，全题材通吃。选购入门与紧凑机型时，需留意是否配备电子取景器、机身防抖与双卡槽。"
+        },
+        {
+          "name": "Canon",
+          "chinese": "佳能",
+          "mount": "RF / RF-S 卡口",
+          "description": "操控直观、人体工学舒适，人物眼部识别果断，直出肤色自然讨喜，深受人像与商业摄影师青睐。老款 EF 单反镜头可通过转接环用于 RF 机身，需核对具体兼容性；旧微单 EF-M 系统已停止更新，仅适合低价体验，不建议持续投入镜头。"
+        },
+        {
+          "name": "Nikon",
+          "chinese": "尼康",
+          "mount": "Z 卡口",
+          "description": "Z 卡口大口径短法兰距带来了极佳的镜头光学素质，在风光宽容度、建筑锐度与机身做工上口碑深厚。产品线从轻巧入门到专业旗舰覆盖完整，且同档位性价比突出。老款 F 卡口单反镜头需通过 FTZ 转接环使用（老式无马达镜头无法自动对焦）。"
+        },
+        {
+          "name": "Fujifilm",
+          "chinese": "富士",
+          "mount": "X / G 卡口",
+          "description": "以胶片模拟直出色彩和复古机械拨盘操控独树一帜。X 系列深耕 APS-C 画幅，配套小巧精致的定焦镜头群，适合街头、人文、旅行以及不愿耗费大量时间做后期调色的拍摄者；GFX 系列则是中画幅领域的性价比标杆。"
+        }
+      ]
+    },
+    {
+      "title": "轻量与特色系统",
+      "items": [
+        {
+          "name": "Panasonic",
+          "chinese": "松下",
+          "mount": "M4/3 & L 卡口",
+          "description": "视频规格、机身防抖与实时 LUT 调色工作流表现亮眼。M4/3 系统轻巧易用；全画幅 L 卡口与徕卡、适马共享卡口联盟，镜头选择多元且性价比高。"
+        },
+        {
+          "name": "OM SYSTEM",
+          "chinese": "奥之心",
+          "mount": "M4/3 卡口，原奥林巴斯影像",
+          "description": "专注户外与自然摄影，强项在于行业顶级的机身防抖、高等级防尘防滴溅机身，以及单手可握的轻量超长焦镜头，适合徒步、风光与生态打鸟。"
+        },
+        {
+          "name": "Ricoh",
+          "chinese": "理光",
+          "mount": "GR 固定镜头系列",
+          "description": "将 APS-C 传感器塞进巴掌大的机身，单手开机、快拍对焦（Snap Focus）效率极高，是街头与人文摄影的经典随身机。不可更换镜头，更适合作为主力机之外的随身备机，或明确钟爱 28mm / 40mm 视角的纯粹街拍者。"
+        }
+      ]
+    },
+    {
+      "title": "殿堂与中画幅系统",
+      "items": [
+        {
+          "name": "Leica",
+          "chinese": "徕卡",
+          "mount": "M 旁轴 / SL 无反 / Q 固定镜头",
+          "description": "代表着精密机械工艺、独特光学味道与纯正旁轴操控体验。系统定价高昂，属于审美偏好与预算高度充裕后的进阶选择。"
+        },
+        {
+          "name": "Hasselblad",
+          "chinese": "哈苏",
+          "mount": "X 中画幅 / 907X 模块化",
+          "description": "以自然色彩解决方案（HNCS）与极简北欧工业设计闻名，服务于高端商业、静物棚拍与收藏级风光创作。"
+        }
+      ]
+    }
+  ],
+  "genres": [
+    {
+      "id": "genre-0",
+      "name": "人像摄影",
+      "priorities": [
+        {
+          "label": "眼部追焦",
+          "weight": 5
+        },
+        {
+          "label": "肤色表现",
+          "weight": 5
+        },
+        {
+          "label": "弱光画质",
+          "weight": 4
+        },
+        {
+          "label": "人像镜头",
+          "weight": 5
+        }
+      ],
+      "core": "眼部识别追焦、直出肤色过渡、暗光高感纯净度、大光圈人像镜头生态。",
+      "advice": "镜头的焦段与光圈对人像质感的影响大于机身。APS-C 搭配 35mm / 56mm 大光圈定焦同样能拍出优秀虚化，不必为虚化盲目透支预算上全画幅；预算充裕再上全画幅配 50mm / 85mm 定焦。",
+      "systems": "Canon EOS R 系列、Sony α6000 / α7 系列、Nikon Z 系列、Fujifilm X 系列。"
+    },
+    {
+      "id": "genre-1",
+      "name": "风光与建筑摄影",
+      "priorities": [
+        {
+          "label": "RAW 宽容度",
+          "weight": 5
+        },
+        {
+          "label": "广角镜头",
+          "weight": 5
+        },
+        {
+          "label": "解析力",
+          "weight": 4
+        },
+        {
+          "label": "脚架与滤镜",
+          "weight": 3
+        }
+      ],
+      "core": "传感器宽容度（暗部提亮与高光找回能力）、RAW 格式后期空间、高像素解析力、广角镜头群素质与三脚架/滤镜兼容性。",
+      "advice": "高像素利于大幅裁切与细节呈现，但对镜头解析力和脚架稳定性要求更高。APS-C 同样胜任风光拍摄，把钱留给一支优秀的超广角与稳固脚架回报更大。",
+      "systems": "Nikon Z 系列、Sony α7R / α7 系列、Fujifilm X-T 高像素系列、Canon EOS R 高像素系列。"
+    },
+    {
+      "id": "genre-2",
+      "name": "街头与人文摄影",
+      "priorities": [
+        {
+          "label": "便携与隐蔽",
+          "weight": 5
+        },
+        {
+          "label": "开机响应",
+          "weight": 5
+        },
+        {
+          "label": "单手操控",
+          "weight": 4
+        },
+        {
+          "label": "常用人文焦段",
+          "weight": 4
+        }
+      ],
+      "core": "机身隐蔽性与便携度、开机响应速度、单手操控逻辑、静音快门与 28mm / 35mm / 50mm 常用人文焦段。",
+      "advice": "愿意每天带出门的相机，永远比参数强悍却躺在防潮箱里的机器更有价值。钟爱单一视角可选理光 GR 或富士 X100VI；需要灵活构图则选轻便的可换镜头微单。",
+      "systems": "Fujifilm X 系列、Ricoh GR 系列、Sony α6000 / α7C 系列、Nikon Zf。"
+    },
+    {
+      "id": "genre-3",
+      "name": "旅行摄影",
+      "priorities": [
+        {
+          "label": "套组总重",
+          "weight": 5
+        },
+        {
+          "label": "电池与直充",
+          "weight": 4
+        },
+        {
+          "label": "防抖",
+          "weight": 4
+        },
+        {
+          "label": "实用变焦",
+          "weight": 4
+        }
+      ],
+      "core": "机身加镜头的总重量、单电池续航与 Type-C 直充、防抖性能、防尘防溅防护以及一支覆盖广角到中长焦的实用变焦头。",
+      "advice": "决定旅行体验的不是单机身重量，而是挂机套组的总重。一支 20-70mm、24-105mm 或 18-135mm 变焦头，能帮你大幅减少旅途中频繁换镜头的烦恼。",
+      "systems": "Sony α7C 系列、Fujifilm X-S / X-T 系列、Nikon Z50 II / Z5 II、OM SYSTEM OM-5 / OM-1 系列、Panasonic M4/3 或 LUMIX S 系列。"
+    },
+    {
+      "id": "genre-4",
+      "name": "鸟类与野生动物摄影",
+      "priorities": [
+        {
+          "label": "主体追焦",
+          "weight": 5
+        },
+        {
+          "label": "连拍与缓存",
+          "weight": 5
+        },
+        {
+          "label": "长焦选择",
+          "weight": 5
+        },
+        {
+          "label": "户外防护",
+          "weight": 4
+        }
+      ],
+      "core": "鸟眼/动物主体识别、连续追焦咬合度、高速连拍速率与缓存深度、超长焦镜头体积与预算。",
+      "advice": "生态摄影中，追焦、连拍与长焦镜头的权重远高于画幅大小。APS-C 的裁切加成与 M4/3 的轻量长焦体系，能让你以低得多的预算和体力拍到清晰的远景主体。",
+      "systems": "Sony α6700 / α7 系列、Canon EOS R7 / R6 系列、Nikon Z50 II / Z6 III / Z8、OM SYSTEM OM-1 系列。"
+    },
+    {
+      "id": "genre-5",
+      "name": "夜景与星空摄影",
+      "priorities": [
+        {
+          "label": "高感画质",
+          "weight": 5
+        },
+        {
+          "label": "大光圈广角",
+          "weight": 5
+        },
+        {
+          "label": "脚架稳定",
+          "weight": 5
+        },
+        {
+          "label": "长曝光表现",
+          "weight": 4
+        }
+      ],
+      "core": "高 ISO 控噪能力、长曝光暗电流控制、大光圈超广角镜头选择与稳固的三脚架。",
+      "advice": "全画幅在高感控噪上具备先天物理优势。拍星空时，一支 F1.4 或 F1.8 的大光圈广角定焦，比单纯升级机身更能直接降低噪点、避免星点拖线。",
+      "systems": "Sony α7 系列、Nikon Z 系列、Canon EOS R 系列、Panasonic LUMIX S 系列。"
+    }
+  ],
+  "budgets": [
+    {
+      "id": "1k-3k",
+      "label": "¥1,000–3,000",
+      "title": "低成本踏入摄影世界",
+      "strategy": "以高性价比二手微单为主，优先选择状态可靠、仍有丰富镜头可选的系统。切忌为了“全画幅”标签去买年代过老、缺乏后续镜头预算的机器。",
+      "caution": "低价二手市场机身年代跨度大，切忌只看快门次数。验机务必排查传感器、接口、取景器、屏幕、对焦与电池健康度；EF-M 等已停产系统仅作低成本体验，不做长期投资。"
+    },
+    {
+      "id": "3k-5k",
+      "label": "¥3,000–5,000",
+      "title": "正式建立摄影基础",
+      "strategy": "在“省心质保的全新入门微单”与“性能越级的二手进阶机身”之间做取舍。重视售后选全新套机；追求画质上限、操控与取景体验，优先比较二手中端 APS-C 或经典全画幅。",
+      "caution": "全画幅机身下探到该价位，不代表全画幅整套系统便宜。下单前先核对常用镜头的售价，并重点排查二手机器的拆修、进水、摔碰与传感器隐患。"
+    },
+    {
+      "id": "5k-8k",
+      "label": "¥5,000–8,000",
+      "title": "初学者最值得重点考虑的黄金区间",
+      "strategy": "预算、性能与系统自由度最为均衡的档位。全新主力 APS-C、轻量全画幅与二手高阶全画幅齐聚。以拍照为主优先锁定带电子取景器的机型；拍鸟与运动盯紧主体识别与连拍；拍风光与建筑重点看解析力、RAW 宽容度与镜头素质。",
+      "caution": "高阶二手全画幅与高像素机身进入该档位后，切忌单纯追逐最低价。验机务必严查高像素传感器的坏点与油污、双卡槽读写、快门寿命及维修记录。"
+    },
+    {
+      "id": "8k-12k",
+      "label": "¥8,000–12,000",
+      "title": "步入成熟主力系统",
+      "strategy": "可从容选择全新全画幅、顶级 APS-C 旗舰或二手准专业旗舰。若这是你的第一台相机，依然不要把预算全部倾注在机身上，为镜头、存储与备用电池留足空间。",
+      "caution": "固定镜头相机（理光 GR、富士 X100VI、徕卡 Q）与可换镜头相机属于截然不同的购买逻辑。它们适合明确钟爱单一经典焦段的创作者；仍在探索多元题材的新手，首选可换镜头系统。"
+    },
+    {
+      "id": "12k+",
+      "label": "¥12,000+",
+      "title": "进阶与专业系统",
+      "strategy": "预算超过 12000 元，核心已不是买一台参数更强的机身，而是构建高可靠性与高效率的专业工作流。只有当你明确知道现有设备在哪些具体场景下卡住了创作瓶颈，升级这一档才具备实际意义。",
+      "caution": "",
+      "flagships": [
+        [
+          "Sony",
+          "α7 V、α7R 系列、α1 系列",
+          "全能商业摄影、高解析风光、旗舰体育与生态"
+        ],
+        [
+          "Canon",
+          "EOS R5 系列、EOS R6 高阶系列、EOS R1",
+          "商业人像、专业影视制作、职业体育与新闻"
+        ],
+        [
+          "Nikon",
+          "Z8、Z9、Z7 高阶系列",
+          "风光、生态打鸟、体育与全能专业创作"
+        ],
+        [
+          "Fujifilm",
+          "GFX 中画幅、X-H 高阶系列",
+          "商业广告、静物棚拍与专业视频工作流"
+        ],
+        [
+          "Panasonic",
+          "LUMIX S1 / S1R 高阶系列",
+          "高规格专业视频、商业平面与高画质创作"
+        ],
+        [
+          "OM SYSTEM",
+          "OM-1 系列",
+          "轻量化专业生态、户外严苛环境与高速拍摄"
+        ],
+        [
+          "Leica",
+          "M、SL、Q 系列",
+          "旁轴人文体验、高端随身与艺术影像创作"
+        ],
+        [
+          "Hasselblad",
+          "X2D、907X 系列",
+          "中画幅商业大片、静物与高解析度风光"
+        ]
+      ],
+      "principles": [
+        "先找创作瓶颈：像素、追焦、连拍、视频规格还是双卡可靠性，究竟哪一项真正限制了出片？",
+        "镜头优先到位：高端机身缺乏高素质镜头支撑，性能难以发挥。",
+        "核算全套工作流成本：将高速存储卡、备份硬盘、灯光、三脚架与后期修图电脑一并计入总预算。",
+        "务必线下试机：专业机身重量与握持感差异显著，下单前亲手体验握感与菜单逻辑。",
+        "理性看待中画幅：中画幅不自动等同于更好的作品，它服务于明确需要极高解析度与特定色彩层次的工作流。"
+      ]
+    }
+  ],
+  "cameras": [
+    {
+      "id": "sony-a6000",
+      "brand": "Sony",
+      "name": "Sony α6000",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/sony-a6000.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "used",
+          "summary": "轻便好上手，E 卡口副厂平价镜头极多",
+          "caution": "验机确认取景器、快门与对焦状态。"
+        }
+      ]
+    },
+    {
+      "id": "sony-a6100",
+      "brand": "Sony",
+      "name": "Sony α6100",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/sony-a6100.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "used",
+          "summary": "轻便好上手，E 卡口副厂平价镜头极多",
+          "caution": "验机确认取景器、快门与对焦状态。"
+        }
+      ]
+    },
+    {
+      "id": "sony-a6400",
+      "brand": "Sony",
+      "name": "Sony α6400",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/sony-a6400.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "used",
+          "summary": "追焦扎实可靠、配电子取景器",
+          "caution": "需留意成色与是否含套机镜头。"
+        },
+        {
+          "budgetTier": "3k-5k",
+          "condition": "used",
+          "summary": "追焦迅捷、E 卡口镜头生态完善",
+          "caution": "α6600 额外配备机身防抖与大容量电池。"
+        }
+      ]
+    },
+    {
+      "id": "sony-a6600",
+      "brand": "Sony",
+      "name": "Sony α6600",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/sony-a6600.webp",
+      "placements": [
+        {
+          "budgetTier": "3k-5k",
+          "condition": "used",
+          "summary": "追焦迅捷、E 卡口镜头生态完善",
+          "caution": "α6600 额外配备机身防抖与大容量电池。"
+        }
+      ]
+    },
+    {
+      "id": "sony-a6700",
+      "brand": "Sony",
+      "name": "Sony α6700",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/sony-a6700.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "used",
+          "summary": "旗舰级半画幅，AI 主体识别、生态打鸟与视频规格拉满",
+          "caution": "预留长焦镜头预算。"
+        }
+      ]
+    },
+    {
+      "id": "sony-zv-e10",
+      "brand": "Sony",
+      "name": "Sony ZV-E10（一代）",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": false,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/sony-zv-e10.webp",
+      "placements": [
+        {
+          "budgetTier": "3k-5k",
+          "condition": "new",
+          "summary": "轻便且 E 卡口生态庞大，侧重视频与日常记录",
+          "caution": "无电子取景器；以屏幕取景，先确认户外拍照习惯。 无电子取景器，纯拍照取景体验不同。"
+        }
+      ]
+    },
+    {
+      "id": "sony-zv-e10-ii",
+      "brand": "Sony",
+      "name": "Sony ZV-E10 II",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": false,
+      "hasMechanicalShutter": false,
+      "image": "/images/cameras/sony-zv-e10-ii.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "new",
+          "summary": "视频规格大幅强化、轻便好拍",
+          "caution": "无电子取景器、纯电子快门；运动主体和频闪灯光下需留意畸变与条纹。 无电子取景器且取消机械快门，纯拍照用户建议线下实机体验。"
+        }
+      ]
+    },
+    {
+      "id": "sony-rx100-iii",
+      "brand": "Sony",
+      "name": "Sony RX100 III",
+      "sensor": "1-inch",
+      "lensType": "fixed",
+      "bodyType": "compact",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/sony-rx100-iii.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "used",
+          "summary": "无需另配镜头、随身装袋即走",
+          "caution": "验机严查镜头伸缩与内部入灰。"
+        }
+      ]
+    },
+    {
+      "id": "sony-a7-iii",
+      "brand": "Sony",
+      "name": "Sony α7 III",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/sony-a7-iii.webp",
+      "placements": [
+        {
+          "budgetTier": "3k-5k",
+          "condition": "used",
+          "summary": "成熟全画幅系统，综合性能与续航均衡",
+          "caution": "验机严查快门、卡槽、接口与机身防抖。"
+        }
+      ]
+    },
+    {
+      "id": "sony-a7c",
+      "brand": "Sony",
+      "name": "Sony α7C",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": false,
+      "image": "/images/cameras/sony-a7c.webp",
+      "placements": [
+        {
+          "budgetTier": "3k-5k",
+          "condition": "used",
+          "summary": "成熟全画幅系统，综合性能与续航均衡",
+          "caution": "单卡槽；采用电子前帘或电子快门。 验机严查快门、卡槽、接口与机身防抖。"
+        }
+      ]
+    },
+    {
+      "id": "sony-a7c-ii",
+      "brand": "Sony",
+      "name": "Sony α7C II",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": false,
+      "image": "/images/cameras/sony-a7c-ii.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "used",
+          "summary": "将 3300 万像素传感器与 AI 追焦塞进紧凑机身，旅行与综合创作兼优",
+          "caution": "单卡槽；采用电子前帘或电子快门，机身小，建议试握。 验机重点检查取景器与机身防抖。"
+        },
+        {
+          "budgetTier": "8k-12k",
+          "condition": "new",
+          "summary": "轻量全画幅标杆，旅行、人像与日常创作全能",
+          "caution": "单卡槽；采用电子前帘或电子快门，机身小，建议试握。 购买时区分单机身与套机保障。"
+        },
+        {
+          "budgetTier": "8k-12k",
+          "condition": "used",
+          "summary": "覆盖 6100 万高像素风光与综合创作",
+          "caution": "单卡槽；采用电子前帘或电子快门，机身小，建议试握。 验机核对快门、传感器健康度并规划大文件存储。"
+        }
+      ]
+    },
+    {
+      "id": "sony-a7-iv",
+      "brand": "Sony",
+      "name": "Sony α7 IV",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/sony-a7-iv.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "used",
+          "summary": "3300 万像素、双卡槽，兼顾拍照与视频。",
+          "caution": "α7R IV 提供 6100 万高像素，需配套高速大容量存储卡。"
+        },
+        {
+          "budgetTier": "8k-12k",
+          "condition": "new",
+          "summary": "3300 万像素、双卡槽，兼顾拍照与视频。",
+          "caution": "体积与重量高于 α7C 系列。"
+        },
+        {
+          "budgetTier": "8k-12k",
+          "condition": "used",
+          "summary": "3300 万像素、双卡槽，兼顾拍照与视频。",
+          "caution": "验机核对快门、传感器健康度并规划大文件存储。"
+        }
+      ]
+    },
+    {
+      "id": "sony-a7r-iv",
+      "brand": "Sony",
+      "name": "Sony α7R IV",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/sony-a7r-iv.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "used",
+          "summary": "6100 万像素，适合风光、建筑与细节裁切。",
+          "caution": "α7R IV 提供 6100 万高像素，需配套高速大容量存储卡。"
+        }
+      ]
+    },
+    {
+      "id": "sony-a7r-v",
+      "brand": "Sony",
+      "name": "Sony α7R V",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/sony-a7r-v.webp",
+      "placements": [
+        {
+          "budgetTier": "8k-12k",
+          "condition": "used",
+          "summary": "6100 万像素配合主体识别，面向高解析度创作。",
+          "caution": "验机核对快门、传感器健康度并规划大文件存储。"
+        }
+      ]
+    },
+    {
+      "id": "canon-200d-ii",
+      "brand": "Canon",
+      "name": "Canon EOS 200D II",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "dslr",
+      "hasEVF": false,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/canon-200d-ii.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "used",
+          "summary": "菜单直观、入门镜头便宜易找",
+          "caution": "单反系统已停止更新，适合低成本打基础。"
+        }
+      ]
+    },
+    {
+      "id": "canon-800d",
+      "brand": "Canon",
+      "name": "Canon EOS 800D",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "dslr",
+      "hasEVF": false,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/canon-800d.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "used",
+          "summary": "菜单直观、入门镜头便宜易找",
+          "caution": "单反系统已停止更新，适合低成本打基础。"
+        }
+      ]
+    },
+    {
+      "id": "canon-m50-ii",
+      "brand": "Canon",
+      "name": "Canon EOS M50 Mark II",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/canon-m50-ii.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "used",
+          "summary": "翻转屏友好、入门省心",
+          "caution": "EF-M 系统已停止更新；仅作低成本体验，不建议继续重金扩充镜头。 EF-M 卡口已停产，不建议持续重金扩充镜头。"
+        }
+      ]
+    },
+    {
+      "id": "canon-r100",
+      "brand": "Canon",
+      "name": "Canon EOS R100",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/canon-r100.webp",
+      "placements": [
+        {
+          "budgetTier": "3k-5k",
+          "condition": "new",
+          "summary": "全新微单最低门槛，操作简单，适合预算有限的新手入门",
+          "caution": "操控按键与功能较简化。"
+        }
+      ]
+    },
+    {
+      "id": "canon-r50",
+      "brand": "Canon",
+      "name": "Canon EOS R50",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": false,
+      "image": "/images/cameras/canon-r50.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "new",
+          "summary": "轻便好用、肤色讨喜，适合入门人像、旅行与日常记录",
+          "caution": "采用电子前帘或电子快门，无全机械快门模式。 下单区分单机身与套机组合。"
+        }
+      ]
+    },
+    {
+      "id": "canon-r10",
+      "brand": "Canon",
+      "name": "Canon EOS R10",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/canon-r10.webp",
+      "placements": [
+        {
+          "budgetTier": "3k-5k",
+          "condition": "used",
+          "summary": "轻巧 APS-C 机身，兼顾旅行、日常与动作抓拍。",
+          "caution": "EOS RP 性能较基础，入手前同步核对 RF 镜头预算。"
+        },
+        {
+          "budgetTier": "5k-8k",
+          "condition": "new",
+          "summary": "轻巧 APS-C 机身，兼顾旅行、日常与动作抓拍。",
+          "caution": "下单区分单机身与套机组合。"
+        }
+      ]
+    },
+    {
+      "id": "canon-r7",
+      "brand": "Canon",
+      "name": "Canon EOS R7",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/canon-r7.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "used",
+          "summary": "APS-C 防抖机身，适合生态、运动与轻量长焦。",
+          "caution": "EOS R8 无机身防抖、单卡槽，按题材取舍。"
+        }
+      ]
+    },
+    {
+      "id": "canon-rp",
+      "brand": "Canon",
+      "name": "Canon EOS RP",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/canon-rp.webp",
+      "placements": [
+        {
+          "budgetTier": "3k-5k",
+          "condition": "used",
+          "summary": "全画幅 RF 入门机身，适合低成本尝试人像与风光。",
+          "caution": "EOS RP 性能较基础，入手前同步核对 RF 镜头预算。"
+        }
+      ]
+    },
+    {
+      "id": "canon-r8",
+      "brand": "Canon",
+      "name": "Canon EOS R8",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": false,
+      "image": "/images/cameras/canon-r8.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "used",
+          "summary": "轻量全画幅，适合人像与旅行。",
+          "caution": "无机身防抖、单卡槽；使用电子前帘或电子快门，无全机械快门模式。 EOS R8 无机身防抖、单卡槽，按题材取舍。"
+        },
+        {
+          "budgetTier": "8k-12k",
+          "condition": "new",
+          "summary": "轻量全画幅，适合人像与旅行。",
+          "caution": "无机身防抖、单卡槽；使用电子前帘或电子快门，无全机械快门模式。 需接受无机身防抖与单卡槽取舍。"
+        }
+      ]
+    },
+    {
+      "id": "canon-r6",
+      "brand": "Canon",
+      "name": "Canon EOS R6",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/canon-r6.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "used",
+          "summary": "全画幅防抖机身，适合人像、活动与日常创作。",
+          "caution": "EOS R8 无机身防抖、单卡槽，按题材取舍。"
+        }
+      ]
+    },
+    {
+      "id": "canon-r6-ii",
+      "brand": "Canon",
+      "name": "Canon EOS R6 Mark II",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/canon-r6-ii.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "used",
+          "summary": "全画幅高速追焦机身，兼顾活动抓拍与视频。",
+          "caution": "EOS R8 无机身防抖、单卡槽，按题材取舍。"
+        },
+        {
+          "budgetTier": "8k-12k",
+          "condition": "used",
+          "summary": "全画幅高速追焦机身，兼顾活动抓拍与视频。",
+          "caution": "EOS R6 Mark II 胜在高速连拍与活动抓拍。"
+        }
+      ]
+    },
+    {
+      "id": "canon-r5",
+      "brand": "Canon",
+      "name": "Canon EOS R5",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/canon-r5.webp",
+      "placements": [
+        {
+          "budgetTier": "8k-12k",
+          "condition": "used",
+          "summary": "高解析度全画幅，适合细节、风光与视频创作。",
+          "caution": "EOS R6 Mark II 胜在高速连拍与活动抓拍。"
+        }
+      ]
+    },
+    {
+      "id": "nikon-d5300",
+      "brand": "Nikon",
+      "name": "Nikon D5300",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "dslr",
+      "hasEVF": false,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/nikon-d5300.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "used",
+          "summary": "低成本学习曝光与构图的扎实机身，D7200 具备双拨轮与双卡槽操控",
+          "caution": "年代较早，重点查快门与接口。"
+        }
+      ]
+    },
+    {
+      "id": "nikon-d5500",
+      "brand": "Nikon",
+      "name": "Nikon D5500",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "dslr",
+      "hasEVF": false,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/nikon-d5500.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "used",
+          "summary": "低成本学习曝光与构图的扎实机身，D7200 具备双拨轮与双卡槽操控",
+          "caution": "年代较早，重点查快门与接口。"
+        }
+      ]
+    },
+    {
+      "id": "nikon-d7200",
+      "brand": "Nikon",
+      "name": "Nikon D7200",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "dslr",
+      "hasEVF": false,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/nikon-d7200.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "used",
+          "summary": "低成本学习曝光与构图的扎实机身，D7200 具备双拨轮与双卡槽操控",
+          "caution": "年代较早，重点查快门与接口。"
+        }
+      ]
+    },
+    {
+      "id": "nikon-z30",
+      "brand": "Nikon",
+      "name": "Nikon Z30",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": false,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/nikon-z30.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "used",
+          "summary": "轻便 Z 卡口 APS-C，适合屏幕取景与视频记录。",
+          "caution": "无电子取景器；强光下依赖背屏取景。 Z30 无电子取景器，强光下取景体验与带取景器机型不同。"
+        },
+        {
+          "budgetTier": "3k-5k",
+          "condition": "new",
+          "summary": "轻便 Z 卡口 APS-C，适合屏幕取景与视频记录。",
+          "caution": "无电子取景器；强光下依赖背屏取景。 同样无电子取景器。"
+        }
+      ]
+    },
+    {
+      "id": "nikon-z50",
+      "brand": "Nikon",
+      "name": "Nikon Z50",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/nikon-z50.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "used",
+          "summary": "带电子取景器的 APS-C，轻便旅行与入门拍照。",
+          "caution": "Z30 无电子取景器，强光下取景体验与带取景器机型不同。"
+        }
+      ]
+    },
+    {
+      "id": "nikon-z50-ii",
+      "brand": "Nikon",
+      "name": "Nikon Z50 II",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/nikon-z50-ii.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "new",
+          "summary": "下放旗舰级处理器，追焦与操控全面升级，照片与视频高度均衡。",
+          "caution": "核对具体代际、成色与配套镜头，先试握再决定。"
+        }
+      ]
+    },
+    {
+      "id": "nikon-z5",
+      "brand": "Nikon",
+      "name": "Nikon Z5",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/nikon-z5.webp",
+      "placements": [
+        {
+          "budgetTier": "3k-5k",
+          "condition": "used",
+          "summary": "高性价比全画幅风光与人像主力",
+          "caution": "核对固件版本、卡槽规格（Z6 一代为 XQD/CFexpress 单卡槽）与转接镜头兼容性。"
+        }
+      ]
+    },
+    {
+      "id": "nikon-z5-ii",
+      "brand": "Nikon",
+      "name": "Nikon Z5 II",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/nikon-z5-ii.webp",
+      "placements": [
+        {
+          "budgetTier": "8k-12k",
+          "condition": "new",
+          "summary": "带机身防抖的全画幅，适合旅行、人像与日常。",
+          "caution": "Z6 III 搭载部分堆栈式传感器，连拍与视频性能越级。"
+        }
+      ]
+    },
+    {
+      "id": "nikon-z6",
+      "brand": "Nikon",
+      "name": "Nikon Z6",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/nikon-z6.webp",
+      "placements": [
+        {
+          "budgetTier": "3k-5k",
+          "condition": "used",
+          "summary": "高性价比全画幅风光与人像主力",
+          "caution": "一代采用 XQD / CFexpress Type B 单卡槽；核对固件和存储卡成本。 核对固件版本、卡槽规格（Z6 一代为 XQD/CFexpress 单卡槽）与转接镜头兼容性。"
+        }
+      ]
+    },
+    {
+      "id": "nikon-z6-ii",
+      "brand": "Nikon",
+      "name": "Nikon Z6 II",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/nikon-z6-ii.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "used",
+          "summary": "综合均衡的全画幅，兼顾照片与视频。",
+          "caution": "注意机身配重与高像素存储需求。"
+        }
+      ]
+    },
+    {
+      "id": "nikon-z6-iii",
+      "brand": "Nikon",
+      "name": "Nikon Z6 III",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/nikon-z6-iii.webp",
+      "placements": [
+        {
+          "budgetTier": "8k-12k",
+          "condition": "new",
+          "summary": "部分堆栈式传感器，侧重高速拍摄与视频。",
+          "caution": "Z6 III 搭载部分堆栈式传感器，连拍与视频性能越级。"
+        },
+        {
+          "budgetTier": "8k-12k",
+          "condition": "used",
+          "summary": "部分堆栈式传感器，侧重高速拍摄与视频。",
+          "caution": "核对具体代际、成色与配套镜头，先试握再决定。"
+        }
+      ]
+    },
+    {
+      "id": "nikon-z7-ii",
+      "brand": "Nikon",
+      "name": "Nikon Z7 II",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/nikon-z7-ii.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "used",
+          "summary": "4570 万像素，适合风光与建筑细节。",
+          "caution": "注意机身配重与高像素存储需求。"
+        },
+        {
+          "budgetTier": "8k-12k",
+          "condition": "used",
+          "summary": "4570 万像素，适合风光与建筑细节。",
+          "caution": "核对具体代际、成色与配套镜头，先试握再决定。"
+        }
+      ]
+    },
+    {
+      "id": "nikon-zf",
+      "brand": "Nikon",
+      "name": "Nikon Zf",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/nikon-zf.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "used",
+          "summary": "复古拨盘与全画幅，适合人文、街头与日常。",
+          "caution": "注意机身配重与高像素存储需求。"
+        },
+        {
+          "budgetTier": "8k-12k",
+          "condition": "used",
+          "summary": "复古拨盘与全画幅，适合人文、街头与日常。",
+          "caution": "核对具体代际、成色与配套镜头，先试握再决定。"
+        }
+      ]
+    },
+    {
+      "id": "fuji-xt20",
+      "brand": "Fujifilm",
+      "name": "Fujifilm X-T20",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/fuji-xt20.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "used",
+          "summary": "低成本体验富士胶片模拟与轻便操控",
+          "caution": "老机身重点验按键、拨盘灵敏度与屏幕排线。"
+        }
+      ]
+    },
+    {
+      "id": "fuji-xt30-iii",
+      "brand": "Fujifilm",
+      "name": "Fujifilm X-T30 III",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/fuji-xt30-iii.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "new",
+          "summary": "电子取景器与复古拨盘，兼顾直出与轻旅行。",
+          "caution": "X-M5 无电子取景器，按取景习惯选择。"
+        }
+      ]
+    },
+    {
+      "id": "fuji-xm5",
+      "brand": "Fujifilm",
+      "name": "Fujifilm X-M5",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": false,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/fuji-xm5.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "new",
+          "summary": "轻巧 X 系统机身，适合直出记录与视频。",
+          "caution": "无电子取景器；按自己的取景习惯选择。 X-M5 无电子取景器，按取景习惯选择。"
+        }
+      ]
+    },
+    {
+      "id": "fuji-xs10",
+      "brand": "Fujifilm",
+      "name": "Fujifilm X-S10",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/fuji-xs10.webp",
+      "placements": [
+        {
+          "budgetTier": "3k-5k",
+          "condition": "used",
+          "summary": "直出色彩迷人、操控富有乐趣",
+          "caution": "X-S10 与 X-T4 带机身防抖，验机重点测试拨盘与翻转屏。"
+        }
+      ]
+    },
+    {
+      "id": "fuji-xs20",
+      "brand": "Fujifilm",
+      "name": "Fujifilm X-S20",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/fuji-xs20.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "new",
+          "summary": "配机身防抖与大电池，旅行、静态摄影与视频创作全面兼顾。",
+          "caution": "核对具体代际、成色与配套镜头，先试握再决定。"
+        },
+        {
+          "budgetTier": "5k-8k",
+          "condition": "used",
+          "summary": "高像素风光、复古旅行与全能创作一应俱全",
+          "caution": "4020 万像素机身对镜头解析力要求更高。"
+        }
+      ]
+    },
+    {
+      "id": "fuji-xt4",
+      "brand": "Fujifilm",
+      "name": "Fujifilm X-T4",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/fuji-xt4.webp",
+      "placements": [
+        {
+          "budgetTier": "3k-5k",
+          "condition": "used",
+          "summary": "直出色彩迷人、操控富有乐趣",
+          "caution": "X-S10 与 X-T4 带机身防抖，验机重点测试拨盘与翻转屏。"
+        }
+      ]
+    },
+    {
+      "id": "fuji-xt5",
+      "brand": "Fujifilm",
+      "name": "Fujifilm X-T5",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/fuji-xt5.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "used",
+          "summary": "高像素风光、复古旅行与全能创作一应俱全",
+          "caution": "4020 万像素机身对镜头解析力要求更高。"
+        },
+        {
+          "budgetTier": "8k-12k",
+          "condition": "new",
+          "summary": "4020 万高像素配复古操控，适合风光、街头与直出创作",
+          "caution": "配套高素质定焦或变焦镜头更能释放解析力。"
+        },
+        {
+          "budgetTier": "8k-12k",
+          "condition": "used",
+          "summary": "X-H2S 专攻堆栈式高速连拍与视频",
+          "caution": "X-H2 与 X-T5 主攻 4020 万高解析度。"
+        }
+      ]
+    },
+    {
+      "id": "fuji-xt50",
+      "brand": "Fujifilm",
+      "name": "Fujifilm X-T50",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/fuji-xt50.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "used",
+          "summary": "高像素风光、复古旅行与全能创作一应俱全",
+          "caution": "4020 万像素机身对镜头解析力要求更高。"
+        },
+        {
+          "budgetTier": "8k-12k",
+          "condition": "new",
+          "summary": "4020 万高像素配复古操控，适合风光、街头与直出创作",
+          "caution": "配套高素质定焦或变焦镜头更能释放解析力。"
+        }
+      ]
+    },
+    {
+      "id": "fuji-xh2",
+      "brand": "Fujifilm",
+      "name": "Fujifilm X-H2",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/fuji-xh2.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "used",
+          "summary": "4020 万像素，适合高解析度照片与视频。",
+          "caution": "4020 万像素机身对镜头解析力要求更高。"
+        },
+        {
+          "budgetTier": "8k-12k",
+          "condition": "used",
+          "summary": "4020 万像素，适合高解析度照片与视频。",
+          "caution": "X-H2 与 X-T5 主攻 4020 万高解析度。"
+        }
+      ]
+    },
+    {
+      "id": "fuji-x100vi",
+      "brand": "Fujifilm",
+      "name": "Fujifilm X100VI",
+      "sensor": "APS-C",
+      "lensType": "fixed",
+      "bodyType": "compact",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/fuji-x100vi.webp",
+      "placements": [
+        {
+          "budgetTier": "8k-12k",
+          "condition": "new",
+          "summary": "等效 35mm 固定镜头配机身防抖与复古旁轴造型，专攻街头与人文随拍。",
+          "caution": "固定等效 35mm 镜头，不能更换镜头。"
+        }
+      ]
+    },
+    {
+      "id": "panasonic-g100d",
+      "brand": "Panasonic",
+      "name": "Panasonic LUMIX G100D",
+      "sensor": "M43",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/panasonic-g100d.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "new",
+          "summary": "轻便小巧、配电子取景器与 Type-C 接口，适合零门槛记录旅行与视频入门",
+          "caution": "下单前确认套机镜头与质保渠道。"
+        },
+        {
+          "budgetTier": "3k-5k",
+          "condition": "new",
+          "summary": "轻便旅行与视频入门套机，选购时核对防抖需求与套机焦段。",
+          "caution": "核对具体代际、成色与配套镜头，先试握再决定。"
+        }
+      ]
+    },
+    {
+      "id": "panasonic-gx85",
+      "brand": "Panasonic",
+      "name": "Panasonic LUMIX GX7 Mark II",
+      "sensor": "M43",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/panasonic-gx85.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "used",
+          "summary": "带机身防抖、镜头轻巧",
+          "caution": "验机重点测防抖工作状态、取景器与镜片霉雾。"
+        }
+      ],
+      "alias": "海外型号 GX85"
+    },
+    {
+      "id": "panasonic-g85",
+      "brand": "Panasonic",
+      "name": "Panasonic LUMIX G8",
+      "sensor": "M43",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/panasonic-g85.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "used",
+          "summary": "带机身防抖、镜头轻巧",
+          "caution": "验机重点测防抖工作状态、取景器与镜片霉雾。"
+        }
+      ],
+      "alias": "海外型号 G85"
+    },
+    {
+      "id": "panasonic-g9",
+      "brand": "Panasonic",
+      "name": "Panasonic LUMIX G9（一代）",
+      "sensor": "M43",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/panasonic-g9.webp",
+      "placements": [
+        {
+          "budgetTier": "3k-5k",
+          "condition": "used",
+          "summary": "M4/3 防抖机身，适合户外与轻量长焦。",
+          "caution": "入手前明确对连续追焦的需求与 L 卡口镜头预算。"
+        }
+      ]
+    },
+    {
+      "id": "panasonic-lx10",
+      "brand": "Panasonic",
+      "name": "Panasonic LUMIX LX10",
+      "sensor": "1-inch",
+      "lensType": "fixed",
+      "bodyType": "compact",
+      "hasEVF": false,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/panasonic-lx10.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "used",
+          "summary": "无需另配镜头、随身装袋即走",
+          "caution": "无内置取景器；检查镜头伸缩、内部入灰与触屏。 验机严查镜头伸缩与内部入灰。"
+        }
+      ]
+    },
+    {
+      "id": "panasonic-s5",
+      "brand": "Panasonic",
+      "name": "Panasonic LUMIX S5",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/panasonic-s5.webp",
+      "placements": [
+        {
+          "budgetTier": "3k-5k",
+          "condition": "used",
+          "summary": "全画幅与机身防抖，适合照片和视频入门。",
+          "caution": "入手前明确对连续追焦的需求与 L 卡口镜头预算。"
+        }
+      ]
+    },
+    {
+      "id": "panasonic-s5-ii",
+      "brand": "Panasonic",
+      "name": "Panasonic LUMIX S5 II",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/panasonic-s5-ii.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "new",
+          "summary": "相位检测对焦与机身防抖，兼顾照片和视频。",
+          "caution": "购买时评估 L 卡口镜头投入。"
+        },
+        {
+          "budgetTier": "5k-8k",
+          "condition": "used",
+          "summary": "相位检测对焦与机身防抖，兼顾照片和视频。",
+          "caution": "核对具体代际、成色与配套镜头，先试握再决定。"
+        },
+        {
+          "budgetTier": "8k-12k",
+          "condition": "new",
+          "summary": "相位检测对焦与机身防抖，兼顾照片和视频。",
+          "caution": "S9 极致轻薄并主打实时 LUT 直出，但无电子取景器且取消机械快门，纯拍照用户慎选。"
+        },
+        {
+          "budgetTier": "8k-12k",
+          "condition": "used",
+          "summary": "相位检测对焦与机身防抖，兼顾照片和视频。",
+          "caution": "核对具体代际、成色与配套镜头，先试握再决定。"
+        }
+      ]
+    },
+    {
+      "id": "panasonic-s9",
+      "brand": "Panasonic",
+      "name": "Panasonic LUMIX S9",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": false,
+      "hasMechanicalShutter": false,
+      "image": "/images/cameras/panasonic-s9.webp",
+      "placements": [
+        {
+          "budgetTier": "8k-12k",
+          "condition": "new",
+          "summary": "紧凑全画幅与实时 LUT，适合轻便直出记录。",
+          "caution": "无电子取景器、纯电子快门；需接受频闪灯光与快速运动下的限制。 S9 极致轻薄并主打实时 LUT 直出，但无电子取景器且取消机械快门，纯拍照用户慎选。"
+        }
+      ]
+    },
+    {
+      "id": "panasonic-s1-series",
+      "brand": "Panasonic",
+      "name": "Panasonic LUMIX S1 / S1R 系列",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/panasonic-s1-series.webp",
+      "placements": [
+        {
+          "budgetTier": "8k-12k",
+          "condition": "used",
+          "summary": "扎实做工与专业视频工作流，入手前评估 L 卡口镜头与配件生态。",
+          "caution": "核对具体代际、成色与配套镜头，先试握再决定。"
+        }
+      ]
+    },
+    {
+      "id": "olympus-em10-iii",
+      "brand": "OM SYSTEM",
+      "name": "Olympus OM-D E-M10 Mark III",
+      "sensor": "M43",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/olympus-em10-iii.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "used",
+          "summary": "复古小巧、防抖出色、旅行负担极低",
+          "caution": "重点检查转盘、卡槽与防抖。"
+        }
+      ]
+    },
+    {
+      "id": "olympus-em5-ii",
+      "brand": "OM SYSTEM",
+      "name": "Olympus OM-D E-M5 Mark II",
+      "sensor": "M43",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/olympus-em5-ii.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "used",
+          "summary": "复古小巧、防抖出色、旅行负担极低",
+          "caution": "重点检查转盘、卡槽与防抖。"
+        }
+      ]
+    },
+    {
+      "id": "olympus-em1-iii",
+      "brand": "OM SYSTEM",
+      "name": "Olympus OM-D E-M1 Mark III",
+      "sensor": "M43",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/olympus-em1-iii.webp",
+      "placements": [
+        {
+          "budgetTier": "3k-5k",
+          "condition": "used",
+          "summary": "三防机身配顶级防抖，户外、旅行与生态打鸟的实用利器",
+          "caution": "重点检查防抖与密封防护状态。"
+        }
+      ]
+    },
+    {
+      "id": "om-system-om5-ii",
+      "brand": "OM SYSTEM",
+      "name": "OM SYSTEM OM-5 Mark II",
+      "sensor": "M43",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/om-system-om5-ii.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "new",
+          "summary": "轻量化三防机身配合强劲防抖，面向户外徒步、自然风光与轻量长焦用户。",
+          "caution": "核对具体代际、成色与配套镜头，先试握再决定。"
+        }
+      ]
+    },
+    {
+      "id": "om-system-om1",
+      "brand": "OM SYSTEM",
+      "name": "OM SYSTEM OM-1",
+      "sensor": "M43",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/om-system-om1.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "used",
+          "summary": "堆栈式传感器、高速连拍与鸟类识别，轻量化户外生态系统的标杆。",
+          "caution": "核对具体代际、成色与配套镜头，先试握再决定。"
+        },
+        {
+          "budgetTier": "8k-12k",
+          "condition": "used",
+          "summary": "户外防护、鸟类追焦与极致轻量超长焦体系。",
+          "caution": "核对具体代际、成色与配套镜头，先试握再决定。"
+        }
+      ]
+    },
+    {
+      "id": "ricoh-gr-ii",
+      "brand": "Ricoh",
+      "name": "Ricoh GR II",
+      "sensor": "APS-C",
+      "lensType": "fixed",
+      "bodyType": "compact",
+      "hasEVF": false,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/ricoh-gr-ii.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "used",
+          "summary": "经典口袋街拍机",
+          "caution": "无内置取景器，固定等效 28mm 镜头；检查伸缩结构与传感器进灰。 重点检查镜头伸缩结构、传感器进灰与按键回弹。"
+        }
+      ]
+    },
+    {
+      "id": "ricoh-gr-iii",
+      "brand": "Ricoh",
+      "name": "Ricoh GR III",
+      "sensor": "APS-C",
+      "lensType": "fixed",
+      "bodyType": "compact",
+      "hasEVF": false,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/ricoh-gr-iii.webp",
+      "placements": [
+        {
+          "budgetTier": "3k-5k",
+          "condition": "used",
+          "summary": "内置防抖的口袋街拍利器",
+          "caution": "无内置取景器，固定等效 28mm 镜头；检查进灰与防抖。 固定 28mm 视角，更适合明确热爱街头随拍的玩家。"
+        }
+      ]
+    },
+    {
+      "id": "ricoh-gr-iv",
+      "brand": "Ricoh",
+      "name": "Ricoh GR IV",
+      "sensor": "APS-C",
+      "lensType": "fixed",
+      "bodyType": "compact",
+      "hasEVF": false,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/ricoh-gr-iv.webp",
+      "placements": [
+        {
+          "budgetTier": "8k-12k",
+          "condition": "new",
+          "summary": "新一代极致便携口袋街拍机",
+          "caution": "无内置取景器，固定等效 28mm 镜头；确认供货与售后保障。 选购前确认官方供货与售后保障。"
+        }
+      ]
+    },
+    {
+      "id": "leica-q-series",
+      "brand": "Leica",
+      "name": "Leica Q（早期代际）",
+      "sensor": "FullFrame",
+      "lensType": "fixed",
+      "bodyType": "compact",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/leica-q-series.webp",
+      "placements": [
+        {
+          "budgetTier": "8k-12k",
+          "condition": "used",
+          "summary": "高端全画幅 28mm 随身创作机",
+          "caution": "入手前务必核验镜头状态，并评估高昂的官方维修与售后成本。"
+        }
+      ]
+    },
+    {
+      "id": "fuji-xt10",
+      "brand": "Fujifilm",
+      "name": "Fujifilm X-T10",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/fuji-xt10.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "used",
+          "summary": "低成本体验富士胶片模拟与轻便操控",
+          "caution": "老机身重点验按键、拨盘灵敏度与屏幕排线。"
+        }
+      ]
+    },
+    {
+      "id": "fuji-xa-series",
+      "brand": "Fujifilm",
+      "name": "Fujifilm X-A 系列",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": false,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/fuji-xa-series.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "used",
+          "summary": "低成本体验富士胶片模拟与轻便操控",
+          "caution": "无内置电子取景器；不同代际规格有差别，购买前核对具体型号。 老机身重点验按键、拨盘灵敏度与屏幕排线。"
+        }
+      ]
+    },
+    {
+      "id": "fuji-xt30-ii",
+      "brand": "Fujifilm",
+      "name": "Fujifilm X-T30 II",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/fuji-xt30-ii.webp",
+      "placements": [
+        {
+          "budgetTier": "3k-5k",
+          "condition": "used",
+          "summary": "直出色彩迷人、操控富有乐趣",
+          "caution": "X-S10 与 X-T4 带机身防抖，验机重点测试拨盘与翻转屏。"
+        }
+      ]
+    },
+    {
+      "id": "fuji-xh2s",
+      "brand": "Fujifilm",
+      "name": "Fujifilm X-H2S",
+      "sensor": "APS-C",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/fuji-xh2s.webp",
+      "placements": [
+        {
+          "budgetTier": "8k-12k",
+          "condition": "used",
+          "summary": "堆栈式传感器，侧重高速连拍与视频。",
+          "caution": "X-H2 与 X-T5 主攻 4020 万高解析度。"
+        }
+      ]
+    },
+    {
+      "id": "panasonic-s5-iix",
+      "brand": "Panasonic",
+      "name": "Panasonic LUMIX S5 IIX",
+      "sensor": "FullFrame",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/panasonic-s5-iix.webp",
+      "placements": [
+        {
+          "budgetTier": "5k-8k",
+          "condition": "used",
+          "summary": "在 S5 II 基础上扩展专业视频录制工作流。",
+          "caution": "核对具体代际、成色与配套镜头，先试握再决定。"
+        }
+      ]
+    },
+    {
+      "id": "olympus-em10-ii",
+      "brand": "OM SYSTEM",
+      "name": "Olympus OM-D E-M10 Mark II",
+      "sensor": "M43",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/olympus-em10-ii.webp",
+      "placements": [
+        {
+          "budgetTier": "1k-3k",
+          "condition": "used",
+          "summary": "复古小巧、防抖出色、旅行负担极低",
+          "caution": "重点检查转盘、卡槽与防抖。"
+        }
+      ]
+    },
+    {
+      "id": "olympus-em1-ii",
+      "brand": "OM SYSTEM",
+      "name": "Olympus OM-D E-M1 Mark II",
+      "sensor": "M43",
+      "lensType": "interchangeable",
+      "bodyType": "mirrorless",
+      "hasEVF": true,
+      "hasMechanicalShutter": true,
+      "image": "/images/cameras/olympus-em1-ii.webp",
+      "placements": [
+        {
+          "budgetTier": "3k-5k",
+          "condition": "used",
+          "summary": "三防机身配顶级防抖，户外、旅行与生态打鸟的实用利器",
+          "caution": "重点检查防抖与密封防护状态。"
+        }
+      ]
+    }
+  ],
+  "checklistIntro": "二手平台能让预算发挥更大价值，但绝不能只凭卖家口述成色或一张“快门次数截图”拍板。微单相机即使机械快门数很少，也可能经历过长时间高强度视频录制或大量电子快门连拍。",
+  "checklist": [
+    {
+      "id": "before-0",
+      "title": "核实信誉",
+      "method": "优先选择信用分高、历史评价真实、实拍图清晰的个人卖家；要求拍摄包含当天日期与手写纸条的一镜到底外观及开机视频。",
+      "warning": "",
+      "group": "before"
+    },
+    {
+      "id": "before-1",
+      "title": "明确身世",
+      "method": "确认具体型号、机身序列号、购买渠道（国行/港版/日版）、保修期，以及有无拆修、进水、磕碰史。",
+      "warning": "",
+      "group": "before"
+    },
+    {
+      "id": "before-2",
+      "title": "清点配件",
+      "method": "逐项列明报价包含内容——机身、原装电池数量、充电器、肩带、包装盒说明书、存储卡与转接环。",
+      "warning": "",
+      "group": "before"
+    },
+    {
+      "id": "before-3",
+      "title": "严守平台",
+      "method": "拒绝任何脱离平台的转账、定金或“线下自提便宜”诱导。",
+      "warning": "",
+      "group": "before"
+    },
+    {
+      "id": "test-0",
+      "title": "外观与结构",
+      "method": "检查机身四角、热靴金属槽、卡口法兰、底部螺丝、翻转屏转轴",
+      "warning": "明显磕碰掉漆、螺丝有拧动毛刺、卡口变形、转轴松垮",
+      "group": "after"
+    },
+    {
+      "id": "test-1",
+      "title": "传感器健康",
+      "method": "F8–F16 拍均匀白墙并失焦，检查灰尘与固定污点；再拍正常曝光和暗场，排查异常彩线与坏点。",
+      "warning": "灰尘不等于传感器损坏；划痕、持续彩线或无法解释的固定污斑需进一步确认。",
+      "group": "after"
+    },
+    {
+      "id": "test-2",
+      "title": "快门与曝光",
+      "method": "在支持的范围内测试快慢快门，配合调整 ISO / 光圈保持近似曝光；用自然光检查黑边、卡滞与报错。",
+      "warning": "快门卡滞或异响、画面出现黑边（快门帘故障）、机身报错",
+      "group": "after"
+    },
+    {
+      "id": "test-3",
+      "title": "自动对焦",
+      "method": "分别测试单次对焦（AF-S）与连续追焦（AF-C），在近景与远景间快速切换",
+      "warning": "反复拉风箱、明显跑焦、眼部识别失效、对焦马达异常摩擦声",
+      "group": "after"
+    },
+    {
+      "id": "test-4",
+      "title": "机身/镜头防抖",
+      "method": "开启防抖，用 1/15s 低速快门手持拍摄，对比开启前后的清晰度",
+      "warning": "在通电拍摄时出现持续异常抖动、撞击或报错；部分防抖机身关机后晃动有声属于正常设计。",
+      "group": "after"
+    },
+    {
+      "id": "test-5",
+      "title": "屏幕与取景器",
+      "method": "纯黑/纯白画面查亮点坏点，测试触控响应、眼部感应切换与屈光度旋钮",
+      "warning": "屏幕偏色烧屏、触控断触、取景器进灰严重或黑屏闪烁",
+      "group": "after"
+    },
+    {
+      "id": "test-6",
+      "title": "卡槽与接口",
+      "method": "实测所有卡槽读写，逐一插拔 Type-C、HDMI、麦克风与耳机接口",
+      "warning": "卡槽弹出不顺或读卡失败、接口松动接触不良",
+      "group": "after"
+    },
+    {
+      "id": "test-7",
+      "title": "电池与充电",
+      "method": "检查电池是否鼓包，按机型支持的方式测试充电与连续拍摄；支持电池健康度显示时再检查该指标。",
+      "warning": "电池鼓包、电量骤降、按说明书使用兼容充电器仍无法充电。",
+      "group": "after"
+    },
+    {
+      "id": "test-8",
+      "title": "连拍与视频",
+      "method": "高速连拍至缓存满格，录制 10–15 分钟高规格视频并回放检查音画",
+      "warning": "写卡死机、短时间异常过热关机、麦克风无声或电流声",
+      "group": "after"
+    },
+    {
+      "id": "test-9",
+      "title": "配套镜头",
+      "method": "手电筒斜照镜片前后组，转动变焦环与对焦环，在不同光圈下试拍",
+      "warning": "镜片发霉起雾、严重划痕、光圈叶片卡滞油渍、变焦阻尼卡顿",
+      "group": "after"
+    }
+  ],
+  "evidence": "全程保留商品快照、聊天中卖家对成色与无拆修的承诺截图、快递开箱一镜到底视频、机身序列号特写以及传感器白墙测试原图。务必在平台确认收货期限内完成全部测试。",
+  "decisionSteps": [
+    {
+      "title": "锁定第一题材",
+      "body": "选出未来半年你最常拍的一个场景，放弃“一台机器通吃所有专业领域”的执念。"
+    },
+    {
+      "title": "决定全新或二手",
+      "body": "追求质保、省心与全新电池，选京东正规渠道全新机；愿意花时间验机换取高一档性能，选闲鱼二手。"
+    },
+    {
+      "title": "先把镜头预算划出来",
+      "body": "宁可用中端机身配一支素质扎实的镜头，也不要掏空预算买高阶机身配廉价套头。拿不准焦段时，先用一支标准变焦拍满三千张，再去添置定焦或长焦。"
+    },
+    {
+      "title": "线下摸一次真机",
+      "body": "去品牌体验店或器材城实际握持机身，感受重量、按键布局、取景器舒适度与菜单逻辑——顺手的机器，才会让你频繁按下快门。"
+    }
+  ],
+  "decisionTable": [
+    [
+      "最低预算入门体验",
+      "二手 APS-C / M4/3 微单",
+      "机身成色与后续平价镜头可得性"
+    ],
+    [
+      "专注拍摄人像",
+      "眼部对焦稳、肤色自然的系统",
+      "大光圈人像定焦镜头预算"
+    ],
+    [
+      "专注风光与建筑",
+      "高宽容度、RAW 空间大、广角群完备",
+      "稳固三脚架、滤镜与后期硬盘"
+    ],
+    [
+      "生态打鸟与野生动物",
+      "主体追焦强、高速连拍、APS-C / M4/3",
+      "超长焦镜头的售价与背负重量"
+    ],
+    [
+      "旅行与日常随身",
+      "轻量微单或 APS-C 固定镜头机",
+      "机身加挂机头的总重与直充续航"
+    ],
+    [
+      "视频与 Vlog 创作",
+      "防抖、录制规格、散热与收音接口",
+      "麦克风、高速存储卡与灯光预算"
+    ]
+  ],
+  "closing": "器材决定你记录世界的效率，镜头决定你切入画面的视角，而真正让照片留存下来的，是你在按下快门前，与光影对视的那一秒。"
+}
