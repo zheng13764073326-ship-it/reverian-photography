@@ -9,7 +9,7 @@ const volume=essays[0]?.date.slice(0,4)||String(new Date().getUTCFullYear());
 <EssayLayout title="随笔 / ESSAYS" description={introduction}>
  <nav class="essay-index-nav essay-shell" aria-label="随笔导航"><a href="/">← 返回主页</a><span>ESSAYS</span></nav>
  <main id="essay-main" class="essay-index essay-shell" tabindex="-1">
-  <header class="essay-masthead"><h1>随笔</h1><p class="essay-kicker">ESSAYS</p><p class="essay-introduction">{introduction}</p></header>
+  <header class="essay-masthead"><h1>随笔</h1><p class="essay-introduction">{introduction}</p></header>
   <ol class="essay-issues" aria-label="随笔目录">
    {essays.map(essay=><li><a class="essay-issue" href={essayHref(essay)} aria-labelledby={`title-${essay.id}`}>
     <div class="essay-issue-meta"><span>{essay.issueNumber}</span><time datetime={essay.date}>{essayDate(essay.date,true)}</time></div>

@@ -1,5 +1,6 @@
+@import './site-tokens.css';
+
 :root {
-  --paper: #f4f1e9;
   --ink: #262722;
   --muted: #73736a;
   --quiet: #a2a196;
@@ -312,7 +313,7 @@ summary::-webkit-details-marker {
   letter-spacing: 0.06em;
 }
 .section-heading h1 {
-  font-size: 46px;
+  font-size: var(--section-title-size);
 }
 .section-heading > a {
   flex-shrink: 0;
@@ -778,9 +779,6 @@ summary::-webkit-details-marker {
     font-size: 12px;
     letter-spacing: 0.16em;
     margin-bottom: 10px;
-  }
-  .section-heading h1 {
-    font-size: 34px;
   }
   .section-heading h2 {
     font-size: 28px;

@@ -18,7 +18,7 @@ test('invalid or colliding essay URLs and dates fail the build instead of silent
  assert.throws(()=>validateEssay({...first,coverImage:{...first.coverImage,src:'../../private.jpg'}}),/coverImage/);
  assert.throws(()=>validateEssay({...first,content:[{type:'html',text:'<script>alert(1)</script>'}]}),/Unknown/);
 });
-test('first issue preserves the requested image placements, independent quote and prose boundaries',()=>{
+test('first issue preserves the requested image placements and prose boundaries',()=>{
  const essay=validateEssay(first),blocks=essay.content;
  assert.equal(essay.coverImage.src,'01/cover.png');assert.equal(essay.coverImage.caption,undefined);assert.equal(blocks.filter(b=>b.type==='heading').length,5);
  const firstImage=blocks.findIndex(b=>b.type==='image'&&b.src==='01/photo-1.jpg');
@@ -27,7 +27,10 @@ test('first issue preserves the requested image placements, independent quote an
  assert.equal(secondImage,blocks.length-1);
  assert.equal(blocks[firstImage].type,'image');
  assert.equal('sideNote' in blocks[firstImage]?blocks[firstImage].sideNote?.heading:'','拍摄于澳门 / 发财树');
- assert.deepEqual(blocks.filter(b=>b.type==='quote'),[{type:'quote',text:'人工智能可以生成一场完美的日落，却无法替我度过那个黄昏。'}]);
+ const sunset='人工智能可以生成一场完美的日落，却无法替我度过那个黄昏。';
+ assert.deepEqual(blocks.filter(b=>'text' in b&&b.text.includes(sunset)),[
+  {type:'paragraph',text:'我仍然愿意在凌晨出发，等待一场不一定会出现的日出；愿意穿过陌生的街巷，在旅途中消耗那些看似毫无效率的时间。'+sunset}
+ ]);
  assert.equal(blocks[0].type,'paragraph');assert.equal('text' in blocks[0]?blocks[0].text:'','2026 年 11 月 28 日，凌晨 1:35，上海。');
  assert.deepEqual(blocks.filter(block=>block.type!=='image').at(-1),{type:'paragraph',text:'而我还生活在那个熟悉的时代里。'});
 });

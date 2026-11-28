@@ -1,0 +1,10 @@
+:root {
+  --paper: #f4f1e9;
+  --section-title-size: 46px;
+}
+
+@media (max-width: 600px) {
+  :root {
+    --section-title-size: 34px;
+  }
+}
