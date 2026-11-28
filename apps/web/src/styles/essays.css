@@ -16,8 +16,6 @@
 .essay-site .essay-reader-nav a,.essay-site .essay-colophon a{display:inline-flex;align-items:center;min-height:44px;transition:color .2s}
 .essay-site .essay-reader-nav a:hover,.essay-site .essay-colophon a:hover{color:var(--essay-ink)}
 .essay-site .essay-masthead{padding:18px 0 28px;border-bottom:1px solid var(--essay-line)}
-.essay-site .essay-heading-line{display:flex;align-items:baseline;gap:14px}
-.essay-site .essay-heading-line span{font:11px/1.6 var(--essay-mono);letter-spacing:.12em;color:var(--essay-muted)}
 .essay-site .essay-masthead h1{font-family:var(--essay-serif);font-size:var(--section-title-size);font-weight:400;line-height:1.35;letter-spacing:.06em;margin:0}
 .essay-site .essay-introduction{max-width:530px;font-size:16px;line-height:1.9;color:var(--essay-muted);margin:14px 0 0}
 .essay-site .essay-issues{list-style:none;padding:0;margin:0}
