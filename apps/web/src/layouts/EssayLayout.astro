@@ -16,4 +16,4 @@ const fullTitle=`${title} — 随笔 · Reverian`;
  {shareImage&&<meta property="og:image" content={new URL(shareImage,Astro.site)}/>}
  {article&&<><meta name="author" content={settings.photographer}/><meta property="article:published_time" content={date}/></>}
  {mode==='demo'&&<meta name="robots" content="noindex, nofollow"/>}
- </head><body id="top" class="essay-site"><a class="essay-skip" href="#essay-main">跳到正文</a><slot/></body></html>
+ </head><body id="top" class:list={{'essay-site':article}}><a class={article?'essay-skip':'skip-link'} href="#essay-main">跳到正文</a><slot/></body></html>

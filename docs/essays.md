@@ -9,10 +9,10 @@
 - `apps/web/src/lib/essay-catalog.ts`：数据校验、排序、日期与 URL。
 - `apps/web/src/lib/essays.ts`：自动发现文章和图片。
 - `apps/web/src/layouts/EssayLayout.astro`：独立页面文档、SEO 与共享网页字体。
-- `apps/web/src/styles/essays.css`：只在随笔页面加载，全部选择器限制于 `.essay-site` 或 `.essay-document`。不导入全站 global.css、照片灯箱、光圈转场、全局按钮样式或自定义鼠标。文末向上箭头单独复用 elastic-buttons.ts 的弹性逻辑，样式仍限定在随笔作用域内。
+- `apps/web/src/styles/essays.css` 定义目录和文章的排版。目录页另载 `global.css`，为全站导航提供样式。阅读页沿用独立的阅读导航和文末弹性按钮。
 - `apps/web/src/components/essays/`：图片与缺图占位、行内斜体、阅读导航和进度，以及共用细线箭头和文末操作栏。
 - `apps/web/src/pages/essays/index.astro`、`[id].astro`：目录和文章模板。
-- 原站 `Header.astro` 只增加同级入口和窄桌面导航间距；移动菜单复用原有交互。`sitemap.xml.ts` 加入自动生成的文章 URL。
+- 随笔目录复用 `Header.astro` 的桌面导航和手机菜单，并在主导航中标记当前栏目。`sitemap.xml.ts` 加入自动生成的文章 URL。
 
 ## 替换 NO. 01 的三张照片
 

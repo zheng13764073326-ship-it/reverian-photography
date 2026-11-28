@@ -11,13 +11,14 @@
 .essay-site .essay-skip{position:fixed;left:24px;top:-80px;z-index:60;padding:10px 18px;background:var(--paper);font:14px/1.5 var(--essay-sans);border:1px solid var(--essay-line)}
 .essay-site .essay-skip:focus{top:12px}
 .essay-site .essay-shell{width:min(1160px,calc(100% - 112px));margin-inline:auto}
-.essay-site .essay-index-nav,.essay-site .essay-reader-nav{display:flex;align-items:center;justify-content:space-between;gap:24px;font:12px/1.6 var(--essay-sans);color:var(--essay-muted)}
-.essay-site .essay-index-nav{padding-block:12px}
-.essay-site .essay-index-nav>span,.essay-site .essay-reader-nav>span{font-family:var(--essay-mono);font-size:11px;letter-spacing:.12em}
-.essay-site .essay-index-nav a,.essay-site .essay-reader-nav a,.essay-site .essay-colophon a{display:inline-flex;align-items:center;min-height:44px;transition:color .2s}
-.essay-site .essay-index-nav a:hover,.essay-site .essay-reader-nav a:hover,.essay-site .essay-colophon a:hover{color:var(--essay-ink)}
+.essay-index{padding-top:var(--header)}
+.essay-site .essay-reader-nav{display:flex;align-items:center;justify-content:space-between;gap:24px;font:12px/1.6 var(--essay-sans);color:var(--essay-muted)}
+.essay-site .essay-reader-nav a,.essay-site .essay-colophon a{display:inline-flex;align-items:center;min-height:44px;transition:color .2s}
+.essay-site .essay-reader-nav a:hover,.essay-site .essay-colophon a:hover{color:var(--essay-ink)}
 .essay-site .essay-masthead{padding:18px 0 28px;border-bottom:1px solid var(--essay-line)}
-.essay-site .essay-masthead h1{font-size:var(--section-title-size);font-weight:400;line-height:1.35;letter-spacing:.06em;margin:0}
+.essay-site .essay-heading-line{display:flex;align-items:baseline;gap:14px}
+.essay-site .essay-heading-line span{font:11px/1.6 var(--essay-mono);letter-spacing:.12em;color:var(--essay-muted)}
+.essay-site .essay-masthead h1{font-family:var(--essay-serif);font-size:var(--section-title-size);font-weight:400;line-height:1.35;letter-spacing:.06em;margin:0}
 .essay-site .essay-introduction{max-width:530px;font-size:16px;line-height:1.9;color:var(--essay-muted);margin:14px 0 0}
 .essay-site .essay-issues{list-style:none;padding:0;margin:0}
 .essay-site .essay-issues>li{border-bottom:1px solid var(--essay-line)}
@@ -25,7 +26,7 @@
 .essay-site .essay-issue-meta{display:flex;flex-direction:column;gap:9px;font:11px/1.8 var(--essay-mono);letter-spacing:.12em;color:var(--essay-muted);padding-top:5px}
 .essay-site .essay-issue-meta>span:first-child{color:var(--essay-ink);margin-bottom:12px}
 .essay-site .essay-issue-copy{min-width:0}
-.essay-site .essay-issue-copy h2{font-size:30px;line-height:1.5;font-weight:500;color:#353530;margin:0 0 13px;transition:color .2s}
+.essay-site .essay-issue-copy h2{font-family:var(--essay-serif);font-size:30px;line-height:1.5;font-weight:500;color:#353530;margin:0 0 13px;transition:color .2s}
 .essay-site .essay-issue-subtitle{font-size:13px;line-height:1.85;color:var(--essay-muted);margin:0 0 22px}
 .essay-site .essay-issue-excerpt{font-size:15px;line-height:1.9;color:var(--essay-muted);margin:0;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
 .essay-site .essay-index-footnote{padding:56px 0 64px;font:11px/1.7 var(--essay-mono);letter-spacing:.05em;color:var(--essay-muted)}
@@ -44,7 +45,7 @@
 .essay-site .essay-reader-nav::after{content:'';position:absolute;inset:auto 0 0;height:1px;background:rgba(29,29,27,.06);opacity:0;transition:opacity .28s ease;pointer-events:none}
 .essay-site .essay-reader-nav.is-returning::after{opacity:1}
 .essay-site .essay-reader-nav a{font-size:14px;gap:9px}
-.essay-site .essay-reader-nav>span{font-size:12px;letter-spacing:.16em}
+.essay-site .essay-reader-nav>span{font-family:var(--essay-mono);font-size:12px;letter-spacing:.16em}
 .essay-site .essay-arrow{display:block;flex-shrink:0}
 .essay-site .essay-return-link .essay-arrow-left{transition:transform .24s ease}
 @media(hover:hover){.essay-site .essay-return-link:hover .essay-arrow-left{transform:translateX(-3px)}}
@@ -87,7 +88,6 @@
 @media(max-width:1000px){.essay-site .essay-shell{width:calc(100% - 64px)}.essay-site .essay-issue{grid-template-columns:96px minmax(0,1fr) 220px;gap:24px}.essay-site .essay-issue-copy h2{font-size:25px}}
 @media(max-width:760px){
  .essay-site .essay-shell{width:calc(100% - 48px)}
- .essay-site .essay-index-nav{padding-block:8px}
  .essay-site .essay-masthead{padding:12px 0 22px}
  .essay-site .essay-introduction{font-size:15px;margin-top:10px}
  .essay-site .essay-issue{grid-template-columns:1fr;gap:16px;padding:22px 0}
