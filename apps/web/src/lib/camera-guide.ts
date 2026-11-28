@@ -21,13 +21,35 @@ export function setupCameraGuide(root:HTMLElement){
  let tier='1k-3k',condition='all';
  const panels=all<HTMLElement>('[data-budget-panel]'),conditions=all<HTMLButtonElement>('[data-condition]');
  const evf=root.querySelector<HTMLInputElement>('[data-evf]')!;
+ const filters=root.querySelector<HTMLElement>('[data-camera-filters]')!;
+ const countLabel=root.querySelector<HTMLElement>('[data-camera-count]')!;
  function filter(){
-  let count=0;
-  panels.forEach(p=>{p.hidden=p.dataset.budgetPanel!==tier;if(p.hidden)return;const cards=[...p.querySelectorAll<HTMLElement>('[data-camera-card]')];cards.forEach(card=>{card.hidden=(condition!=='all'&&card.dataset.conditionValue!==condition)||(evf.checked&&card.dataset.hasEvf!=='true');if(!card.hidden)count++;});const empty=p.querySelector<HTMLElement>('[data-empty]');if(empty)empty.hidden=count>0;});
+  const models=new Set<string>();
+  for(const panel of panels){
+   panel.hidden=panel.dataset.budgetPanel!==tier;
+   if(panel.hidden)continue;
+   for(const card of panel.querySelectorAll<HTMLElement>('[data-camera-card]')){
+    card.hidden=(condition!=='all' && card.dataset.conditionValue!==condition) || (evf.checked && card.dataset.hasEvf!=='true');
+    if(!card.hidden)models.add(card.dataset.cameraId!);
+   }
+   const empty=panel.querySelector<HTMLElement>('[data-empty]');
+   if(empty)empty.hidden=models.size>0;
+  }
   conditions.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.condition===condition)));
-  root.querySelector<HTMLElement>('[data-camera-count]')!.textContent=tier==='12k+'?'专业系统参考 · 按实际创作瓶颈选择':`${count} 个候选 · 镜头与配件另留预算`;
+  countLabel.textContent=`${models.size} 款`;
  }
- function selectTier(id:string){if(!panels.some(p=>p.dataset.budgetPanel===id))return;tier=id;all<HTMLAnchorElement>('[data-budget-link]').forEach(a=>{if(a.dataset.budgetLink===id){a.setAttribute('aria-current','true');if(a.parentElement?.classList.contains('cg-budget-tabs'))revealInStrip(a,a.parentElement);}else a.removeAttribute('aria-current')});const high=id==='12k+';root.querySelector<HTMLElement>('[data-camera-filters]')!.hidden=high;root.querySelector<HTMLElement>('[data-filter-note]')!.hidden=high;filter();}
+ function selectTier(id:string){
+  if(!panels.some(p=>p.dataset.budgetPanel===id))return;
+  tier=id;
+  for(const link of all<HTMLAnchorElement>('[data-budget-link]')){
+   if(link.dataset.budgetLink===id){
+    link.setAttribute('aria-current','true');
+    if(link.parentElement?.classList.contains('cg-budget-tabs'))revealInStrip(link,link.parentElement);
+   }else link.removeAttribute('aria-current');
+  }
+  filters.hidden=id==='12k+';
+  filter();
+ }
  function fromHash(){let id=location.hash.slice(1);try{id=decodeURIComponent(id);}catch{return;}if(id.startsWith('budget-'))selectTier(id.slice(7));}
  all<HTMLAnchorElement>('[data-budget-link]').forEach(link=>link.addEventListener('click',event=>{if(event.button!==0||event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;event.preventDefault();const id=link.dataset.budgetLink!;selectTier(id);if(location.hash!==link.hash)history.pushState(null,'',link.hash);const destination=link.closest('.cg-subnav')?root.querySelector('#budget'):root.querySelector('.cg-budget-tabs');destination?.scrollIntoView({block:'start',behavior:reduced.matches?'instant':'smooth'});}));
  conditions.forEach(b=>b.addEventListener('click',()=>{condition=b.dataset.condition!;filter()}));evf.addEventListener('change',filter);
